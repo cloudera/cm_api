@@ -10,6 +10,19 @@ __docformat__ = "epytext"
 
 LOG = logging.getLogger(__name__)
 
+class ResourceException(Exception):
+  """
+  Any error result from the API is converted into this exception type.
+  """
+  def __init__(self, message):
+    Exception.__init__(self, message)
+    self._message = message
+
+  @property
+  def message(self):
+    return self._message
+
+
 class Resource(object):
   """
   Encapsulates a resource, and provides actions to invoke on it.
@@ -30,7 +43,13 @@ class Resource(object):
   def _invoke(self, method, relpath=None, **params):
     path = self._get_uri(relpath)
     res = self._client.execute(method, path, **params)
-    return json.loads(res)
+    json_dict = json.loads(res)
+    return self._extract_json_value(json_dict)
+
+  def _extract_json_value(self, json_dict):
+    if json_dict['success']:
+      return json_dict['value']
+    raise ResourceException(json_dict['message'])
 
 
   def get(self, relpath=None, **params):
