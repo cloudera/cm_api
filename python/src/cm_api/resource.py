@@ -14,13 +14,13 @@ class ResourceException(Exception):
   """
   Any error result from the API is converted into this exception type.
   """
-  def __init__(self, message):
-    Exception.__init__(self, message)
-    self._message = message
+  def __init__(self, error):
+    Exception.__init__(self, error)
+    self._error = error
 
   @property
   def message(self):
-    return self._message
+    return self._error['message']
 
 
 class Resource(object):
@@ -49,7 +49,7 @@ class Resource(object):
   def _extract_json_value(self, json_dict):
     if json_dict['success']:
       return json_dict['value']
-    raise ResourceException(json_dict['message'])
+    raise ResourceException(json_dict['error'])
 
 
   def get(self, relpath=None, **params):
