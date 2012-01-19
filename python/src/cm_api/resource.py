@@ -5,6 +5,7 @@ try:
 except ImportError:
   import simplejson as json
 import logging
+import urllib2
 
 __docformat__ = "epytext"
 
@@ -42,15 +43,14 @@ class Resource(object):
 
   def _invoke(self, method, relpath=None, **params):
     path = self._get_uri(relpath)
-    res = self._client.execute(method, path, **params)
-    json_dict = json.loads(res)
-    return self._extract_json_value(json_dict)
-
-  def _extract_json_value(self, json_dict):
-    if json_dict['success']:
-      return json_dict['value']
-    raise ResourceException(json_dict['error'])
-
+    try:
+      res = self._client.execute(method, path, **params)
+    except urllib2.HTTPError, ex:
+      # Pass up authentication errors
+      if ex.code == 401:
+        raise ex
+      raise ResourceException(json.loads(ex.read()))
+    return json.loads(res)
 
   def get(self, relpath=None, **params):
     """

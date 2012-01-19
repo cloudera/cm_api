@@ -85,10 +85,12 @@ class Client(object):
 
     # Call it
     LOG.debug("%s %s" % (http_method, url))
-    call = self._opener.open(request)
     try:
+      call = self._opener.open(request)
       resp = call.read()
       LOG.debug("%s Got response: %s" % (http_method, resp))
+    except urllib2.HTTPError, ex:
+      raise ex
     except Exception, ex:
       raise Exception("Command '%s %s' failed: %s" %
                       (http_method, path, ex))

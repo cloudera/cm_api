@@ -4,8 +4,8 @@ __docformat__ = "epytext"
 
 import cm_api.resource
 
-ECHO_PATH = "/echo"
-ECHO_ERROR_PATH = "/echoError"
+ECHO_PATH = "/tools/echo"
+ECHO_ERROR_PATH = "/tools/echoError"
 
 def echo(client, message):
   """Have the server echo our message back."""
