@@ -2,15 +2,16 @@
 
 __docformat__ = "epytext"
 
-import cm_api.resource
 
 ECHO_PATH = "/tools/echo"
 ECHO_ERROR_PATH = "/tools/echoError"
 
-def echo(client, message):
+def echo(root_resource, message):
   """Have the server echo our message back."""
-  return cm_api.resource.Resource(ECHO_PATH, client).get(message=message)
+  params = dict(message=message)
+  return root_resource.get(ECHO_PATH, params)
 
-def echo_error(client, message):
+def echo_error(root_resource, message):
   """Generate an error, but we get to set the error message."""
-  return cm_api.resource.Resource(ECHO_ERROR_PATH, client).get(message=message)
+  params = dict(message=message)
+  return root_resource.get(ECHO_ERROR_PATH, params)
