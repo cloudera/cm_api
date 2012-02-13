@@ -63,7 +63,4 @@ class ApiHost(BaseApiObject):
   RW_ATTR = ('hostId', 'hostname', 'ipAddress', 'rackId')
 
   def __init__(self, hostId, hostname, ipAddress, rackId):
-    self.hostId = hostId
-    self.hostname = hostname
-    self.ipAddress = ipAddress
-    self.rackId = rackId
+    BaseApiObject.ctor_helper(**locals())

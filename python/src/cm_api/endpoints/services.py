@@ -61,11 +61,9 @@ class ApiService(BaseApiObject):
   RW_ATTR = ('name', 'type', 'version')
 
   def __init__(self, name, type, version):
-    self.name = name
     # Unfortunately, the json key is called "type". So our input arg
     # needs to be called "type" as well, despite it being a python keyword.
-    self.type = type
-    self.version = version
+    BaseApiObject.ctor_helper(**locals())
 
   @property
   def clusterName(self):

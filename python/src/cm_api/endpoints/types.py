@@ -23,6 +23,21 @@ class BaseApiObject(object):
   RO_ATTR = ( )         # Derived classes should define this
   RW_ATTR = ( )         # Derived classes should define this
 
+  def __init__(self, **rw_attrs):
+    for k, v in rw_attrs.items():
+      if k not in self.RW_ATTR:
+        raise ValueError("Unexpected ctor argument '%s' in %s" %
+                         (k, self.__class__.__name__))
+      setattr(self, k, v)
+
+  @staticmethod
+  def ctor_helper(self=None, **kwargs):
+    """
+    Note that we need a kw arg called `self'. The callers typically just
+    pass their locals() to us.
+    """
+    BaseApiObject.__init__(self, **kwargs)
+
   def to_json_dict(self):
     dic = { }
     for attr in self.RW_ATTR:

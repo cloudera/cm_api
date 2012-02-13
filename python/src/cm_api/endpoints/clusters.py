@@ -59,4 +59,4 @@ class ApiCluster(BaseApiObject):
   RW_ATTR = ('name',)
 
   def __init__(self, name):
-    self.name = name
+    BaseApiObject.ctor_helper(**locals())
