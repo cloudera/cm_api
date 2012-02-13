@@ -70,16 +70,17 @@ class BaseApiObject(object):
 
 class ApiList(object):
   """A list of some api object"""
-  def __init__(self, objects, list_key, count=None):
+  LIST_KEY = "items"
+
+  def __init__(self, objects, count=None):
     self.objects = objects
-    self.list_key = list_key
     if count is None:
       self.count = len(objects)
     else:
       self.count = count
 
   def to_json_dict(self):
-    return { self.list_key :
+    return { ApiList.LIST_KEY :
             [ x.to_json_dict() for x in self.objects ] }
 
   def __len__(self):
@@ -96,11 +97,6 @@ class ApiList(object):
 
   @staticmethod
   def from_json_dict(member_cls, dic):
-    for k, v in dic.items():
-      # The dictionary only has two keys, "count" and the list key
-      if k == "count":
-        continue
-      objects = [ member_cls.from_json_dict(x) for x in v ]
-      return ApiList(objects, k, dic['count'])
-    else:
-      raise ValueError("Cannot find items in list with keys %s" % (dic.keys(),))
+    json_list = dic[ApiList.LIST_KEY]
+    objects = [ member_cls.from_json_dict(x) for x in json_list ]
+    return ApiList(objects, dic['count'])

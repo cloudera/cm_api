@@ -19,7 +19,7 @@ def create_cluster(resource_root, name):
   @return: An ApiCluster object
   """
   apicluster = ApiCluster(name)
-  apicluster_list = ApiList([apicluster], "clusters")
+  apicluster_list = ApiList([apicluster])
   body = json.dumps(apicluster_list.to_json_dict())
   resp = resource_root.post(CLUSTERS_PATH, data=body)
   # The server returns a list of created clusters (with size 1)

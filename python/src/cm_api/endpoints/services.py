@@ -20,7 +20,7 @@ def create_service(resource_root, name, service_type, version,
   @return: An ApiService object
   """
   apiservice = ApiService(name, service_type, version)
-  apiservice_list = ApiList([apiservice], "services")
+  apiservice_list = ApiList([apiservice])
   body = json.dumps(apiservice_list.to_json_dict())
   resp = resource_root.post(SERVICES_PATH % (cluster_name,), data=body)
   # The server returns a list of created services (with size 1)

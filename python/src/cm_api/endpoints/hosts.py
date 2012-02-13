@@ -22,7 +22,7 @@ def create_host(resource_root, host_id, name, ipaddr, rack_id=None):
   @return: An ApiHost object
   """
   apihost = ApiHost(host_id, name, ipaddr, rack_id)
-  apihost_list = ApiList([apihost], "hosts")
+  apihost_list = ApiList([apihost])
   body = json.dumps(apihost_list.to_json_dict())
   resp = resource_root.post(HOSTS_PATH, data=body)
   # The server returns a list of created hosts (with size 1)
