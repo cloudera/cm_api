@@ -16,7 +16,10 @@ def create_service(resource_root, name, service_type, version,
   """
   Create a service
   @param resource_root: The root Resource object.
-  @param name: Cluster name
+  @param name: Service name
+  @param service_type: Service type
+  @param version: Service version
+  @param cluster_name: Cluster name
   @return: An ApiService object
   """
   apiservice = ApiService(name, service_type, version)
@@ -30,7 +33,8 @@ def get_service(resource_root, name, cluster_name="default"):
   """
   Lookup a service by name
   @param resource_root: The root Resource object.
-  @param name: Cluster name
+  @param name: Service name
+  @param cluster_name: Cluster name
   @return: An ApiService object
   """
   dic = resource_root.get("%s/%s" % (SERVICES_PATH % (cluster_name,), name))
@@ -40,6 +44,7 @@ def get_all_services(resource_root, cluster_name="default"):
   """
   Get all services
   @param resource_root: The root Resource object.
+  @param cluster_name: Cluster name
   @return: A list of ApiService objects.
   """
   dic = resource_root.get(SERVICES_PATH % (cluster_name,))
@@ -49,7 +54,8 @@ def delete_service(resource_root, name, cluster_name="default"):
   """
   Delete a service by name
   @param resource_root: The root Resource object.
-  @param name: Cluster name
+  @param name: Service name
+  @param cluster_name: Cluster name
   @return: The deleted ApiService object
   """
   resp = resource_root.delete("%s/%s" % (SERVICES_PATH % (cluster_name,), name))
@@ -64,8 +70,3 @@ class ApiService(BaseApiObject):
     # Unfortunately, the json key is called "type". So our input arg
     # needs to be called "type" as well, despite it being a python keyword.
     BaseApiObject.ctor_helper(**locals())
-
-  @property
-  def clusterName(self):
-    # Only available in a de-serialized object
-    return self.clusterRef['clusterName']

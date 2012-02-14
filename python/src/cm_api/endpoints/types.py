@@ -19,6 +19,9 @@ class BaseApiObject(object):
   The derived class's ctor must take all the RW_ATTR as arguments.
   When de-serializing from JSON, all attributes will be set. Their
   names are taken from the keys in the JSON object.
+
+  Reference objects (e.g. hostRef, clusterRef) are automatically
+  deserialized. They can be accessed as attributes.
   """
   RO_ATTR = ( )         # Derived classes should define this
   RW_ATTR = ( )         # Derived classes should define this
@@ -28,7 +31,7 @@ class BaseApiObject(object):
       if k not in self.RW_ATTR:
         raise ValueError("Unexpected ctor argument '%s' in %s" %
                          (k, self.__class__.__name__))
-      setattr(self, k, v)
+      self._setattr(k, v)
 
   @staticmethod
   def ctor_helper(self=None, **kwargs):
@@ -38,10 +41,27 @@ class BaseApiObject(object):
     """
     BaseApiObject.__init__(self, **kwargs)
 
+  def _setattr(self, k, v):
+    """Set an attribute. We take care of instantiating reference objects."""
+    # We play tricks when we notice that the attribute `k' ends with `Ref'.
+    # We treat it as a reference object, i.e. another object to be deserialized.
+    if isinstance(v, dict) and k.endswith("Ref"):
+      # A reference, `v' should be a json dictionary
+      cls_name = "Api" + k[0].upper() + k[1:]
+      cls = globals()[cls_name]
+      v = cls(**v)
+    setattr(self, k, v)
+
   def to_json_dict(self):
     dic = { }
     for attr in self.RW_ATTR:
-      dic[attr] = getattr(self, attr)
+      value = getattr(self, attr)
+      try:
+        # If the value has to_json_dict(), call it
+        value = value.to_json_dict()
+      except AttributeError, ignored:
+        pass
+      dic[attr] = value
     return dic
 
   @classmethod
@@ -56,12 +76,12 @@ class BaseApiObject(object):
 
     # Initialize all RO_ATTR to be None
     for attr in cls.RO_ATTR:
-      setattr(obj, attr, None)
+      obj._setattr(attr, None)
 
     # Now set the RO_ATTR based on the json
     for k, v in dic.items():
       if k in cls.RO_ATTR:
-        setattr(obj, k, v)
+        obj._setattr(k, v)
       else:
         raise KeyError("Unexpected attribute '%s' in %s json" %
                        (k, cls.__name__))
@@ -100,3 +120,24 @@ class ApiList(object):
     json_list = dic[ApiList.LIST_KEY]
     objects = [ member_cls.from_json_dict(x) for x in json_list ]
     return ApiList(objects, dic['count'])
+
+
+#
+# In order for BaseApiObject to automatically instantiate reference objects,
+# it's more convenient for the reference classes to be defined here.
+#
+
+class ApiHostRef(BaseApiObject):
+  RW_ATTR = ('hostId',)
+  def __init__(self, hostId):
+    BaseApiObject.ctor_helper(**locals())
+
+class ApiServiceRef(BaseApiObject):
+  RW_ATTR = ('clusterName', 'serviceName')
+  def __init__(self, clusterName, serviceName):
+    BaseApiObject.ctor_helper(**locals())
+
+class ApiClusterRef(BaseApiObject):
+  RW_ATTR = ('clusterName',)
+  def __init__(self, clusterName):
+    BaseApiObject.ctor_helper(**locals())
