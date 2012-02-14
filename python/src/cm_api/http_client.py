@@ -41,7 +41,7 @@ class RestException(Exception):
       pass
 
   def __str__(self):
-    res = self._message
+    res = self._message or ""
     if self._code is not None:
       res += " (error %s)" % (self._code,)
     return res
