@@ -33,7 +33,7 @@ def create_role(resource_root,
   # The server returns a list of created roles (with size 1)
   return ApiList.from_json_dict(ApiRole, resp)[0]
 
-def get_role(resource_root, service_name, name, cluster_name="default"):
+def get_role(resource_root, service_name, name, cluster_name="default", view=None):
   """
   Lookup a role by name
   @param resource_root: The root Resource object.
@@ -43,10 +43,11 @@ def get_role(resource_root, service_name, name, cluster_name="default"):
   @return: An ApiRole object
   """
   dic = resource_root.get("%s/%s" %
-          (ROLES_PATH % (cluster_name, service_name), name))
+          (ROLES_PATH % (cluster_name, service_name), name),
+          params=view and dict(view=view) or None)
   return ApiRole.from_json_dict(dic)
 
-def get_all_roles(resource_root, service_name, cluster_name="default"):
+def get_all_roles(resource_root, service_name, cluster_name="default", view=None):
   """
   Get all roles
   @param resource_root: The root Resource object.
@@ -54,11 +55,12 @@ def get_all_roles(resource_root, service_name, cluster_name="default"):
   @param cluster_name: Cluster name
   @return: A list of ApiRole objects.
   """
-  dic = resource_root.get(ROLES_PATH % (cluster_name, service_name))
+  dic = resource_root.get(ROLES_PATH % (cluster_name, service_name),
+          params=view and dict(view=view) or None)
   return ApiList.from_json_dict(ApiRole, dic)
 
 def get_roles_by_type(resource_root, service_name, role_type,
-                      cluster_name="default"):
+                      cluster_name="default", view=None):
   """
   Get all roles of a certain type in a service
   @param resource_root: The root Resource object.
@@ -67,7 +69,8 @@ def get_roles_by_type(resource_root, service_name, role_type,
   @param cluster_name: Cluster name
   @return: A list of ApiRole objects.
   """
-  roles = get_all_roles(resource_root, service_name, cluster_name)
+  roles = get_all_roles(resource_root, service_name, cluster_name,
+            params=view and dict(view=view) or None)
   return [ r for r in roles if r.type == role_type ]
 
 def delete_role(resource_root, service_name, name, cluster_name="default"):

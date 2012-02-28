@@ -29,7 +29,7 @@ def create_service(resource_root, name, service_type, version,
   # The server returns a list of created services (with size 1)
   return ApiList.from_json_dict(ApiService, resp)[0]
 
-def get_service(resource_root, name, cluster_name="default"):
+def get_service(resource_root, name, cluster_name="default", view=None):
   """
   Lookup a service by name
   @param resource_root: The root Resource object.
@@ -37,17 +37,19 @@ def get_service(resource_root, name, cluster_name="default"):
   @param cluster_name: Cluster name
   @return: An ApiService object
   """
-  dic = resource_root.get("%s/%s" % (SERVICES_PATH % (cluster_name,), name))
+  dic = resource_root.get("%s/%s" % (SERVICES_PATH % (cluster_name,), name),
+          params=view and dict(view=view) or None)
   return ApiService.from_json_dict(dic)
 
-def get_all_services(resource_root, cluster_name="default"):
+def get_all_services(resource_root, cluster_name="default", view=None):
   """
   Get all services
   @param resource_root: The root Resource object.
   @param cluster_name: Cluster name
   @return: A list of ApiService objects.
   """
-  dic = resource_root.get(SERVICES_PATH % (cluster_name,))
+  dic = resource_root.get(SERVICES_PATH % (cluster_name,),
+          params=view and dict(view=view) or None)
   return ApiList.from_json_dict(ApiService, dic)
 
 def delete_service(resource_root, name, cluster_name="default"):
