@@ -52,7 +52,6 @@ def get_all_services(resource_root, cluster_name="default", view=None):
   """
   dic = resource_root.get(SERVICES_PATH % (cluster_name,),
           params=view and dict(view=view) or None)
-  dic = resource_root.get(SERVICES_PATH % (cluster_name,))
   return ApiList.from_json_dict(ApiService, dic, resource_root)
 
 def delete_service(resource_root, name, cluster_name="default"):
