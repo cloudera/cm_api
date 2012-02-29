@@ -25,15 +25,14 @@ def create_cluster(resource_root, name):
   # The server returns a list of created clusters (with size 1)
   return ApiList.from_json_dict(ApiCluster, resp)[0]
 
-def get_cluster(resource_root, name, view=None):
+def get_cluster(resource_root, name):
   """
   Lookup a cluster by name
   @param resource_root: The root Resource object.
   @param name: Cluster name
   @return: An ApiCluster object
   """
-  dic = resource_root.get("%s/%s" % (CLUSTERS_PATH, name),
-          params=view and dict(view=view) or None)
+  dic = resource_root.get("%s/%s" % (CLUSTERS_PATH, name))
   return ApiCluster.from_json_dict(dic)
 
 def get_all_clusters(resource_root, view=None):

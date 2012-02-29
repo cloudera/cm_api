@@ -28,15 +28,14 @@ def create_host(resource_root, host_id, name, ipaddr, rack_id=None):
   # The server returns a list of created hosts (with size 1)
   return ApiList.from_json_dict(ApiHost, resp)[0]
 
-def get_host(resource_root, host_id, view=None):
+def get_host(resource_root, host_id):
   """
   Lookup a host by id
   @param resource_root: The root Resource object.
   @param host_id: Host id
   @return: An ApiHost object
   """
-  dic = resource_root.get("%s/%s" % (HOSTS_PATH, host_id),
-          params=view and dict(view=view) or None)
+  dic = resource_root.get("%s/%s" % (HOSTS_PATH, host_id))
   return ApiHost.from_json_dict(dic)
 
 def get_all_hosts(resource_root, view=None):

@@ -33,7 +33,7 @@ def create_role(resource_root,
   # The server returns a list of created roles (with size 1)
   return ApiList.from_json_dict(ApiRole, resp)[0]
 
-def get_role(resource_root, service_name, name, cluster_name="default", view=None):
+def get_role(resource_root, service_name, name, cluster_name="default"):
   """
   Lookup a role by name
   @param resource_root: The root Resource object.
@@ -43,8 +43,7 @@ def get_role(resource_root, service_name, name, cluster_name="default", view=Non
   @return: An ApiRole object
   """
   dic = resource_root.get("%s/%s" %
-          (ROLES_PATH % (cluster_name, service_name), name),
-          params=view and dict(view=view) or None)
+          (ROLES_PATH % (cluster_name, service_name), name))
   return ApiRole.from_json_dict(dic)
 
 def get_all_roles(resource_root, service_name, cluster_name="default", view=None):
