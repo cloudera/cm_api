@@ -5,11 +5,13 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiList, BaseApiObject, ApiHostRef
+from cm_api.endpoints.types import config_to_json, json_to_config, \
+    ApiList, BaseApiObject, ApiHostRef
 
 __docformat__ = "epytext"
 
 ROLES_PATH = "/clusters/%s/services/%s/roles"
+CONFIG_PATH = "/clusters/%s/services/%s/roles/%s/config"
 
 def create_role(resource_root,
                 service_name,
@@ -26,12 +28,13 @@ def create_role(resource_root,
   @param cluster_name: Cluster name
   @return: An ApiRole object
   """
-  apirole = ApiRole(role_name, role_type, ApiHostRef(host_id))
+  apirole = ApiRole(resource_root, role_name, role_type,
+                    ApiHostRef(resource_root, host_id))
   apirole_list = ApiList([apirole])
   body = json.dumps(apirole_list.to_json_dict())
   resp = resource_root.post(ROLES_PATH % (cluster_name, service_name), data=body)
   # The server returns a list of created roles (with size 1)
-  return ApiList.from_json_dict(ApiRole, resp)[0]
+  return ApiList.from_json_dict(ApiRole, resp, resource_root)[0]
 
 def get_role(resource_root, service_name, name, cluster_name="default"):
   """
@@ -44,7 +47,7 @@ def get_role(resource_root, service_name, name, cluster_name="default"):
   """
   dic = resource_root.get("%s/%s" %
           (ROLES_PATH % (cluster_name, service_name), name))
-  return ApiRole.from_json_dict(dic)
+  return ApiRole.from_json_dict(dic, resource_root)
 
 def get_all_roles(resource_root, service_name, cluster_name="default", view=None):
   """
@@ -56,7 +59,7 @@ def get_all_roles(resource_root, service_name, cluster_name="default", view=None
   """
   dic = resource_root.get(ROLES_PATH % (cluster_name, service_name),
           params=view and dict(view=view) or None)
-  return ApiList.from_json_dict(ApiRole, dic)
+  return ApiList.from_json_dict(ApiRole, dic, resource_root)
 
 def get_roles_by_type(resource_root, service_name, role_type,
                       cluster_name="default", view=None):
@@ -68,8 +71,7 @@ def get_roles_by_type(resource_root, service_name, role_type,
   @param cluster_name: Cluster name
   @return: A list of ApiRole objects.
   """
-  roles = get_all_roles(resource_root, service_name, cluster_name,
-            params=view and dict(view=view) or None)
+  roles = get_all_roles(resource_root, service_name, cluster_name, view)
   return [ r for r in roles if r.type == role_type ]
 
 def delete_role(resource_root, service_name, name, cluster_name="default"):
@@ -83,14 +85,44 @@ def delete_role(resource_root, service_name, name, cluster_name="default"):
   """
   resp = resource_root.delete("%s/%s" %
           (ROLES_PATH % (cluster_name, service_name), name))
-  return ApiRole.from_json_dict(resp)
+  return ApiRole.from_json_dict(resp, resource_root)
 
 
 class ApiRole(BaseApiObject):
   RO_ATTR = ('roleState', 'healthSummary', 'serviceRef', 'configStale')
   RW_ATTR = ('name', 'type', 'hostRef')
 
-  def __init__(self, name, type, hostRef):
+  def __init__(self, resource_root, name, type, hostRef):
     # Unfortunately, the json key is called "type". So our input arg
     # needs to be called "type" as well, despite it being a python keyword.
     BaseApiObject.ctor_helper(**locals())
+
+  def get_config(self, view = None):
+    """
+    Retrieve the role's configuration.
+
+    The 'summary' view contains strings as the dictionary values. The full
+    view contains ApiConfig instances as the values.
+
+    @param view: View to materialize ('full' or 'summary')
+    @return Dictionary with configuration data.
+    """
+    path = CONFIG_PATH % (self.serviceRef.clusterName,
+                          self.serviceRef.serviceName,
+                          self.name)
+    resp = self._get_resource_root().get(path,
+        params = view and dict(view=view) or None)
+    return json_to_config(resp)
+
+  def update_config(self, config):
+    """
+    Update the role's configuration.
+
+    @param config Dictionary with configuration to update.
+    @return Dictionary with updated configuration.
+    """
+    path = CONFIG_PATH % (self.serviceRef.clusterName,
+                          self.serviceRef.serviceName,
+                          self.name)
+    resp = self._get_resource_root().put(path, data = config_to_json(config))
+    return json_to_config(resp)

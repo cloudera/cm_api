@@ -26,12 +26,16 @@ class BaseApiObject(object):
   RO_ATTR = ( )         # Derived classes should define this
   RW_ATTR = ( )         # Derived classes should define this
 
-  def __init__(self, **rw_attrs):
+  def __init__(self, resource_root, **rw_attrs):
+    self._resource_root = resource_root
     for k, v in rw_attrs.items():
       if k not in self.RW_ATTR:
         raise ValueError("Unexpected ctor argument '%s' in %s" %
                          (k, self.__class__.__name__))
       self._setattr(k, v)
+
+  def _get_resource_root(self):
+    return self._resource_root
 
   @staticmethod
   def ctor_helper(self=None, **kwargs):
@@ -49,7 +53,7 @@ class BaseApiObject(object):
       # A reference, `v' should be a json dictionary
       cls_name = "Api" + k[0].upper() + k[1:]
       cls = globals()[cls_name]
-      v = cls(**v)
+      v = cls(self._get_resource_root(), **v)
     setattr(self, k, v)
 
   def to_json_dict(self):
@@ -65,14 +69,14 @@ class BaseApiObject(object):
     return dic
 
   @classmethod
-  def from_json_dict(cls, dic):
-    rw_dict = { } 
+  def from_json_dict(cls, dic, resource_root):
+    rw_dict = { }
     for k, v in dic.items():
       if k in cls.RW_ATTR:
         rw_dict[k] = v
         del dic[k]
     # Construct object based on RW_ATTR
-    obj = cls(**rw_dict)
+    obj = cls(resource_root, **rw_dict)
 
     # Initialize all RO_ATTR to be None
     for attr in cls.RO_ATTR:
@@ -116,11 +120,111 @@ class ApiList(object):
     return self.objects.__getslice__(i, j)
 
   @staticmethod
-  def from_json_dict(member_cls, dic):
+  def from_json_dict(member_cls, dic, resource_root):
     json_list = dic[ApiList.LIST_KEY]
-    objects = [ member_cls.from_json_dict(x) for x in json_list ]
+    objects = [ member_cls.from_json_dict(x, resource_root) for x in json_list ]
     return ApiList(objects, dic['count'])
 
+
+class ApiCommand(BaseApiObject):
+  """Information about a command."""
+  RW_ATTR = ( )
+  RO_ATTR = ('id', 'name', 'startTime', 'endTime', 'active', 'success',
+             'resultMessage', 'serviceRef', 'roleRef', 'hostRef',
+             'children', 'parent')
+
+  SERVICE_CMD_PATH = "/clusters/%s/services/%s/commands/%d"
+  ROLE_CMD_PATH = "/clusters/%s/services/%s/roles/%s/commands/%d"
+
+  def __init__(self, resource_root):
+    BaseApiObject.ctor_helper(**locals())
+
+  def _setattr(self, k, v):
+    if k == 'children' and v is not None:
+      v = ApiList.from_json_dict(ApiCommand, v, self._get_resource_root())
+    elif k == 'parent' and v is not None:
+      v = ApiCommand.from_json_dict(v, self._get_resource_root())
+    BaseApiObject._setattr(self, k, v)
+
+  def _getpath(self):
+    if self.roleRef:
+      return ApiCommand.ROLE_CMD_PATH % (self.roleRef.clusterName,
+                                         self.roleRef.serviceName,
+                                         self.roleRef.roleName,
+                                         self.id)
+    elif self.serviceRef:
+      return ApiCommand.SERVICE_CMD_PATH % (self.serviceRef.clusterName,
+                                            self.serviceRef.serviceName,
+                                            self.id)
+    else:
+      raise NotImplementedError
+
+  def fetch(self):
+    """
+    Retrieve updated data about the command from the server.
+
+    @param resource_root: The root Resource object.
+    @return: A new ApiCommand object.
+    """
+    resp = self._get_resource_root().get(self._getpath())
+    return ApiCommand.from_json_dict(resp, self._get_resource_root())
+
+  def abort(self):
+    """
+    Abort a running command.
+
+    @param resource_root: The root Resource object.
+    @return: A new ApiCommand object with the updated information.
+    """
+    path = self._getpath() + '/abort'
+    resp = self._get_resource_root().post(path)
+    return ApiCommand.from_json_dict(resp, self._get_resource_root())
+
+#
+# Configuration helpers.
+#
+
+class ApiConfig(BaseApiObject):
+  RW_ATTR = ('name', 'value')
+  RO_ATTR = ('required', 'defaultValue', 'displayName', 'description')
+  def __init__(self, resource_root, hostId):
+    BaseApiObject.ctor_helper(**locals())
+
+
+def config_to_json(dic):
+  """
+  Converts a python dictionary into a JSON payload.
+
+  The payload matches the expected "apiConfig list" type used to update
+  configuration parameters using the API.
+
+  @param dic Key-value pairs to convert.
+  @return String with the JSON-encoded data.
+  """
+  config = [ ]
+  for k, v in dic.iteritems():
+    config.append({ 'name' : k, 'value': v })
+  config = { ApiList.LIST_KEY : config }
+  return json.dumps(config)
+
+def json_to_config(dic, full = False):
+  """
+  Converts a JSON-decoded config dictionary to a python dictionary.
+
+  When materializing the full view, the values in the dictionary will be
+  instances of ApiConfig, instead of strings.
+
+  @param dic JSON-decoded config dictionary.
+  @param full Whether to materialize the full view of the config data.
+  @return Python dictionary with config data.
+  """
+  config = { }
+  for entry in dic['items']:
+    if full:
+      config[entry['name']] = ApiConfig.from_json_dict(entry)
+    else:
+      config[entry['name']] = entry.get('value')
+  return config
 
 #
 # In order for BaseApiObject to automatically instantiate reference objects,
@@ -129,15 +233,20 @@ class ApiList(object):
 
 class ApiHostRef(BaseApiObject):
   RW_ATTR = ('hostId',)
-  def __init__(self, hostId):
+  def __init__(self, resource_root, hostId):
     BaseApiObject.ctor_helper(**locals())
 
 class ApiServiceRef(BaseApiObject):
   RW_ATTR = ('clusterName', 'serviceName')
-  def __init__(self, clusterName, serviceName):
+  def __init__(self, resource_root, clusterName, serviceName):
     BaseApiObject.ctor_helper(**locals())
 
 class ApiClusterRef(BaseApiObject):
   RW_ATTR = ('clusterName',)
-  def __init__(self, clusterName):
+  def __init__(self, resource_root, clusterName):
+    BaseApiObject.ctor_helper(**locals())
+
+class ApiRoleRef(BaseApiObject):
+  RW_ATTR = ('clusterName', 'serviceName', 'roleName')
+  def __init__(self, resource_root, clusterName, serviceName, roleName):
     BaseApiObject.ctor_helper(**locals())
