@@ -12,9 +12,7 @@ from cm_api.endpoints import roles
 __docformat__ = "epytext"
 
 SERVICES_PATH = "/clusters/%s/services"
-CONFIG_PATH = "/clusters/%s/services/%s/config"
-COMMAND_PATH = "/clusters/%s/services/%s/commands/%s"
-ROLE_COMMAND_PATH = "/clusters/%s/services/%s/roleCommands/%s"
+SERVICE_PATH = "/clusters/%s/services/%s"
 
 def create_service(resource_root, name, service_type, version,
                    cluster_name="default"):
@@ -78,13 +76,30 @@ class ApiService(BaseApiObject):
     # needs to be called "type" as well, despite it being a python keyword.
     BaseApiObject.ctor_helper(**locals())
 
+  def _get_cluster_name(self):
+    if self.clusterRef:
+      return self.clusterRef.clusterName
+    return None
+
+  def _path(self):
+    """
+    Return the API path for this service.
+
+    This method assumes that lack of a cluster reference means that the
+    object refers to the Cloudera Management Services instance.
+    """
+    if self._get_cluster_name():
+      return SERVICE_PATH % (self._get_cluster_name(), self.name)
+    else:
+      return '/cm/service'
+
   def _cmd(self, cmd):
-    path = COMMAND_PATH % (self.clusterRef.clusterName, self.name, cmd)
+    path = self._path() + '/commands/' + cmd
     resp = self._get_resource_root().post(path)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
   def _role_cmd(self, cmd, roles):
-    path = ROLE_COMMAND_PATH % (self.clusterRef.clusterName, self.name, cmd)
+    path = self._path() + '/roleCommands/' + cmd
     data = json.dumps({ ApiList.LIST_KEY : roles })
     resp = self._get_resource_root().post(path, data = data)
     return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
@@ -99,7 +114,7 @@ class ApiService(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return Dictionary with configuration data.
     """
-    path = CONFIG_PATH % (self.clusterRef.clusterName, self.name)
+    path = self._path() + '/config'
     resp = self._get_resource_root().get(path,
         params = view and dict(view=view) or None)
     return json_to_config(resp)
@@ -111,7 +126,7 @@ class ApiService(BaseApiObject):
     @param config Dictionary with configuration to update.
     @return Dictionary with updated configuration.
     """
-    path = CONFIG_PATH % (self.clusterRef.clusterName, self.name)
+    path = self._path() + '/config'
     resp = self._get_resource_root().put(path, data = config_to_json(config))
     return json_to_config(resp)
 
@@ -124,7 +139,7 @@ class ApiService(BaseApiObject):
     @return: An ApiRole object
     """
     return roles.create_role(self._get_resource_root(), self.name, role_type,
-        role_name, host_id, self.clusterRef.clusterName)
+        role_name, host_id, self._get_cluster_name())
 
   def get_role(self, name):
     """
@@ -134,7 +149,7 @@ class ApiService(BaseApiObject):
     @return: An ApiRole object
     """
     return roles.get_role(self._get_resource_root(), self.name, name,
-        self.clusterRef.clusterName)
+        self._get_cluster_name())
 
   def get_all_roles(self, view = None):
     """
@@ -144,7 +159,7 @@ class ApiService(BaseApiObject):
     @return: A list of ApiRole objects.
     """
     return roles.get_all_roles(self._get_resource_root(), self.name,
-        self.clusterRef.clusterName, view)
+        self._get_cluster_name(), view)
 
   def get_roles_by_type(self, role_type, view = None):
     """
@@ -155,7 +170,7 @@ class ApiService(BaseApiObject):
     @return: A list of ApiRole objects.
     """
     return roles.get_roles_by_type(self._get_resource_root(), self.name,
-        role_type, self.clusterRef.clusterName, view)
+        role_type, self._get_cluster_name(), view)
 
   def start(self):
     """

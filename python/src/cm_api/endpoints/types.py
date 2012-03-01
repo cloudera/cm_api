@@ -148,14 +148,21 @@ class ApiCommand(BaseApiObject):
 
   def _getpath(self):
     if self.roleRef:
-      return ApiCommand.ROLE_CMD_PATH % (self.roleRef.clusterName,
-                                         self.roleRef.serviceName,
-                                         self.roleRef.roleName,
-                                         self.id)
+      if self.roleRef.clusterName:
+        return ApiCommand.ROLE_CMD_PATH % (self.roleRef.clusterName,
+                                           self.roleRef.serviceName,
+                                           self.roleRef.roleName,
+                                           self.id)
+      else:
+        return '/cm/service/roles/%s/commands/%d' % (self.roleRef.roleName,
+                                                     self.id)
     elif self.serviceRef:
-      return ApiCommand.SERVICE_CMD_PATH % (self.serviceRef.clusterName,
-                                            self.serviceRef.serviceName,
-                                            self.id)
+      if self.serviceRef.clusterName:
+        return ApiCommand.SERVICE_CMD_PATH % (self.serviceRef.clusterName,
+                                              self.serviceRef.serviceName,
+                                              self.id)
+      else:
+        return '/cm/service/commands/%d' % self.id
     else:
       raise NotImplementedError
 
@@ -191,6 +198,19 @@ class ApiConfig(BaseApiObject):
     BaseApiObject.ctor_helper(**locals())
 
 
+def config_to_api_list(dic):
+  """
+  Converts a python dictionary into a list containing the proper
+  ApiConfig encoding for configuration data.
+
+  @param dic Key-value pairs to convert.
+  @return JSON dictionary of an ApiConfig list (*not* an ApiList).
+  """
+  config = [ ]
+  for k, v in dic.iteritems():
+    config.append({ 'name' : k, 'value': v })
+  return { ApiList.LIST_KEY : config }
+
 def config_to_json(dic):
   """
   Converts a python dictionary into a JSON payload.
@@ -201,11 +221,7 @@ def config_to_json(dic):
   @param dic Key-value pairs to convert.
   @return String with the JSON-encoded data.
   """
-  config = [ ]
-  for k, v in dic.iteritems():
-    config.append({ 'name' : k, 'value': v })
-  config = { ApiList.LIST_KEY : config }
-  return json.dumps(config)
+  return json.dumps(config_to_api_list(dic))
 
 def json_to_config(dic, full = False):
   """
@@ -238,15 +254,15 @@ class ApiHostRef(BaseApiObject):
 
 class ApiServiceRef(BaseApiObject):
   RW_ATTR = ('clusterName', 'serviceName')
-  def __init__(self, resource_root, clusterName, serviceName):
+  def __init__(self, resource_root, serviceName, clusterName = None):
     BaseApiObject.ctor_helper(**locals())
 
 class ApiClusterRef(BaseApiObject):
   RW_ATTR = ('clusterName',)
-  def __init__(self, resource_root, clusterName):
+  def __init__(self, resource_root, clusterName = None):
     BaseApiObject.ctor_helper(**locals())
 
 class ApiRoleRef(BaseApiObject):
   RW_ATTR = ('clusterName', 'serviceName', 'roleName')
-  def __init__(self, resource_root, clusterName, serviceName, roleName):
+  def __init__(self, resource_root, serviceName, roleName, clusterName = None):
     BaseApiObject.ctor_helper(**locals())
