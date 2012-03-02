@@ -187,6 +187,7 @@ class ApiCommand(BaseApiObject):
     resp = self._get_resource_root().post(path)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
+
 #
 # Configuration helpers.
 #

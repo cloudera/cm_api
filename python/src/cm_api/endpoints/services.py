@@ -4,15 +4,20 @@ try:
   import json
 except ImportError:
   import simplejson as json
+import logging
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
-    ApiCommand, ApiList, BaseApiObject
-from cm_api.endpoints import roles
+    config_to_api_list, ApiCommand, ApiList, BaseApiObject
+from cm_api.endpoints import roles, roletypes
 
 __docformat__ = "epytext"
 
 SERVICES_PATH = "/clusters/%s/services"
 SERVICE_PATH = "/clusters/%s/services/%s"
+ROLETYPES_PATH = "/clusters/%s/services/%s/roletypes"
+
+LOG = logging.getLogger(__name__)
+
 
 def create_service(resource_root, name, service_type, version,
                    cluster_name="default"):
@@ -181,6 +186,30 @@ class ApiService(BaseApiObject):
     return roles.get_roles_by_type(self._get_resource_root(), self.name,
         role_type, self._get_cluster_name(), view)
 
+  def get_role_types(self):
+    """
+    Get a list of role types in a service.
+
+    @return: A list of role types (strings)
+    """
+    if self.type == 'MGMT':
+      LOG.error("Management service does not support /roleTypes")
+      return None
+    resp = self._get_resource_root().get(self._path() + '/roleTypes')
+    return ApiList.from_json_dict(resp)
+
+  def get_role_type(self, roletype):
+    """
+    Get a role type resource by name.
+
+    @param roletype: Role type
+    @return: An ApiRoleType object
+    """
+    if self.type == 'MGMT':
+      LOG.error("Management service does not support /roleTypes")
+      return None
+    return roletypes.ApiRoleType(self._get_resource_root(), self, roletype)
+
   def start(self):
     """
     Start a service.
@@ -231,3 +260,56 @@ class ApiService(BaseApiObject):
     @return List of submitted commands.
     """
     return self._role_cmd('formatHdfs', namenodes)
+
+
+
+class ApiServiceSetupInfo(ApiService):
+  RO_ATTR = ( )
+  RW_ATTR = ('name', 'type', 'version', 'config', 'roleTypes', 'roles')
+
+  def __init__(self, name=None, type=None, version=None,
+               config=None, roleTypes=None, roles=None):
+    # The BaseApiObject expects a resource_root, which we don't care about
+    resource_root = None
+    # Unfortunately, the json key is called "type". So our input arg
+    # needs to be called "type" as well, despite it being a python keyword.
+    BaseApiObject.ctor_helper(**locals())
+
+  def set_config(self, config):
+    """
+    Set the service configuration.
+
+    @param config: A dictionary of config key/value
+    """
+    self.config = config_to_api_list(config)
+
+  def add_role_type_info(self, role_type, config):
+    """
+    Add a role type setup info.
+
+    @param role_type: Role type
+    @param config: A dictionary of role type configuration
+    """
+    if self.roleTypes is None:
+      self.roleTypes = [ ]
+    self.roleTypes.append({
+        'roleType' : role_type,
+        'config' : config_to_api_list(config) })
+
+  def add_role_info(self, role_name, role_type, host_id, config=None):
+    """
+    Add a role info. The role will be created along with the service setup.
+
+    @param role_name: Role name
+    @param role_type: Role type
+    @param host_id: The host where the role should run
+    @param config: (Optional) A dictionary of role config values
+    """
+    if self.roles is None:
+      self.roles = [ ]
+    api_config_list = config is not None and config_to_api_list(config) or None
+    self.roles.append({
+        'name' : role_name,
+        'type' : role_type,
+        'hostRef' : { 'hostId' : host_id },
+        'config' : api_config_list })

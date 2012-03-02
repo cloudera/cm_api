@@ -11,13 +11,22 @@ from cm_api.endpoints.types import config_to_json, json_to_config, \
 __docformat__ = "epytext"
 
 ROLES_PATH = "/clusters/%s/services/%s/roles"
-CONFIG_PATH = "/clusters/%s/services/%s/roles/%s/config"
+CONFIG_PATH = ROLES_PATH + "/%s/config"
+
+CM_ROLES_PATH = "/cm/service/roles"
+CM_CONFIG_PATH = CM_ROLES_PATH + "/%s/config"
 
 def _get_roles_path(cluster_name, service_name):
   if cluster_name:
     return ROLES_PATH % (cluster_name, service_name)
   else:
-    return '/cm/service/roles'
+    return CM_ROLES_PATH
+
+def _get_role_config_path(cluster_name, service_name, role_name):
+  if cluster_name:
+    return CONFIG_PATH % (cluster_name, service_name, role_name)
+  else:
+    return CM_CONFIG_PATH % (role_name,)
 
 def create_role(resource_root,
                 service_name,
@@ -114,9 +123,9 @@ class ApiRole(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return Dictionary with configuration data.
     """
-    path = CONFIG_PATH % (self.serviceRef.clusterName,
-                          self.serviceRef.serviceName,
-                          self.name)
+    path = _get_role_config_path(self.serviceRef.clusterName,
+                                 self.serviceRef.serviceName,
+                                 self.name)
     resp = self._get_resource_root().get(path,
         params = view and dict(view=view) or None)
     return json_to_config(resp)
@@ -128,8 +137,8 @@ class ApiRole(BaseApiObject):
     @param config Dictionary with configuration to update.
     @return Dictionary with updated configuration.
     """
-    path = CONFIG_PATH % (self.serviceRef.clusterName,
-                          self.serviceRef.serviceName,
-                          self.name)
+    path = _get_role_config_path(self.serviceRef.clusterName,
+                                 self.serviceRef.serviceName,
+                                 self.name)
     resp = self._get_resource_root().put(path, data = config_to_json(config))
     return json_to_config(resp)

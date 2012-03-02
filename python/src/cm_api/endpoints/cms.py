@@ -5,8 +5,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import config_to_api_list, config_to_json, \
-    json_to_config, ApiList, BaseApiObject
+from cm_api.endpoints.types import config_to_json, json_to_config, BaseApiObject
 from cm_api.endpoints.services import ApiService
 
 class ApiLicense(BaseApiObject):
@@ -25,51 +24,22 @@ class ClouderaManager(BaseApiObject):
   def __init__(self, resource_root):
     BaseApiObject.ctor_helper(**locals())
 
-  def setup_cms(self, config = None, alert_pub_config = None,
-      amon_config = None, event_server_config = None, host_mon_config = None,
-      res_manager_config = None, smon_config = None):
+  def create_mgmt_service(self, service_setup_info):
     """
-    Setup the Cloudera Management Services.
+    Setup the Cloudera Management Service.
 
-    @param config               Configuration of the management service.
-    @param alert_pub_config     Configuration of the alert publisher.
-    @param amon_config          Configuration of the activity monitor.
-    @param event_server_config  Configuration of the event server.
-    @param host_mon_config      Configuration of the host monitor.
-    @param res_manager_config   Configuration of the resource manager.
-    @param smon_config          Configuration of the service monitor.
-    @return The management service instance.
+    @param service_setup_info: ApiServiceSetupInfo object.
+    @return: The management service instance.
     """
-    dic = ApiService(self._get_resource_root(), None, None, None)
-    dic = dic.to_json_dict()
-    if config:
-      dic['config'] = config_to_api_list(config)
-    roles = [ ]
-
-    def addRoleConfig(roleType, config):
-      if config:
-        roles.append({ 'roleType' : roleType,
-                       'config' : config_to_api_list(config) })
-
-    addRoleConfig('ACTIVITYMONITOR', amon_config)
-    addRoleConfig('ALERTPUBLISHER', alert_pub_config)
-    addRoleConfig('EVENTSERVER', event_server_config)
-    addRoleConfig('HOSTMONITOR', host_mon_config)
-    addRoleConfig('RESOURCEMANAGER', res_manager_config)
-    addRoleConfig('SERVICEMONITOR', smon_config)
-
-    if roles:
-      dic['roleTypes'] = roles
-
-    resp = self._get_resource_root().put('/cm/service',
-        data = json.dumps(dic))
+    body = json.dumps(service_setup_info.to_json_dict())
+    resp = self._get_resource_root().put('/cm/service', data=body)
     return ApiService.from_json_dict(resp, self._get_resource_root())
 
   def get_service(self):
     """
     Return the Cloudera Management Services instance.
 
-    @return An ApiService instance.
+    @return: An ApiService instance.
     """
     resp = self._get_resource_root().get('/cm/service')
     return ApiService.from_json_dict(resp, self._get_resource_root())
@@ -78,7 +48,7 @@ class ClouderaManager(BaseApiObject):
     """
     Return information about the currently installed license.
 
-    @return License information.
+    @return: License information.
     """
     resp = self._get_resource_root().get('/cm/license')
     return ApiLicense.from_json_dict(resp, self._get_resource_root())
@@ -99,7 +69,7 @@ class ClouderaManager(BaseApiObject):
     view contains ApiConfig instances as the values.
 
     @param view: View to materialize ('full' or 'summary')
-    @return Dictionary with configuration data.
+    @return: Dictionary with configuration data.
     """
     resp = self._get_resource_root().get('/cm/config',
         params = view and dict(view=view) or None)
@@ -109,8 +79,8 @@ class ClouderaManager(BaseApiObject):
     """
     Update the CM configuration.
 
-    @param config Dictionary with configuration to update.
-    @return Dictionary with updated configuration.
+    @param: config Dictionary with configuration to update.
+    @return: Dictionary with updated configuration.
     """
     resp = self._get_resource_root().put('/cm/config',
         data = config_to_json(config))
