@@ -92,9 +92,9 @@ class ApiService(BaseApiObject):
     else:
       return '/cm/service'
 
-  def _cmd(self, cmd):
+  def _cmd(self, cmd, data=None):
     path = self._path() + '/commands/' + cmd
-    resp = self._get_resource_root().post(path)
+    resp = self._get_resource_root().post(path, data=data)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
   def _role_cmd(self, cmd, roles):
@@ -212,6 +212,15 @@ class ApiService(BaseApiObject):
     @return Reference to the submitted command.
     """
     return self._cmd('createHBaseRoot')
+
+  def decommission_hbase(self, *region_servers):
+    """
+    Decommission an HBase service.
+
+    @return Reference to the submitted command.
+    """
+    data = json.dumps({ ApiList.LIST_KEY : region_servers })
+    return self._cmd('decommissionHBase', data)
 
   def format_hdfs(self, *namenodes):
     """
