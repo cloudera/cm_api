@@ -140,6 +140,16 @@ class ApiService(BaseApiObject):
     return roles.create_role(self._get_resource_root(), self.name, role_type,
         role_name, host_id, self._get_cluster_name())
 
+  def delete_role(self, name):
+    """
+    Delete a role by name.
+
+    @param name Role name
+    @return The deleted ApiRole object
+    """
+    return roles.delete_role(self._get_resource_root(), self.name, name,
+        self._get_cluster_name())
+
   def get_role(self, name):
     """
     Lookup a role by name.

@@ -75,6 +75,15 @@ class ApiCluster(BaseApiObject):
     return services.create_service(self._get_resource_root(), name,
         service_type, version, self.name)
 
+  def delete_service(self, name):
+    """
+    Delete a service by name.
+
+    @param name Service name
+    @return The deleted ApiService object
+    """
+    return services.delete_service(self._get_resource_root(), name, self.name)
+
   def get_service(self, name):
     """
     Lookup a service by name.
