@@ -10,9 +10,13 @@ class ApiRoleType(object):
   """
   The role type object allows you to set configuration at the role type level.
   """
-  def __init__(self, service, role_type):
+  def __init__(self, resource_root, service, role_type):
     self._service = service
     self._role_type = role_type
+    self._resource_root = resource_root
+
+  def _get_resource_root(self):
+    return self._resource_root
 
   @property
   def _config_path(self):
