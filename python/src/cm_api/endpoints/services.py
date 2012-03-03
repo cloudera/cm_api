@@ -213,14 +213,15 @@ class ApiService(BaseApiObject):
     """
     return self._cmd('createHBaseRoot')
 
-  def decommission_hbase(self, *region_servers):
+  def decommission(self, *role_names):
     """
-    Decommission an HBase service.
+    Decommission roles in a service.
 
+    @param role_names Names of the roles to decommission.
     @return Reference to the submitted command.
     """
-    data = json.dumps({ ApiList.LIST_KEY : region_servers })
-    return self._cmd('decommissionHBase', data)
+    data = json.dumps({ ApiList.LIST_KEY : role_names })
+    return self._cmd('decommission', data)
 
   def format_hdfs(self, *namenodes):
     """
