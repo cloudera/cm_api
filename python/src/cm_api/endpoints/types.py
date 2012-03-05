@@ -5,6 +5,8 @@ try:
 except ImportError:
   import simplejson as json
 
+import time
+
 __docformat__ = "epytext"
 
 
@@ -175,6 +177,35 @@ class ApiCommand(BaseApiObject):
     """
     resp = self._get_resource_root().get(self._getpath())
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
+
+  def wait(self, timeout=None):
+    """
+    Wait for command to finish.
+
+    @param timeout: (Optional) Max amount of time (in seconds) to wait.
+    @return: The final ApiCommand object.
+    """
+    SLEEP_SEC = 5
+
+    if timeout is None:
+      deadline = None
+    else:
+      deadline = time.time() + timeout
+
+    while True:
+      cmd = self.fetch()
+      if not cmd.active:
+        return cmd
+
+      if deadline is not None:
+        now = time.time()
+        if deadline < now:
+          return cmd
+        else:
+          time.sleep(min(SLEEP_SEC, deadline - now))
+      else:
+        time.sleep(SLEEP_SEC)
+
 
   def abort(self):
     """
