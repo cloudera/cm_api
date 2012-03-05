@@ -196,7 +196,7 @@ class ApiService(BaseApiObject):
       LOG.error("Management service does not support /roleTypes")
       return None
     resp = self._get_resource_root().get(self._path() + '/roleTypes')
-    return ApiList.from_json_dict(resp)
+    return resp[ApiList.LIST_KEY]
 
   def get_role_type(self, roletype):
     """
