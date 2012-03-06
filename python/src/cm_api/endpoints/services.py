@@ -239,7 +239,7 @@ class ApiService(BaseApiObject):
     Create the Beeswax role's warehouse for a Hue service.
     @return: Reference to the submitted command.
     """
-    return self._cmd('createBeeswaxWarehouse')
+    return self._cmd('hueCreateHiveWarehouse')
 
   def create_hbase_root(self):
     """
@@ -247,7 +247,7 @@ class ApiService(BaseApiObject):
 
     @return Reference to the submitted command.
     """
-    return self._cmd('createHBaseRoot')
+    return self._cmd('hbaseCreateRoot')
 
   def decommission(self, *role_names):
     """
@@ -266,7 +266,7 @@ class ApiService(BaseApiObject):
     @param namenodes Name of NameNode instances to format.
     @return List of submitted commands.
     """
-    return self._role_cmd('formatHdfs', namenodes)
+    return self._role_cmd('hdfsFormat', namenodes)
 
   def sync_hue_db(self, *servers):
     """
@@ -275,7 +275,7 @@ class ApiService(BaseApiObject):
     @param: servers Name of Hue Server roles to synchronize.
     @return: List of submitted commands.
     """
-    return self._role_cmd('syncHueDb', servers)
+    return self._role_cmd('hueSyncDb', servers)
 
 
 class ApiServiceSetupInfo(ApiService):
