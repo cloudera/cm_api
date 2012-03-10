@@ -259,6 +259,16 @@ class ApiService(BaseApiObject):
     data = json.dumps({ ApiList.LIST_KEY : role_names })
     return self._cmd('decommission', data)
 
+  def deploy_client_config(self, *role_names):
+    """
+    Deploys client configuration to the hosts where roles are running.
+
+    @param: role_names Names of the roles to decommission.
+    @return: Reference to the submitted command.
+    """
+    data = json.dumps({ ApiList.LIST_KEY : role_names })
+    return self._cmd('deployClientConfig', data)
+
   def format_hdfs(self, *namenodes):
     """
     Format NameNode instances of an HDFS service.
