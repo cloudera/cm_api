@@ -225,8 +225,8 @@ class ApiCommand(BaseApiObject):
 
 class ApiConfig(BaseApiObject):
   RW_ATTR = ('name', 'value')
-  RO_ATTR = ('required', 'defaultValue', 'displayName', 'description')
-  def __init__(self, resource_root, hostId):
+  RO_ATTR = ('required', 'default', 'displayName', 'description')
+  def __init__(self, resource_root, name, value = None):
     BaseApiObject.ctor_helper(**locals())
 
 
@@ -268,10 +268,11 @@ def json_to_config(dic, full = False):
   """
   config = { }
   for entry in dic['items']:
+    k = entry['name']
     if full:
-      config[entry['name']] = ApiConfig.from_json_dict(entry)
+      config[k] = ApiConfig.from_json_dict(entry, None)
     else:
-      config[entry['name']] = entry.get('value')
+      config[k] = entry.get('value')
   return config
 
 #

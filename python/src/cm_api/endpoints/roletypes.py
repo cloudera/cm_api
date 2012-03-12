@@ -37,7 +37,7 @@ class ApiRoleType(object):
     params = view and dict(view=view) or None
     resp = self._get_resource_root().get(self._config_path,
                                          params=params)
-    return json_to_config(resp)
+    return json_to_config(resp, view == 'full')
 
   def update_config(self, config):
     """

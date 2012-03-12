@@ -128,7 +128,7 @@ class ApiRole(BaseApiObject):
                                  self.name)
     resp = self._get_resource_root().get(path,
         params = view and dict(view=view) or None)
-    return json_to_config(resp)
+    return json_to_config(resp, view == 'full')
 
   def update_config(self, config):
     """
