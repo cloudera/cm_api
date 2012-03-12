@@ -249,6 +249,15 @@ class ApiService(BaseApiObject):
     """
     return self._cmd('hbaseCreateRoot')
 
+  def refresh(self, *role_names):
+    """
+    Execute the "refresh" command on a set of roles.
+
+    @param: role_names Names of the roles to decommission.
+    @return: Reference to the submitted command.
+    """
+    return self._role_cmd('refresh', role_names)
+
   def decommission(self, *role_names):
     """
     Decommission roles in a service.
