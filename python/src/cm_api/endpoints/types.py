@@ -166,7 +166,9 @@ class ApiCommand(BaseApiObject):
       else:
         return '/cm/service/commands/%d' % self.id
     else:
-      raise NotImplementedError
+      # Assume global command for now.
+      # TODO: fix this when host and cluster commands are added.
+      return '/cm/commands/%d' % self.id
 
   def fetch(self):
     """

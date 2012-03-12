@@ -5,7 +5,8 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import config_to_json, json_to_config, BaseApiObject
+from cm_api.endpoints.types import config_to_json, json_to_config, \
+    BaseApiObject, ApiCommand
 from cm_api.endpoints.services import ApiService
 
 class ApiLicense(BaseApiObject):
@@ -23,6 +24,17 @@ class ClouderaManager(BaseApiObject):
 
   def __init__(self, resource_root):
     BaseApiObject.ctor_helper(**locals())
+
+  def _cmd(self, command, data = None):
+    """
+    Invokes a global command.
+
+    @param command: Command name.
+    @param data: Optional data to send to the command.
+    @return Information about the submitted command.
+    """
+    resp = self._get_resource_root().post("/cm/commands/" + command, data=data)
+    return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
   def create_mgmt_service(self, service_setup_info):
     """
@@ -85,3 +97,11 @@ class ClouderaManager(BaseApiObject):
     resp = self._get_resource_root().put('/cm/config',
         data = config_to_json(config))
     return json_to_config(resp, False)
+
+  def generate_credentials(self):
+    """
+    Generate credentials for services configured with Kerberos.
+
+    @return: Information about the submitted command.
+    """
+    return self._cmd('generateCredentials')
