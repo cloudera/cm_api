@@ -113,6 +113,12 @@ class ApiRole(BaseApiObject):
     # needs to be called "type" as well, despite it being a python keyword.
     BaseApiObject.ctor_helper(**locals())
 
+  def _get_log(self, log):
+    path = _get_roles_path(self.serviceRef.clusterName,
+                           self.serviceRef.serviceName)
+    path = "%s/%s/logs/%s" % (path, self.name, log)
+    return self._get_resource_root().get(path)
+
   def get_config(self, view = None):
     """
     Retrieve the role's configuration.
@@ -142,3 +148,27 @@ class ApiRole(BaseApiObject):
                                  self.name)
     resp = self._get_resource_root().put(path, data = config_to_json(config))
     return json_to_config(resp)
+
+  def get_full_log(self):
+    """
+    Retrieve the contents of the role's log file.
+
+    @return: Contents of log file.
+    """
+    return self._get_log('full')
+
+  def get_stdout(self):
+    """
+    Retrieve the contents of the role's standard output.
+
+    @return: Contents of stdout.
+    """
+    return self._get_log('stdout')
+
+  def get_stderr(self):
+    """
+    Retrieve the contents of the role's standard error.
+
+    @return: Contents of stderr.
+    """
+    return self._get_log('stderr')
