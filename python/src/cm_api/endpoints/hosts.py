@@ -63,5 +63,11 @@ class ApiHost(BaseApiObject):
   RO_ATTR = ('status', 'lastHeartbeat', 'roleRefs')
   RW_ATTR = ('hostId', 'hostname', 'ipAddress', 'rackId')
 
-  def __init__(self, resource_root, hostId, hostname, ipAddress, rackId):
+  def __init__(self, resource_root, hostId, hostname, rackId, ipAddress = None):
+    # Note about "ipAddress = None":
+    #
+    # This generally happens when you bring up SCM and it gets an
+    # "optimized" heartbeat from an agent, and you query the host info
+    # before it's fully constructed. The JSON returned wouldn't have
+    # the ipAddress field, and a TypeError would be raised.
     BaseApiObject.ctor_helper(**locals())
