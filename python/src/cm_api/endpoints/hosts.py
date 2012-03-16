@@ -63,7 +63,8 @@ class ApiHost(BaseApiObject):
   RO_ATTR = ('status', 'lastHeartbeat', 'roleRefs')
   RW_ATTR = ('hostId', 'hostname', 'ipAddress', 'rackId')
 
-  def __init__(self, resource_root, hostId, hostname, rackId, ipAddress = None):
+  def __init__(self, resource_root, hostId, hostname,
+      ipAddress=None, rackId=None):
     # Note about "ipAddress = None":
     #
     # This generally happens when you bring up SCM and it gets an
