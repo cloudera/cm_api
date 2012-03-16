@@ -7,7 +7,7 @@ except ImportError:
 import logging
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
-    config_to_api_list, ApiCommand, ApiList, BaseApiObject
+    config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject
 from cm_api.endpoints import roles, roletypes
 
 __docformat__ = "epytext"
@@ -277,6 +277,27 @@ class ApiService(BaseApiObject):
     """
     data = json.dumps({ ApiList.LIST_KEY : role_names })
     return self._cmd('deployClientConfig', data)
+
+  def enable_hdfs_ha(self, active_name, active_shared_path, standby_name,
+      standby_shared_path, nameservice):
+    """
+    Enable high availability for an HDFS NameNode.
+
+    @param active_name: name of active NameNode.
+    @param active_shared_path: shared edits path for active NameNode.
+    @param standby_name: name of stand-by NameNode.
+    @param standby_shared_path: shared edits path for stand-by NameNode.
+    @param nameservice: name service for the HA pair.
+    @return: Reference to the submitted command.
+    """
+    args = dict(
+      activeName = active_name,
+      activeSharedEditsPath = active_shared_path,
+      standByName = standby_name,
+      standBySharedEditsPath = standby_shared_path,
+      nameservice = nameservice,
+    )
+    return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
   def format_hdfs(self, *namenodes):
     """
