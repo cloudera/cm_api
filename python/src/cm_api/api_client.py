@@ -7,7 +7,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.http_client import HttpClient, RestException
-from cm_api.endpoints import cms, clusters, hosts, tools
+from cm_api.endpoints import cms, clusters, hosts, tools, users
 from cm_api.resource import Resource
 
 __docformat__ = "epytext"
@@ -149,6 +149,47 @@ class ApiResource(Resource):
     @return: An ApiHost object
     """
     return hosts.get_host(self, host_id)
+
+  # Users
+
+  def get_all_users(self, view = None):
+    """
+    Get all users.
+
+    @param view: View to materialize ('full' or 'summary').
+    @return: A list of ApiUser objects.
+    """
+    return users.get_all_users(self, view)
+
+  def get_user(self, username):
+    """
+    Look up a user by username.
+
+    @param username: Username to look up
+    @return: An ApiUser object
+    """
+    return users.get_user(self, username)
+
+  def create_user(self, username, password, roles):
+    """
+    Create a user.
+
+    @param username: Username
+    @param password: Password
+    @param roles: List of roles for the user. This should be [] for a
+                  regular user, or ['ROLE_ADMIN'] for an admin.
+    @return: An ApiUser object
+    """
+    return users.create_user(self, username, password, roles)
+
+  def delete_user(self, username):
+    """
+    Delete user by username.
+
+    @param: username Username
+    @return: An ApiUser object
+    """
+    return users.delete_user(self, username)
 
   # Tools
 
