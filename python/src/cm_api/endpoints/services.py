@@ -299,6 +299,17 @@ class ApiService(BaseApiObject):
     )
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
+  def failover_hdfs(self, active_name, standby_name):
+    """
+    Initiate a failover of an HDFS NameNode HA pair.
+
+    @param active_name: name of active NameNode.
+    @param standby_name: name of stand-by NameNode.
+    @return: Reference to the submitted command.
+    """
+    args = { ApiList.LIST_KEY : [ active_name, standby_name ] }
+    return self._cmd('hdfsFailover', data = json.dumps(args))
+
   def format_hdfs(self, *namenodes):
     """
     Format NameNode instances of an HDFS service.
