@@ -133,7 +133,7 @@ class ApiCommand(BaseApiObject):
   RW_ATTR = ( )
   RO_ATTR = ('id', 'name', 'startTime', 'endTime', 'active', 'success',
              'resultMessage', 'serviceRef', 'roleRef', 'hostRef',
-             'children', 'parent')
+             'children', 'parent', 'resultDataUrl')
 
   SERVICE_CMD_PATH = "/clusters/%s/services/%s/commands/%d"
   ROLE_CMD_PATH = "/clusters/%s/services/%s/roles/%s/commands/%d"
