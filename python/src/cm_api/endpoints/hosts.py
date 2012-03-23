@@ -5,7 +5,8 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiList, BaseApiObject
+from cm_api.endpoints.types import ApiList, BaseApiObject, \
+    config_to_json, json_to_config
 
 __docformat__ = "epytext"
 
@@ -73,3 +74,32 @@ class ApiHost(BaseApiObject):
     # before it's fully constructed. The JSON returned wouldn't have
     # the ipAddress field, and a TypeError would be raised.
     BaseApiObject.ctor_helper(**locals())
+
+  def _path(self):
+    return HOSTS_PATH + '/' + self.hostId
+
+  def get_config(self, view=None):
+    """
+    Retrieve the host's configuration.
+
+    The 'summary' view contains strings as the dictionary values. The full
+    view contains ApiConfig instances as the values.
+
+    @param view: View to materialize ('full' or 'summary')
+    @return Dictionary with configuration data.
+    """
+    path = self._path() + '/config'
+    resp = self._get_resource_root().get(path,
+        params = view and dict(view=view) or None)
+    return json_to_config(resp, view == 'full')
+
+  def update_config(self, config):
+    """
+    Update the host's configuration.
+
+    @param config Dictionary with configuration to update.
+    @return Dictionary with updated configuration.
+    """
+    path = self._path() + '/config'
+    resp = self._get_resource_root().put(path, data = config_to_json(config))
+    return json_to_config(resp)
