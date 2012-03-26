@@ -8,13 +8,13 @@ import logging
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
     config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject
-from cm_api.endpoints import roles, roletypes
+from cm_api.endpoints import roles
 
 __docformat__ = "epytext"
 
 SERVICES_PATH = "/clusters/%s/services"
 SERVICE_PATH = "/clusters/%s/services/%s"
-ROLETYPES_PATH = "/clusters/%s/services/%s/roletypes"
+ROLETYPES_CFG_KEY = 'roleTypeConfigs'
 
 LOG = logging.getLogger(__name__)
 
@@ -108,31 +108,67 @@ class ApiService(BaseApiObject):
     resp = self._get_resource_root().post(path, data = data)
     return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
 
+  def _parse_svc_config(self, json_dic, view = None):
+    """
+    Parse a json-decoded ApiServiceConfig dictionary into a 2-tuple.
+
+    @param json_dic: The json dictionary with the config data.
+    @param view: View to materialize.
+    @return: 2-tuple (service config dictionary, role type configurations)
+    """
+    svc_config = json_to_config(json_dic, view == 'full')
+    rt_configs = { }
+    if json_dic.has_key(ROLETYPES_CFG_KEY):
+      for rt_config in json_dic[ROLETYPES_CFG_KEY]:
+        rt_configs[rt_config['roleType']] = \
+            json_to_config(rt_config, view == 'full')
+
+    return (svc_config, rt_configs)
+
   def get_config(self, view = None):
     """
     Retrieve the service's configuration.
+
+    Retrieves both the service configuration and role type configuration
+    for each of the service's supported role types. The role type
+    configurations are returned as a dictionary, whose keys are the
+    role type name, and values are the respective configuration dictionaries.
 
     The 'summary' view contains strings as the dictionary values. The full
     view contains ApiConfig instances as the values.
 
     @param view: View to materialize ('full' or 'summary')
-    @return Dictionary with configuration data.
+    @return 2-tuple (service config dictionary, role type configurations)
     """
     path = self._path() + '/config'
     resp = self._get_resource_root().get(path,
         params = view and dict(view=view) or None)
-    return json_to_config(resp, view == 'full')
+    return self._parse_svc_config(resp, view)
 
-  def update_config(self, config):
+  def update_config(self, svc_config, **rt_configs):
     """
     Update the service's configuration.
 
-    @param config Dictionary with configuration to update.
-    @return Dictionary with updated configuration.
+    @param svc_config Dictionary with service configuration to update.
+    @param rt_configs Dict of role type configurations to update.
+    @return 2-tuple (service config dictionary, role type configurations)
     """
     path = self._path() + '/config'
-    resp = self._get_resource_root().put(path, data = config_to_json(config))
-    return json_to_config(resp)
+
+    if svc_config:
+      data = config_to_api_list(svc_config)
+    else:
+      data = { }
+    if rt_configs:
+      rt_list = [ ]
+      for rt, cfg in rt_configs.iteritems():
+        rt_data = config_to_api_list(cfg)
+        rt_data['roleType'] = rt
+        rt_list.append(rt_data)
+      data[ROLETYPES_CFG_KEY] = rt_list
+
+    resp = self._get_resource_root().put(path, data = json.dumps(data))
+    return self._parse_svc_config(resp)
 
   def create_role(self, role_name, role_type, host_id):
     """
@@ -197,18 +233,6 @@ class ApiService(BaseApiObject):
       return None
     resp = self._get_resource_root().get(self._path() + '/roleTypes')
     return resp[ApiList.LIST_KEY]
-
-  def get_role_type(self, roletype):
-    """
-    Get a role type resource by name.
-
-    @param roletype: Role type
-    @return: An ApiRoleType object
-    """
-    if self.type == 'MGMT':
-      LOG.error("Management service does not support /roleTypes")
-      return None
-    return roletypes.ApiRoleType(self._get_resource_root(), self, roletype)
 
   def start(self):
     """
@@ -331,10 +355,10 @@ class ApiService(BaseApiObject):
 
 class ApiServiceSetupInfo(ApiService):
   RO_ATTR = ( )
-  RW_ATTR = ('name', 'type', 'version', 'config', 'roleTypes', 'roles')
+  RW_ATTR = ('name', 'type', 'version', 'config', 'roles')
 
   def __init__(self, name=None, type=None, version=None,
-               config=None, roleTypes=None, roles=None):
+               config=None, roles=None):
     # The BaseApiObject expects a resource_root, which we don't care about
     resource_root = None
     # Unfortunately, the json key is called "type". So our input arg
@@ -347,7 +371,9 @@ class ApiServiceSetupInfo(ApiService):
 
     @param config: A dictionary of config key/value
     """
-    self.config = config_to_api_list(config)
+    if self.config is None:
+      self.config = { }
+    self.config.update(config_to_api_list(config))
 
   def add_role_type_info(self, role_type, config):
     """
@@ -356,11 +382,14 @@ class ApiServiceSetupInfo(ApiService):
     @param role_type: Role type
     @param config: A dictionary of role type configuration
     """
-    if self.roleTypes is None:
-      self.roleTypes = [ ]
-    self.roleTypes.append({
-        'roleType' : role_type,
-        'config' : config_to_api_list(config) })
+    rt_config = config_to_api_list(config)
+    rt_config['roleType'] = role_type
+
+    if self.config is None:
+      self.config = { }
+    if not self.config.has_key(ROLETYPES_CFG_KEY):
+      self.config[ROLETYPES_CFG_KEY] = [ ]
+    self.config[ROLETYPES_CFG_KEY].append(rt_config)
 
   def add_role_info(self, role_name, role_type, host_id, config=None):
     """
