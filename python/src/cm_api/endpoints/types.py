@@ -135,11 +135,11 @@ class ApiCommand(BaseApiObject):
              'resultMessage', 'serviceRef', 'roleRef', 'hostRef',
              'children', 'parent', 'resultDataUrl')
 
-  SERVICE_CMD_PATH = "/clusters/%s/services/%s/commands/%d"
-  ROLE_CMD_PATH = "/clusters/%s/services/%s/roles/%s/commands/%d"
-
   def __init__(self, resource_root):
     BaseApiObject.ctor_helper(**locals())
+
+  def _path(self):
+    return '/commands/%d' % self.id
 
   def _setattr(self, k, v):
     if k == 'children' and v is not None:
@@ -148,28 +148,6 @@ class ApiCommand(BaseApiObject):
       v = ApiCommand.from_json_dict(v, self._get_resource_root())
     BaseApiObject._setattr(self, k, v)
 
-  def _getpath(self):
-    if self.roleRef:
-      if self.roleRef.clusterName:
-        return ApiCommand.ROLE_CMD_PATH % (self.roleRef.clusterName,
-                                           self.roleRef.serviceName,
-                                           self.roleRef.roleName,
-                                           self.id)
-      else:
-        return '/cm/service/roles/%s/commands/%d' % (self.roleRef.roleName,
-                                                     self.id)
-    elif self.serviceRef:
-      if self.serviceRef.clusterName:
-        return ApiCommand.SERVICE_CMD_PATH % (self.serviceRef.clusterName,
-                                              self.serviceRef.serviceName,
-                                              self.id)
-      else:
-        return '/cm/service/commands/%d' % self.id
-    else:
-      # Assume global command for now.
-      # TODO: fix this when host and cluster commands are added.
-      return '/cm/commands/%d' % self.id
-
   def fetch(self):
     """
     Retrieve updated data about the command from the server.
@@ -177,7 +155,7 @@ class ApiCommand(BaseApiObject):
     @param resource_root: The root Resource object.
     @return: A new ApiCommand object.
     """
-    resp = self._get_resource_root().get(self._getpath())
+    resp = self._get_resource_root().get(self._path())
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
   def wait(self, timeout=None):
@@ -216,7 +194,7 @@ class ApiCommand(BaseApiObject):
     @param resource_root: The root Resource object.
     @return: A new ApiCommand object with the updated information.
     """
-    path = self._getpath() + '/abort'
+    path = self._path() + '/abort'
     resp = self._get_resource_root().post(path)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
