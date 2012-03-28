@@ -105,3 +105,11 @@ class ClouderaManager(BaseApiObject):
     @return: Information about the submitted command.
     """
     return self._cmd('generateCredentials')
+
+  def inspect_hosts(self):
+    """
+    Runs the host inspector on the configured hosts.
+
+    @return: Information about the submitted command.
+    """
+    return self._cmd('inspectHosts')
