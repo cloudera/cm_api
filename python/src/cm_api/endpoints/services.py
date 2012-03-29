@@ -302,6 +302,18 @@ class ApiService(BaseApiObject):
     data = json.dumps({ ApiList.LIST_KEY : role_names })
     return self._cmd('deployClientConfig', data)
 
+  def disable_hdfs_ha(self, active_name, secondary_name):
+    """
+    Disable high availability for an HDFS NameNode.
+
+    @param active_name: Name of the NameNode to keep.
+    @param secondary_name: Name of (existing) SecondaryNameNode to link to
+                           remaining NameNode.
+    @return: Reference to the submitted command.
+    """
+    args = { ApiList.LIST_KEY : [ active_name, secondary_name ] }
+    return self._cmd('hdfsDisableHa', data = json.dumps(args))
+
   def enable_hdfs_ha(self, active_name, active_shared_path, standby_name,
       standby_shared_path, nameservice):
     """
