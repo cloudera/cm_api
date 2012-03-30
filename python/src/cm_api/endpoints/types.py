@@ -205,7 +205,8 @@ class ApiCommand(BaseApiObject):
 
 class ApiConfig(BaseApiObject):
   RW_ATTR = ('name', 'value')
-  RO_ATTR = ('required', 'default', 'displayName', 'description')
+  RO_ATTR = ('required', 'default', 'displayName', 'description',
+      'validationState', 'validationMessage')
   def __init__(self, resource_root, name, value = None):
     BaseApiObject.ctor_helper(**locals())
 
