@@ -97,9 +97,9 @@ class ApiService(BaseApiObject):
     else:
       return '/cm/service'
 
-  def _cmd(self, cmd, data=None):
+  def _cmd(self, cmd, data=None, params=None):
     path = self._path() + '/commands/' + cmd
-    resp = self._get_resource_root().post(path, data=data)
+    resp = self._get_resource_root().post(path, data=data, params=params)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
   def _role_cmd(self, cmd, roles):
@@ -335,14 +335,16 @@ class ApiService(BaseApiObject):
     )
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
-  def failover_hdfs(self, active_name, standby_name):
+  def failover_hdfs(self, active_name, standby_name, force=False):
     """
     Initiate a failover of an HDFS NameNode HA pair.
 
     @param active_name: name of active NameNode.
     @param standby_name: name of stand-by NameNode.
+    @param force: whether to force failover.
     @return: Reference to the submitted command.
     """
+    params = { "force" : "true" and force or "false" }
     args = { ApiList.LIST_KEY : [ active_name, standby_name ] }
     return self._cmd('hdfsFailover', data = json.dumps(args))
 
