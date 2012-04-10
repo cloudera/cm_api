@@ -258,6 +258,44 @@ class ApiService(BaseApiObject):
     """
     return self._cmd('restart')
 
+  def start_roles(self, *role_names):
+    """
+    Start a list of roles.
+
+    @param role_names: names of the roles to start.
+    @return: List of submitted commands.
+    """
+    return self._role_cmd('start', role_names)
+
+  def stop_roles(self, *role_names):
+    """
+    Stop a list of roles.
+
+    @param role_names: names of the roles to stop.
+    @return: List of submitted commands.
+    """
+    return self._role_cmd('stop', role_names)
+
+  def restart_roles(self, *role_names):
+    """
+    Restart a list of roles.
+
+    @param role_names: names of the roles to restart.
+    @return: List of submitted commands.
+    """
+    return self._role_cmd('restart', role_names)
+
+  def bootstrap_hdfs_stand_by(self, *role_names):
+    """
+    Bootstrap HDFS stand-by NameNodes.
+
+    Initialize their state by syncing it with the respective HA partner.
+
+    @param role_names: NameNodes to bootstrap.
+    @return: List of submitted commands.
+    """
+    return self._role_cmd('hdfsBootstrapStandBy', role_names)
+
   def create_beeswax_warehouse(self):
     """
     Create the Beeswax role's warehouse for a Hue service.
@@ -339,8 +377,10 @@ class ApiService(BaseApiObject):
     """
     Initiate a failover of an HDFS NameNode HA pair.
 
-    @param active_name: name of active NameNode.
-    @param standby_name: name of stand-by NameNode.
+    This will make the given stand-by NameNode active, and vice-versa.
+
+    @param active_name: name of currently active NameNode.
+    @param standby_name: name of NameNode currently in stand-by.
     @param force: whether to force failover.
     @return: Reference to the submitted command.
     """
