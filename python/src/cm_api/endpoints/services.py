@@ -397,6 +397,22 @@ class ApiService(BaseApiObject):
     """
     return self._role_cmd('hdfsFormat', namenodes)
 
+  def init_zookeeper(self, *servers):
+    """
+    Initialize a ZooKeeper service or roles.
+
+    If no server role names are provided, the command applies to the whole
+    service, and initializes all the configured server roles.
+
+    @param servers: ZK server role names (optional).
+    @return: Command reference (for service command) or list of command
+             references (for role commands).
+    """
+    if servers:
+      return self._role_cmd('zooKeeperInit', servers)
+    else:
+      return self._cmd('zooKeeperInit')
+
   def sync_hue_db(self, *servers):
     """
     Synchronize the Hue server's database.
