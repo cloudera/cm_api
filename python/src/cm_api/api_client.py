@@ -7,7 +7,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.http_client import HttpClient, RestException
-from cm_api.endpoints import cms, clusters, hosts, tools, users
+from cm_api.endpoints import cms, clusters, hosts, tools, types, users
 from cm_api.resource import Resource
 
 __docformat__ = "epytext"
@@ -200,6 +200,31 @@ class ApiResource(Resource):
   def echo_error(self, message):
     """Generate an error, but we get to set the error message."""
     return tools.echo_error(self, message)
+
+
+  def get_metrics(self, path, from_time, to_time, metrics, view, params=None):
+    """
+    Generic function for querying metrics.
+
+    @param from_time: A datetime; start of the period to query (optional).
+    @param to_time: A datetime; end of the period to query (default = now).
+    @param metrics: List of metrics to query (default = all).
+    @param view: View to materialize ('full' or 'summary')
+    @param params: Other query parameters.
+    @return List of metrics and their readings.
+    """
+    if not params:
+      params = { }
+    if from_time:
+      params['from'] = from_time.isoformat()
+    if to_time:
+      params['to'] = to_time.isoformat()
+    if metrics:
+      params['metrics'] = metrics
+    if view:
+      params['view'] = view
+    resp = self.get(path, params=params)
+    return types.ApiList.from_json_dict(types.ApiMetric, resp, self)
 
 
 def get_root_resource(server_host, server_port=None,

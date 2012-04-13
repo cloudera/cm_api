@@ -11,10 +11,7 @@ from cm_api.endpoints.types import config_to_json, json_to_config, \
 __docformat__ = "epytext"
 
 ROLES_PATH = "/clusters/%s/services/%s/roles"
-CONFIG_PATH = ROLES_PATH + "/%s/config"
-
 CM_ROLES_PATH = "/cm/service/roles"
-CM_CONFIG_PATH = CM_ROLES_PATH + "/%s/config"
 
 def _get_roles_path(cluster_name, service_name):
   if cluster_name:
@@ -22,11 +19,9 @@ def _get_roles_path(cluster_name, service_name):
   else:
     return CM_ROLES_PATH
 
-def _get_role_config_path(cluster_name, service_name, role_name):
-  if cluster_name:
-    return CONFIG_PATH % (cluster_name, service_name, role_name)
-  else:
-    return CM_CONFIG_PATH % (role_name,)
+def _get_role_path(cluster_name, service_name, role_name):
+  path = _get_roles_path(cluster_name, service_name)
+  return "%s/%s" % (path, role_name)
 
 def create_role(resource_root,
                 service_name,
@@ -61,8 +56,7 @@ def get_role(resource_root, service_name, name, cluster_name="default"):
   @param cluster_name: Cluster name
   @return: An ApiRole object
   """
-  dic = resource_root.get("%s/%s" %
-      (_get_roles_path(cluster_name, service_name), name))
+  dic = resource_root.get(_get_role_path(cluster_name, service_name, name))
   return ApiRole.from_json_dict(dic, resource_root)
 
 def get_all_roles(resource_root, service_name, cluster_name="default", view=None):
@@ -99,8 +93,7 @@ def delete_role(resource_root, service_name, name, cluster_name="default"):
   @param cluster_name: Cluster name
   @return: The deleted ApiRole object
   """
-  resp = resource_root.delete("%s/%s" %
-          (_get_roles_path(cluster_name, service_name), name))
+  resp = resource_root.delete(_get_role_path(cluster_name, service_name, name))
   return ApiRole.from_json_dict(resp, resource_root)
 
 
@@ -113,10 +106,13 @@ class ApiRole(BaseApiObject):
     # needs to be called "type" as well, despite it being a python keyword.
     BaseApiObject.ctor_helper(**locals())
 
+  def _path(self):
+    return _get_role_path(self.serviceRef.clusterName,
+                          self.serviceRef.serviceName,
+                          self.name)
+
   def _get_log(self, log):
-    path = _get_roles_path(self.serviceRef.clusterName,
-                           self.serviceRef.serviceName)
-    path = "%s/%s/logs/%s" % (path, self.name, log)
+    path = "%s/logs/%s" % (self._path(), log)
     return self._get_resource_root().get(path)
 
   def get_config(self, view = None):
@@ -129,9 +125,7 @@ class ApiRole(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return Dictionary with configuration data.
     """
-    path = _get_role_config_path(self.serviceRef.clusterName,
-                                 self.serviceRef.serviceName,
-                                 self.name)
+    path = self._path() + '/config'
     resp = self._get_resource_root().get(path,
         params = view and dict(view=view) or None)
     return json_to_config(resp, view == 'full')
@@ -143,9 +137,7 @@ class ApiRole(BaseApiObject):
     @param config Dictionary with configuration to update.
     @return Dictionary with updated configuration.
     """
-    path = _get_role_config_path(self.serviceRef.clusterName,
-                                 self.serviceRef.serviceName,
-                                 self.name)
+    path = self._path() + '/config'
     resp = self._get_resource_root().put(path, data = config_to_json(config))
     return json_to_config(resp)
 
@@ -172,3 +164,16 @@ class ApiRole(BaseApiObject):
     @return: Contents of stderr.
     """
     return self._get_log('stderr')
+
+  def get_metrics(self, from_time=None, to_time=None, metrics=None, view=None):
+    """
+    Retrieve metric readings for the role.
+
+    @param from_time: A datetime; start of the period to query (optional).
+    @param to_time: A datetime; end of the period to query (default = now).
+    @param metrics: List of metrics to query (default = all).
+    @param view: View to materialize ('full' or 'summary')
+    @return List of metrics and their readings.
+    """
+    return self._get_resource_root().get_metrics(self._path() + '/metrics',
+        from_time, to_time, metrics, view)

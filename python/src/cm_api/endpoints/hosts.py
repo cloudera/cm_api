@@ -103,3 +103,28 @@ class ApiHost(BaseApiObject):
     path = self._path() + '/config'
     resp = self._get_resource_root().put(path, data = config_to_json(config))
     return json_to_config(resp)
+
+  def get_metrics(self, from_time=None, to_time=None, metrics=None,
+      ifs=[], storageIds=[], view=None):
+    """
+    Retrieve metric readings for the host.
+
+    @param from_time: A datetime; start of the period to query (optional).
+    @param to_time: A datetime; end of the period to query (default = now).
+    @param metrics: List of metrics to query (default = all).
+    @param ifs: network interfaces to query. Default all, use None to disable.
+    @param storageIds: storage IDs to query. Default all, use None to disable.
+    @param view: View to materialize ('full' or 'summary')
+    @return List of metrics and their readings.
+    """
+    params = { }
+    if ifs:
+      params['ifs'] = ifs
+    elif ifs is None:
+      params['queryNw'] = 'false'
+    if storageIds:
+      params['storageIds'] = storageIds
+    elif storageIds is None:
+      params['queryStorage'] = 'false'
+    return self._get_resource_root().get_metrics(self._path() + '/metrics',
+        from_time, to_time, metrics, view, params)

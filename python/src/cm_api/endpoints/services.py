@@ -234,6 +234,19 @@ class ApiService(BaseApiObject):
     resp = self._get_resource_root().get(self._path() + '/roleTypes')
     return resp[ApiList.LIST_KEY]
 
+  def get_metrics(self, from_time=None, to_time=None, metrics=None, view=None):
+    """
+    Retrieve metric readings for the service.
+
+    @param from_time: A datetime; start of the period to query (optional).
+    @param to_time: A datetime; end of the period to query (default = now).
+    @param metrics: List of metrics to query (default = all).
+    @param view: View to materialize ('full' or 'summary')
+    @return List of metrics and their readings.
+    """
+    return self._get_resource_root().get_metrics(self._path() + '/metrics',
+        from_time, to_time, metrics, view)
+
   def start(self):
     """
     Start a service.

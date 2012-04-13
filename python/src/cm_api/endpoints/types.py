@@ -198,6 +198,35 @@ class ApiCommand(BaseApiObject):
     resp = self._get_resource_root().post(path)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
+#
+# Metrics.
+#
+
+class ApiMetricData(BaseApiObject):
+  """Metric reading data."""
+  RW_ATTR = ( )
+  RO_ATTR = ( 'timestamp', 'value' )
+
+  def __init__(self, resource_root):
+    BaseApiObject.ctor_helper(**locals())
+
+
+class ApiMetric(BaseApiObject):
+  """Metric information."""
+  RW_ATTR = ( )
+  RO_ATTR = ( 'name', 'context', 'unit', 'data', 'displayName', 'description',
+      'type' )
+
+  def __init__(self, resource_root):
+    BaseApiObject.ctor_helper(**locals())
+
+  def _setattr(self, k, v):
+    if k == 'data':
+      if v:
+        assert isinstance(v, list)
+        self.data = [ ApiMetricData.from_json_dict(x, self._get_resource_root()) for x in v ]
+    else:
+      BaseApiObject._setattr(self, k, v)
 
 #
 # Configuration helpers.

@@ -165,7 +165,7 @@ class HttpClient(object):
     if path:
       res += posixpath.normpath('/' + path.lstrip('/'))
     if params:
-      param_str = urllib.urlencode(params)
+      param_str = urllib.urlencode(params, True)
       res += '?' + param_str
     return iri_to_uri(res)
 
