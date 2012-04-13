@@ -410,6 +410,15 @@ class ApiService(BaseApiObject):
     """
     return self._role_cmd('hdfsFormat', namenodes)
 
+  def init_hdfs_shared_dir(self, *namenodes):
+    """
+    Initialize a NameNode's shared edits directory.
+
+    @param namenodes Name of NameNode instances.
+    @return List of submitted commands.
+    """
+    return self._role_cmd('hdfsInitializeSharedDir', namenodes)
+
   def init_zookeeper(self, *servers):
     """
     Initialize a ZooKeeper service or roles.
