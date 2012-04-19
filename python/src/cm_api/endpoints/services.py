@@ -410,6 +410,17 @@ class ApiService(BaseApiObject):
     """
     return self._role_cmd('hdfsFormat', namenodes)
 
+  def init_hdfs_auto_failover(self, *controllers):
+    """
+    Initialize HDFS failover controller metadata.
+
+    Only one controller per nameservice needs to be initialized.
+
+    @param controllers: Name of failover controller instances to initialize.
+    @return: List of submitted commands.
+    """
+    return self._role_cmd('hdfsInitializeAutoFailover', controllers)
+
   def init_hdfs_shared_dir(self, *namenodes):
     """
     Initialize a NameNode's shared edits directory.
