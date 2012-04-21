@@ -65,13 +65,23 @@ class ClouderaManager(BaseApiObject):
     resp = self._get_resource_root().get('/cm/license')
     return ApiLicense.from_json_dict(resp, self._get_resource_root())
 
-  def update_license(self):
+  def update_license(self, license_text):
     """
-    Install a new license.
+    Install or update the Cloudera Manager license.
 
-    TODO: not yet implemented.
+    @param license_text: the license in text form
     """
-    raise NotImplementedError
+    content = (
+        '--MULTI_BOUNDARY',
+        'Content-Disposition: form-data; name="license"',
+        '',
+        license_text,
+        '--MULTI_BOUNDARY--',
+        '')
+    resp = self._get_resource_root().post('cm/license', 
+        data="\r\n".join(content), 
+        contenttype='multipart/form-data; boundary=MULTI_BOUNDARY')
+    return ApiLicense.from_json_dict(resp, self._get_resource_root())
 
   def get_config(self, view = None):
     """
