@@ -98,7 +98,8 @@ def delete_role(resource_root, service_name, name, cluster_name="default"):
 
 
 class ApiRole(BaseApiObject):
-  RO_ATTR = ('roleState', 'healthSummary', 'healthChecks', 'serviceRef', 'configStale')
+  RO_ATTR = ('roleState', 'healthSummary', 'healthChecks', 'serviceRef',
+      'configStale', 'haStatus')
   RW_ATTR = ('name', 'type', 'hostRef')
 
   def __init__(self, resource_root, name, type, hostRef):
