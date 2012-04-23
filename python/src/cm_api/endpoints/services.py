@@ -365,6 +365,28 @@ class ApiService(BaseApiObject):
     args = { ApiList.LIST_KEY : [ active_name, secondary_name ] }
     return self._cmd('hdfsDisableHa', data = json.dumps(args))
 
+  def enable_hdfs_auto_failover(self, nameservice, active_fc_name,
+      standby_fc_name, zk_service):
+    """
+    Enable auto-failover for an HDFS nameservice.
+
+    @param nameservice: Nameservice for which to enable auto-failover.
+    @param active_fc_name: Name of failover controller to create for active node.
+    @param standby_fc_name: Name of failover controller to create for stand-by node.
+    @param zk_service: ZooKeeper service to use.
+    @return: Reference to the submitted command.
+    """
+    args = dict(
+      nameservice = nameservice,
+      activeFCName = active_fc_name,
+      standByFCName = standby_fc_name,
+      zooKeeperService = dict(
+        clusterName = zk_service.clusterRef.clusterName,
+        serviceName = zk_service.name,
+        ),
+      )
+    return self._cmd('hdfsEnableAutoFailover', data = json.dumps(args))
+
   def enable_hdfs_ha(self, active_name, active_shared_path, standby_name,
       standby_shared_path, nameservice):
     """
