@@ -108,18 +108,3 @@ class ApiCluster(BaseApiObject):
     @return: A list of ApiService objects.
     """
     return services.get_all_services(self._get_resource_root(), self.name, view)
-
-  def collect_host_stats(self, start_datetime, end_datetime, includeInfoLog=False):
-    """
-    Issue the collect host stats command.
-
-    @param start_datetime: The start of the collection period. Type datetime.
-    @param end_datetime: The end of the collection period. Type datetime.
-    @param includeInfoLog: Whether to include INFO level log messages.
-    """
-    args = {
-        'startTime': start_datetime.isoformat(),
-        'endTime': end_datetime.isoformat(),
-        'includeInfoLog': includeInfoLog,
-    }
-    return self._cmd('collectHostStats', data=json.dumps(args))
