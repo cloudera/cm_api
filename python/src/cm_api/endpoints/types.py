@@ -162,8 +162,10 @@ class ApiCommand(BaseApiObject):
     """
     Wait for command to finish.
 
-    @param timeout: (Optional) Max amount of time (in seconds) to wait.
-    @return: The final ApiCommand object.
+    @param timeout: (Optional) Max amount of time (in seconds) to wait. Wait
+                    forever by default.
+    @return: The final ApiCommand object, containing the last known state.
+             The command may still be running in case of timeout.
     """
     SLEEP_SEC = 5
 
