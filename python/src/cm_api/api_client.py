@@ -74,14 +74,15 @@ class ApiResource(Resource):
 
   # Cluster ops.
 
-  def create_cluster(self, name):
+  def create_cluster(self, name, version):
     """
     Create a new cluster.
 
     @param name Cluster name.
+    @param version Cluster CDH version.
     @return The created cluster.
     """
-    return clusters.create_cluster(self, name)
+    return clusters.create_cluster(self, name, version)
 
   def delete_cluster(self, name):
     """

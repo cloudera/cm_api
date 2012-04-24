@@ -12,14 +12,15 @@ __docformat__ = "epytext"
 
 CLUSTERS_PATH = "/clusters"
 
-def create_cluster(resource_root, name):
+def create_cluster(resource_root, name, version):
   """
   Create a cluster
   @param resource_root: The root Resource object.
   @param name: Cluster name
+  @param version: Cluster CDH version
   @return: An ApiCluster object
   """
-  apicluster = ApiCluster(resource_root, name)
+  apicluster = ApiCluster(resource_root, name, version)
   apicluster_list = ApiList([apicluster])
   body = json.dumps(apicluster_list.to_json_dict())
   resp = resource_root.post(CLUSTERS_PATH, data=body)
@@ -58,9 +59,9 @@ def delete_cluster(resource_root, name):
 
 
 class ApiCluster(BaseApiObject):
-  RW_ATTR = ('name',)
+  RW_ATTR = ('name', 'version')
 
-  def __init__(self, resource_root, name):
+  def __init__(self, resource_root, name, version):
     BaseApiObject.ctor_helper(**locals())
 
   def _path(self):
