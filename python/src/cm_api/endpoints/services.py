@@ -353,6 +353,15 @@ class ApiService(BaseApiObject):
     data = json.dumps({ ApiList.LIST_KEY : role_names })
     return self._cmd('deployClientConfig', data)
 
+  def disable_hdfs_auto_failover(self, nameservice):
+    """
+    Disable auto-failover for a highly available HDFS nameservice.
+
+    @param nameservice: Affected nameservice.
+    @return: Reference to the submitted command.
+    """
+    return self._cmd('hdfsDisableAutoFailover', data = json.dumps(nameservice))
+
   def disable_hdfs_ha(self, active_name, secondary_name):
     """
     Disable high availability for an HDFS NameNode.
