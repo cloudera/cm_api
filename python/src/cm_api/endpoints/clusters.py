@@ -72,17 +72,16 @@ class ApiCluster(BaseApiObject):
     resp = self._get_resource_root().post(path, data=data)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
-  def create_service(self, name, service_type, version):
+  def create_service(self, name, service_type):
     """
     Create a service.
 
     @param name: Service name
     @param service_type: Service type
-    @param version: Service version
     @return: An ApiService object
     """
     return services.create_service(self._get_resource_root(), name,
-        service_type, version, self.name)
+        service_type, self.name)
 
   def delete_service(self, name):
     """

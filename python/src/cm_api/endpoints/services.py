@@ -19,18 +19,17 @@ ROLETYPES_CFG_KEY = 'roleTypeConfigs'
 LOG = logging.getLogger(__name__)
 
 
-def create_service(resource_root, name, service_type, version,
+def create_service(resource_root, name, service_type,
                    cluster_name="default"):
   """
   Create a service
   @param resource_root: The root Resource object.
   @param name: Service name
   @param service_type: Service type
-  @param version: Service version
   @param cluster_name: Cluster name
   @return: An ApiService object
   """
-  apiservice = ApiService(resource_root, name, service_type, version)
+  apiservice = ApiService(resource_root, name, service_type)
   apiservice_list = ApiList([apiservice])
   body = json.dumps(apiservice_list.to_json_dict())
   resp = resource_root.post(SERVICES_PATH % (cluster_name,), data=body)
@@ -72,10 +71,11 @@ def delete_service(resource_root, name, cluster_name="default"):
 
 
 class ApiService(BaseApiObject):
-  RO_ATTR = ('serviceState', 'healthSummary', 'healthChecks', 'clusterRef', 'configStale')
-  RW_ATTR = ('name', 'type', 'version')
+  RO_ATTR = ('serviceState', 'healthSummary', 'healthChecks', 'clusterRef',
+             'configStale', 'version')
+  RW_ATTR = ('name', 'type')
 
-  def __init__(self, resource_root, name, type, version):
+  def __init__(self, resource_root, name, type):
     # Unfortunately, the json key is called "type". So our input arg
     # needs to be called "type" as well, despite it being a python keyword.
     BaseApiObject.ctor_helper(**locals())
@@ -505,9 +505,9 @@ class ApiService(BaseApiObject):
 
 class ApiServiceSetupInfo(ApiService):
   RO_ATTR = ( )
-  RW_ATTR = ('name', 'type', 'version', 'config', 'roles')
+  RW_ATTR = ('name', 'type', 'config', 'roles')
 
-  def __init__(self, name=None, type=None, version=None,
+  def __init__(self, name=None, type=None,
                config=None, roles=None):
     # The BaseApiObject expects a resource_root, which we don't care about
     resource_root = None
