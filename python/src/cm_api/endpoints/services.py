@@ -461,6 +461,22 @@ class ApiService(BaseApiObject):
     """
     return self._role_cmd('hdfsInitializeSharedDir', namenodes)
 
+  def cleanup_zookeeper(self, *servers):
+    """
+    Cleanup a ZooKeeper service or roles.
+
+    If no server role names are provided, the command applies to the whole
+    service, and cleans up all the server roles that are currently running.
+
+    @param servers: ZK server role names (optional).
+    @return: Command reference (for service command) or list of command
+             references (for role commands).
+    """
+    if servers:
+      return self._role_cmd('zooKeeperCleanup', servers)
+    else:
+      return self._cmd('zooKeeperCleanup')
+
   def init_zookeeper(self, *servers):
     """
     Initialize a ZooKeeper service or roles.
