@@ -109,3 +109,19 @@ class ApiCluster(BaseApiObject):
     @return: A list of ApiService objects.
     """
     return services.get_all_services(self._get_resource_root(), self.name, view)
+
+  def start(self):
+    """
+    Start all services in a cluster, respecting dependencies.
+
+    @return: Reference to the submitted command.
+    """
+    return self._cmd('start')
+
+  def stop(self):
+    """
+    Stop all services in a cluster, respecting dependencies.
+
+    @return: Reference to the submitted command.
+    """
+    return self._cmd('stop')
