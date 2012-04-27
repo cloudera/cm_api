@@ -237,7 +237,7 @@ class ApiMetric(BaseApiObject):
 class ApiConfig(BaseApiObject):
   RW_ATTR = ('name', 'value')
   RO_ATTR = ('required', 'default', 'displayName', 'description',
-      'validationState', 'validationMessage')
+      'relatedName', 'validationState', 'validationMessage')
   def __init__(self, resource_root, name, value = None):
     BaseApiObject.ctor_helper(**locals())
 
