@@ -78,8 +78,8 @@ class ClouderaManager(BaseApiObject):
         license_text,
         '--MULTI_BOUNDARY--',
         '')
-    resp = self._get_resource_root().post('cm/license', 
-        data="\r\n".join(content), 
+    resp = self._get_resource_root().post('cm/license',
+        data="\r\n".join(content),
         contenttype='multipart/form-data; boundary=MULTI_BOUNDARY')
     return ApiLicense.from_json_dict(resp, self._get_resource_root())
 
@@ -124,9 +124,9 @@ class ClouderaManager(BaseApiObject):
     """
     return self._cmd('inspectHosts')
 
-  def collect_host_stats(self, start_datetime, end_datetime, includeInfoLog=False):
+  def collect_diagnostic_data(self, start_datetime, end_datetime, includeInfoLog=False):
     """
-    Issue the collect host stats command.
+    Issue the command to collect diagnostic data.
 
     @param start_datetime: The start of the collection period. Type datetime.
     @param end_datetime: The end of the collection period. Type datetime.
@@ -137,4 +137,4 @@ class ClouderaManager(BaseApiObject):
         'endTime': end_datetime.isoformat(),
         'includeInfoLog': includeInfoLog,
     }
-    return self._cmd('collectHostStats', data=json.dumps(args))
+    return self._cmd('collectDiagnosticData', data=json.dumps(args))
