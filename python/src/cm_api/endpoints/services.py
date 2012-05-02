@@ -86,7 +86,7 @@ def delete_service(resource_root, name, cluster_name="default"):
 
 class ApiService(BaseApiObject):
   RO_ATTR = ('serviceState', 'healthSummary', 'healthChecks', 'clusterRef',
-             'configStale', 'version')
+             'configStale')
   RW_ATTR = ('name', 'type')
 
   def __init__(self, resource_root, name, type):
