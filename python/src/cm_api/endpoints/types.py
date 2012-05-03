@@ -230,8 +230,7 @@ class ApiMetricData(BaseApiObject):
 class ApiMetric(BaseApiObject):
   """Metric information."""
   RW_ATTR = ( )
-  RO_ATTR = ( 'name', 'context', 'unit', 'data', 'displayName', 'description',
-      'type' )
+  RO_ATTR = ( 'name', 'context', 'unit', 'data', 'displayName', 'description' )
 
   def __init__(self, resource_root):
     BaseApiObject.ctor_helper(**locals())
