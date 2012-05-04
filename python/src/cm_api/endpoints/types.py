@@ -112,12 +112,8 @@ class ApiList(object):
   """A list of some api object"""
   LIST_KEY = "items"
 
-  def __init__(self, objects, count=None):
+  def __init__(self, objects):
     self.objects = objects
-    if count is None:
-      self.count = len(objects)
-    else:
-      self.count = count
 
   def to_json_dict(self):
     return { ApiList.LIST_KEY :
@@ -139,7 +135,7 @@ class ApiList(object):
   def from_json_dict(member_cls, dic, resource_root):
     json_list = dic[ApiList.LIST_KEY]
     objects = [ member_cls.from_json_dict(x, resource_root) for x in json_list ]
-    return ApiList(objects, dic['count'])
+    return ApiList(objects)
 
 
 class ApiCommand(BaseApiObject):
