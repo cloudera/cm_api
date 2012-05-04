@@ -1,3 +1,11 @@
 build/
 dist/
 *.egg-info/
+
+*.pyc
+*.pyo
+
+.*.swp
+.*.swo
+
+.DS_Store
