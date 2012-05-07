@@ -25,7 +25,7 @@ else:
 
 setup(
   name = 'cm_api',
-  version = '1.0',      # Compatible with API v1
+  version = '1.0.0',    # Compatible with API v1
   packages = find_packages('src'),
   package_dir = {'cm_api': 'src/cm_api'},
 
@@ -35,6 +35,6 @@ setup(
 
   author = 'Cloudera, Inc.',
   description = 'Cloudera Manager API client',
-  license = 'Proprietary',
-  url = 'http://www.cloudera.com/',
+  license = 'Apache License 2.0',
+  url = 'https://github.com/cloudera/cm_api',
 )
