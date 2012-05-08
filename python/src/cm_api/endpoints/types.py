@@ -240,6 +240,18 @@ class ApiMetric(BaseApiObject):
       BaseApiObject._setattr(self, k, v)
 
 #
+# Activities.
+#
+
+class ApiActivity(BaseApiObject):
+  RW_ATTR = ( )
+  RO_ATTR = ( 'name', 'type', 'parent', 'startTime', 'finishTime', 'id',
+      'status', 'user', 'group', 'inputDir', 'outputDir', 'mapper', 'combiner',
+      'reducer', 'queueName', 'schedulerPriority' )
+  def __init__(self, resource_root):
+    BaseApiObject.ctor_helper(**locals())
+
+#
 # Configuration helpers.
 #
 

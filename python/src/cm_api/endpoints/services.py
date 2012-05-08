@@ -21,7 +21,8 @@ except ImportError:
 import logging
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
-    config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject
+    config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject, \
+    ApiActivity
 from cm_api.endpoints import roles
 
 __docformat__ = "epytext"
@@ -138,6 +139,16 @@ class ApiService(BaseApiObject):
             json_to_config(rt_config, view == 'full')
 
     return (svc_config, rt_configs)
+
+  def get_running_activities(self):
+    path = self._path() + "/activities"
+    resp = self._get_resource_root().get(path)
+    return ApiList.from_json_dict(ApiActivity, resp, self._get_resource_root())
+
+  def get_activity(self, job_id):
+    path = self._path() + "/activities/%s" % (job_id,)
+    resp = self._get_resource_root().get(path)
+    return ApiActivity.from_json_dict(resp, self._get_resource_root())
 
   def get_config(self, view = None):
     """
