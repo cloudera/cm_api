@@ -21,7 +21,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.http_client import HttpClient, RestException
-from cm_api.endpoints import cms, clusters, hosts, tools, types, users
+from cm_api.endpoints import cms, clusters, events, hosts, tools, types, users
 from cm_api.resource import Resource
 
 __docformat__ = "epytext"
@@ -205,6 +205,24 @@ class ApiResource(Resource):
     @return: An ApiUser object
     """
     return users.delete_user(self, username)
+
+  # Events
+
+  def query_events(self, query_str = None):
+    """
+    Query events.
+    @param query_str: Query string.
+    @return: A list of ApiEvent.
+    """
+    return events.query_events(self, query_str)
+
+  def get_event(self, event_id):
+    """
+    Retrieve a particular event by ID.
+    @param event_id: The event ID.
+    @return: An ApiEvent.
+    """
+    return events.get_event(self, event_id)
 
   # Tools
 
