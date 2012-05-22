@@ -253,9 +253,6 @@ class ApiService(BaseApiObject):
 
     @return: A list of role types (strings)
     """
-    if self.type == 'MGMT':
-      LOG.error("Management service does not support /roleTypes")
-      return None
     resp = self._get_resource_root().get(self._path() + '/roleTypes')
     return resp[ApiList.LIST_KEY]
 
