@@ -145,6 +145,14 @@ class ApiService(BaseApiObject):
     resp = self._get_resource_root().get(path)
     return ApiList.from_json_dict(ApiActivity, resp, self._get_resource_root())
 
+  def query_activities(self, query_str=None):
+    path = self._path() + "/activities"
+    params = { }
+    if query_str:
+      params['query'] = query_str
+    resp = self._get_resource_root().get(path, params=params)
+    return ApiList.from_json_dict(ApiActivity, resp, self._get_resource_root())
+
   def get_activity(self, job_id):
     path = self._path() + "/activities/%s" % (job_id,)
     resp = self._get_resource_root().get(path)
