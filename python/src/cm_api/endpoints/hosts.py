@@ -76,7 +76,7 @@ def delete_host(resource_root, host_id):
 
 class ApiHost(BaseApiObject):
   RO_ATTR = ('status', 'lastHeartbeat', 'roleRefs', 'healthSummary',
-      'healthChecks')
+      'healthChecks', 'hostUrl')
   RW_ATTR = ('hostId', 'hostname', 'ipAddress', 'rackId')
 
   def __init__(self, resource_root, hostId, hostname,
