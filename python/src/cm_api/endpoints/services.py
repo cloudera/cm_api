@@ -392,16 +392,24 @@ class ApiService(BaseApiObject):
     """
     return self._cmd('hdfsDisableAutoFailover', data = json.dumps(nameservice))
 
-  def disable_hdfs_ha(self, active_name, secondary_name):
+  def disable_hdfs_ha(self, active_name, secondary_name,
+      start_dependent_services=True, deploy_client_configs=True):
     """
     Disable high availability for an HDFS NameNode.
 
     @param active_name: Name of the NameNode to keep.
     @param secondary_name: Name of (existing) SecondaryNameNode to link to
                            remaining NameNode.
+    @param start_dependent_services: whether to re-start dependent services.
+    @param deploy_client_configs: whether to re-deploy client configurations.
     @return: Reference to the submitted command.
     """
-    args = { ApiList.LIST_KEY : [ active_name, secondary_name ] }
+    args = dict(
+      activeName = active_name,
+      secondaryName = secondary_name,
+      startDependentServices = start_dependent_services,
+      deployClientConfigs = deploy_client_configs,
+    )
     return self._cmd('hdfsDisableHa', data = json.dumps(args))
 
   def enable_hdfs_auto_failover(self, nameservice, active_fc_name,
