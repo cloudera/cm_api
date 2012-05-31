@@ -427,7 +427,8 @@ class ApiService(BaseApiObject):
     return self._cmd('hdfsEnableAutoFailover', data = json.dumps(args))
 
   def enable_hdfs_ha(self, active_name, active_shared_path, standby_name,
-      standby_shared_path, nameservice):
+      standby_shared_path, nameservice, start_dependent_services=True,
+      deploy_client_configs=True):
     """
     Enable high availability for an HDFS NameNode.
 
@@ -436,6 +437,8 @@ class ApiService(BaseApiObject):
     @param standby_name: name of stand-by NameNode.
     @param standby_shared_path: shared edits path for stand-by NameNode.
     @param nameservice: name service for the HA pair.
+    @param start_dependent_services: whether to re-start dependent services.
+    @param deploy_client_configs: whether to re-deploy client configurations.
     @return: Reference to the submitted command.
     """
     args = dict(
@@ -444,6 +447,8 @@ class ApiService(BaseApiObject):
       standByName = standby_name,
       standBySharedEditsPath = standby_shared_path,
       nameservice = nameservice,
+      startDependentServices = start_dependent_services,
+      deployClientConfigs = deploy_client_configs,
     )
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
