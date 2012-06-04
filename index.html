@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Cloudera Manager API Client by cloudera</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/cloudera/cm_api">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/cloudera/cm_api/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/cloudera/cm_api/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Cloudera Manager API Client</h1>
+          <p>Automate your Hadoop management</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/cloudera">cloudera</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Background: Getting Cloudera Manager</h1>
+
+<p>Cloudera Manager is a complete management solution for your Hadoop clusters. Some of the cool things you can do with Cloudera Manager:</p>
+
+<ul>
+<li>Install a full Hadoop cluster from bare OS within minutes via a web UI. CM supports HDFS, MapReduce, Yarn, HBase, ZooKeeper, Oozie and Hue.</li>
+<li>Configure the various Hadoop services without writing XML, and get config recommendation and validation.</li>
+<li>Take admin actions on the services, such as start, stop, restart, decommission, failover, etc.</li>
+<li>Monitor the state of your Hadoop service processes.</li>
+</ul><p>The Cloudera Manager Enterprise Edition offers even more:</p>
+
+<ul>
+<li>Management support for clusters larger than 50 nodes.</li>
+<li>Setup of secure clusters.</li>
+<li>Advanced monitoring of your Hadoop clusters, with intelligent service health checks and metrics.</li>
+<li>Advanced monitoring of user jobs and activities.</li>
+<li>An event store for all the important cluster events.</li>
+<li>Cluster-wide log search.</li>
+<li>HDFS quota management and usage tracking.</li>
+</ul><p>You can download <a href="https://ccp.cloudera.com/display/SUPPORT/Downloads">Cloudera Manager Free Edition</a> from Cloudera's website.</p>
+
+<h1>Cloudera Manager API Client</h1>
+
+<p>Since version 4.0, Cloudera Manager exposes the its functionality through an HTTP API. The API is available in <em>both</em> the Free Edition and the Enterprise Edition.</p>
+
+<p>This repository hosts a set of client-side utilities for communicating with the Cloudera Manager API.</p>
+
+<h2>Python</h2>
+
+<p>To install the Python API client:</p>
+
+<pre><code>$ git clone git://github.com/cloudera/cm_api.git
+$ cd cm_api/python
+$ python setup.py install
+</code></pre>
+
+<p>A quick example:</p>
+
+<pre><code>Python 2.7.2+ (default, Oct  4 2011, 20:06:09) 
+[GCC 4.6.1] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; from cm_api.api_client import ApiResource
+&gt;&gt;&gt; cm_host = "manager.mydomain.com"
+&gt;&gt;&gt; api = ApiResource(cm_host, username="admin", password="admin")
+&gt;&gt;&gt; for c in api.get_all_clusters(): print c.name
+... 
+Cluster 1 - CDH3
+Cluster 2 - CDH4
+</code></pre>
+
+<h1>Resources</h1>
+
+<ul>
+<li>
+<a href="apidocs/v1/index.html">API v1 documentation</a>.</li>
+</ul><h1>License</h1>
+
+<p>This repository is licensed under Apache License v2. Contributions welcome. Please post any questions to the <a href="https://groups.google.com/a/cloudera.org/forum/?hl=en&amp;fromgroups#!forum/scm-users">user mailing list</a>.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
