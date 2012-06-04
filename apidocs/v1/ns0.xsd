@@ -1,0 +1,1830 @@
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="activity" type="apiActivity"/>
+  <xs:element name="activityList" type="apiActivityList"/>
+  <xs:element name="bulkCommandList" type="apiBulkCommandList"/>
+  <xs:element name="cluster" type="apiCluster"/>
+  <xs:element name="clusterList" type="apiClusterList"/>
+  <xs:element name="clusterRef" type="apiClusterRef"/>
+  <xs:element name="collectDiagnosticDataArgs" type="apiCollectDiagnosticDataArguments"/>
+  <xs:element name="command" type="apiCommand"/>
+  <xs:element name="commandList" type="apiCommandList"/>
+  <xs:element name="config" type="apiConfig"/>
+  <xs:element name="configList" type="apiConfigList"/>
+  <xs:element name="echoMessage" type="apiEcho"/>
+  <xs:element name="event" type="apiEvent"/>
+  <xs:element name="eventQueryResult" type="apiEventQueryResult"/>
+  <xs:element name="hdfsDisableHaArgs" type="apiHdfsDisableHaArguments"/>
+  <xs:element name="hdfsFailoverArgs" type="apiHdfsFailoverArguments"/>
+  <xs:element name="hdfsHaArgs" type="apiHdfsHaArguments"/>
+  <xs:element name="healthCheck" type="apiHealthCheck"/>
+  <xs:element name="host" type="apiHost"/>
+  <xs:element name="hostList" type="apiHostList"/>
+  <xs:element name="license" type="apiLicense"/>
+  <xs:element name="metric" type="apiMetric"/>
+  <xs:element name="metricData" type="apiMetricData"/>
+  <xs:element name="metricList" type="apiMetricList"/>
+  <xs:element name="nameservice" type="apiNameservice"/>
+  <xs:element name="nameserviceList" type="apiNameserviceList"/>
+  <xs:element name="role" type="apiRole"/>
+  <xs:element name="roleList" type="apiRoleList"/>
+  <xs:element name="roleNames" type="apiRoleNameList"/>
+  <xs:element name="roleRef" type="apiRoleRef"/>
+  <xs:element name="roleSetupInfo" type="apiRoleSetupInfo"/>
+  <xs:element name="roleTypeConfig" type="apiRoleTypeConfig"/>
+  <xs:element name="roleTypeList" type="apiRoleTypeList"/>
+  <xs:element name="service" type="apiService"/>
+  <xs:element name="serviceConfig" type="apiServiceConfig"/>
+  <xs:element name="serviceList" type="apiServiceList"/>
+  <xs:element name="serviceRef" type="apiServiceRef"/>
+  <xs:element name="setupInfo" type="apiServiceSetupInfo"/>
+  <xs:element name="serviceSetupList" type="apiServiceSetupList"/>
+  <xs:element name="user" type="apiUser"/>
+  <xs:element name="userList" type="apiUserList"/>
+  <xs:element name="cmVersionInfo" type="apiVersionInfo"/>
+  <xs:complexType name="apiActivity">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Represents a user activity, such as a MapReduce job, a Hive query, an Oozie
+workflow, etc.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Activity name.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="type" type="apiActivityType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Activity type. Whether it's an MR job, a Pig job, a Hive query, etc.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="parent" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The name of the parent activity.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="startTime" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The start time of this activity.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="finishTime" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The finish time of this activity.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="id" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Activity id, which is unique within a MapReduce service.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="status" type="apiActivityStatus" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Activity status.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="user" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The user who submitted this activity.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="group" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The user-group of this activity.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="inputDir" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The input data directory of the activity. An HDFS url.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="outputDir" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The output result directory of the activity. An HDFS url.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="mapper" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The mapper class.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="combiner" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The combiner class.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="reducer" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The reducer class.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="queueName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The scheduler queue this activity is in.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="schedulerPriority" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The scheduler priority of this activity.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiActivityList">
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="activity" type="apiActivity" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="apiActivityStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="SUBMITTED"/>
+      <xs:enumeration value="STARTED"/>
+      <xs:enumeration value="SUSPENDED"/>
+      <xs:enumeration value="FAILED"/>
+      <xs:enumeration value="KILLED"/>
+      <xs:enumeration value="SUCCEEDED"/>
+      <xs:enumeration value="ASSUMED_SUCCEEDED"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="apiActivityType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="OOZIE"/>
+      <xs:enumeration value="PIG"/>
+      <xs:enumeration value="HIVE"/>
+      <xs:enumeration value="MR"/>
+      <xs:enumeration value="STREAMING"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiBulkCommandList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of commands.
+<p>
+This list is returned whenever commands are issued in bulk, and contains a
+second list with information about errors issuing specific commands.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiCommandList">
+        <xs:sequence>
+          <xs:element name="errors" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[Errors that occurred when issuing individual commands.]]>
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="error" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      <![CDATA[Errors that occurred when issuing individual commands.]]>
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiCluster">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A cluster represents a set of interdependent services running on a set
+of hosts. All services on a given cluster are of the same software version
+(e.g. CDH3 or CDH4).]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The name of the cluster]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="version" type="apiClusterVersion" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The CDH version of the cluster.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiClusterList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of clusters.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="cluster" type="apiCluster" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiClusterRef">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A clusterRef references a cluster. To operate on the cluster object,
+use the cluster API with the clusterName as the parameter.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="clusterName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The name of the cluster, which uniquely identifies it in a CM installation.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="apiClusterVersion">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[The CDH version of the cluster.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CDH3"/>
+      <xs:enumeration value="CDH4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiCollectDiagnosticDataArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for the collectDiagnosticData command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="startTime" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The start time (in ISO 8601 format)
+of the period to collection statistics for.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="endTime" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The end time (in ISO 8601 format)
+of the period to collection statistics for.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="includeInfoLog" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether to include INFO level logs.
+WARN, ERROR, and FATAL level logs are always included.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ticketNumber" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The support ticket number to attach to this data collection.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="comments" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Comments to include with this data collection.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiCommand">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Provides detailed information about a submitted command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="id" type="xs:long" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The command ID.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The command name.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="startTime" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The start time.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="endTime" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The end time, if the command is finished.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="active" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether the command is currently active.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="success" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[If the command is finished, whether it was successful.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="resultMessage" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[If the command is finished, the result message.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="resultDataUrl" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[URL to the command's downloadable result data, if any exists.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="serviceRef" type="apiServiceRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the service (for service commands only).]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="roleRef" type="apiRoleRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the role (for role commands only).]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="hostRef" type="apiHostRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the host (for host commands only).]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="parent" type="apiCommand" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the parent command, if any.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="children" type="apiCommandList" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[List of child commands. Only available in the full view.
+<p>
+The list contains only the summary view of the children.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiCommandList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of commands.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="command" type="apiCommand" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiConfig">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Model for a configuration parameter.
+When an entry's <i>value</i> property is not available, it means the
+entry is not configured. This means that the default value for the entry,
+if any, will be used. Setting a value to <i>null</i> also can be used
+to unset any previously set value for the parameter, reverting to
+the default value (if any).]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The canonical name that identifies this configuration parameter.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The user-defined value. When absent, the default value (if any)
+will be used.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="required" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view.
+Whether this configuration is required for the object. If
+any required configuration is not set, operations on the object may not
+work.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="default" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view. The default value.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="displayName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view. A user-friendly name of the parameters,
+as would have been shown in the web UI.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="description" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view. A textual description of the parameter.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="relatedName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view. If applicable, contains the related
+configuration variable used by the source project.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="validationState" type="validationState" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view.
+State of the configuration parameter after validation.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="validationMessage" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view.
+A message explaining the parameter's validation state.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="validationState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OK"/>
+      <xs:enumeration value="WARNING"/>
+      <xs:enumeration value="ERROR"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiConfigList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of configuration data.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="config" type="apiConfig" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiEcho">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[The echoMessage carries a message to be echoed back from the API service.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiEvent">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Events model noteworthy incidents in Cloudera Manager or the managed
+Hadoop cluster. An event carries its event category, severity, and a
+string content. They also have generic attributes, which are free-form
+key value pairs. Important events may be promoted into alerts.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="id" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[A unique ID for this event.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="content" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The content payload of this event.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="timeOccurred" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[When the event was generated.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="timeReceived" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[When the event was stored by Cloudera Manager. Events do not arrive in
+the order that they are generated. If you are writing an event poller,
+this is a useful field to query.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="category" type="apiEventCategory" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The category of this event -- whether it is a health event, an audit
+event, an activity event, etc.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="severity" type="apiEventSeverity" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The severity of the event.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alert" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether the event is promoted to an alert according to configuration.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="attributes" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[A list of key-value attribute pairs.]]>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="attribute" type="apiEventAttribute" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[A list of key-value attribute pairs.]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiEventAttribute">
+    <xs:sequence>
+      <xs:element name="values" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+  </xs:complexType>
+  <xs:simpleType name="apiEventCategory">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="HEALTH_EVENT"/>
+      <xs:enumeration value="LOG_EVENT"/>
+      <xs:enumeration value="AUDIT_EVENT"/>
+      <xs:enumeration value="ACTIVITY_EVENT"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiEventQueryResult">
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="totalResults" type="xs:long" minOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[The total number of matched results. Some are possibly not shown due
+to pagination.]]>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="event" type="apiEvent" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="apiEventSeverity">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="INFORMATIONAL"/>
+      <xs:enumeration value="IMPORTANT"/>
+      <xs:enumeration value="CRITICAL"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiHdfsDisableHaArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for the HDFS disable HA command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="activeName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the the NameNode to be kept.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="secondaryName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the SecondaryNamenode to associate with the active NameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="startDependentServices" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether to re-start dependent services. Defaults to true.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="deployClientConfigs" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether to re-deploy client configurations. Defaults to true.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiHdfsFailoverArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used when enabling HDFS automatic failover.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="nameservice" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Nameservice for which to enable automatic failover.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="zooKeeperService" type="apiServiceRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The ZooKeeper service to use.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="activeFCName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the failover controller to create for the active NameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standByFCName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the failover controller to create for the stand-by NameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiHdfsHaArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for HDFS HA commands.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="activeName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the active NameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="activeSharedEditsPath" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Path to the shared edits directory on the active NameNode's host.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standByName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the stand-by Namenode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standBySharedEditsPath" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Path to the shared edits directory on the stand-by NameNode's host.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="nameservice" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Nameservice that identifies the HA pair.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="startDependentServices" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether to re-start dependent services. Defaults to true.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="deployClientConfigs" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether to re-deploy client configurations. Defaults to true.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiHealthCheck">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Unique name of this health check.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="summary" type="apiHealthSummary" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The summary status of this check.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="apiHealthSummary">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Represents of the high-level health status of a subject in the cluster.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DISABLED"/>
+      <xs:enumeration value="HISTORY_NOT_AVAILABLE"/>
+      <xs:enumeration value="NOT_AVAILABLE"/>
+      <xs:enumeration value="GOOD"/>
+      <xs:enumeration value="CONCERNING"/>
+      <xs:enumeration value="BAD"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiHost">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[This is the model for a host in the system.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="hostId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[A unique host identifier.
+Typically identical to the hostname, i.e. the host's FQDN.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ipAddress" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The host IP address. This field is not mutable after the initial creation.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="hostname" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The hostname. This field is not mutable after the initial creation.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="rackId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The rack ID for this host.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="lastHeartbeat" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view.
+When the host agent sent the last heartbeat.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="roleRefs" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view.
+The list of roles assigned to this host.]]>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="roleRef" type="apiRoleRef" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[Readonly. Requires "full" view.
+The list of roles assigned to this host.]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="healthSummary" type="apiHealthSummary" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view.
+The high-level health status of this host.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="healthChecks" type="apiHealthCheck" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Requires "full" view.
+The list of health checks performed on the host, with their results.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="hostUrl" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly.
+A URL into the Cloudera Manager web UI for this specific host.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiHostList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of ApiHost objects]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="host" type="apiHost" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiHostRef">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A reference to a host.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="hostId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The unique host ID.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiLicense">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Information about the Cloudera Manager license.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="owner" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The owner (organization name) of the license.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="uuid" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[A UUID of this license.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="expiration" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The expiration date.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiListBase" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A generic list.]]>
+      </xs:documentation>
+    </xs:annotation>
+  </xs:complexType>
+  <xs:complexType name="apiMetric">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A metric represents a specific metric monitored by the Cloudera Management
+Services, and a list of values matching a user query.
+<p>
+These fields are available only in the "full" view:
+<ul>
+<li>displayName</li>
+<li>description</li>
+</ul>]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the metric.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="context" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Context the metric is associated with.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="unit" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Unit of the metric values.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="data" type="apiMetricData" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[List of readings retrieved from the monitors.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="displayName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Requires "full" view. User-friendly display name for the metric.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="description" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Requires "full" view. Description of the metric.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiMetricData">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A single data point of metric data.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="timestamp" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[When the metric reading was collected.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" type="xs:double" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The value of the metric.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiMetricList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of ApiHost objects]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="metric" type="apiMetric" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiNameservice">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Provides information about an HDFS nameservice.
+<p>
+Nameservices can be either a stand-alone NameNode, a NameNode paired with
+a SecondaryNameNode, or a high-availability pair formed by an active and
+a stand-by NameNode.
+<p>
+The following fields are only available in the object's full view:
+<ul>
+<li>healthSummary</li>
+<li>healthChecks</li>
+</ul>]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the nameservice.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="active" type="apiRoleRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the active NameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="activeFailoverController" type="apiRoleRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the active NameNode's failover controller, if configured.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standBy" type="apiRoleRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the stand-by NameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standByFailoverController" type="apiRoleRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the stand-by NameNode's failover controller, if configured.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="secondary" type="apiRoleRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Reference to the SecondaryNameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="mountPoints" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Mount points assigned to this nameservice in a federation.]]>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="mountPoint" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[Mount points assigned to this nameservice in a federation.]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="healthSummary" type="apiHealthSummary" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Requires "full" view. The high-level health status of this nameservice.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="healthChecks" type="apiHealthCheck" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Requires "full" view. List of health checks performed on the nameservice.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiNameserviceList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of HDFS nameservices.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="nameservice" type="apiNameservice" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiRole">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A role represents a specific entity that participate in a service. Examples
+are JobTrackers, DataNodes, HBase Masters. Each role is assigned a host
+where it runs on.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The name of the role.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="type" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The type of the role, e.g. NAMENODE, DATANODE, TASKTRACKER.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="hostRef" type="apiHostRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[A reference to the host where this role runs.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="serviceRef" type="apiServiceRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. A reference to the parent service.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="roleState" type="apiRoleState" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The configured run state of this role. Whether it's running, etc.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="healthSummary" type="apiHealthSummary" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The high-level health status of this role.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="healthChecks" type="apiHealthCheck" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The list of health checks of this service.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="haStatus" type="haStatus" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The HA status of this role.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="roleUrl" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly.
+Link into the Cloudera Manager web UI for this specific role.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="haStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ACTIVE"/>
+      <xs:enumeration value="STANDBY"/>
+      <xs:enumeration value="UNKNOWN"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiRoleList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of roles.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="role" type="apiRole" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiRoleNameList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of role names.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="roleName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiRoleRef">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A roleRef references a role. Each role is identified by its "roleName",
+the "serviceName" for the service it belongs to, and the "clusterName" in
+which the service resides. To operate on the role object,
+use the API with the those fields as parameters.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="clusterName" type="xs:string" minOccurs="0"/>
+      <xs:element name="serviceName" type="xs:string" minOccurs="0"/>
+      <xs:element name="roleName" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiRoleSetupInfo">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Role configuration information used when creating services.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiRole">
+        <xs:sequence>
+          <xs:element name="config" type="apiConfigList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[The role configuration. Optional.]]>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="apiRoleState">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Represents the configured run state of a role.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="HISTORY_NOT_AVAILABLE"/>
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="STARTING"/>
+      <xs:enumeration value="STARTED"/>
+      <xs:enumeration value="BUSY"/>
+      <xs:enumeration value="STOPPING"/>
+      <xs:enumeration value="STOPPED"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiRoleTypeConfig">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Role type configuration information.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiConfigList">
+        <xs:sequence>
+          <xs:element name="roleType" type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[The role type.]]>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiRoleTypeList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of roles types that exists for a given service.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="roleType" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiService">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A service (such as HDFS, MapReduce, HBase) runs in a cluster. It has roles,
+which are the actual entities (NameNode, DataNodes, etc.) that perform the
+service's functions.
+<h3>HDFS services and health checks</h3>
+In CDH4, HDFS services may not present any health checks. This will happen
+if the service has more than one nameservice configured. In those cases,
+the health information will be available by fetching information about the
+nameservices instead.
+<p>
+The health summary is still available, and reflects a service-wide summary.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The name of the service.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="type" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The type of the service, e.g. HDFS, MAPREDUCE, HBASE.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="clusterRef" type="apiClusterRef" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. A reference to the enclosing cluster.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="serviceState" type="apiServiceState" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The configured run state of this service.
+Whether it's running, etc.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="healthSummary" type="apiHealthSummary" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The high-level health status of this service.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="configStale" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Expresses whether the service configuration is stale.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="healthChecks" type="apiHealthCheck" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The list of health checks of this service.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="serviceUrl" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly.
+Link into the Cloudera Manager web UI for this specific service.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiServiceConfig">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Service and role type configuration.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiConfigList">
+        <xs:sequence>
+          <xs:element name="roleTypeConfigs" type="apiRoleTypeConfig" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[List of role type configurations.]]>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiServiceList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of services.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="service" type="apiService" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiServiceRef">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A serviceRef references a service. It is identified by the "serviceName"
+and "clusterName", the name of the cluster which the service belongs to.
+To operate on the service object, use the API with those fields as
+parameters.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="clusterName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The enclosing cluster for this service.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="serviceName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The service name.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiServiceSetupInfo">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Service configuration information.
+<p>
+This object is used to configure a new service, complete with a set of roles
+and the respective configurations.
+<p>
+See the parent class ApiService for minimal specification, which is
+simply the service name and type.
+<p>
+Note that all fields here are optional. The semantics of not providing a value
+may change depending on the call being made. Refer to the documentation of
+the appropriate call for the behavior of optional fields.
+<p>]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiService">
+        <xs:sequence>
+          <xs:element name="config" type="apiServiceConfig" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[Configuration of the service being created. Optional.]]>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="roles" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[The list of service roles. Optional.]]>
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="role" type="apiRoleSetupInfo" minOccurs="0" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      <![CDATA[The list of service roles. Optional.]]>
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiServiceSetupList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of service setup objects.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="service" type="apiServiceSetupInfo" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="apiServiceState">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Represents the configured run state of a service.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="HISTORY_NOT_AVAILABLE"/>
+      <xs:enumeration value="UNKNOWN"/>
+      <xs:enumeration value="STARTING"/>
+      <xs:enumeration value="STARTED"/>
+      <xs:enumeration value="STOPPING"/>
+      <xs:enumeration value="STOPPED"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiUser">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[This is the model for user information in the API.
+<p>
+Note that any method that returns user information will not contain any
+password information. The password property is only used when creating
+or updating users.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The username, which is unique within a Cloudera Manager installation.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="password" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Returns the user password.
+<p>
+Passwords are not returned when querying user information, so this
+property will always be empty when reading information from a server.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="roles" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[A list of roles this user belongs to.
+Current possible values are: "ROLE_ADMIN" or empty.]]>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[A list of roles this user belongs to.
+Current possible values are: "ROLE_ADMIN" or empty.]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiUserList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of users.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="user" type="apiUser" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="apiVersionInfo">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Version information of Cloudera Manager itself.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="version" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Version.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="snapshot" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether this build is a development snapshot.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="buildUser" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The user performing the build.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="buildTimestamp" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Build timestamp.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="gitHash" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Source control management hash.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
