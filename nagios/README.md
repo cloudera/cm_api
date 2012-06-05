@@ -13,13 +13,14 @@ Overview
 
 1. To generate Nagios configuration files mapping Nagios hosts and services
    to CM hosts, services, and roles.
-
+```
        CM hosts     =>  Nagios hosts
        CM clusters  =>  Nagios hosts (are 'virtual hosts')
        CM services  =>  Nagios services (with 'virtual hosts')
        CM roles     =>  Nagios services (with physical hosts)
+```
 
-   Run with the -g parameter to generate the config files and exit.
+   Run with the `-g` parameter to generate the config files and exit.
 
    *These configuration files should be edited/customized as appropriate.*
 
@@ -27,26 +28,26 @@ Overview
 
    Updating Nagios can happen in one of two ways:
    1.  Write to the Nagios "External Command File". (Default)
-       The command file is sepecified with the -c/--cmd-file parameter.
+       The command file is sepecified with the `-c`/`--cmd-file` parameter.
 
        See 'External Commands':
        http://nagios.sourceforge.net/docs/3_0/extcommands.html
 
    2.  Use `send_nsca` to update Nagios via a NSCA daemon.
-       Enabled with the -n/--use-send-nsca option. Parameters are used
-       to specify the location of the send_nsca command, the NSCA server
-       and port, and the send_nsca configuration file.
+       Enabled with the `-n`/`--use-send-nsca` option. Parameters are used
+       to specify the location of the `send_nsca` command, the NSCA server
+       and port, and the `send_nsca` configuration file.
 
    Currently, CM services and roles report a healthSummary which is used
    to determine a Nagios status code:
-
+```
        HISTORY_NOT_AVAILABLE  =>  UNKNOWN
        NOT_AVAILABLE          =>  UNKNOWN
        DISABLED               =>  UNKNOWN
        GOOD                   =>  OK
        CONCERNING             =>  WARNING
        BAD                    =>  CRITICAL
-
+```
    The script will terminate after submitting the status updates.
 
 Usage
@@ -65,11 +66,11 @@ Usage
    E.g. the following command generates Nagios configs for the CM host
    specified. See the overview section for an explanation of how the CM
    services, roles, and hosts map to Nagios.
-
-   `python cm_nagios.py --generate-cfg \
+```
+   python cm_nagios.py --generate-cfg \
       --host $CM_HOST --passfile $CM_PASSFILE \
-      --cfg-dir=$NAGIOS_CM_CFG_DIR`
-
+      --cfg-dir=$NAGIOS_CM_CFG_DIR
+```
    See the help `cm_nagios.py -h` for all arguments.
 
    Ensure that Nagios can find the generated cfg files. If the directory
@@ -84,10 +85,11 @@ Usage
    http://nagios.sourceforge.net/docs/3_0/configmain.html
 
 4. Run the script to send passive updates to Nagios
-
-   `python cm_nagios.py --update-status \
+```
+   python cm_nagios.py --update-status \
       --host $CM_HOST --passfile $CM_PASSFILE \
-      --cmd-file $NAGIOS_CMD_FILE`
+      --cmd-file $NAGIOS_CMD_FILE
+```
 
    The script writes updates for each of the CM services, roles, and
    hosts to the Nagios external commands file.
