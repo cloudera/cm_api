@@ -19,10 +19,12 @@ try:
 except ImportError:
   import simplejson as json
 
+import logging
 import time
 
 __docformat__ = "epytext"
 
+LOG = logging.getLogger(__name__)
 
 class BaseApiObject(object):
   """
@@ -103,8 +105,8 @@ class BaseApiObject(object):
       if k in cls.RO_ATTR:
         obj._setattr(k, v)
       else:
-        raise KeyError("Unexpected attribute '%s' in %s json" %
-                       (k, cls.__name__))
+        LOG.debug("Unexpected attribute '%s' in %s json" %
+                  (k, cls.__name__))
     return obj
 
 
