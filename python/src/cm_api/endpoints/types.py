@@ -55,6 +55,20 @@ class BaseApiObject(object):
   def _get_resource_root(self):
     return self._resource_root
 
+  def _update(self, api_obj):
+    """Copy state from api_obj to this object."""
+    if not isinstance(self, api_obj.__class__):
+      raise ValueError(
+          "Class %s does not derive from %s; cannot update attributes." %
+          (self.__class__, api_obj.__class__))
+
+    for attr in self.RW_ATTR + self.RO_ATTR:
+      try:
+        val = getattr(api_obj, attr)
+        setattr(self, attr, val)
+      except AttributeError, ignored:
+        pass
+
   @staticmethod
   def ctor_helper(self=None, **kwargs):
     """
@@ -144,8 +158,8 @@ class ApiCommand(BaseApiObject):
   """Information about a command."""
   RW_ATTR = ( )
   RO_ATTR = ('id', 'name', 'startTime', 'endTime', 'active', 'success',
-             'resultMessage', 'serviceRef', 'roleRef', 'hostRef',
-             'children', 'parent', 'resultDataUrl')
+             'resultMessage', 'clusterRef', 'serviceRef', 'roleRef', 'hostRef',
+             'children', 'parent', 'resultDataUrl',)
 
   def __init__(self, resource_root):
     BaseApiObject.ctor_helper(**locals())

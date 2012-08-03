@@ -74,6 +74,7 @@ def delete_cluster(resource_root, name):
 
 class ApiCluster(BaseApiObject):
   RW_ATTR = ('name', 'version')
+  RO_ATTR = ('maintenanceMode', 'maintenanceOwners')
 
   def __init__(self, resource_root, name, version):
     BaseApiObject.ctor_helper(**locals())
@@ -85,6 +86,27 @@ class ApiCluster(BaseApiObject):
     path = self._path() + '/commands/' + cmd
     resp = self._get_resource_root().post(path, data=data)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
+
+  def _put(self, dic, params=None):
+    """Change cluster attributes"""
+    resp = self._get_resource_root().put(
+        self._path(), params=params, data=json.dumps(dic))
+    cluster = ApiCluster.from_json_dict(resp, self._get_resource_root())
+
+    self._update(cluster)
+    return self
+
+  def rename(self, newname):
+    """
+    Rename a cluster.
+
+    @param newname: New cluster name
+    @return: An ApiCluster object
+    @since: API v2
+    """
+    dic = self.to_json_dict()
+    dic['name'] = newname
+    return self._put(dic)
 
   def create_service(self, name, service_type):
     """
@@ -138,3 +160,27 @@ class ApiCluster(BaseApiObject):
     @return: Reference to the submitted command.
     """
     return self._cmd('stop')
+
+  def enter_maintenance_mode(self):
+    """
+    Put the cluster in maintenance mode.
+
+    @return: Reference to the completed command.
+    @since: API v2
+    """
+    cmd = self._cmd('enterMaintenanceMode')
+    if cmd.success:
+      self._update(get_cluster(self._get_resource_root(), self.name))
+    return cmd
+
+  def exit_maintenance_mode(self):
+    """
+    Take the cluster out of maintenance mode.
+
+    @return: Reference to the completed command.
+    @since: API v2
+    """
+    cmd = self._cmd('exitMaintenanceMode')
+    if cmd.success:
+      self._update(get_cluster(self._get_resource_root(), self.name))
+    return cmd
