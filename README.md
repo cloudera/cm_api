@@ -1,1 +1,52 @@
 Welcome to Cloudera Manager API Client!
+
+Python Client
+=============
+Python is the only client binding available for now. The source is in the
+`python` directory. The Python client comes with a `cm_api` Python client
+module, and examples on performing certain Hadoop cluster administrative tasks
+using the Python client.
+
+Getting Started
+---------------
+Here is a short snippet on using the `cm_api` Python client:
+
+    Python 2.7.2+ (default, Oct  4 2011, 20:06:09) 
+    [GCC 4.6.1] on linux2
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> from cm_api.api_client import ApiResource
+    >>> api = ApiResource('rhel62-1.ent.cloudera.com', 7180, 'admin', 'admin')
+    >>> for h in api.get_all_hosts():
+    ...   print h.hostname
+    ... 
+    rhel62-2.ent.cloudera.com
+    rhel62-4.ent.cloudera.com
+    rhel62-3.ent.cloudera.com
+    rhel62-1.ent.cloudera.com
+    >>> 
+
+Another example: getting all the services in a cluster:
+
+    >>> for c in api.get_all_clusters():
+    ...   print c.name
+    ... 
+    Cluster 1 - CDH4
+    >>> for s in api.get_cluster('Cluster 1 - CDH4').get_all_services():
+    ...  print s.name
+    ... 
+    hdfs1
+    mapreduce1
+    zookeeper1
+    hbase1
+    oozie1
+    yarn1
+    hue1
+    >>> 
+
+Example Scripts
+---------------
+You can find example scripts in the `python/examples` directory.
+
+* `bulk_config_update.py` ---
+  Useful for heterogenous hardware environment. It sets the configuration on
+  the roles running on a given set of hosts.
