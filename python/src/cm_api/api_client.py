@@ -29,7 +29,7 @@ __docformat__ = "epytext"
 LOG = logging.getLogger(__name__)
 
 API_AUTH_REALM = "Cloudera Manager"
-
+API_CURRENT_VERSION = 2
 
 class ApiException(RestException):
   """
@@ -54,7 +54,7 @@ class ApiResource(Resource):
 
   def __init__(self, server_host, server_port=None,
                username="admin", password="admin",
-               use_tls=False, version=1):
+               use_tls=False, version=API_CURRENT_VERSION):
     """
     Creates a Resource object that provides API endpoints.
 
