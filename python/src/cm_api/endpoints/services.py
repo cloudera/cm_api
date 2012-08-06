@@ -20,6 +20,7 @@ except ImportError:
   import simplejson as json
 import logging
 
+from cm_api.api_client import API_VERSION_1
 from cm_api.endpoints.types import config_to_json, json_to_config, \
     config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject, \
     ApiActivity
@@ -404,7 +405,8 @@ class ApiService(BaseApiObject):
     return self._cmd('hdfsDisableAutoFailover', data = json.dumps(nameservice))
 
   def disable_hdfs_ha(self, active_name, secondary_name,
-      start_dependent_services=True, deploy_client_configs=True):
+      start_dependent_services=True, deploy_client_configs=True,
+                      disable_quorum_journal=False):
     """
     Disable high availability for an HDFS NameNode.
 
@@ -413,6 +415,10 @@ class ApiService(BaseApiObject):
                            remaining NameNode.
     @param start_dependent_services: whether to re-start dependent services.
     @param deploy_client_configs: whether to re-deploy client configurations.
+    @param disable_quorum_journal: whether to disable Quorum Journal. Available since API v2.
+                                   Quorum Journal will be disabled for all
+                                   nameservices that have Quorum Journal
+                                   enabled.
     @return: Reference to the submitted command.
     """
     args = dict(
@@ -421,6 +427,14 @@ class ApiService(BaseApiObject):
       startDependentServices = start_dependent_services,
       deployClientConfigs = deploy_client_configs,
     )
+
+    version = _get_resource_root().version
+    if version == API_VERSION_1:
+      if disable_quorum_journal:
+        raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
+   else:
+      args['disableQuorumJournal'] = disable_quorum_journal
+
     return self._cmd('hdfsDisableHa', data = json.dumps(args))
 
   def enable_hdfs_auto_failover(self, nameservice, active_fc_name,
@@ -447,7 +461,7 @@ class ApiService(BaseApiObject):
 
   def enable_hdfs_ha(self, active_name, active_shared_path, standby_name,
       standby_shared_path, nameservice, start_dependent_services=True,
-      deploy_client_configs=True):
+      deploy_client_configs=True, enable_quorum_journal=False):
     """
     Enable high availability for an HDFS NameNode.
 
@@ -458,6 +472,10 @@ class ApiService(BaseApiObject):
     @param nameservice: name service for the HA pair.
     @param start_dependent_services: whether to re-start dependent services.
     @param deploy_client_configs: whether to re-deploy client configurations.
+    @param enable_quorum_journal: whether to enable Quorum Journal. Available since API v2.
+                                  Quorum Journal will be enabled for all
+                                  nameservices except those configured with NFS High
+                                  Availability.
     @return: Reference to the submitted command.
     """
     args = dict(
@@ -469,6 +487,14 @@ class ApiService(BaseApiObject):
       startDependentServices = start_dependent_services,
       deployClientConfigs = deploy_client_configs,
     )
+
+   version = _get_resource_root().version
+   if version == API_VERSION_1:
+     if enable_quorum_journal:
+       raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
+   else:
+     args['enableQuorumJournal'] = enable_quorum_journal
+
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
   def failover_hdfs(self, active_name, standby_name, force=False):
