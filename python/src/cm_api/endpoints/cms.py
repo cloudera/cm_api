@@ -20,7 +20,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
-    BaseApiObject, ApiCommand
+    BaseApiObject, ApiCommand, ApiList
 from cm_api.endpoints.services import ApiService
 
 class ApiLicense(BaseApiObject):
@@ -152,3 +152,24 @@ class ClouderaManager(BaseApiObject):
         'includeInfoLog': includeInfoLog,
     }
     return self._cmd('collectDiagnosticData', data=json.dumps(args))
+
+  def hosts_decommission(self, host_names):
+    """
+    Decommission the specified hosts by decommissioning the slave roles
+    and stopping the remaining ones.
+
+    @param host_names: List of names of hosts to be decommissioned.
+    @return: Information about the submitted command.
+    @since: API v2
+    """
+    return self._cmd('hostsDecommission', data=json.dumps({ApiList.LIST_KEY : host_names}))
+
+  def hosts_start_roles(self, host_names):
+    """
+    Start all the roles on the specified hosts.
+
+    @param host_names: List of names of hosts on which to start all roles.
+    @return: Information about the submitted command.
+    @since: API v2
+    """
+    return self._cmd('hostsStartRoles', data=json.dumps({ApiList.LIST_KEY : host_names}))
