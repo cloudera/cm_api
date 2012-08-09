@@ -67,6 +67,7 @@ class ApiResource(Resource):
     @param version: API version.
     @return Resource object referring to the root.
     """
+    self._version = version
     protocol = use_tls and "https" or "http"
     if server_port is None:
       server_port = use_tls and 7183 or 7180
@@ -77,6 +78,13 @@ class ApiResource(Resource):
     client.set_basic_auth(username, password, API_AUTH_REALM)
     client.set_headers( { "Content-Type" : "application/json" } )
     Resource.__init__(self, client)
+
+  @property
+  def version(self):
+    """
+    Returns the API version (integer) being used.
+    """
+    return self._version
 
   # CMS ops.
 
