@@ -71,6 +71,7 @@ class BaseApiObject(object):
       # A reference, `v' should be a json dictionary
       cls_name = "Api" + k[0].upper() + k[1:]
       cls = globals()[cls_name]
+      v = fix_unicode_kwargs(v)
       v = cls(self._get_resource_root(), **v)
     setattr(self, k, v)
 
@@ -94,6 +95,7 @@ class BaseApiObject(object):
         rw_dict[k] = v
         del dic[k]
     # Construct object based on RW_ATTR
+    rw_dict = fix_unicode_kwargs(rw_dict)
     obj = cls(resource_root, **rw_dict)
 
     # Initialize all RO_ATTR to be None
@@ -309,6 +311,17 @@ def json_to_config(dic, full = False):
     else:
       config[k] = entry.get('value')
   return config
+
+def fix_unicode_kwargs(dic):
+  """
+  This works around http://bugs.python.org/issue2646
+  We use unicode strings as keys in kwargs.
+  """
+  res = { }
+  for k, v in dic.iteritems():
+    res[str(k)] = v
+  return res
+
 
 #
 # In order for BaseApiObject to automatically instantiate reference objects,
