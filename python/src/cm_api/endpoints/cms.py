@@ -164,6 +164,17 @@ class ClouderaManager(BaseApiObject):
     """
     return self._cmd('hostsDecommission', data=json.dumps({ApiList.LIST_KEY : host_names}))
 
+  def hosts_recommission(self, host_names):
+    """
+    Recommission the specified hosts by recommissioning the slave roles.
+    This command doesn't start the roles. Use hosts_start_roles for that.
+
+    @param host_names: List of names of hosts to be recommissioned.
+    @return: Information about the submitted command.
+    @since: API v2
+    """
+    return self._cmd('hostsRecommission', data=json.dumps({ApiList.LIST_KEY : host_names}))
+
   def hosts_start_roles(self, host_names):
     """
     Start all the roles on the specified hosts.
