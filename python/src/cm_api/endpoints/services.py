@@ -358,7 +358,7 @@ class ApiService(BaseApiObject):
     """
     Execute the "refresh" command on a set of roles.
 
-    @param: role_names Names of the roles to decommission.
+    @param: role_names Names of the roles to refresh.
     @return: Reference to the submitted command.
     """
     return self._role_cmd('refresh', role_names)
@@ -372,6 +372,17 @@ class ApiService(BaseApiObject):
     """
     data = json.dumps({ ApiList.LIST_KEY : role_names })
     return self._cmd('decommission', data)
+
+  def recommission(self, *role_names):
+    """
+    Recommission roles in a service.
+
+    @param role_names Names of the roles to recommission.
+    @return Reference to the submitted command.
+    @since: API v2
+    """
+    data = json.dumps({ ApiList.LIST_KEY : role_names })
+    return self._cmd('recommission', data)
 
   def deploy_client_config(self, *role_names):
     """
