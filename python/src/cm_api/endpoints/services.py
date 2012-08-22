@@ -20,7 +20,6 @@ except ImportError:
   import simplejson as json
 import logging
 
-from cm_api.api_client import API_VERSION_1
 from cm_api.endpoints.types import config_to_json, json_to_config, \
     config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject, \
     ApiActivity
@@ -429,10 +428,10 @@ class ApiService(BaseApiObject):
     )
 
     version = _get_resource_root().version
-    if version == API_VERSION_1:
+    if version < 2:
       if disable_quorum_journal:
         raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
-   else:
+    else:
       args['disableQuorumJournal'] = disable_quorum_journal
 
     return self._cmd('hdfsDisableHa', data = json.dumps(args))
@@ -488,12 +487,12 @@ class ApiService(BaseApiObject):
       deployClientConfigs = deploy_client_configs,
     )
 
-   version = _get_resource_root().version
-   if version == API_VERSION_1:
-     if enable_quorum_journal:
-       raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
-   else:
-     args['enableQuorumJournal'] = enable_quorum_journal
+    version = _get_resource_root().version
+    if version < 2:
+      if enable_quorum_journal:
+        raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
+    else:
+      args['enableQuorumJournal'] = enable_quorum_journal
 
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
