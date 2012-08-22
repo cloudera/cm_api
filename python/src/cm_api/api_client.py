@@ -29,7 +29,6 @@ __docformat__ = "epytext"
 LOG = logging.getLogger(__name__)
 
 API_AUTH_REALM = "Cloudera Manager"
-API_VERSION_1 = 1
 API_CURRENT_VERSION = 2
 
 class ApiException(RestException):
