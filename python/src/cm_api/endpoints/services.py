@@ -209,6 +209,7 @@ class ApiService(BaseApiObject):
 
     @param role_name: Role name
     @param role_type: Role type
+    @param host_id: ID of the host to assign the role to
     @return: An ApiRole object
     """
     return roles.create_role(self._get_resource_root(), self.name, role_type,
