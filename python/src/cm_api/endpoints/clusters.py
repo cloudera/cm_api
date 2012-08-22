@@ -161,6 +161,15 @@ class ApiCluster(BaseApiObject):
     """
     return self._cmd('stop')
 
+  def deploy_client_config(self):
+    """
+    Deploys client configuration to the hosts on the cluster.
+
+    @return: Reference to the submitted command.
+    @since: API v2
+    """
+    return self._cmd('deployClientConfig')
+
   def enter_maintenance_mode(self):
     """
     Put the cluster in maintenance mode.
