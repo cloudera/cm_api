@@ -467,9 +467,11 @@ class ApiService(BaseApiObject):
 
     @param active_name: name of active NameNode.
     @param active_shared_path: shared edits path for active NameNode.
+                               Ignored if Quorum Journal is being enabled.
     @param standby_name: name of stand-by NameNode.
     @param standby_shared_path: shared edits path for stand-by NameNode.
-    @param nameservice: name service for the HA pair.
+                                Ignored if Quourm Journal is being enabled.
+    @param nameservice: nameservice for the HA pair.
     @param start_dependent_services: whether to re-start dependent services.
     @param deploy_client_configs: whether to re-deploy client configurations.
     @param enable_quorum_journal: whether to enable Quorum Journal. Available since API v2.
@@ -480,20 +482,21 @@ class ApiService(BaseApiObject):
     """
     args = dict(
       activeName = active_name,
-      activeSharedEditsPath = active_shared_path,
       standByName = standby_name,
-      standBySharedEditsPath = standby_shared_path,
       nameservice = nameservice,
       startDependentServices = start_dependent_services,
       deployClientConfigs = deploy_client_configs,
     )
 
-    version = self._get_resource_root().version
-    if version < 2:
-      if enable_quorum_journal:
+    if enable_quorum_journal:
+      version = self._get_resource_root().version
+      if version < 2:
         raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
+      else:
+        args['enableQuorumJournal'] = enable_quorum_journal
     else:
-      args['enableQuorumJournal'] = enable_quorum_journal
+      args['activeSharedEditsPath'] = active_shared_path
+      args['standBySharedEditsPath'] = standby_shared_path
 
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
