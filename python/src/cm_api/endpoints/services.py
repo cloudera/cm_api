@@ -428,7 +428,7 @@ class ApiService(BaseApiObject):
       deployClientConfigs = deploy_client_configs,
     )
 
-    version = _get_resource_root().version
+    version = self._get_resource_root().version
     if version < 2:
       if disable_quorum_journal:
         raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
@@ -488,7 +488,7 @@ class ApiService(BaseApiObject):
       deployClientConfigs = deploy_client_configs,
     )
 
-    version = _get_resource_root().version
+    version = self._get_resource_root().version
     if version < 2:
       if enable_quorum_journal:
         raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
