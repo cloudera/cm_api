@@ -79,6 +79,9 @@ class ApiCluster(BaseApiObject):
   def __init__(self, resource_root, name, version):
     BaseApiObject.ctor_helper(**locals())
 
+  def __str__(self):
+    return "<ApiCluster>: %s; version: %s" % (self.name, self.version)
+
   def _path(self):
     return "%s/%s" % (CLUSTERS_PATH, self.name)
 

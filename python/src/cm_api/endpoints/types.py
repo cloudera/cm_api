@@ -133,6 +133,11 @@ class ApiList(object):
   def __init__(self, objects):
     self.objects = objects
 
+  def __str__(self):
+    return "<ApiList>(%d): [%s]" % (
+        len(self.objects),
+        ", ".join([str(item) for item in self.objects]))
+
   def to_json_dict(self):
     return { ApiList.LIST_KEY :
             [ x.to_json_dict() for x in self.objects ] }
@@ -166,6 +171,10 @@ class ApiCommand(BaseApiObject):
 
   def __init__(self, resource_root):
     BaseApiObject.ctor_helper(**locals())
+
+  def __str__(self):
+    return "<ApiCommand>: '%s' (id: %s; active: %s; success: %s)" % (
+        self.name, self.id, self.active, self.success)
 
   def _path(self):
     return '/commands/%d' % self.id
@@ -279,6 +288,9 @@ class ApiActivity(BaseApiObject):
   def __init__(self, resource_root):
     BaseApiObject.ctor_helper(**locals())
 
+  def __str__(self):
+    return "<ApiActivity>: %s (%s)" % (self.name, self.status)
+
 #
 # Configuration helpers.
 #
@@ -290,6 +302,8 @@ class ApiConfig(BaseApiObject):
   def __init__(self, resource_root, name, value = None):
     BaseApiObject.ctor_helper(**locals())
 
+  def __str__(self):
+    return "<ApiConfig>: %s = %s" % (self.name, self.value)
 
 def config_to_api_list(dic):
   """

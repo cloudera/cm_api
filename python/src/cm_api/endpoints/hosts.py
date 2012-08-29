@@ -90,6 +90,9 @@ class ApiHost(BaseApiObject):
     # the ipAddress field, and a TypeError would be raised.
     BaseApiObject.ctor_helper(**locals())
 
+  def __str__(self):
+    return "<ApiHost>: %s (%s)" % (self.hostId, self.ipAddress)
+
   def _path(self):
     return HOSTS_PATH + '/' + self.hostId
 

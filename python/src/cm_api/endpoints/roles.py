@@ -125,6 +125,10 @@ class ApiRole(BaseApiObject):
     # needs to be called "type" as well, despite it being a python keyword.
     BaseApiObject.ctor_helper(**locals())
 
+  def __str__(self):
+    return "<ApiRole>: %s (cluster: %s; service: %s)" % (
+        self.name, self.serviceRef.clusterName, self.serviceRef.serviceName)
+
   def _path(self):
     return _get_role_path(self.serviceRef.clusterName,
                           self.serviceRef.serviceName,
