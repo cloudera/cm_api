@@ -50,6 +50,18 @@ class ClouderaManager(BaseApiObject):
     resp = self._get_resource_root().post("/cm/commands/" + command, data=data)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
+  def get_commands(self, view=None):
+    """
+    Retrieve a list of running global commands.
+
+    @param view: View to materialize ('full' or 'summary')
+    @return: A list of running commands.
+    """
+    resp = self._get_resource_root().get(
+        "/cm/commands",
+        params = view and dict(view=view) or None)
+    return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
+
   def create_mgmt_service(self, service_setup_info):
     """
     Setup the Cloudera Management Service.

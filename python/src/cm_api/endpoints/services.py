@@ -143,6 +143,18 @@ class ApiService(BaseApiObject):
 
     return (svc_config, rt_configs)
 
+  def get_commands(self, view=None):
+    """
+    Retrieve a list of running commands for this service.
+
+    @param view: View to materialize ('full' or 'summary')
+    @return: A list of running commands.
+    """
+    resp = self._get_resource_root().get(
+        self._path() + '/commands',
+        params = view and dict(view=view) or None)
+    return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
+
   def get_running_activities(self):
     path = self._path() + "/activities"
     resp = self._get_resource_root().get(path)
