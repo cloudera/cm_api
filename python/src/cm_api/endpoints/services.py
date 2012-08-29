@@ -98,6 +98,10 @@ class ApiService(BaseApiObject):
     # needs to be called "type" as well, despite it being a python keyword.
     BaseApiObject.ctor_helper(**locals())
 
+  def __str__(self):
+    return "<ApiService>: %s (cluster: %s)" % (
+        self.name, self._get_cluster_name())
+
   def _get_cluster_name(self):
     if self.clusterRef:
       return self.clusterRef.clusterName
