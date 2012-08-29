@@ -96,6 +96,18 @@ class ApiCluster(BaseApiObject):
     self._update(cluster)
     return self
 
+  def get_commands(self, view=None):
+    """
+    Retrieve a list of running commands for this cluster.
+
+    @param view: View to materialize ('full' or 'summary')
+    @return: A list of running commands.
+    """
+    resp = self._get_resource_root().get(
+        self._path() + '/commands',
+        params = view and dict(view=view) or None)
+    return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
+
   def rename(self, newname):
     """
     Rename a cluster.
