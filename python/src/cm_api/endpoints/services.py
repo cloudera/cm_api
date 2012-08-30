@@ -59,7 +59,10 @@ def get_service(resource_root, name, cluster_name="default"):
   @param cluster_name: Cluster name
   @return: An ApiService object
   """
-  dic = resource_root.get("%s/%s" % (SERVICES_PATH % (cluster_name,), name))
+  return _get_service(resource_root, "%s/%s" % (SERVICES_PATH % (cluster_name,), name))
+
+def _get_service(resource_root, path):
+  dic = resource_root.get(path)
   return ApiService.from_json_dict(dic, resource_root)
 
 def get_all_services(resource_root, cluster_name="default", view=None):
@@ -87,7 +90,7 @@ def delete_service(resource_root, name, cluster_name="default"):
 
 class ApiService(BaseApiObject):
   RO_ATTR = ('serviceState', 'healthSummary', 'healthChecks', 'clusterRef',
-             'configStale', 'serviceUrl')
+             'configStale', 'serviceUrl', 'maintenanceMode', 'maintenanceOwners')
   RW_ATTR = ('name', 'type')
 
   def __init__(self, resource_root, name, type):
@@ -585,6 +588,29 @@ class ApiService(BaseApiObject):
     """
     return self._role_cmd('hueSyncDb', servers)
 
+  def enter_maintenance_mode(self):
+    """
+    Put the service in maintenance mode.
+
+    @return: Reference to the completed command.
+    @since: API v2
+    """
+    cmd = self._cmd('enterMaintenanceMode')
+    if cmd.success:
+      self._update(_get_service(self._get_resource_root(), self._path()))
+    return cmd
+
+  def exit_maintenance_mode(self):
+    """
+    Take the service out of maintenance mode.
+
+    @return: Reference to the completed command.
+    @since: API v2
+    """
+    cmd = self._cmd('exitMaintenanceMode')
+    if cmd.success:
+      self._update(_get_service(self._get_resource_root(), self._path()))
+    return cmd
 
 class ApiServiceSetupInfo(ApiService):
   RO_ATTR = ( )
@@ -641,4 +667,3 @@ class ApiServiceSetupInfo(ApiService):
         'type' : role_type,
         'hostRef' : { 'hostId' : host_id },
         'config' : api_config_list })
-
