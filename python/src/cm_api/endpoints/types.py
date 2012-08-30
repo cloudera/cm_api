@@ -162,6 +162,7 @@ class ApiCommand(BaseApiObject):
   RO_ATTR = ('id', 'name', 'startTime', 'endTime', 'active', 'success',
              'resultMessage', 'clusterRef', 'serviceRef', 'roleRef', 'hostRef',
              'children', 'parent', 'resultDataUrl',)
+  SYNCHRONOUS_COMMAND_ID = -1
 
   def __init__(self, resource_root):
     BaseApiObject.ctor_helper(**locals())
@@ -183,6 +184,9 @@ class ApiCommand(BaseApiObject):
     @param resource_root: The root Resource object.
     @return: A new ApiCommand object.
     """
+    if self.id == SYNCHRONOUS_COMMAND_ID:
+      return self
+
     resp = self._get_resource_root().get(self._path())
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
@@ -195,6 +199,9 @@ class ApiCommand(BaseApiObject):
     @return: The final ApiCommand object, containing the last known state.
              The command may still be running in case of timeout.
     """
+    if self.id == SYNCHRONOUS_COMMAND_ID:
+      return self
+
     SLEEP_SEC = 5
 
     if timeout is None:
@@ -224,6 +231,9 @@ class ApiCommand(BaseApiObject):
     @param resource_root: The root Resource object.
     @return: A new ApiCommand object with the updated information.
     """
+    if self.id == SYNCHRONOUS_COMMAND_ID:
+      return self
+
     path = self._path() + '/abort'
     resp = self._get_resource_root().post(path)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())

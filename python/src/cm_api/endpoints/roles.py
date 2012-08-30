@@ -20,7 +20,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
-    ApiList, BaseApiObject, ApiHostRef
+    ApiCommand, ApiList, BaseApiObject, ApiHostRef
 
 __docformat__ = "epytext"
 
@@ -70,7 +70,10 @@ def get_role(resource_root, service_name, name, cluster_name="default"):
   @param cluster_name: Cluster name
   @return: An ApiRole object
   """
-  dic = resource_root.get(_get_role_path(cluster_name, service_name, name))
+  return _get_role(resource_root, _get_role_path(cluster_name, service_name, name))
+
+def _get_role(resource_root, path):
+  dic = resource_root.get(path)
   return ApiRole.from_json_dict(dic, resource_root)
 
 def get_all_roles(resource_root, service_name, cluster_name="default", view=None):
@@ -113,7 +116,8 @@ def delete_role(resource_root, service_name, name, cluster_name="default"):
 
 class ApiRole(BaseApiObject):
   RO_ATTR = ('roleState', 'healthSummary', 'healthChecks', 'serviceRef',
-      'configStale', 'haStatus', 'roleUrl', 'commissionState')
+      'configStale', 'haStatus', 'roleUrl', 'commissionState',
+      'maintenanceMode', 'maintenanceOwners')
   RW_ATTR = ('name', 'type', 'hostRef')
 
   def __init__(self, resource_root, name, type, hostRef):
@@ -125,6 +129,11 @@ class ApiRole(BaseApiObject):
     return _get_role_path(self.serviceRef.clusterName,
                           self.serviceRef.serviceName,
                           self.name)
+
+  def _cmd(self, cmd, data=None):
+    path = self._path() + '/commands/' + cmd
+    resp = self._get_resource_root().post(path, data=data)
+    return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
   def _get_log(self, log):
     path = "%s/logs/%s" % (self._path(), log)
@@ -192,3 +201,27 @@ class ApiRole(BaseApiObject):
     """
     return self._get_resource_root().get_metrics(self._path() + '/metrics',
         from_time, to_time, metrics, view)
+
+  def enter_maintenance_mode(self):
+    """
+    Put the role in maintenance mode.
+
+    @return: Reference to the completed command.
+    @since: API v2
+    """
+    cmd = self._cmd('enterMaintenanceMode')
+    if cmd.success:
+      self._update(_get_role(self._get_resource_root(), self._path()))
+    return cmd
+
+  def exit_maintenance_mode(self):
+    """
+    Take the role out of maintenance mode.
+
+    @return: Reference to the completed command.
+    @since: API v2
+    """
+    cmd = self._cmd('exitMaintenanceMode')
+    if cmd.success:
+      self._update(_get_role(self._get_resource_root(), self._path()))
+    return cmd

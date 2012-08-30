@@ -73,8 +73,8 @@ def delete_cluster(resource_root, name):
 
 
 class ApiCluster(BaseApiObject):
-  RW_ATTR = ('name', 'version')
   RO_ATTR = ('maintenanceMode', 'maintenanceOwners')
+  RW_ATTR = ('name', 'version')
 
   def __init__(self, resource_root, name, version):
     BaseApiObject.ctor_helper(**locals())

@@ -19,7 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiList, BaseApiObject, \
+from cm_api.endpoints.types import ApiCommand, ApiList, BaseApiObject, \
     config_to_json, json_to_config
 
 __docformat__ = "epytext"
@@ -76,7 +76,8 @@ def delete_host(resource_root, host_id):
 
 class ApiHost(BaseApiObject):
   RO_ATTR = ('status', 'lastHeartbeat', 'roleRefs', 'healthSummary',
-      'healthChecks', 'hostUrl', 'commissionState')
+      'healthChecks', 'hostUrl', 'commissionState',
+      'maintenanceMode', 'maintenanceOwners')
   RW_ATTR = ('hostId', 'hostname', 'ipAddress', 'rackId')
 
   def __init__(self, resource_root, hostId, hostname,
@@ -91,6 +92,11 @@ class ApiHost(BaseApiObject):
 
   def _path(self):
     return HOSTS_PATH + '/' + self.hostId
+
+  def _cmd(self, cmd, data=None):
+    path = self._path() + '/commands/' + cmd
+    resp = self._get_resource_root().post(path, data=data)
+    return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
   def get_config(self, view=None):
     """
@@ -142,3 +148,27 @@ class ApiHost(BaseApiObject):
       params['queryStorage'] = 'false'
     return self._get_resource_root().get_metrics(self._path() + '/metrics',
         from_time, to_time, metrics, view, params)
+
+  def enter_maintenance_mode(self):
+    """
+    Put the host in maintenance mode.
+
+    @return: Reference to the completed command.
+    @since: API v2
+    """
+    cmd = self._cmd('enterMaintenanceMode')
+    if cmd.success:
+      self._update(get_host(self._get_resource_root(), self.hostId))
+    return cmd
+
+  def exit_maintenance_mode(self):
+    """
+    Take the host out of maintenance mode.
+
+    @return: Reference to the completed command.
+    @since: API v2
+    """
+    cmd = self._cmd('exitMaintenanceMode')
+    if cmd.success:
+      self._update(get_host(self._get_resource_root(), self.hostId))
+    return cmd
