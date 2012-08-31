@@ -193,7 +193,7 @@ class ApiCommand(BaseApiObject):
     @param resource_root: The root Resource object.
     @return: A new ApiCommand object.
     """
-    if self.id == SYNCHRONOUS_COMMAND_ID:
+    if self.id == ApiCommand.SYNCHRONOUS_COMMAND_ID:
       return self
 
     resp = self._get_resource_root().get(self._path())
@@ -208,7 +208,7 @@ class ApiCommand(BaseApiObject):
     @return: The final ApiCommand object, containing the last known state.
              The command may still be running in case of timeout.
     """
-    if self.id == SYNCHRONOUS_COMMAND_ID:
+    if self.id == ApiCommand.SYNCHRONOUS_COMMAND_ID:
       return self
 
     SLEEP_SEC = 5
@@ -240,7 +240,7 @@ class ApiCommand(BaseApiObject):
     @param resource_root: The root Resource object.
     @return: A new ApiCommand object with the updated information.
     """
-    if self.id == SYNCHRONOUS_COMMAND_ID:
+    if self.id == ApiCommand.SYNCHRONOUS_COMMAND_ID:
       return self
 
     path = self._path() + '/abort'
