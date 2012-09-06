@@ -17,11 +17,16 @@
 
 from setuptools import setup, find_packages
 
-from sys import version_info
+from sys import version_info, platform
 if version_info[:2] > (2, 5):
     install_requires = []
 else:
     install_requires = ['simplejson >= 2.0.0']
+
+# Mac does not come default with readline, this is needed for autocomplete
+# in the cmps shell
+if platform == 'darwin':
+    install_requires += ['readline']
 
 setup(
   name = 'cm_api',
