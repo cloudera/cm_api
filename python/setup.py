@@ -18,10 +18,15 @@
 from setuptools import setup, find_packages
 
 from sys import version_info, platform
+
 if version_info[:2] > (2, 5):
     install_requires = []
 else:
     install_requires = ['simplejson >= 2.0.0']
+
+# Python 2.6 and below requires argparse
+if version_info[:2] < (2, 7):
+    install_requires += ['argparse']
 
 # Mac does not come default with readline, this is needed for autocomplete
 # in the cmps shell
