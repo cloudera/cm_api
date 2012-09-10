@@ -1,0 +1,34 @@
+<enunciate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.25.xsd">
+
+  <api-classes>
+    <include pattern="com.cloudera.api.v3.*"/>
+  </api-classes>
+
+  <services>
+    <rest defaultRestSubcontext="/api/v3"/>
+  </services>
+
+  <modules>
+    <docs splashPackage="com.cloudera.api"
+          copyright="Cloudera, Inc. All rights reserved."
+          docsDir="apidocs"
+          title="Cloudera Manager API v3"
+          groupRestResources="byPath"
+          freemarkerXMLProcessingTemplate="api-docs.fmt"
+          css="static/cms/css/api-docs.css"
+          includeDefaultDownloads="false"
+          includeExampleXml="false" />
+    <java-client disabled="true"/>
+    <jaxws-ri disabled="true"/>
+    <xfire disabled="true"/>
+    <jersey disabled="true"/>
+    <cxf disabled="false"
+         enableJaxws="false"/>
+    <c disabled="true"/>
+    <csharp disabled="true"/>
+    <obj-c disabled="true"/>
+    <xml disabled="true"/>
+  </modules>
+
+</enunciate>
