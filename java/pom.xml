@@ -16,12 +16,12 @@
   <distributionManagement>
     <repository>
       <id>cdh.releases.repo</id>
-      <url>https://repository.cloudera.com/artifactory/libs-release-local</url>
+      <url>https://maven.jenkins.cloudera.com:8081/artifactory/libs-release-local</url>
       <name>CDH Releases Repository</name>
     </repository>
     <snapshotRepository>
       <id>cdh.snapshots.repo</id>
-      <url>https://repository.cloudera.com/artifactory/libs-snapshot-local</url>
+      <url>https://maven.jenkins.cloudera.com:8081/artifactory/libs-snapshot-local</url>
       <name>CDH Snapshots Repository</name>
     </snapshotRepository>
   </distributionManagement>
