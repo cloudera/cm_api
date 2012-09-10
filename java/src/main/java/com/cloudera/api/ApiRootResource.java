@@ -1,0 +1,66 @@
+// Licensed to Cloudera, Inc. under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  Cloudera, Inc. licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+package com.cloudera.api;
+
+import com.cloudera.api.v1.RootResourceV1;
+import com.cloudera.api.v2.RootResourceV2;
+import com.cloudera.api.v3.RootResourceV3;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+/**
+ * Root resource for the API. Provides access to the version-specific
+ * resources.
+ */
+@Path("/")
+public interface ApiRootResource {
+
+  /**
+   * @return The v1 root resource.
+   */
+  @Path("/v1")
+  RootResourceV1 getRootV1();
+
+  /**
+   * @return The v1 root resource.
+   */
+  @Path("/v2")
+  RootResourceV2 getRootV2();
+
+  /**
+   * @return The v3 root resource.
+   */
+  @Path("/v3")
+  RootResourceV3 getRootV3();
+
+  /**
+   * Fetch the current API version supported by the server.
+   * <p>
+   * Available since API v2.
+   *
+   * @return The current API version (e.g., "v2").
+   */
+  @GET
+  @Path("/version")
+  @Consumes()
+  @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
+  String getCurrentVersion();
+
+}
