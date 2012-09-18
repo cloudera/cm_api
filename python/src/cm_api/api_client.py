@@ -270,7 +270,7 @@ class ApiResource(Resource):
 
 def get_root_resource(server_host, server_port=None,
                       username="admin", password="admin",
-                      use_tls=False, version=1):
+                      use_tls=False, version=API_CURRENT_VERSION):
   """
   See ApiResource.
   """
