@@ -425,7 +425,7 @@ class ApiService(BaseApiObject):
 
   def disable_hdfs_ha(self, active_name, secondary_name,
       start_dependent_services=True, deploy_client_configs=True,
-                      disable_quorum_journal=False):
+                      disable_quorum_storage=False):
     """
     Disable high availability for an HDFS NameNode.
 
@@ -434,9 +434,9 @@ class ApiService(BaseApiObject):
                            remaining NameNode.
     @param start_dependent_services: whether to re-start dependent services.
     @param deploy_client_configs: whether to re-deploy client configurations.
-    @param disable_quorum_journal: whether to disable Quorum Journal. Available since API v2.
-                                   Quorum Journal will be disabled for all
-                                   nameservices that have Quorum Journal
+    @param disable_quorum_storage: whether to disable Quorum-based Storage. Available since API v2.
+                                   Quorum-based Storage will be disabled for all
+                                   nameservices that have Quorum-based Storage
                                    enabled.
     @return: Reference to the submitted command.
     """
@@ -449,10 +449,10 @@ class ApiService(BaseApiObject):
 
     version = self._get_resource_root().version
     if version < 2:
-      if disable_quorum_journal:
-        raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
+      if disable_quorum_storage:
+        raise AttributeError("Quorum-based Storage is not supported prior to Cloudera Manager 4.1.")
     else:
-      args['disableQuorumJournal'] = disable_quorum_journal
+      args['disableQuorumJournal'] = disable_quorum_storage
 
     return self._cmd('hdfsDisableHa', data = json.dumps(args))
 
@@ -478,23 +478,23 @@ class ApiService(BaseApiObject):
       )
     return self._cmd('hdfsEnableAutoFailover', data = json.dumps(args))
 
-  def enable_hdfs_ha(self, active_name, active_shared_path, standby_name,
-      standby_shared_path, nameservice, start_dependent_services=True,
-      deploy_client_configs=True, enable_quorum_journal=False):
+  def enable_hdfs_ha(self, active_name, active_shared_path=None, standby_name,
+      standby_shared_path=None, nameservice, start_dependent_services=True,
+      deploy_client_configs=True, enable_quorum_storage=False):
     """
     Enable high availability for an HDFS NameNode.
 
     @param active_name: name of active NameNode.
     @param active_shared_path: shared edits path for active NameNode.
-                               Ignored if Quorum Journal is being enabled.
+                               Ignored if Quorum-based Storage is being enabled.
     @param standby_name: name of stand-by NameNode.
     @param standby_shared_path: shared edits path for stand-by NameNode.
                                 Ignored if Quourm Journal is being enabled.
     @param nameservice: nameservice for the HA pair.
     @param start_dependent_services: whether to re-start dependent services.
     @param deploy_client_configs: whether to re-deploy client configurations.
-    @param enable_quorum_journal: whether to enable Quorum Journal. Available since API v2.
-                                  Quorum Journal will be enabled for all
+    @param enable_quorum_storage: whether to enable Quorum-based Storage. Available since API v2.
+                                  Quorum-based Storage will be enabled for all
                                   nameservices except those configured with NFS High
                                   Availability.
     @return: Reference to the submitted command.
@@ -507,13 +507,15 @@ class ApiService(BaseApiObject):
       deployClientConfigs = deploy_client_configs,
     )
 
-    if enable_quorum_journal:
+    if enable_quorum_storage:
       version = self._get_resource_root().version
       if version < 2:
-        raise AttributeError("Quorum Journal is not supported prior to Cloudera Manager 4.1.")
+        raise AttributeError("Quorum-based Storage is not supported prior to Cloudera Manager 4.1.")
       else:
-        args['enableQuorumJournal'] = enable_quorum_journal
+        args['enableQuorumJournal'] = enable_quorum_storage
     else:
+      if active_shared_path is None || standby_shared_path is None:
+        raise AttributeError("Active and standby shared paths must be specified if not enabling Quorum-based Storage")
       args['activeSharedEditsPath'] = active_shared_path
       args['standBySharedEditsPath'] = standby_shared_path
 
