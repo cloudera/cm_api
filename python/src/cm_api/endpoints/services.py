@@ -478,8 +478,8 @@ class ApiService(BaseApiObject):
       )
     return self._cmd('hdfsEnableAutoFailover', data = json.dumps(args))
 
-  def enable_hdfs_ha(self, active_name, active_shared_path=None, standby_name,
-      standby_shared_path=None, nameservice, start_dependent_services=True,
+  def enable_hdfs_ha(self, active_name, active_shared_path, standby_name,
+      standby_shared_path, nameservice, start_dependent_services=True,
       deploy_client_configs=True, enable_quorum_storage=False):
     """
     Enable high availability for an HDFS NameNode.
