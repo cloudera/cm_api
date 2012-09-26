@@ -452,7 +452,7 @@ class ApiService(BaseApiObject):
       if disable_quorum_storage:
         raise AttributeError("Quorum-based Storage is not supported prior to Cloudera Manager 4.1.")
     else:
-      args['disableQuorumJournal'] = disable_quorum_storage
+      args['disableQuorumStorage'] = disable_quorum_storage
 
     return self._cmd('hdfsDisableHa', data = json.dumps(args))
 
@@ -512,9 +512,9 @@ class ApiService(BaseApiObject):
       if version < 2:
         raise AttributeError("Quorum-based Storage is not supported prior to Cloudera Manager 4.1.")
       else:
-        args['enableQuorumJournal'] = enable_quorum_storage
+        args['enableQuorumStorage'] = enable_quorum_storage
     else:
-      if active_shared_path is None || standby_shared_path is None:
+      if active_shared_path is None or standby_shared_path is None:
         raise AttributeError("Active and standby shared paths must be specified if not enabling Quorum-based Storage")
       args['activeSharedEditsPath'] = active_shared_path
       args['standBySharedEditsPath'] = standby_shared_path
