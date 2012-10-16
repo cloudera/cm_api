@@ -630,6 +630,57 @@ class ApiService(BaseApiObject):
       self._update(_get_service(self._get_resource_root(), self._path()))
     return cmd
 
+  def rolling_restart(self, slave_batch_size=None, 
+                      slave_fail_pct_threshold=None,
+                      slave_fail_count_threshold=None,
+                      stale_configs_only=None,
+                      unupgraded_only=None,
+                      restart_role_types=None,
+                      restart_role_names=None):
+    """
+    Rolling restart the roles of a service. The sequence is:
+    1. Restart all the non-slave roles
+    2. If slaves are present restart them in batches of size specified
+    3. Perform any post-command needed after rolling restart
+
+    @param: slave_batch_size Number of slave roles to restart at a time
+            Must be greater than 0. Default is 1.
+            For HDFS, this number should be less than the replication factor (default 3)
+            to ensure data availability during rolling restart.
+    @param: slave_fail_pct_threshold This along with slave_fail_count_threshold is used
+            to decide if the Rolling Restart command has failed, i.e. command fails if both
+            the count AND percent thresholds are exceeded
+            Must be an integer between 0 and 100. Default is 0.
+    @param: slave_fail_count_threshold This along with slave_fail_pct_threshold is used
+            to decide if the Rolling Restart command has failed, i.e. command fails if both
+            the count AND percent thresholds are exceeded
+            Must be >= 0. Default is 0.
+    @param: stale_configs_only Restart roles with stale configs only. Default is false.
+    @param: unupgraded_only Restart roles that haven't been upgraded yet. Default is false.
+    @param: restart_role_types Role types to restart. If not specified, all startable roles are restarted.
+    @param: restart_role_names List of specific roles to restart.
+            If none are specified, then all roles of specified role types are restarted.
+    @return: Reference to the submitted command.
+    @since: API v3
+    """
+    args = dict()
+    if slave_batch_size:
+      args['slaveBatchSize'] = slave_batch_size
+    if slave_fail_pct_threshold:
+      args['slaveFailPctThreshold'] = slave_fail_pct_threshold
+    if slave_fail_count_threshold:
+      args['slaveFailCountThreshold'] = slave_fail_count_threshold
+    if stale_configs_only:
+      args['staleConfigsOnly'] = stale_configs_only
+    if unupgraded_only:
+      args['unUpgradedOnly'] = unupgraded_only
+    if restart_role_types:
+      args['restartRoleTypes'] = restart_role_types
+    if restart_role_names:
+      args['restartRoleNames'] = restart_role_names
+
+    return self._cmd('rollingRestart', data = json.dumps(args))
+
 class ApiServiceSetupInfo(ApiService):
   RO_ATTR = ( )
   RW_ATTR = ('name', 'type', 'config', 'roles')
