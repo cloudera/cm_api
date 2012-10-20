@@ -25,7 +25,7 @@ else:
 
 setup(
   name = 'cm_api',
-  version = '1.0.0',    # Compatible with API v1
+  version = '2.0.0',    # Compatible with API v2
   packages = find_packages('src'),
   package_dir = {'cm_api': 'src/cm_api'},
 
