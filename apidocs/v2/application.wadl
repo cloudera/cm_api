@@ -1,0 +1,3347 @@
+<wadl:application xmlns:wadl="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <wadl:doc xmlns:enunciate="http://enunciate.codehaus.org/" enunciate:generatedBy="Enunciate-1.25"/>
+  <wadl:grammars>
+    <wadl:include href="ns0.xsd"/>
+  </wadl:grammars>
+  <wadl:resources base="http://localhost:8080/cloudera-manager-api">
+    <wadl:resource path="/api/v2/clusters">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Creates a collection of clusters.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[List of clusters to created.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of created clusters.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Lists all known clusters.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of known clusters.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/events">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Allows you to query events in the system.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="maxResults" style="query">
+            <wadl:doc>
+              <![CDATA[The maximum number of events to return.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="resultOffset" style="query">
+            <wadl:doc>
+              <![CDATA[Specified the offset of events to return.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="query" style="query">
+            <wadl:doc>
+              <![CDATA[The query to perform to find events in the system. It accepts querying the intersection of a list of constraints, joined together with semicolons (without spaces). For example: </p> <dl> <dt>alert==true</dt> <dd>looks for alerts.</dd> <dt>alert==true;attributes.host!=flaky.mysite.com</dt> <dd>looks for alerts, but exclude those with the host attribute of "flaky.mysite.com".</dd> <dt>category==log_event;attributes.log_level==ERROR</dt> <dd>looks for error log events. Event attribute matching is case sensitive.</dd> <dt>attributes.service==hbase1;content==hlog</dt> <dd>looks for any events from the "hbase1" service that mention "hlog".</dd> <dt>attributes.service==hbase1;content!=hlog</dt> <dd>looks for any events from the "hbase1" service that do not mention "hlog".<br/> A query must not contain only negative constraints (<em>!=</em>). It returns empty results because there is nothing to perform exclusion on.</dd> <dt>attributes.role_type==NAMENODE;severity==critical important</dt> <dd>looks for any important or critical events related to all NameNodes.</dd> <dt>severity==critical;timeReceived=ge=2012-05-04T00:00;timeReceived=lt=2012-05-04T00:10</dt> <dd>looks for critical events received between the given 10 minute range. <br/> When polling for events, use <em>timeReceived</em> instead of <em>timeOccurred</em> because events arrive out of order.</dd> </dl>  You may query any fields present in the ApiEvent object. You can also query by event attribute values using the <em>attributes.*</em> syntax. Values for date time fields (e.g. <em>timeOccurred</em>, <em>timeReceived</em>) should be ISO8601 timestamps. <p> The other valid comparators are <em>=lt=</em>, <em>=le=</em>, <em>=ge=</em>, and <em>=gt=</em>. They stand for "&lt;", "&lt;=", "&gt;=", "&gt;" respectively. These comparators are only applicable for date time fields. <p/> Only available with Cloudera Manager Enterprise Edition.]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The results of the query]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/hosts">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[<p>Create one or more hosts.</p>
+<p>You must specify at least the
+hostname and ipAddress in the request objects.
+If no hostId is specified, it will be set to the
+hostname.  It is an error to try and create
+host with the same hostId as another host.</p>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The list of hosts to create]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The newly created host objects]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns the hostIds for all hosts in the system.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view to materialize]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of hostIds]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="DELETE">
+        <wadl:doc>
+          <![CDATA[Delete all hosts in the system]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The list of deleted hosts]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/users">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Creates a list of users.
+<p>
+When creating new users, the <i>password</i> property of each user should
+be their plain text password. The returned user information will not
+contain any password information.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[List of users to create.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about created users.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns a list of the user names configured in the system.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of users.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[<p>Update an existing cluster.</p>
+
+<p>You may not change a cluster's CDH version using this API call.
+Use the "upgradeService" cluster command instead.</p>
+
+<p>To rename the cluster, pass in a json structure that has the new
+cluster name.</p>
+
+<p>Available since API v2.</p>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Details of the affected cluster.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="DELETE">
+        <wadl:doc>
+          <![CDATA[Deletes a cluster.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Details of deleted cluster.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Reads information about a cluster.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Details of requested cluster.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/commands">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List active global commands.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of active global commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/config">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve the Cloudera Manager settings.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The current Cloudera Manager settings.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Update the Cloudera Manager settings.
+<p>
+If a value is set in the given configuration, it will be added to the
+manager's settings, replacing any existing entry. If a value is unset (its
+value is null), the existing the setting will be erased.
+<p>
+Settings that are not listed in the input will maintain their current
+values.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Settings to update.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The updated configuration.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/deployment">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve full description of the entire Cloudera Manager deployment
+including all hosts, clusters, services, roles, users, settings, etc.
+<p/>
+This object can be used to reconstruct your entire deployment
+<p/>
+Note: Only users with admin privileges are allowed to call this]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A complete deployment description]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Apply the supplied deployment description to the system. This will
+create the clusters, services, hosts and other objects specified in
+the argument. This call does not allow for any merge conflicts. If
+an entity already exists in the system, this call will fail.
+You can request, however, that all entities in the system are deleted
+before instantiating the new ones.
+<p/>
+You may specify a complete or partial deployment, e.g. you can provide
+host info with no clusters.  However, if you request that
+the current deployment be deleted, you are required to specify at
+least one admin user or this call will fail. This is to protect
+you from creating a system that cannot be logged into again.
+<p/>
+If there are any errors creating (or optionally deleting) a deployment,
+all changes will be rolled back leaving the system exactly as it was
+before calling this method.  The system will never be left in a state
+where part of the deployment is created and other parts are not.
+<p/>
+<strong>WARNING: Do not use role names with the format
+"string dash string dash string" e.g. "foo-bar-baz". Use of such a
+format might prevent creation of roles using the UI.
+This issue will be fixed in the next release.</strong>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The deployment to create]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+          <wadl:param name="deleteCurrentDeployment" style="query">
+            <wadl:doc>
+              <![CDATA[If true, the current deployment is deleted before the specified deployment is applied]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The system deployment info after successfully applying the given deployment.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/license">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve information about the Cloudera Manager license.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The current license information.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Updates the Cloudera Manager license.
+<p>
+After a new license is installed, the Cloudera Manager needs to be
+restarted for the changes to take effect.
+<p>
+The license file should be uploaded using a request with content type
+"multipart/form-data", instead of being encoded into a JSON representation.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The new license information.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/log">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns the entire contents of the Cloudera Manager log file]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:representation mediaType="text/plain"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve information about the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Details about the management service.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve information about the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Details about the management service.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Setup the Cloudera Management Services.
+<p>
+Configure the CMS instance and create all the management roles. The
+provided configuration data can be used to set up host mappings for
+each role, and required configuration such as database connection
+information for specific roles.
+<p>
+Regardless of the list of roles provided in the input data, all
+management roles are created by this call. The input is used to
+override any default settings for the specific roles.
+<p>
+This method needs a valid CM license to be installed beforehand.
+<p>
+This method does not start any services or roles.
+<p>
+This method will fail if a CMS instance already exists.
+<p>
+Available role types:
+<ul>
+<li>SERVICEMONITOR</li>
+<li>ACTIVITYMONITOR</li>
+<li>HOSTMONITOR</li>
+<li>REPORTSMANAGER</li>
+<li>EVENTSERVER</li>
+<li>ALERTPUBLISHER</li>
+</ul>
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Role configurartion overrides.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[ApiService The CMS information.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/version">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Provides version information of Cloudera Manager itself.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Version information]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/commands/{commandId}">
+      <wadl:param name="commandId" style="template">
+        <wadl:doc>
+          <![CDATA[The command id.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve detailed information on an asynchronous command.
+
+<p>Cloudera Manager keeps the results and statuses of asynchronous
+commands, which have non-negative command IDs. On the other hand,
+synchronous commands complete immediately, and their results are passed
+back in the return object of the command execution API call.
+Outside of that return object, there is no way to check the result
+of a synchronous command.</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Detailed command information.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/events/{eventId}">
+      <wadl:param name="eventId" style="template">
+        <wadl:doc>
+          <![CDATA[The UUID of the event to read]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns a specific event in the system
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The Event object with the specified UUID]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/hosts/{hostId}">
+      <wadl:param name="hostId" style="template">
+        <wadl:doc>
+          <![CDATA[The ID of the host to read]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns a specific Host in the system]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The Host object with the specified hostId]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[<p>Update an existing host in the system.</p>
+<p>Currently, only updating the rackId is supported.  All other fields
+of the host will be ignored.</p>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The updated host object.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The updated host]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="DELETE">
+        <wadl:doc>
+          <![CDATA[Delete a host from the system]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The deleted Host]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/tools/echo">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Echoes the provided message back to the caller.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="message" style="query">
+            <wadl:doc>
+              <![CDATA[The message to echo back]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The original message]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/tools/echoError">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Throws an error containing the given input message. This is
+what an error response looks like.
+
+<pre>
+{
+"message": "An error message",
+"causes": [ "A list of causes", "Potentially null" ]
+}
+</pre>
+
+<p>The <em>message</em> field contains a description of the error.
+The <em>causes</em> field, if not null, contains a list of causes
+for the error.
+</p>
+
+<p>Note that this <strong>never</strong> returns an echoMessage.
+Instead, the result (and all error results) has the above structure.
+</p>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="message" style="query">
+            <wadl:doc>
+              <![CDATA[The error message to echo]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Will always be an exception]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/users/{userName}">
+      <wadl:param name="userName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the user to delete.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="DELETE">
+        <wadl:doc>
+          <![CDATA[Deletes a user from the system.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The details of the deleted user.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns detailed information about a user.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The user's information.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Updates the given user's information. Note that the user's name cannot
+be changed.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The user information.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/commands">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List active cluster commands.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of active cluster commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services">
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Creates a list of services.
+<p>
+There are typically two service creation strategies:
+<ol>
+<li>
+The caller may choose to set up a new service piecemeal, by first
+creating the service itself (without any roles or configuration),
+and then create the roles, and then specify configuration.
+</li>
+<li>
+Alternatively, the caller can pack
+all the information in one call, by fully specifying the fields in
+the com.cloudera.api.model.ApiService object, with
+<ul>
+<li>service config and role type config, and</li>
+<li>role to host assignment.</li>
+</ul>
+</li>
+</ol>
+
+<table>
+<thead>
+<tr>
+<th>Cluster Version</th>
+<th>Available Service Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CDH3</td>
+<td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE</td>
+</td>
+<tr>
+<td>CDH4</td>
+<td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA, FLUME</td>
+</td>
+</tbody>
+</table>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Details of the services to create.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of created services.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Lists all services registered in the cluster.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of services.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/commands/collectDiagnosticData">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Collect diagnostic data from hosts managed by Cloudera Manager.
+<p>
+After the command has completed, the ApiCommand will contain a
+resultDataUrl from where you can download the result.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The command arguments.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Detailed command information.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/commands/generateCredentials">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Generate missing Kerberos credentials.
+<p>
+This command will affect all services that have been configured to use
+Kerberos, and haven't had their credentials generated yet.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/commands/hostsDecommission">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Decommission the given hosts.
+All slave roles on the hosts will be decommissioned.
+All other roles will be stopped.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="*/*" element="hostNames"/>
+          <wadl:representation mediaType="application/xml" element="hostNames"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/commands/hostsRecommission">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Recommission the given hosts.
+All slave roles on the hosts will be recommissioned.
+Roles are not started after this command. Use hostsStartRoles command
+for that.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="*/*" element="hostNames"/>
+          <wadl:representation mediaType="application/xml" element="hostNames"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/commands/hostsStartRoles">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Start all the roles on the given hosts.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="*/*" element="hostNames"/>
+          <wadl:representation mediaType="application/xml" element="hostNames"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/commands/inspectHosts">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Runs the host inspector on the configured hosts.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/commands">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List active Cloudera Management Services commands.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of active role commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/config">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve the configuration of the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List with configured and available configuration options.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Update the Cloudera Management Services configuration.
+<p>
+If a value is set in the given configuration, it will be added
+to the service's configuration, replacing any existing entries.
+If a value is unset (its value is null), the existing
+configuration for the attribute will be erased, if any.
+<p>
+Attributes that are not listed in the input will maintain their
+current values in the configuration.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Configuration changes.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+          <wadl:param name="message" style="query">
+            <wadl:doc>
+              <![CDATA[Optional message describing the changes.]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The new service configuration.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/roleTypes">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List the supported role types for the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of role types the service supports.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/roles">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Create new roles in the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Roles to create.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of created roles.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List all roles of the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of roles.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/commands/{commandId}/abort">
+      <wadl:param name="commandId" style="template">
+        <wadl:doc>
+          <![CDATA[The command id.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Abort a running command.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Detailed command information.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/hosts/{hostId}/config">
+      <wadl:param name="hostId" style="template">
+        <wadl:doc>
+          <![CDATA[The ID of the host.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieves the configuration of a specific host.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of host configuration parameters.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Updates the host configuration with the given values.
+<p>
+If a value is set in the given configuration, it will be added
+to the host's configuration, replacing any existing entries.
+If a value is unset (its value is null), the existing
+configuration for the attribute will be erased, if any.
+<p>
+Attributes that are not listed in the input will maintain their
+current values in the configuration.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Configuration changes.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+          <wadl:param name="message" style="query">
+            <wadl:doc>
+              <![CDATA[Optional message describing the changes.]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The new host configuration.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/hosts/{hostId}/metrics">
+      <wadl:param name="hostId" style="template">
+        <wadl:doc>
+          <![CDATA[The host's ID.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Fetch metric readings for a host.
+<p>
+By default, this call will look up all metrics available for the host. If
+only specific metrics are desired, use the <i>metrics</i> parameter.
+<p>
+By default, the returned results correspond to a 5 minute window based on
+the provided end time (which defaults to the current server time). The
+<i>from</i> and <i>to</i> parameters can be used to control the window
+being queried. A maximum window of 3 hours is enforced.
+<p>
+When requesting a "full" view, aside from the extended properties of the
+returned metric data, the collection will also contain information about
+all metrics available for the role, even if no readings are available
+in the requested window.
+<p>
+Host metrics also include per-network interface and per-storage device
+metrics. Since collecting this data incurs in more overhead, query
+parameters can be used to choose which network interfaces and storage
+devices to query, or to these metrics altogether.
+<p>
+Storage metrics are collected at different levels; for example, per-disk
+and per-partition metrics are available. The "storageIds" parameter can be
+used to filter specific storage IDs.
+<p>
+In the returned data, the network interfaces and storage IDs can be
+identified by looking at the "context" property of the metric objects.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="from" style="query">
+            <wadl:doc>
+              <![CDATA[Start of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="to" style="query">
+            <wadl:doc>
+              <![CDATA[End of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="queryNw" style="query">
+            <wadl:doc>
+              <![CDATA[Whether to query for network interface metrics.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="ifs" style="query">
+            <wadl:doc>
+              <![CDATA[Network interfaces to query for metrics (default = all).]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="queryStorage" style="query">
+            <wadl:doc>
+              <![CDATA[Whether to query for storage metrics.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="storageIds" style="query">
+            <wadl:doc>
+              <![CDATA[Storage context IDs to query for metrics (default = all).]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="metrics" style="query">
+            <wadl:doc>
+              <![CDATA[Filter for which metrics to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of readings from the monitors.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/commands/deployClientConfig">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Deploy the cluster-wide client configuration.
+
+<p>For each service in the cluster, deploy the service's client configuration
+to all the hosts that the service runs on.</p>
+
+<p>Available since API v2.</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/commands/enterMaintenanceMode">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Put the cluster into maintenance mode. This is a synchronous command.
+The result is known immediately upon return.
+
+<p>Available since API v2.</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Synchronous command result.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/commands/exitMaintenanceMode">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Take the cluster out of maintenance mode. This is a synchronous command.
+The result is known immediately upon return.
+
+<p>Available since API v2.</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Synchronous command result.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/commands/restart">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Restart all services in the cluster.
+<p>
+Services are restarted in the appropriate order given their dependencies.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/commands/start">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Start all services in the cluster.
+<p>
+Services are started in the appropriate order given their dependencies.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/commands/stop">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Stop all services in the cluster.
+<p>
+Services are stopped in the appropriate order given their dependencies.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/commands/upgradeServices">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Upgrades the services in the cluster to the CDH4 version.
+<p>
+This command requires that all services in the cluster are stopped, and
+that the CDH packages in the hosts used by the cluster be upgraded to
+CDH4 before the command is issued.
+<p>
+The command will upgrade the services and their configuration to the
+version available in the CDH4 distribution.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the service to delete.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="DELETE">
+        <wadl:doc>
+          <![CDATA[Deletes a service from the system.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The details of the deleted service.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieves details information about a service.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The details of the service.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/commands/restart">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Restart the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A reference to the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/commands/start">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Start the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A reference to the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/commands/stop">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Stop the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A reference to the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/roleCommands/restart">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Restart a set of Cloudera Management Services roles.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The roles to restart.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="*/*" element="roleNames"/>
+          <wadl:representation mediaType="application/xml" element="roleNames"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands (summary view).]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/roleCommands/start">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Start a set of Cloudera Management Services roles.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The roles to start.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="*/*" element="roleNames"/>
+          <wadl:representation mediaType="application/xml" element="roleNames"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands (summary view).]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/roleCommands/stop">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Stop a set of Cloudera Management Services roles.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The roles to stop.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="*/*" element="roleNames"/>
+          <wadl:representation mediaType="application/xml" element="roleNames"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands (summary view).]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/roles/{roleName}">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="DELETE">
+        <wadl:doc>
+          <![CDATA[Delete a role from the Cloudera Management Services.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The details of the deleted role.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve detailed information about a Cloudera Management Services role.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The details of the role.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/hosts/{hostId}/commands/enterMaintenanceMode">
+      <wadl:param name="hostId" style="template">
+        <wadl:doc>
+          <![CDATA[The ID of the host]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Put the host into maintenance mode. This is a synchronous command.
+The result is known immediately upon return.
+
+<p>Available since API v2.</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Synchronous command result.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/hosts/{hostId}/commands/exitMaintenanceMode">
+      <wadl:param name="hostId" style="template">
+        <wadl:doc>
+          <![CDATA[The ID of the host]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Take the host out of maintenance mode. This is a synchronous command. The
+result is known immediately upon return.
+
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Synchronous command result.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/activities">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the service]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Read all activities in the system]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="maxResults" style="query">
+            <wadl:doc>
+              <![CDATA[The maximum number of activities to return.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="resultOffset" style="query">
+            <wadl:doc>
+              <![CDATA[Specified the offset of activities to return.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="query" style="query">
+            <wadl:doc>
+              <![CDATA[The query to perform to find activities in the system. By default, this call returns top level (i.e. root) activities that have currently started. <p> The query specifies the intersection of a list of constraints, joined together with semicolons (without spaces). For example: </p> <dl> <dt>status==started;parent==</dt> <dd>looks for running root activities. This is also the default query.</dd> <dt>status==failed;finishTime=gt=2012-04-01T20:30:00.000Z</dt> <dd>looks for failed activities after the given date time.</dd> <dt>name==Pi Estimator;startTime=gt=2012-04-01T20:30:00.000Z</dt> <dd>looks for activities started after the given date time, with the name of "Pi Estimator".</dd> <dt>startTime=lt=2012-01-02T00:00:00.000Z;finishTime=ge=2012-01-01T00:00:00.000Z</dt> <dd>looks for activities that are active on 2012 New Year's Day. Note that they may start before or finish after that day.</dd> <dt>status==failed;parent==000014-20120425161321-oozie-joe</dt> <dd>looks for failed child activities of the given parent activity id.</dd> <dt>status==started;metrics.cpu_user=gt=10</dt> <dd>looks for started activities that are using more than 10 cores per second.</dd> <dt>type==hive;metrics.user==bc;finishTime=gt=2012-04-01T20:30:00.000Z</dt> <dd>looks for all hive queries submitted by user bc after the given date time.</dd> </dl>  You may query any fields present in the ApiActivity object. You can also query by activity metric values using the <em>metrics.*</em> syntax. Values for date time fields should be ISO8601 timestamps. <p> The valid comparators are <em>==</em>, <em>!=</em>, <em>=lt=</em>, <em>=le=</em>, <em>=ge=</em>, and <em>=gt=</em>. They stand for "==", "!=", "&lt;", "&lt;=", "&gt;=", "&gt;" respectively.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the activities to materialize]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of activities]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/clientConfig">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Download a zip-compressed archive of the client configuration,
+of a specific service. This resource does not require any authentication.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The archive data.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/octet-stream"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service to which the role belongs.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List active service commands.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of active service commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/config">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service to query.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieves the configuration of a specific service.
+<p>
+The "summary" view contains only the configured parameters, and
+configuration for role types that contain configured parameters.
+<p>
+The "full" view contains all available configuration parameters for
+the service and its role types.
+This mode performs validation on the configuration, which could take
+a few seconds on a large cluster (around 500 nodes or more).]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of service and role types configuration parameters.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Updates the service configuration with the given values.
+<p>
+If a value is set in the given configuration, it will be added
+to the service's configuration, replacing any existing entries.
+If a value is unset (its value is null), the existing
+configuration for the attribute will be erased, if any.
+<p>
+Attributes that are not listed in the input will maintain their
+current values in the configuration.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Configuration changes.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+          <wadl:param name="message" style="query">
+            <wadl:doc>
+              <![CDATA[Optional message describing the changes.]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The new service configuration.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/metrics">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the service.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Fetch metric readings for a particular service.
+<p>
+By default, this call will look up all metrics available for the service.
+If only specific metrics are desired, use the <i>metrics</i> parameter.
+<p>
+By default, the returned results correspond to a 5 minute window based on
+the provided end time (which defaults to the current server time). The
+<i>from</i> and <i>to</i> parameters can be used to control the window
+being queried. A maximum window of 3 hours is enforced.
+<p>
+When requesting a "full" view, aside from the extended properties of the
+returned metric data, the collection will also contain information about
+all metrics available for the service, even if no readings are available
+in the requested window.
+<p>
+HDFS services from CDH4 that have more than one nameservice will not expose
+any metrics. Instead, the nameservices should be queried separately.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="from" style="query">
+            <wadl:doc>
+              <![CDATA[Start of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="to" style="query">
+            <wadl:doc>
+              <![CDATA[End of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="metrics" style="query">
+            <wadl:doc>
+              <![CDATA[Filter for which metrics to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of readings from the monitors.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/nameservices">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List the nameservices of an HDFS service.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of nameservices.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleTypes">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service to modify.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List the supported role types for a service.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of role types the service supports.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Create new roles in a given service.
+
+<table>
+<thead>
+<tr>
+<th>Service Type</th>
+<th>Available Role Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HDFS (CDH3)</td>
+<td>NAMENODE, DATANODE, SECONDARYNAMENODE, BALANCER, GATEWAY</td>
+</tr>
+<tr>
+<td>HDFS (CDH4)</td>
+<td>NAMENODE, DATANODE, SECONDARYNAMENODE, BALANCER, HTTPFS,
+FAILOVERCONTROLLER, GATEWAY, JOURNALNODE</td>
+</tr>
+<tr>
+<td>MAPREDUCE</td>
+<td>JOBTRACKER, TASKTRACKER, GATEWAY</td>
+</tr>
+<tr>
+<td>HBASE</td>
+<td>MASTER, REGIONSERVER, GATEWAY</td>
+</tr>
+<tr>
+<td>YARN</td>
+<td>RESROUCEMANAGER, NODEMANAGER, JOBHISTORY, GATEWAY</td>
+</tr>
+<tr>
+<td>OOZIE</td>
+<td>OOZIE_SERVER</td>
+</tr>
+<tr>
+<td>ZOOKEEPER</td>
+<td>SERVER</td>
+</tr>
+<tr>
+<td>HUE (CDH3)</td>
+<td>HUE_SERVER, BEESWAX_SERVER, KT_RENEWER, JOBSUBD</td>
+</tr>
+<tr>
+<td>HUE (CDH4)</td>
+<td>HUE_SERVER, BEESWAX_SERVER, KT_RENEWER</td>
+</tr>
+<tr>
+<td>FLUME</td>
+<td>AGENT</td>
+</tr>
+<tr>
+<td>IMPALA</td>
+<td>IMPALAD, STATESTORE</td>
+</tr>
+</tbody>
+
+</table>
+<p/>
+<strong>WARNING: Do not use role names with the format
+"string dash string dash string" e.g. "foo-bar-baz". Use of such a
+format might prevent creation of roles using the UI.
+This issue will be fixed in the next release.</strong>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Roles to create.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of created roles.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Lists all roles of a given service.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of roles.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/roles/{roleName}/commands">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List active role commands.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of active role commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/cm/service/roles/{roleName}/config">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role to look up.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve the configuration of a specific Cloudera Management Services role.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List with configured and available configuration options.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Update the configuration of a Cloudera Management Services role.
+<p>
+If a value is set in the given configuration, it will be added
+to the role's configuration, replacing any existing entries.
+If a value is unset (its value is null), the existing
+configuration for the attribute will be erased, if any.
+<p>
+Attributes that are not listed in the input will maintain their
+current values in the configuration.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Configuration changes.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+          <wadl:param name="message" style="query">
+            <wadl:doc>
+              <![CDATA[Optional message describing the changes.]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The new service configuration.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/${serviceName}/commands/hdfsCreateTmpDir">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[Name of the service on which to run the command.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Creates a tmp directory on the HDFS filesystem.
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/activities/{activityId}">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the service]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="activityId" style="template">
+        <wadl:doc>
+          <![CDATA[The id of the activity to retrieve]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns a specific activity in the system]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the activity to materialize]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The Activity object with the specified id]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/decommission">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HBase service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Decommission roles of a service.
+<p>
+For HBase services, the list should contain names of RegionServers to
+decommission.
+<p>
+For HDFS services, the list should contain names of DataNodes to
+decommission.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[List of role names to decommision.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/deployClientConfig">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Deploy a service's client configuration.
+<p>
+The client configuration is deployed to the hosts where the given roles
+are running.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[List of role names.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/enterMaintenanceMode">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Put the service into maintenance mode. This is a synchronous command. The
+result is known immediately upon return.
+
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Synchronous command result.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/exitMaintenanceMode">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Take the service out of maintenance mode. This is a synchronous command.
+The result is known immediately upon return.
+
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Synchronous command result.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/hbaseCreateRoot">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HBase service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Creates the root directory of an HBase service.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/hdfsDisableAutoFailover">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HDFS service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Disable auto-failover for a highly available HDFS nameservice.
+<p>
+The command will modify the nameservice's NameNodes configuration to
+disable automatic failover, and delete the existing failover controllers.
+<p>
+The ZooKeeper dependency of the service will not be removed.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The nameservice name.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="text/plain"/>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/hdfsDisableHa">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HDFS service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Disable high availability (HA) for an HDFS NameNode.
+<p>
+The NameNode to be kept must be running before HA can be disabled.
+<p>
+As part of disabling HA, any services that depend on the HDFS service being
+modified will be stopped. The command arguments provide options to
+re-start these services and to re-deploy the client configurations for
+services of the cluster after HA has been disabled.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Arguments for the command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/hdfsEnableAutoFailover">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HDFS service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Enable auto-failover for an HDFS nameservice.
+<p>
+This command requires that the nameservice exists, and HA has been
+configured for that nameservice.
+<p>
+The command will create the needed failover controllers, perform the
+needed initialization and configuration, and will start the new roles.
+The existing NameNodes which are part of the nameservice will be
+re-started in the process.
+<p>
+This process may require changing the service's configuration, to add a
+dependency on the provided ZooKeeper service. This will be done if such a
+dependency has not been configured yet, and will cause roles that are
+not affected by this command to show an "outdated configuration" status.
+<p>
+If a ZooKeeper dependency has already been set up by some other means,
+it does not need to be provided in the command arguments.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Arguments for the command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/hdfsEnableHa">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HDFS service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Enable high availability (HA) for an HDFS NameNode.
+<p>
+This command only applies to CDH4 HDFS services.
+<p>
+The command will set up the given "active" and "stand-by" NameNodes as
+an HA pair. Both nodes need to already exist.
+<p>
+If there is a SecondaryNameNode associated with either given NameNode
+instance, it will be deleted.
+<p>
+Note that while the shared edits path may be different for both nodes,
+they need to point to the same underlying storage (e.g., an NFS share).
+<p>
+As part of enabling HA, any services that depend on the HDFS service being
+modified will be stopped. The command arguments provide options to
+re-start these services and to re-deploy the client configurations for
+services of the cluster after HA has been enabled.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Arguments for the command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/hdfsFailover">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HDFS service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Initiate a failover in an HDFS HA NameNode pair.
+<p>
+The arguments should contain the names of the two NameNodes in
+the HA pair. The first one should be the currently active NameNode,
+the second one the NameNode to be made active.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Names of the NameNodes in the HA pair.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+          <wadl:param name="force" style="query">
+            <wadl:doc>
+              <![CDATA[Whether to force failover.]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/hueCreateHiveWarehouse">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The Hue service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Create the Beeswax role's Hive warehouse directory, on Hue services.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/recommission">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[Name of the service on which to run the command.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Recommission roles of a service.
+<p>
+The list should contain names of slave roles to recommission.
+</p>
+
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[List of role names to recommision.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/restart">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service to start.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Restart the service.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/start">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service to start.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Start the service.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/stop">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service to stop.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Stop the service.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/zooKeeperCleanup">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service to start.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Clean up all running server instances of a ZooKeeper service.
+<p>
+This command removes snapshots and transaction log files kept by
+ZooKeeper for backup purposes. Refer to the ZooKeeper documentation
+for more details.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/zooKeeperInit">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The service to start.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Initializes all the server instances of a ZooKeeper service.
+<p>
+This command applies to ZooKeeper services from CDH4. ZooKeeper
+server roles need to be initialized before they can be used.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/nameservices/{nameservice}">
+      <wadl:param name="nameservice" style="template">
+        <wadl:doc>
+          <![CDATA[The nameservice to retrieve.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve information about a nameservice.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Details of the nameservice.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsBootstrapStandBy">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Bootstrap HDFS stand-by NameNodes.
+<p>
+Submit a request to synchronize HDFS NameNodes with their assigned HA
+partners. The command requires that the target NameNodes are part of
+existing HA pairs, which can be accomplished by setting the nameservice
+configuration parameter in the NameNode's configuration.
+<p>
+The HA partner must already be formatted and running for this command
+to run.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the stand-by NameNodes to bootstrap.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsFormat">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Format HDFS NameNodes.
+<p>
+Submit a format request to a list of NameNodes on a service. Note that
+trying to format a previously formatted NameNode will fail.
+<p>
+Note about high availability: when two NameNodes are working in an HA
+pair, only one of them should be formatted.
+<p>
+Bulk command operations are not atomic, and may contain partial failures.
+The returned list will contain references to all successful commands, and
+a list of error messages identifying the roles on which the command
+failed.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the NameNodes to format.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsInitializeAutoFailover">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Initialize HDFS HA failover controller metadata.
+<p>
+The controllers being initialized must already exist and be properly
+configured. The command will make sure the needed data is initialized
+for the controller to work.
+<p>
+Only one controller per nameservice needs to be initialized.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the controllers to initialize.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsInitializeSharedDir">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Initialize HDFS NameNodes' shared edit directory.
+<p>
+Shared edit directories are used when two HDFS NameNodes are operating as
+a high-availability pair. This command initializes the shared directory to
+include the necessary metadata.
+<p>
+The provided role names should reflect one of the NameNodes in the
+respective HA pair; the role must be stopped and its data directory must
+already have been formatted. The shared edits directory must be empty for
+this command to succeed.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the NameNodes.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/hueSyncDb">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Create / update the Hue database schema.
+<p>
+This command is to be run whenever a new database has been specified or,
+as necessary, after an upgrade.
+<p>
+This request should be sent to Hue servers only.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the Hue server roles.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/refresh">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Refresh a role's data.
+<p>
+For MapReduce services, this command should be executed on JobTracker
+roles. It refreshes the role's queue and node information.
+<p>
+For HDFS services, this command should be executed on NameNode roles.
+It refreshes the NameNode's node list.
+<p>
+For Yarn services, this command should be executed on ResourceManager
+roles. It refreshes the role's queue and node information.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the roles.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/restart">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Restart a set of role instances
+<p>
+Bulk command operations are not atomic, and may contain partial failures.
+The returned list will contain references to all successful commands, and
+a list of error messages identifying the roles on which the command
+failed.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The name of the roles to restart.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A reference to the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/start">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Start a set of role instances.
+<p>
+Bulk command operations are not atomic, and may contain partial failures.
+The returned list will contain references to all successful commands, and
+a list of error messages identifying the roles on which the command
+failed.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the roles to start.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A reference to the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/stop">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Stop a set of role instances.
+<p>
+Bulk command operations are not atomic, and may contain partial failures.
+The returned list will contain references to all successful commands, and
+a list of error messages identifying the roles on which the command
+failed.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The role type.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A reference to the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/zooKeeperCleanup">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Cleanup a list of ZooKeeper server roles.
+<p>
+This command removes snapshots and transaction log files kept by
+ZooKeeper for backup purposes. Refer to the ZooKeeper documentation
+for more details.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the roles.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roleCommands/zooKeeperInit">
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Initialize a list of ZooKeeper server roles.
+<p>
+This applies to ZooKeeper services from CDH4. Before ZooKeeper server
+roles can be used, they need to be initialized.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[The names of the roles.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of submitted commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="DELETE">
+        <wadl:doc>
+          <![CDATA[Deletes a role from a given service.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The details of the deleted role.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieves detailed information about a role.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The details of the role.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/activities/{activityId}/children">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the service]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="activityId" style="template">
+        <wadl:doc>
+          <![CDATA[The id of the activity]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns the child activities]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="maxResults" style="query">
+            <wadl:doc>
+              <![CDATA[The maximum number of activities to return.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="resultOffset" style="query">
+            <wadl:doc>
+              <![CDATA[Specified the offset of activities to return.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the children to materialize]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The list of child activities for the specified activity]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/activities/{activityId}/metrics">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the service.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="activityId" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the activity.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Fetch metric readings for a particular activity.
+<p>
+By default, this call will look up all metrics available for the activity. If
+only specific metrics are desired, use the <i>metrics</i> parameter.
+<p>
+By default, the returned results correspond to a 5 minute window based on
+the provided end time (which defaults to the current server time). The
+<i>from</i> and <i>to</i> parameters can be used to control the window
+being queried. A maximum window of 3 hours is enforced.
+<p>
+When requesting a "full" view, aside from the extended properties of the
+returned metric data, the collection will also contain information about
+all metrics available for the activity, even if no readings are available
+in the requested window.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="from" style="query">
+            <wadl:doc>
+              <![CDATA[Start of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="to" style="query">
+            <wadl:doc>
+              <![CDATA[End of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="metrics" style="query">
+            <wadl:doc>
+              <![CDATA[Filter for which metrics to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of readings from the monitors.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/activities/{activityId}/similar">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the service]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="activityId" style="template">
+        <wadl:doc>
+          <![CDATA[The id of the activity]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Returns a list of similar activities]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the activities to materialize]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The list of similar activities to the specified activity]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/nameservices/{nameservice}/metrics">
+      <wadl:param name="nameservice" style="template">
+        <wadl:doc>
+          <![CDATA[The nameservice.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Fetch metric readings for a particular nameservice.
+<p>
+By default, this call will look up all metrics available. If only specific
+metrics are desired, use the <i>metrics</i> parameter.
+<p>
+By default, the returned results correspond to a 5 minute window based on
+the provided end time (which defaults to the current server time). The
+<i>from</i> and <i>to</i> parameters can be used to control the window
+being queried. A maximum window of 3 hours is enforced.
+<p>
+When requesting a "full" view, aside from the extended properties of the
+returned metric data, the collection will also contain information about
+all metrics available, even if no readings are available in the requested
+window.
+<p/>
+Only available with Cloudera Manager Enterprise Edition.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="from" style="query">
+            <wadl:doc>
+              <![CDATA[Start of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="to" style="query">
+            <wadl:doc>
+              <![CDATA[End of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="metrics" style="query">
+            <wadl:doc>
+              <![CDATA[Filter for which metrics to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of readings from the monitors.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/commands">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role to start.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[List active role commands.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[A list of active role commands.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/config">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role to look up.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieves the configuration of a specific role. Note that the "full" view
+performs validation on the configuration, which could take a few seconds
+on a large cluster (around 500 nodes or more).]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of role configuration parameters.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Updates the role configuration with the given values.
+<p>
+If a value is set in the given configuration, it will be added
+to the role's configuration, replacing any existing entries.
+If a value is unset (its value is null), the existing
+configuration for the attribute will be erased, if any.
+<p>
+Attributes that are not listed in the input will maintain their
+current values in the configuration.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Configuration changes.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+          <wadl:param name="message" style="query">
+            <wadl:doc>
+              <![CDATA[Optional message describing the changes.]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[The new service configuration.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/metrics">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the role.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Fetch metric readings for a particular role.
+<p>
+By default, this call will look up all metrics available for the role. If
+only specific metrics are desired, use the <i>metrics</i> parameter.
+<p>
+By default, the returned results correspond to a 5 minute window based on
+the provided end time (which defaults to the current server time). The
+<i>from</i> and <i>to</i> parameters can be used to control the window
+being queried. A maximum window of 3 hours is enforced.
+<p>
+When requesting a "full" view, aside from the extended properties of the
+returned metric data, the collection will also contain information about
+all metrics available for the role, even if no readings are available
+in the requested window.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:param name="from" style="query">
+            <wadl:doc>
+              <![CDATA[Start of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="to" style="query">
+            <wadl:doc>
+              <![CDATA[End of the period to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="metrics" style="query">
+            <wadl:doc>
+              <![CDATA[Filter for which metrics to query.]]>
+            </wadl:doc>
+          </wadl:param>
+          <wadl:param name="view" style="query">
+            <wadl:doc>
+              <![CDATA[The view of the data to materialize, either "summary" or "full".]]>
+            </wadl:doc>
+          </wadl:param>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[List of readings from the monitors.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/commands/enterMaintenanceMode">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Put the role into maintenance mode. This is a synchronous command. The
+result is known immediately upon return.
+
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Synchronous command result.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/commands/exitMaintenanceMode">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Take the role out of maintenance mode. This is a synchronous command. The
+result is known immediately upon return.
+
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Synchronous command result.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/logs/full">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role to start.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieves the log file for the role's main process.
+<p>
+If the role is not started, this will be the log file associated with
+the last time the role was run.
+<p>
+Log files are returned as plain text (type "text/plain").]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Contents of the role's log file.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="text/plain"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/logs/stderr">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role to start.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieves the role's standard error output.
+<p>
+If the role is not started, this will be the output associated with
+the last time the role was run.
+<p>
+Log files are returned as plain text (type "text/plain").]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Contents of the role's standard error output.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="text/plain"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/logs/stdout">
+      <wadl:param name="roleName" style="template">
+        <wadl:doc>
+          <![CDATA[The role to start.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="serviceName" style="template"/>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieves the role's standard output.
+<p>
+If the role is not started, this will be the output associated with
+the last time the role was run.
+<p>
+Log files are returned as plain text (type "text/plain").]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Contents of the role's standard output.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="text/plain"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+  </wadl:resources>
+</wadl:application>
