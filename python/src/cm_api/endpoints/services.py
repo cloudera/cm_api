@@ -631,7 +631,6 @@ class ApiService(BaseApiObject):
     return cmd
 
   def rolling_restart(self, slave_batch_size=None, 
-                      slave_fail_pct_threshold=None,
                       slave_fail_count_threshold=None,
                       stale_configs_only=None,
                       unupgraded_only=None,
@@ -647,13 +646,8 @@ class ApiService(BaseApiObject):
             Must be greater than 0. Default is 1.
             For HDFS, this number should be less than the replication factor (default 3)
             to ensure data availability during rolling restart.
-    @param: slave_fail_pct_threshold This along with slave_fail_count_threshold is used
-            to decide if the Rolling Restart command has failed, i.e. command fails if both
-            the count AND percent thresholds are exceeded
-            Must be an integer between 0 and 100. Default is 0.
-    @param: slave_fail_count_threshold This along with slave_fail_pct_threshold is used
-            to decide if the Rolling Restart command has failed, i.e. command fails if both
-            the count AND percent thresholds are exceeded
+    @param: slave_fail_count_threshold The threshold for number of slave batches that 
+            are allowed to fail to restart before the entire command is considered failed.
             Must be >= 0. Default is 0.
     @param: stale_configs_only Restart roles with stale configs only. Default is false.
     @param: unupgraded_only Restart roles that haven't been upgraded yet. Default is false.
@@ -666,8 +660,6 @@ class ApiService(BaseApiObject):
     args = dict()
     if slave_batch_size:
       args['slaveBatchSize'] = slave_batch_size
-    if slave_fail_pct_threshold:
-      args['slaveFailPctThreshold'] = slave_fail_pct_threshold
     if slave_fail_count_threshold:
       args['slaveFailCountThreshold'] = slave_fail_count_threshold
     if stale_configs_only:
