@@ -20,7 +20,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
-    BaseApiObject, ApiCommand, ApiList
+    BaseApiObject, ApiCommand, ApiList, ApiPeer
 from cm_api.endpoints.services import ApiService
 
 class ApiLicense(BaseApiObject):
@@ -196,3 +196,96 @@ class ClouderaManager(BaseApiObject):
     @since: API v2
     """
     return self._cmd('hostsStartRoles', data=json.dumps({ApiList.LIST_KEY : host_names}))
+  
+  def create_peer(self, name, url, username, password):
+    """
+    Create a new peer for replication.
+
+    @param name: The name of the peer.
+    @param url: The url of the peer.
+    @param username: The admin username to use to setup the remote side of the peer connection.
+    @param password: The password of the admin user.
+    @return: The newly created peer.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    body = json.dumps(
+        ApiPeer(self._get_resource_root(),
+                name=name,
+                url=url,
+                username=username,
+                password=password).to_json_dict())
+    resp = self._get_resource_root().post('/cm/peers', data=body)
+    return ApiPeer.from_json_dict(resp, self._get_resource_root())
+ 
+  def delete_peer(self, name):
+    """
+    Delete a replication peer.
+
+    @param name: The name of the peer.
+    @return: The deleted peer.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    resp = self._get_resource_root()\
+        .delete("/cm/peers/%s" % ( name, ))
+    return ApiPeer.from_json_dict(resp, self._get_resource_root())
+
+  def update_peer(self,
+      current_name,
+      new_name, new_url, username, password):
+    """
+    Update a replication peer.
+
+    @param current_name: The name of the peer to updated.
+    @param new_name: The new name for the peer.
+    @param new_url: The new url for the peer.
+    @param username: The admin username to use to setup the remote side of the peer connection.
+    @param password: The password of the admin user.
+    @return: The updated peer.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    body = json.dumps(
+        ApiPeer(self._get_resource_root(),
+                name=new_name,
+                url=new_url,
+                username=username,
+                password=password).to_json_dict())
+    resp = self._get_resource_root().put('/cm/peers/%s' % (current_name, ), data=body)
+    return ApiPeer.from_json_dict(resp, self._get_resource_root())
+
+  def get_peers(self):
+    """
+    Retrieve a list of replication peers.
+
+    @return: A list of replication peers.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    resp = self._get_resource_root().get("/cm/peers")
+    return ApiList.from_json_dict(ApiPeer, resp, self._get_resource_root())
+
+  def get_peer(self, name):
+    """
+    Retrieve a replication peer by name.
+
+    @param name: The name of the peer.
+    @return: The peer.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    resp = self._get_resource_root().get("/cm/peers/%s" % (name, ))
+    return ApiPeer.from_json_dict(resp, self._get_resource_root())
+
+  def test_peer_connectivity(self, name):
+    """
+    Test connectivity for a replication peer.
+
+    @param name: The name of the peer to test.
+    @return: The command representing the test.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    resp = self._get_resource_root().post('/cm/peers/%s/commands/test' % (name, ))
+    return ApiCommand.from_json_dict(resp, self._get_resource_root())
