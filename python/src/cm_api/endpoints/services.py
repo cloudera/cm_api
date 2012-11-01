@@ -22,7 +22,7 @@ import logging
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
     config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject, \
-    ApiActivity
+    ApiActivity, ApiReplicationSchedule, ApiServiceRef, ApiHdfsReplicationArguments
 from cm_api.endpoints import roles
 
 __docformat__ = "epytext"
@@ -450,7 +450,7 @@ class ApiService(BaseApiObject):
     version = self._get_resource_root().version
     if version < 2:
       if disable_quorum_storage:
-        raise AttributeError("Quorum-based Storage is not supported prior to Cloudera Manager 4.1.")
+        raise AttributeError("Quorum-based Storage requires at least API version 2 available in Cloudera Manager 4.1.")
     else:
       args['disableQuorumStorage'] = disable_quorum_storage
 
@@ -672,6 +672,115 @@ class ApiService(BaseApiObject):
       args['restartRoleNames'] = restart_role_names
 
     return self._cmd('rollingRestart', data = json.dumps(args))
+
+  def create_hdfs_replication_schedule(self,
+      start_time, end_time, interval_unit, interval,
+      paused,
+      peer_name, source_cluster_name, source_hdfs_name, source_hfds_path,
+      destination_hdfs_path, mapreduce_name, mapreduce_username=None, num_maps=0,
+      dry_run=False):
+    """
+    Create a new replication schedule for this service.
+
+    @type  start_time: datetime.datetime
+    @param start_time: The time at which the schedule becomes active and first executes.
+    @type  end_time: datetime.datetime
+    @param end_time: The time at which the schedule will expire.
+    @type  interval_unit: str
+    @param interval_unit: The unit of time the `interval` represents. Ex. MINUTE, HOUR,
+                          DAY. See the server documentation for a full list of values.
+    @type  interval: int
+    @param interval: The number of time units to wait until triggering the next replication.
+    @type  paused: bool
+    @param paused: Should the schedule be paused? Useful for on-demand replication.
+    @param peer_name: (Optional) The name of the replication peer.
+    @param source_cluster_name: The name of the source cluster.
+    @param source_hdfs_name: The name of the source HDFS service.
+    @param source_hdfs_path: The source path to use as the replication root.
+    @param destination_hdfs_path: The destination path.
+    @param mapreduce_name: The name of the mapreduce service to use for the replication job.
+    @param mapreduce_username: The user the mapreduce replication job should run under.
+                               A value of None will use the server's default value.
+    @param num_maps: The number of concurrent maps the replication job should use.
+                     A value of 0 means unlimited.
+    @type  dry_run: bool
+    @param dry_run: Simulate a replication without modiying the destination filesystem.
+    @return: The newly created schedule.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+
+    if self.type != 'HDFS':
+      raise Exception("This method can only be called on an HDFS service.")
+
+    source_service = ApiServiceRef(None, source_hdfs_name, 
+        clusterName=source_cluster_name, peerName=peer_name)
+    hdfs_args = ApiHdfsReplicationArguments(self._get_resource_root(),
+        sourceService=source_service, sourcePath=source_hfds_path, 
+        destinationPath=destination_hdfs_path, mapreduceServiceName=mapreduce_name,
+        userName=mapreduce_username, numMaps=num_maps, dryRun=dry_run)
+    schedule = ApiReplicationSchedule(self._get_resource_root(),
+      startTime=start_time, endTime=end_time, intervalUnit=interval_unit, interval=interval,
+      paused=paused, hdfsArguments=hdfs_args)
+
+    data = json.dumps(ApiList([schedule]).to_json_dict())
+    resp = self._get_resource_root().post("%s/replications" % self._path(), data=data)
+    data = resp[ApiList.LIST_KEY][0]
+
+    return ApiReplicationSchedule.from_json_dict(data, self._get_resource_root())
+
+  def get_replication_schedules(self):
+    """
+    Retrieve a list of replication schedules.
+
+    @return: A list of replication schedules.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    resp = self._get_resource_root().get("%s/replications" % self._path())
+    return ApiList.from_json_dict(ApiReplicationSchedule, resp, self._get_resource_root())
+
+  def delete_replication_schedule(self, schedule_id):
+    """
+    Delete a replication schedule.
+
+    @param schedule_id: The id of the schedule to delete.
+    @return: The deleted replication schedule.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    resp = self._get_resource_root().delete("%s/replications/%s" 
+        % (self._path(), schedule_id))
+    return ApiReplicationSchedule.from_json_dict(resp, self._get_resource_root())
+
+  def update_replication_schedule(self, schedule_id, schedule):
+    """
+    Update a replication schedule.
+
+    @param schedule_id: The id of the schedule to update.
+    @param schedule: The modified schedule.
+    @return: The updated replication schedule.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    data = json.dumps(schedule.to_json_dict())
+    resp = self._get_resource_root().put("%s/replications/%s"
+        % (self._path(), schedule_id), data=data)
+    return ApiReplicationSchedule.from_json_dict(resp, self._get_resource_root())
+
+  def trigger_replication_schedule(self, schedule_id):
+    """
+    Trigger replication immediately. Start and end dates on the schedule will be
+    ignored.
+
+    @param schedule_id: The id of the schedule to trigger.
+    @return: The command corresponding to the replication job.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    resp = self._get_resource_root().post("%s/replications/%s/run" 
+        % (self._path(), schedule_id))
+    return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
 class ApiServiceSetupInfo(ApiService):
   RO_ATTR = ( )

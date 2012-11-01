@@ -98,6 +98,11 @@ class BaseApiObject(object):
         value = value.to_json_dict()
       except AttributeError, ignored:
         pass
+      try:
+        # Maybe its a date?
+        value = value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+      except AttributeError, ignored:
+        pass
       dic[attr] = value
     return dic
 
@@ -125,6 +130,16 @@ class BaseApiObject(object):
                   (k, cls.__name__))
     return obj
 
+  def _require_min_api_version(self, version):
+    """
+    Raise an exception if the version of the api is less than the given version.
+
+    @param version: The minimum required version.
+    """
+    actual_version = self._get_resource_root().version
+    if actual_version < version:
+      raise Exception("API version %s is required but %s is in use." 
+          % (version, actual_version))
 
 class ApiList(object):
   """A list of some api object"""
@@ -292,6 +307,33 @@ class ApiActivity(BaseApiObject):
     return "<ApiActivity>: %s (%s)" % (self.name, self.status)
 
 #
+# Replication
+#
+
+class ApiPeer(BaseApiObject):
+  RW_ATTR = ( 'name', 'url', 'username', 'password' )
+  RO_ATTR = ( )
+
+  def __repr__(self):
+    return "<ApiPeer>: %s (%s)" % (self.name, self.url)
+
+class ApiReplicationSchedule(BaseApiObject):
+  RW_ATTR = ( 'startTime', 'endTime', 'interval', 'intervalUnit', 'paused', 'hdfsArguments' )
+  RO_ATTR = ( 'id', 'nextRun', 'history' )
+
+class ApiHdfsReplicationArguments(BaseApiObject):
+  RW_ATTR = ( 'sourceService', 'sourcePath', 'destinationPath',
+      'mapreduceServiceName', 'userName', 'numMaps',
+      'dryRun' )
+  RO_ATTR = ( )
+  
+  def _setattr(self, name, value):
+    if name == "sourceService" and isinstance(value, dict):
+      self.sourceService = ApiServiceRef(self._get_resource_root(), **value)
+    else:
+      super(ApiHdfsReplicationArguments, self)._setattr(name, value)
+
+#
 # Configuration helpers.
 #
 
@@ -372,8 +414,8 @@ class ApiHostRef(BaseApiObject):
     BaseApiObject.ctor_helper(**locals())
 
 class ApiServiceRef(BaseApiObject):
-  RW_ATTR = ('clusterName', 'serviceName')
-  def __init__(self, resource_root, serviceName, clusterName = None):
+  RW_ATTR = ('clusterName', 'serviceName', 'peerName')
+  def __init__(self, resource_root, serviceName, clusterName = None, peerName = None):
     BaseApiObject.ctor_helper(**locals())
 
 class ApiClusterRef(BaseApiObject):
