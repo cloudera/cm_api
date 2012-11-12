@@ -20,7 +20,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.endpoints.types import ApiCommand, ApiList, BaseApiObject
-from cm_api.endpoints import services
+from cm_api.endpoints import services, parcels
 
 __docformat__ = "epytext"
 
@@ -159,6 +159,24 @@ class ApiCluster(BaseApiObject):
     @return: A list of ApiService objects.
     """
     return services.get_all_services(self._get_resource_root(), self.name, view)
+
+  def get_parcel(self, product, version):
+    """
+    Lookup a parcel by product and version.
+
+    @param product: the product name
+    @param version: the product version
+    @return: An ApiParcel object
+    """
+    return parcels.get_parcel(self._get_resource_root(), product, version, self.name)
+
+  def get_all_parcels(self, view = None):
+    """
+    Get all parcels in this cluster.
+
+    @return: A list of ApiParcel objects.
+    """
+    return parcels.get_all_parcels(self._get_resource_root(), self.name, view)
 
   def start(self):
     """
