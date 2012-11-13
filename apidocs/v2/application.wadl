@@ -312,11 +312,7 @@ If there are any errors creating (or optionally deleting) a deployment,
 all changes will be rolled back leaving the system exactly as it was
 before calling this method.  The system will never be left in a state
 where part of the deployment is created and other parts are not.
-<p/>
-<strong>WARNING: Do not use role names with the format
-"string dash string dash string" e.g. "foo-bar-baz". Use of such a
-format might prevent creation of roles using the UI.
-This issue will be fixed in the next release.</strong>]]>
+<p/>]]>
         </wadl:doc>
         <wadl:request>
           <wadl:doc>
@@ -1866,11 +1862,7 @@ FAILOVERCONTROLLER, GATEWAY, JOURNALNODE</td>
 </tbody>
 
 </table>
-<p/>
-<strong>WARNING: Do not use role names with the format
-"string dash string dash string" e.g. "foo-bar-baz". Use of such a
-format might prevent creation of roles using the UI.
-This issue will be fixed in the next release.</strong>]]>
+<p/>]]>
         </wadl:doc>
         <wadl:request>
           <wadl:doc>
@@ -1984,29 +1976,6 @@ Only available with Cloudera Manager Enterprise Edition.]]>
         </wadl:response>
       </wadl:method>
     </wadl:resource>
-    <wadl:resource path="/api/v2/clusters/{clusterName}/services/${serviceName}/commands/hdfsCreateTmpDir">
-      <wadl:param name="serviceName" style="template">
-        <wadl:doc>
-          <![CDATA[Name of the service on which to run the command.]]>
-        </wadl:doc>
-      </wadl:param>
-      <wadl:param name="clusterName" style="template"/>
-      <wadl:method name="POST">
-        <wadl:doc>
-          <![CDATA[Creates a tmp directory on the HDFS filesystem.
-<p>
-Available since API v2.
-</p>]]>
-        </wadl:doc>
-        <wadl:request/>
-        <wadl:response>
-          <wadl:doc>
-            <![CDATA[Information about the submitted command]]>
-          </wadl:doc>
-          <wadl:representation mediaType="application/json"/>
-        </wadl:response>
-      </wadl:method>
-    </wadl:resource>
     <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/activities/{activityId}">
       <wadl:param name="clusterName" style="template">
         <wadl:doc>
@@ -2039,6 +2008,30 @@ Available since API v2.
         <wadl:response>
           <wadl:doc>
             <![CDATA[The Activity object with the specified id]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/createOozieDb">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[Name of the Oozie service on which to run the command.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Creates the Oozie Database Schema in the configured database.
+
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command]]>
           </wadl:doc>
           <wadl:representation mediaType="application/json"/>
         </wadl:response>
@@ -2168,6 +2161,29 @@ Available since API v2.
         <wadl:response>
           <wadl:doc>
             <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v2/clusters/{clusterName}/services/{serviceName}/commands/hdfsCreateTmpDir">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[Name of the HDFS service on which to run the command.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Creates a tmp directory on the HDFS filesystem.
+<p>
+Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command]]>
           </wadl:doc>
           <wadl:representation mediaType="application/json"/>
         </wadl:response>
