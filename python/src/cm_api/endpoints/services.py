@@ -23,7 +23,7 @@ import logging
 from cm_api.endpoints.types import config_to_json, json_to_config, \
     config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject, \
     ApiActivity, ApiReplicationSchedule, ApiServiceRef, ApiHdfsReplicationArguments
-from cm_api.endpoints import roles
+from cm_api.endpoints import roles, role_config_groups
 
 __docformat__ = "epytext"
 
@@ -283,6 +283,65 @@ class ApiService(BaseApiObject):
     """
     resp = self._get_resource_root().get(self._path() + '/roleTypes')
     return resp[ApiList.LIST_KEY]
+
+  def get_all_role_config_groups(self):
+    """
+    Get a list of role configuration groups in the service.
+
+    @return: A list of ApiRoleConfigGroup objects.
+    @since: API v3
+    """
+    return role_config_groups.get_all_role_config_groups(
+        self._get_resource_root(), self.name, self._get_cluster_name())
+
+  def get_role_config_group(self, name):
+    """
+    Get a role configuration group in the service by name.
+    
+    @param name: The name of the role config group.
+    @return: An ApiRoleConfigGroup object.
+    @since: API v3
+    """
+    return role_config_groups.get_role_config_group(
+        self._get_resource_root(), self.name, name, self._get_cluster_name())
+
+  def create_role_config_group(self, name, display_name, role_type):
+    """
+    Create a role config group.
+
+    @param name: The name of the new group.
+    @param display_name: The display name of the new group.
+    @param role_type: The role type of the new group.
+    @return: New ApiRoleConfigGroup object.
+    @since: API v3
+    """
+    return role_config_groups.create_role_config_group(
+        self._get_resource_root(), self.name, name, display_name, role_type,
+        self._get_cluster_name())
+
+  def update_role_config_group(self, name, apigroup):
+    """
+    Update a role config group.
+    
+    @param name: Role config group name.
+    @param apigroup: The updated role config group.
+    @return: The updated ApiRoleConfigGroup object.
+    @since: API v3
+    """
+    return role_config_groups.update_role_config_group(
+        self._get_resource_root(), self.name, name, apigroup,
+        self._get_cluster_name())
+
+  def delete_role_config_group(self, name):
+    """
+    Delete a role config group by name.
+
+    @param name: Role config group name.
+    @return: The deleted ApiRoleConfigGroup object.
+    @since: API v3
+    """
+    return role_config_groups.delete_role_config_group(
+        self._get_resource_root(), self.name, name, self._get_cluster_name())
 
   def get_metrics(self, from_time=None, to_time=None, metrics=None, view=None):
     """
