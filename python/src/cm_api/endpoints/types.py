@@ -427,3 +427,8 @@ class ApiRoleRef(BaseApiObject):
   RW_ATTR = ('clusterName', 'serviceName', 'roleName')
   def __init__(self, resource_root, serviceName, roleName, clusterName = None):
     BaseApiObject.ctor_helper(**locals())
+
+class ApiRoleConfigGroupRef(BaseApiObject):
+  RW_ATTR = ('roleConfigGroupName')
+  def __init__(self, resource_root, roleConfigGroupName):
+    BaseApiObject.ctor_helper(**locals())
