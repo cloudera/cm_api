@@ -26,9 +26,13 @@ from cm_api.endpoints.roles import ApiRole
 __docformat__ = "epytext"
 
 ROLE_CONFIG_GROUPS_PATH = "/clusters/%s/services/%s/roleConfigGroups"
+CM_ROLE_CONFIG_GROUPS_PATH = "/cm/service/roleConfigGroups"
 
 def _get_role_config_groups_path(cluster_name, service_name):
-  return ROLE_CONFIG_GROUPS_PATH % (cluster_name, service_name)
+  if cluster_name:
+    return ROLE_CONFIG_GROUPS_PATH % (cluster_name, service_name)
+  else:
+    return CM_ROLE_CONFIG_GROUPS_PATH
 
 def _get_role_config_group_path(cluster_name, service_name, name):
   path = _get_role_config_groups_path(cluster_name, service_name)
