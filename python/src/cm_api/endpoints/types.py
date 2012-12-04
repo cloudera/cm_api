@@ -429,6 +429,6 @@ class ApiRoleRef(BaseApiObject):
     BaseApiObject.ctor_helper(**locals())
 
 class ApiRoleConfigGroupRef(BaseApiObject):
-  RW_ATTR = ('roleConfigGroupName')
+  RW_ATTR = ('roleConfigGroupName',)
   def __init__(self, resource_root, roleConfigGroupName):
     BaseApiObject.ctor_helper(**locals())
