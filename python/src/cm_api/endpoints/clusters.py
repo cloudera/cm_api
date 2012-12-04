@@ -20,7 +20,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.endpoints.types import ApiCommand, ApiList, BaseApiObject
-from cm_api.endpoints import services, parcels
+from cm_api.endpoints import services, parcels, host_templates
 
 __docformat__ = "epytext"
 
@@ -226,3 +226,34 @@ class ApiCluster(BaseApiObject):
     if cmd.success:
       self._update(get_cluster(self._get_resource_root(), self.name))
     return cmd
+
+  def get_all_host_templates(self):
+    """
+    Retrieves all host templates in the cluster.
+    @return ApiList of ApiHostTemplate objects.
+    """
+    return host_templates.get_all_host_templates(self._get_resource_root(), self.name)
+  
+  def get_host_template(self, name):
+    """
+    Retrieves a host templates by name.
+    @param name: Host template name.
+    @return An ApiHostTemplate object.
+    """
+    return host_templates.get_host_template(self._get_resource_root(), name, self.name)
+
+  def create_host_template(self, name):
+    """
+    Creates a host template.
+    @param name: Name of the host template to create.
+    @return An ApiHostTemplate object.
+    """
+    return host_templates.create_host_template(self._get_resource_root(), name, self.name)
+
+  def delete_host_template(self, name):
+    """
+    Deletes a host template.
+    @param name: Name of the host template to delete.
+    @return An ApiHostTemplate object.
+    """
+    return host_templates.delete_host_template(self._get_resource_root(), name, self.name)
