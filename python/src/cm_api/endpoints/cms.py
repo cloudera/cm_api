@@ -152,6 +152,8 @@ class ClouderaManager(BaseApiObject):
 
   def collect_diagnostic_data(self, start_datetime, end_datetime, includeInfoLog=False):
     """
+    This method is deprecated as of CM 4.5. 
+    You should use collect_diagnostic_data_45.
     Issue the command to collect diagnostic data.
 
     @param start_datetime: The start of the collection period. Type datetime.
@@ -162,6 +164,19 @@ class ClouderaManager(BaseApiObject):
         'startTime': start_datetime.isoformat(),
         'endTime': end_datetime.isoformat(),
         'includeInfoLog': includeInfoLog,
+    }
+    return self._cmd('collectDiagnosticData', data=json.dumps(args))
+
+  def collect_diagnostic_data_45(self, end_datetime, bundle_size_bytes):
+    """
+    Issue the command to collect diagnostic data.
+
+    @param end_datetime: The end of the collection period. Type datetime.
+    @param bundle_size_bytes: The target size for the support bundle in bytes
+    """
+    args = {
+        'endTime': end_datetime.isoformat(),
+        'bundleSizeBytes': bundle_size_bytes
     }
     return self._cmd('collectDiagnosticData', data=json.dumps(args))
 
