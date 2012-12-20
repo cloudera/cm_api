@@ -472,6 +472,9 @@ class ApiHostRef(BaseApiObject):
   RW_ATTR = ('hostId',)
   def __init__(self, resource_root, hostId):
     BaseApiObject.ctor_helper(**locals())
+  
+  def __str__(self):
+    return "<ApiHostRef>: %s" % (self.hostId)
 
 class ApiServiceRef(BaseApiObject):
   RW_ATTR = ('clusterName', 'serviceName', 'peerName')

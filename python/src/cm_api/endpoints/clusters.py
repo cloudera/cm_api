@@ -19,7 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiCommand, ApiList, BaseApiObject
+from cm_api.endpoints.types import ApiCommand, ApiList, ApiHostRef, BaseApiObject
 from cm_api.endpoints import services, parcels, host_templates
 
 __docformat__ = "epytext"
@@ -178,6 +178,49 @@ class ApiCluster(BaseApiObject):
     """
     return parcels.get_all_parcels(self._get_resource_root(), self.name, view)
 
+  def list_hosts(self):
+    """
+    Lists all the hosts that are associated with this cluster.
+
+    @return: A list of ApiHostRef objects of the hosts in the cluster.
+    """
+    resp = self._get_resource_root().get(
+            self._path() + '/hosts')
+    return ApiList.from_json_dict(ApiHostRef, resp, self._get_resource_root())
+
+  def remove_host(self, hostId):
+    """
+    Removes the association of the host with the cluster.
+
+    @return: A ApiHostRef of the host that was removed.
+    """
+    resource_root = self._get_resource_root()
+    resp = resource_root.delete("%s/hosts/%s" % (self._path(), hostId)) 
+    return ApiHostRef.from_json_dict(resp, resource_root)
+
+  def remove_all_hosts(self):
+    """
+    Removes the association of all the hosts with the cluster.
+
+    @return: A list of ApiHostRef objects of the hosts that were removed.
+    """
+    resource_root = self._get_resource_root()
+    resp = resource_root.delete("%s/hosts" % (self._path(),)) 
+    return ApiList.from_json_dict(ApiHostRef, resp, self._get_resource_root())
+
+  def add_hosts(self, hostIds):
+    """
+    Adds a host to the cluster.
+
+    @return: A list of ApiHostRef objects of the new 
+             hosts that were added to the cluster
+    """
+    resource_root = self._get_resource_root()
+    hostRefList = ApiList([ApiHostRef(resource_root, x) for x in [hostIds]])
+    body = json.dumps(hostRefList.to_json_dict())
+    resp = resource_root.post(self._path() + '/hosts', data=body)
+    return ApiList.from_json_dict(ApiHostRef, resp, resource_root)[0]
+
   def start(self):
     """
     Start all services in a cluster, respecting dependencies.
@@ -257,3 +300,4 @@ class ApiCluster(BaseApiObject):
     @return An ApiHostTemplate object.
     """
     return host_templates.delete_host_template(self._get_resource_root(), name, self.name)
+
