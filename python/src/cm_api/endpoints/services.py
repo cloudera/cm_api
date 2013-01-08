@@ -624,6 +624,21 @@ class ApiService(BaseApiObject):
     """
     return self._role_cmd('hdfsInitializeSharedDir', namenodes)
 
+  def roll_edits_hdfs(self, nameservice=None):
+    """
+    Roll the edits of an HDFS NameNode or Nameservice.
+
+    @param nameservice: Nameservice whose edits should be rolled.
+                        Required only with a federated HDFS.
+    @return: Reference to the submitted command.
+    @since: API v3
+    """
+    args = dict()
+    if nameservice:
+      args['nameservice'] = nameservice
+
+    return self._cmd('hdfsRollEdits', data = json.dumps(args))
+
   def cleanup_zookeeper(self, *servers):
     """
     Cleanup a ZooKeeper service or roles.
