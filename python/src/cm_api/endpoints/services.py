@@ -297,7 +297,7 @@ class ApiService(BaseApiObject):
   def get_role_config_group(self, name):
     """
     Get a role configuration group in the service by name.
-    
+
     @param name: The name of the role config group.
     @return: An ApiRoleConfigGroup object.
     @since: API v3
@@ -322,7 +322,7 @@ class ApiService(BaseApiObject):
   def update_role_config_group(self, name, apigroup):
     """
     Update a role config group.
-    
+
     @param name: Role config group name.
     @param apigroup: The updated role config group.
     @return: The updated ApiRoleConfigGroup object.
@@ -704,7 +704,7 @@ class ApiService(BaseApiObject):
       self._update(_get_service(self._get_resource_root(), self._path()))
     return cmd
 
-  def rolling_restart(self, slave_batch_size=None, 
+  def rolling_restart(self, slave_batch_size=None,
                       slave_fail_count_threshold=None,
                       sleep_seconds=None,
                       stale_configs_only=None,
@@ -721,7 +721,7 @@ class ApiService(BaseApiObject):
             Must be greater than 0. Default is 1.
             For HDFS, this number should be less than the replication factor (default 3)
             to ensure data availability during rolling restart.
-    @param: slave_fail_count_threshold The threshold for number of slave batches that 
+    @param: slave_fail_count_threshold The threshold for number of slave batches that
             are allowed to fail to restart before the entire command is considered failed.
             Must be >= 0. Default is 0.
     @param: sleep_seconds Number of seconds to sleep between restarts of slave role batches.
@@ -752,14 +752,17 @@ class ApiService(BaseApiObject):
 
     return self._cmd('rollingRestart', data = json.dumps(args))
 
-  def create_hdfs_replication_schedule(self,
-      start_time, end_time, interval_unit, interval,
-      paused,
-      peer_name, source_cluster_name, source_hdfs_name, source_hfds_path,
-      destination_hdfs_path, mapreduce_name, mapreduce_username=None, num_maps=0,
-      dry_run=False):
+  def create_replication_schedule(self,
+      start_time, end_time, interval_unit, interval, paused, arguments,
+      alert_on_start=False, alert_on_success=False, alert_on_fail=False,\
+      alert_on_abort=False):
     """
     Create a new replication schedule for this service.
+
+    The replication argument type varies per service type. The following types
+    are recognized:
+      - HDFS: ApiHdfsReplicationArguments
+      - Hive: ApiHiveReplicationArguments
 
     @type  start_time: datetime.datetime
     @param start_time: The time at which the schedule becomes active and first executes.
@@ -772,35 +775,31 @@ class ApiService(BaseApiObject):
     @param interval: The number of time units to wait until triggering the next replication.
     @type  paused: bool
     @param paused: Should the schedule be paused? Useful for on-demand replication.
-    @param peer_name: (Optional) The name of the replication peer.
-    @param source_cluster_name: The name of the source cluster.
-    @param source_hdfs_name: The name of the source HDFS service.
-    @param source_hdfs_path: The source path to use as the replication root.
-    @param destination_hdfs_path: The destination path.
-    @param mapreduce_name: The name of the mapreduce service to use for the replication job.
-    @param mapreduce_username: The user the mapreduce replication job should run under.
-                               A value of None will use the server's default value.
-    @param num_maps: The number of concurrent maps the replication job should use.
-                     A value of 0 means unlimited.
-    @type  dry_run: bool
-    @param dry_run: Simulate a replication without modiying the destination filesystem.
+    @param arguments: service type-specific arguments for the replication job.
+    @param alert_on_start: whether to generate alerts when the job is started.
+    @param alert_on_success: whether to generate alerts when the job succeeds.
+    @param alert_on_fail: whether to generate alerts when the job fails.
+    @param alert_on_abort: whether to generate alerts when the job is aborted.
     @return: The newly created schedule.
     @since: API v3
     """
     self._require_min_api_version(3)
 
-    if self.type != 'HDFS':
-      raise Exception("This method can only be called on an HDFS service.")
-
-    source_service = ApiServiceRef(None, source_hdfs_name, 
-        clusterName=source_cluster_name, peerName=peer_name)
-    hdfs_args = ApiHdfsReplicationArguments(self._get_resource_root(),
-        sourceService=source_service, sourcePath=source_hfds_path, 
-        destinationPath=destination_hdfs_path, mapreduceServiceName=mapreduce_name,
-        userName=mapreduce_username, numMaps=num_maps, dryRun=dry_run)
     schedule = ApiReplicationSchedule(self._get_resource_root(),
       startTime=start_time, endTime=end_time, intervalUnit=interval_unit, interval=interval,
-      paused=paused, hdfsArguments=hdfs_args)
+      paused=paused, alertOnStart=alert_on_start, alertOnSuccess=alert_on_success,
+      alertOnFail=alert_on_fail, alertOnAbort=alert_on_abort)
+
+    if self.type == 'HDFS':
+      if not isinstance(arguments, ApiHdfsReplicationArguments):
+        raise TypeError, 'Unexpected type for HDFS replication argument.'
+      schedule.hdfsArguments = arguments
+    elif self.type == 'Hive':
+      if not isinstance(arguments, ApiHiveReplicationArguments):
+        raise TypeError, 'Unexpected type for Hive replication argument.'
+      schedule.hiveArguments = arguments
+    else:
+      raise TypeError, 'Replication is not supported for service type ' + self.type
 
     data = json.dumps(ApiList([schedule]).to_json_dict())
     resp = self._get_resource_root().post("%s/replications" % self._path(), data=data)
@@ -819,6 +818,19 @@ class ApiService(BaseApiObject):
     resp = self._get_resource_root().get("%s/replications" % self._path())
     return ApiList.from_json_dict(ApiReplicationSchedule, resp, self._get_resource_root())
 
+  def get_replication_schedule(self, schedule_id):
+    """
+    Retrieve a single replication schedule.
+
+    @param schedule_id: The id of the schedule to retrieve.
+    @return: The requested schedule.
+    @since: API v3
+    """
+    self._require_min_api_version(3)
+    resp = self._get_resource_root().get("%s/replications/%d" %
+        (self._path(), schedule_id))
+    return ApiReplicationSchedule.from_json_dict(resp, self._get_resource_root())
+
   def delete_replication_schedule(self, schedule_id):
     """
     Delete a replication schedule.
@@ -828,7 +840,7 @@ class ApiService(BaseApiObject):
     @since: API v3
     """
     self._require_min_api_version(3)
-    resp = self._get_resource_root().delete("%s/replications/%s" 
+    resp = self._get_resource_root().delete("%s/replications/%s"
         % (self._path(), schedule_id))
     return ApiReplicationSchedule.from_json_dict(resp, self._get_resource_root())
 
@@ -847,18 +859,19 @@ class ApiService(BaseApiObject):
         % (self._path(), schedule_id), data=data)
     return ApiReplicationSchedule.from_json_dict(resp, self._get_resource_root())
 
-  def trigger_replication_schedule(self, schedule_id):
+  def trigger_replication_schedule(self, schedule_id, dry_run=False):
     """
     Trigger replication immediately. Start and end dates on the schedule will be
     ignored.
 
     @param schedule_id: The id of the schedule to trigger.
+    @param dry_run: Whether to execute a dry run.
     @return: The command corresponding to the replication job.
     @since: API v3
     """
     self._require_min_api_version(3)
-    resp = self._get_resource_root().post("%s/replications/%s/run" 
-        % (self._path(), schedule_id))
+    resp = self._get_resource_root().post("%s/replications/%s/run"
+        % (self._path(), schedule_id), params=dict(dryRun=dry_run))
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
 class ApiServiceSetupInfo(ApiService):

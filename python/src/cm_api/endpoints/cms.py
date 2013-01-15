@@ -20,7 +20,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
-    BaseApiObject, ApiCommand, ApiList, ApiPeer
+    BaseApiObject, ApiCommand, ApiList, ApiCmPeer
 from cm_api.endpoints.services import ApiService
 
 class ApiLicense(BaseApiObject):
@@ -152,7 +152,7 @@ class ClouderaManager(BaseApiObject):
 
   def collect_diagnostic_data(self, start_datetime, end_datetime, includeInfoLog=False):
     """
-    This method is deprecated as of CM 4.5. 
+    This method is deprecated as of CM 4.5.
     You should use collect_diagnostic_data_45.
     Issue the command to collect diagnostic data.
 
@@ -211,7 +211,7 @@ class ClouderaManager(BaseApiObject):
     @since: API v2
     """
     return self._cmd('hostsStartRoles', data=json.dumps({ApiList.LIST_KEY : host_names}))
-  
+
   def create_peer(self, name, url, username, password):
     """
     Create a new peer for replication.
@@ -225,14 +225,14 @@ class ClouderaManager(BaseApiObject):
     """
     self._require_min_api_version(3)
     body = json.dumps(
-        ApiPeer(self._get_resource_root(),
-                name=name,
-                url=url,
-                username=username,
-                password=password).to_json_dict())
+        ApiCmPeer(self._get_resource_root(),
+                  name=name,
+                  url=url,
+                  username=username,
+                  password=password).to_json_dict())
     resp = self._get_resource_root().post('/cm/peers', data=body)
-    return ApiPeer.from_json_dict(resp, self._get_resource_root())
- 
+    return ApiCmPeer.from_json_dict(resp, self._get_resource_root())
+
   def delete_peer(self, name):
     """
     Delete a replication peer.
@@ -244,7 +244,7 @@ class ClouderaManager(BaseApiObject):
     self._require_min_api_version(3)
     resp = self._get_resource_root()\
         .delete("/cm/peers/%s" % ( name, ))
-    return ApiPeer.from_json_dict(resp, self._get_resource_root())
+    return ApiCmPeer.from_json_dict(resp, self._get_resource_root())
 
   def update_peer(self,
       current_name,
@@ -262,13 +262,13 @@ class ClouderaManager(BaseApiObject):
     """
     self._require_min_api_version(3)
     body = json.dumps(
-        ApiPeer(self._get_resource_root(),
-                name=new_name,
-                url=new_url,
-                username=username,
-                password=password).to_json_dict())
+        ApiCmPeer(self._get_resource_root(),
+                  name=new_name,
+                  url=new_url,
+                  username=username,
+                  password=password).to_json_dict())
     resp = self._get_resource_root().put('/cm/peers/%s' % (current_name, ), data=body)
-    return ApiPeer.from_json_dict(resp, self._get_resource_root())
+    return ApiCmPeer.from_json_dict(resp, self._get_resource_root())
 
   def get_peers(self):
     """
@@ -279,7 +279,7 @@ class ClouderaManager(BaseApiObject):
     """
     self._require_min_api_version(3)
     resp = self._get_resource_root().get("/cm/peers")
-    return ApiList.from_json_dict(ApiPeer, resp, self._get_resource_root())
+    return ApiList.from_json_dict(ApiCmPeer, resp, self._get_resource_root())
 
   def get_peer(self, name):
     """
@@ -291,7 +291,7 @@ class ClouderaManager(BaseApiObject):
     """
     self._require_min_api_version(3)
     resp = self._get_resource_root().get("/cm/peers/%s" % (name, ))
-    return ApiPeer.from_json_dict(resp, self._get_resource_root())
+    return ApiCmPeer.from_json_dict(resp, self._get_resource_root())
 
   def test_peer_connectivity(self, name):
     """

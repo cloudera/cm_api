@@ -19,6 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
+import datetime
 import logging
 import time
 
@@ -92,18 +93,21 @@ class BaseApiObject(object):
   def to_json_dict(self):
     dic = { }
     for attr in self.RW_ATTR:
-      value = getattr(self, attr)
       try:
-        # If the value has to_json_dict(), call it
-        value = value.to_json_dict()
+        value = getattr(self, attr)
+        try:
+          # If the value has to_json_dict(), call it
+          value = value.to_json_dict()
+        except AttributeError, ignored:
+          pass
+        try:
+          # Maybe it's a date?
+          value = value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        except AttributeError, ignored:
+          pass
+        dic[attr] = value
       except AttributeError, ignored:
         pass
-      try:
-        # Maybe its a date?
-        value = value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-      except AttributeError, ignored:
-        pass
-      dic[attr] = value
     return dic
 
   @classmethod
@@ -138,7 +142,7 @@ class BaseApiObject(object):
     """
     actual_version = self._get_resource_root().version
     if actual_version < version:
-      raise Exception("API version %s is required but %s is in use." 
+      raise Exception("API version %s is required but %s is in use."
           % (version, actual_version))
 
 class ApiList(object):
@@ -310,7 +314,7 @@ class ApiActivity(BaseApiObject):
 # Replication
 #
 
-class ApiPeer(BaseApiObject):
+class ApiCmPeer(BaseApiObject):
   RW_ATTR = ( 'name', 'url', 'username', 'password' )
   RO_ATTR = ( )
 
@@ -318,20 +322,59 @@ class ApiPeer(BaseApiObject):
     return "<ApiPeer>: %s (%s)" % (self.name, self.url)
 
 class ApiReplicationSchedule(BaseApiObject):
-  RW_ATTR = ( 'startTime', 'endTime', 'interval', 'intervalUnit', 'paused', 'hdfsArguments' )
+  RW_ATTR = ( 'startTime', 'endTime', 'interval', 'intervalUnit', 'paused',
+      'hdfsArguments', 'hiveArguments', 'alertOnStart', 'alertOnSuccess',
+      'alertOnFail', 'alertOnAbort' )
   RO_ATTR = ( 'id', 'nextRun', 'history' )
+
+  def _setattr(self, name, value):
+    DATES = ( 'startTime', 'endTime', 'nextRun' )
+    if name in DATES and value and not isinstance(value, datetime.datetime):
+      setattr(self, name, datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%fZ"))
+    elif name == 'hdfsArguments' and isinstance(value, dict):
+      self.hdfsArguments = ApiHdfsReplicationArguments(
+          self._get_resource_root(), **value)
+    elif name == 'hiveArguments' and isinstance(value, dict):
+      self.hiveArguments = ApiHiveReplicationArguments(
+          self._get_resource_root(), **value)
+    else:
+      super(ApiReplicationSchedule, self)._setattr(name, value)
 
 class ApiHdfsReplicationArguments(BaseApiObject):
   RW_ATTR = ( 'sourceService', 'sourcePath', 'destinationPath',
       'mapreduceServiceName', 'userName', 'numMaps',
-      'dryRun' )
+      'dryRun', 'schedulerPoolName', 'abortOnError', 'preservePermissions',
+      'preserveBlockSize', 'preserveReplicationCount', 'removeMissingFiles' )
   RO_ATTR = ( )
-  
+
   def _setattr(self, name, value):
     if name == "sourceService" and isinstance(value, dict):
       self.sourceService = ApiServiceRef(self._get_resource_root(), **value)
     else:
       super(ApiHdfsReplicationArguments, self)._setattr(name, value)
+
+class ApiHiveTable(BaseApiObject):
+  RW_ATTR = ('database', 'tableName')
+  RO_ATTR = ( )
+
+  def __str__(self):
+    return "<ApiHiveTable>: %s, %s" % (self.database, self.tableName)
+
+class ApiHiveReplicationArguments(BaseApiObject):
+  RW_ATTR = ('sourceService', 'tableFilters', 'exportDir', 'force',
+      'replicateData', 'hdfsArguments', 'dryRun')
+  RO_ATTR = ( )
+
+  def _setattr(self, name, value):
+    if name == "sourceService" and isinstance(value, dict):
+      self.sourceService = ApiServiceRef(self._get_resource_root(), **value)
+    elif name == 'hdfsArguments' and isinstance(value, dict):
+      self.hdfsArguments = ApiHdfsReplicationArguments(self._get_resource_root(),
+          **value)
+    elif name == 'tableFilters' and isinstance(value, list):
+      self.tableFilters = [ ApiHiveTable(self._get_resource_root(), **x) for x in value ]
+    else:
+      super(ApiHiveReplicationArguments, self)._setattr(name, value)
 
 #
 # Configuration helpers.
