@@ -19,8 +19,13 @@ help:
 	@echo 'The build targets are:'
 	@echo '  dist		: Create a source distribution tarball'
 
+.PHONY: test
+test:
+	@echo 'Running tests...'
+	PYTHONPATH=src python -m unittest discover src/cm_api_tests
+
 .PHONY: dist
-dist:
+dist: test
 	git rev-parse HEAD > .git-hash
 	python setup.py sdist
 
