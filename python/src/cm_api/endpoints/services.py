@@ -706,6 +706,7 @@ class ApiService(BaseApiObject):
 
   def rolling_restart(self, slave_batch_size=None, 
                       slave_fail_count_threshold=None,
+                      sleep_seconds=None,
                       stale_configs_only=None,
                       unupgraded_only=None,
                       restart_role_types=None,
@@ -723,6 +724,8 @@ class ApiService(BaseApiObject):
     @param: slave_fail_count_threshold The threshold for number of slave batches that 
             are allowed to fail to restart before the entire command is considered failed.
             Must be >= 0. Default is 0.
+    @param: sleep_seconds Number of seconds to sleep between restarts of slave role batches.
+            Must be >=0. Default is 0.
     @param: stale_configs_only Restart roles with stale configs only. Default is false.
     @param: unupgraded_only Restart roles that haven't been upgraded yet. Default is false.
     @param: restart_role_types Role types to restart. If not specified, all startable roles are restarted.
@@ -736,6 +739,8 @@ class ApiService(BaseApiObject):
       args['slaveBatchSize'] = slave_batch_size
     if slave_fail_count_threshold:
       args['slaveFailCountThreshold'] = slave_fail_count_threshold
+    if sleep_seconds:
+      args['sleepSeconds'] = sleep_seconds
     if stale_configs_only:
       args['staleConfigsOnly'] = stale_configs_only
     if unupgraded_only:
