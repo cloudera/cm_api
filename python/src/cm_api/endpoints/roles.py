@@ -19,8 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import config_to_json, json_to_config, \
-    ApiCommand, ApiList, BaseApiObject, ApiHostRef
+from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
 
@@ -115,15 +114,25 @@ def delete_role(resource_root, service_name, name, cluster_name="default"):
 
 
 class ApiRole(BaseApiObject):
-  RO_ATTR = ('roleState', 'healthSummary', 'healthChecks', 'serviceRef',
-      'configStale', 'haStatus', 'roleUrl', 'commissionState',
-      'maintenanceMode', 'maintenanceOwners', 'roleConfigGroupRef')
-  RW_ATTR = ('name', 'type', 'hostRef')
+  _ATTRIBUTES = {
+    'name'                : None,
+    'type'                : None,
+    'hostRef'             : Attr(ApiHostRef),
+    'roleState'           : ROAttr(),
+    'healthSummary'       : ROAttr(),
+    'healthChecks'        : ROAttr(),
+    'serviceRef'          : ROAttr(ApiServiceRef),
+    'configStale'         : ROAttr(),
+    'haStatus'            : ROAttr(),
+    'roleUrl'             : ROAttr(),
+    'commissionState'     : ROAttr(),
+    'maintenanceMode'     : ROAttr(),
+    'maintenanceOwners'   : ROAttr(),
+    'roleConfigGroupRef'  : ROAttr(),
+  }
 
-  def __init__(self, resource_root, name, type, hostRef):
-    # Unfortunately, the json key is called "type". So our input arg
-    # needs to be called "type" as well, despite it being a python keyword.
-    BaseApiObject.ctor_helper(**locals())
+  def __init__(self, resource_root, name=None, type=None, hostRef=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiRole>: %s (cluster: %s; service: %s)" % (

@@ -19,15 +19,19 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import config_to_json, json_to_config, \
-    BaseApiObject, ApiCommand, ApiList, ApiCmPeer
+from cm_api.endpoints.types import *
 from cm_api.endpoints.services import ApiService
 
 class ApiLicense(BaseApiObject):
   """Model for a CM license."""
-  RO_ATTR = ('owner', 'uuid', 'expiration')
+  _ATTRIBUTES = {
+    'owner'       : ROAttr(),
+    'uuid'        : ROAttr(),
+    'expiration'  : ROAttr(),
+  }
+
   def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
+    BaseApiObject.init(self, resource_root)
 
 class ClouderaManager(BaseApiObject):
   """
@@ -37,7 +41,7 @@ class ClouderaManager(BaseApiObject):
   """
 
   def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
+    BaseApiObject.init(self, resource_root)
 
   def _cmd(self, command, data = None):
     """

@@ -20,10 +20,7 @@ except ImportError:
   import simplejson as json
 import logging
 
-from cm_api.endpoints.types import config_to_json, json_to_config, \
-    config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject, \
-    ApiActivity, ApiReplicationSchedule, ApiServiceRef, \
-    ApiHdfsReplicationArguments, ApiHiveReplicationArguments
+from cm_api.endpoints.types import *
 from cm_api.endpoints import roles, role_config_groups
 
 __docformat__ = "epytext"
@@ -90,21 +87,29 @@ def delete_service(resource_root, name, cluster_name="default"):
 
 
 class ApiService(BaseApiObject):
-  RO_ATTR = ('serviceState', 'healthSummary', 'healthChecks', 'clusterRef',
-             'configStale', 'serviceUrl', 'maintenanceMode', 'maintenanceOwners')
-  RW_ATTR = ('name', 'type')
+  _ATTRIBUTES = {
+    'name'              : None,
+    'type'              : None,
+    'displayName'       : None,
+    'serviceState'      : ROAttr(),
+    'healthSummary'     : ROAttr(),
+    'healthChecks'      : ROAttr(),
+    'clusterRef'        : ROAttr(ApiClusterRef),
+    'configStale'       : ROAttr(),
+    'serviceUrl'        : ROAttr(),
+    'maintenanceMode'   : ROAttr(),
+    'maintenanceOwners' : ROAttr(),
+  }
 
-  def __init__(self, resource_root, name, type):
-    # Unfortunately, the json key is called "type". So our input arg
-    # needs to be called "type" as well, despite it being a python keyword.
-    BaseApiObject.ctor_helper(**locals())
+  def __init__(self, resource_root, name=None, type=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiService>: %s (cluster: %s)" % (
         self.name, self._get_cluster_name())
 
   def _get_cluster_name(self):
-    if self.clusterRef:
+    if hasattr(self, 'clusterRef') and self.clusterRef:
       return self.clusterRef.clusterName
     return None
 
@@ -422,9 +427,9 @@ class ApiService(BaseApiObject):
   def create_beeswax_warehouse(self):
     """
     DEPRECATED: use create_hive_warehouse on the Hive service. Deprecated since v3.
-    
+
     Create the Beeswax role's warehouse for a Hue service.
-    
+
     @return: Reference to the submitted command.
     """
     return self._cmd('hueCreateHiveWarehouse')
@@ -887,7 +892,7 @@ class ApiService(BaseApiObject):
     @since: API v3
     """
     return self._cmd('hiveCreateMetastoreDatabaseTables')
-  
+
   def create_hive_warehouse(self):
     """
     Creates the Hive warehouse directory in HDFS.
@@ -896,7 +901,7 @@ class ApiService(BaseApiObject):
     @since: API v3
     """
     return self._cmd('hiveCreateHiveWarehouse')
-  
+
   def create_hive_metastore_database(self):
     """
     Create the Hive Metastore Database. Only works with embedded postgresql
@@ -908,13 +913,13 @@ class ApiService(BaseApiObject):
     """
     self._require_min_api_version(4)
     return self._cmd('hiveCreateMetastoreDatabaseCommand')
-  
+
   def update_hive_metastore_namenodes(self):
     """
     Update Hive Metastore to point to a NameNode's Nameservice name instead of
     hostname. Only available when all Hive Metastore Servers are stopped and
     HDFS has High Availability.
-    
+
     Back up the Hive Metastore Database before running this command.
 
     @return: Reference to the submitted command.
@@ -924,8 +929,12 @@ class ApiService(BaseApiObject):
     return self._cmd('hiveUpdateMetastoreNamenodesCommand')
 
 class ApiServiceSetupInfo(ApiService):
-  RO_ATTR = ( )
-  RW_ATTR = ('name', 'type', 'config', 'roles')
+  _ATTRIBUTES = {
+    'name'    : None,
+    'type'    : None,
+    'config'  : Attr(ApiConfig),
+    'roles'   : Attr(roles.ApiRole),
+  }
 
   def __init__(self, name=None, type=None,
                config=None, roles=None):
@@ -933,7 +942,7 @@ class ApiServiceSetupInfo(ApiService):
     resource_root = None
     # Unfortunately, the json key is called "type". So our input arg
     # needs to be called "type" as well, despite it being a python keyword.
-    BaseApiObject.ctor_helper(**locals())
+    BaseApiObject.init(self, None, locals())
 
   def set_config(self, config):
     """

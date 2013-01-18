@@ -22,10 +22,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiCmPeer, ApiReplicationSchedule, \
-    ApiHdfsReplicationArguments, ApiHiveReplicationArguments, ApiHiveTable, \
-    ApiList, ApiClusterRef, ApiServiceRef
-
+from cm_api.endpoints.types import *
 from cm_api.endpoints.services import ApiService
 from cm_api_tests import utils
 
@@ -173,10 +170,9 @@ class TestReplicationTypes(unittest.TestCase):
         "dryRun" : false
       }
     }'''
-    sched = ApiReplicationSchedule.from_json_dict(json.loads(RAW), None)
+    sched = utils.deserialize(RAW, ApiReplicationSchedule)
     self.assertEqual(39, sched.id)
     self.assertEqual(self._parse_time("2012-12-10T23:11:31.041Z"), sched.startTime)
-    self.assertFalse(hasattr(sched, 'endTime'))
     self.assertEqual('DAY', sched.intervalUnit)
     self.assertEqual(1, sched.interval)
     self.assertFalse(sched.paused)
@@ -210,7 +206,7 @@ class TestReplicationRequests(unittest.TestCase):
 
   def test_replication_crud(self):
     service = ApiService(self.resource, 'hdfs1', 'HDFS')
-    service.clusterRef = ApiClusterRef(self.resource, clusterName='cluster1')
+    service.__dict__['clusterRef'] = ApiClusterRef(self.resource, clusterName='cluster1')
 
     hdfs_args = ApiHdfsReplicationArguments(self.resource)
     hdfs_args.sourceService = ApiServiceRef('cluster2', 'hdfs2')
@@ -220,7 +216,7 @@ class TestReplicationRequests(unittest.TestCase):
     return_sched = ApiReplicationSchedule(self.resource,
         interval=2, intervalUnit='DAY')
     return_sched.hdfsArguments = hdfs_args
-    return_sched.id = 1
+    return_sched.__dict__['id'] = 1
     return_list = ApiList([ return_sched ]).to_json_dict()
 
     self.resource.expect("POST",

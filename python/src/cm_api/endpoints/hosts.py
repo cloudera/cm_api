@@ -14,13 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 try:
   import json
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiCommand, ApiList, BaseApiObject, \
-    config_to_json, json_to_config
+from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
 
@@ -75,20 +75,25 @@ def delete_host(resource_root, host_id):
 
 
 class ApiHost(BaseApiObject):
-  RO_ATTR = ('status', 'lastHeartbeat', 'roleRefs', 'healthSummary',
-      'healthChecks', 'hostUrl', 'commissionState',
-      'maintenanceMode', 'maintenanceOwners')
-  RW_ATTR = ('hostId', 'hostname', 'ipAddress', 'rackId')
+  _ATTRIBUTES = {
+    'hostId'            : None,
+    'hostname'          : None,
+    'ipAddress'         : None,
+    'rackId'            : None,
+    'status'            : ROAttr(),
+    'lastHeartbeat'     : ROAttr(datetime.datetime),
+    'roleRefs'          : ROAttr(ApiRoleRef),
+    'healthSummary'     : ROAttr(),
+    'healthChecks'      : ROAttr(),
+    'hostUrl'           : ROAttr(),
+    'commissionState'   : ROAttr(),
+    'maintenanceMode'   : ROAttr(),
+    'maintenanceOwners' : ROAttr(),
+  }
 
-  def __init__(self, resource_root, hostId, hostname,
+  def __init__(self, resource_root, hostId=None, hostname=None,
       ipAddress=None, rackId=None):
-    # Note about "ipAddress = None":
-    #
-    # This generally happens when you bring up SCM and it gets an
-    # "optimized" heartbeat from an agent, and you query the host info
-    # before it's fully constructed. The JSON returned wouldn't have
-    # the ipAddress field, and a TypeError would be raised.
-    BaseApiObject.ctor_helper(**locals())
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiHost>: %s (%s)" % (self.hostId, self.ipAddress)

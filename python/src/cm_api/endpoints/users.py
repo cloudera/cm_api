@@ -103,9 +103,14 @@ def delete_user(resource_root, username):
   return ApiUser.from_json_dict(resp, resource_root)
 
 class ApiUser(BaseApiObject):
-  RW_ATTR = ('name', 'password', 'roles')
-  def __init__(self, resource_root, name, password=None, roles=None):
-    BaseApiObject.ctor_helper(**locals())
+  _ATTRIBUTES = {
+    'name'      : None,
+    'password'  : None,
+    'roles'     : None,
+  }
+
+  def __init__(self, resource_root, name=None, password=None, roles=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def grant_admin_role(self):
     """

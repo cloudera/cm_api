@@ -19,7 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiCommand, ApiList, ApiHostRef, BaseApiObject
+from cm_api.endpoints.types import *
 from cm_api.endpoints import services, parcels, host_templates
 
 __docformat__ = "epytext"
@@ -73,11 +73,15 @@ def delete_cluster(resource_root, name):
 
 
 class ApiCluster(BaseApiObject):
-  RO_ATTR = ('maintenanceMode', 'maintenanceOwners')
-  RW_ATTR = ('name', 'version')
+  _ATTRIBUTES = {
+    'name'              : None,
+    'version'           : None,
+    'maintenanceMode'   : ROAttr(),
+    'maintenanceOwners' : ROAttr(),
+  }
 
-  def __init__(self, resource_root, name, version):
-    BaseApiObject.ctor_helper(**locals())
+  def __init__(self, resource_root, name=None, version=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiCluster>: %s; version: %s" % (self.name, self.version)
@@ -195,7 +199,7 @@ class ApiCluster(BaseApiObject):
     @return: A ApiHostRef of the host that was removed.
     """
     resource_root = self._get_resource_root()
-    resp = resource_root.delete("%s/hosts/%s" % (self._path(), hostId)) 
+    resp = resource_root.delete("%s/hosts/%s" % (self._path(), hostId))
     return ApiHostRef.from_json_dict(resp, resource_root)
 
   def remove_all_hosts(self):
@@ -205,14 +209,14 @@ class ApiCluster(BaseApiObject):
     @return: A list of ApiHostRef objects of the hosts that were removed.
     """
     resource_root = self._get_resource_root()
-    resp = resource_root.delete("%s/hosts" % (self._path(),)) 
+    resp = resource_root.delete("%s/hosts" % (self._path(),))
     return ApiList.from_json_dict(ApiHostRef, resp, self._get_resource_root())
 
   def add_hosts(self, hostIds):
     """
     Adds a host to the cluster.
 
-    @return: A list of ApiHostRef objects of the new 
+    @return: A list of ApiHostRef objects of the new
              hosts that were added to the cluster
     """
     resource_root = self._get_resource_root()
@@ -276,7 +280,7 @@ class ApiCluster(BaseApiObject):
     @return ApiList of ApiHostTemplate objects.
     """
     return host_templates.get_all_host_templates(self._get_resource_root(), self.name)
-  
+
   def get_host_template(self, name):
     """
     Retrieves a host templates by name.
