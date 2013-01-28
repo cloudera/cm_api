@@ -344,7 +344,8 @@ class ApiHdfsReplicationArguments(BaseApiObject):
   RW_ATTR = ( 'sourceService', 'sourcePath', 'destinationPath',
       'mapreduceServiceName', 'userName', 'numMaps',
       'dryRun', 'schedulerPoolName', 'abortOnError', 'preservePermissions',
-      'preserveBlockSize', 'preserveReplicationCount', 'removeMissingFiles' )
+      'preserveBlockSize', 'preserveReplicationCount', 'removeMissingFiles',
+      'skipChecksumChecks' )
   RO_ATTR = ( )
 
   def _setattr(self, name, value):
