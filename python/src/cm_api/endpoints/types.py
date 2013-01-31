@@ -27,6 +27,32 @@ __docformat__ = "epytext"
 
 LOG = logging.getLogger(__name__)
 
+def _encode(value):
+  """
+  Encode a value into JSON.
+
+  . if the value has a 'to_json_dict' method, call it.
+  . if the value is a list, return a list of the encoded elements.
+  . if the value is a date, encode it according to the expected API format.
+  . otherwise, return the value itself.
+  """
+  try:
+    # If the value has to_json_dict(), call it
+    value = value.to_json_dict()
+  except AttributeError, ignored:
+    pass
+  try:
+    # Maybe it's a date?
+    value = value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+  except AttributeError, ignored:
+    pass
+
+  # If value is a list, encode each element.
+  if isinstance(value, list):
+    value = [ _encode(x) for x in value ]
+
+  return value
+
 class BaseApiObject(object):
   """
   The BaseApiObject helps with (de)serialization from/to JSON.
@@ -95,17 +121,7 @@ class BaseApiObject(object):
     for attr in self.RW_ATTR:
       try:
         value = getattr(self, attr)
-        try:
-          # If the value has to_json_dict(), call it
-          value = value.to_json_dict()
-        except AttributeError, ignored:
-          pass
-        try:
-          # Maybe it's a date?
-          value = value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-        except AttributeError, ignored:
-          pass
-        dic[attr] = value
+        dic[attr] = _encode(value)
       except AttributeError, ignored:
         pass
     return dic

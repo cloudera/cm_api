@@ -22,7 +22,8 @@ import logging
 
 from cm_api.endpoints.types import config_to_json, json_to_config, \
     config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject, \
-    ApiActivity, ApiReplicationSchedule, ApiServiceRef, ApiHdfsReplicationArguments
+    ApiActivity, ApiReplicationSchedule, ApiServiceRef, \
+    ApiHdfsReplicationArguments, ApiHiveReplicationArguments
 from cm_api.endpoints import roles, role_config_groups
 
 __docformat__ = "epytext"
@@ -794,7 +795,7 @@ class ApiService(BaseApiObject):
       if not isinstance(arguments, ApiHdfsReplicationArguments):
         raise TypeError, 'Unexpected type for HDFS replication argument.'
       schedule.hdfsArguments = arguments
-    elif self.type == 'Hive':
+    elif self.type == 'HIVE':
       if not isinstance(arguments, ApiHiveReplicationArguments):
         raise TypeError, 'Unexpected type for Hive replication argument.'
       schedule.hiveArguments = arguments
