@@ -27,8 +27,7 @@ from cm_api.endpoints.types import ApiCmPeer, ApiReplicationSchedule, \
     ApiList, ApiClusterRef, ApiServiceRef
 
 from cm_api.endpoints.services import ApiService
-from cm_api_tests import test_utils
-from cm_api_tests.mock_resource import MockResource
+from cm_api_tests import utils
 
 class TestReplicationTypes(unittest.TestCase):
 
@@ -51,7 +50,7 @@ class TestReplicationTypes(unittest.TestCase):
       "preserveBlockSize" : true,
       "preservePermissions" : false
     }'''
-    args = test_utils.deserialize(RAW, ApiHdfsReplicationArguments)
+    args = utils.deserialize(RAW, ApiHdfsReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
     self.assertEquals('Cluster 1 - CDH4', args.sourceService.clusterName)
     self.assertEquals('HDFS-1', args.sourceService.serviceName)
@@ -90,7 +89,7 @@ class TestReplicationTypes(unittest.TestCase):
       ],
       "dryRun" : false
     }'''
-    args = test_utils.deserialize(RAW, ApiHiveReplicationArguments)
+    args = utils.deserialize(RAW, ApiHiveReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
     self.assertEquals('Cluster 1 - CDH4', args.sourceService.clusterName)
     self.assertEquals('HIVE-1', args.sourceService.serviceName)
@@ -207,7 +206,7 @@ class TestReplicationRequests(unittest.TestCase):
 
   def __init__(self, methodName):
     super(TestReplicationRequests, self).__init__(methodName)
-    self.resource = MockResource(self)
+    self.resource = utils.MockResource(self)
 
   def test_replication_crud(self):
     service = ApiService(self.resource, 'hdfs1', 'HDFS')
