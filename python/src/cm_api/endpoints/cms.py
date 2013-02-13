@@ -304,3 +304,26 @@ class ClouderaManager(BaseApiObject):
     self._require_min_api_version(3)
     resp = self._get_resource_root().post('/cm/peers/%s/commands/test' % (name, ))
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
+
+  def get_all_hosts_config(self, view=None):
+    """
+    Retrieve the default configuration for all hosts.
+
+    @param view: View to materialize.
+    @param view: View to materialize ('full' or 'summary')
+    @return: Dictionary with configuration data.
+    """
+    params = view and dict(view=view) or None
+    resp = self._get_resource_root().get('/cm/allHosts/config', params=params)
+    return json_to_config(resp, view == 'full')
+
+  def update_all_hosts_config(self, config):
+    """
+    Update the default configuration for all hosts.
+
+    @param: config Dictionary with configuration to update.
+    @return: Dictionary with updated configuration.
+    """
+    resp = self._get_resource_root().put('/cm/allHosts/config',
+        data=config_to_json(config))
+    return json_to_config(resp, False)
