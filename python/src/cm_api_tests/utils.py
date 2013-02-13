@@ -17,6 +17,11 @@
 from cm_api import api_client
 from cm_api.resource import Resource
 
+try:
+  import json
+except ImportError:
+  import simplejson as json
+
 class MockResource(Resource):
   """
   Allows code to control the behavior of a resource's "invoke" method for
@@ -64,3 +69,14 @@ class MockResource(Resource):
     @param retdata: data to return from the invoke call.
     """
     self._next_expect = (method, reqpath, params, data, headers, retdata)
+
+def deserialize(raw_data, cls):
+  """
+  Deserializes raw JSON data into an instance of cls.
+
+  The data is deserialized, serialized again using the class's to_json_dict()
+  implementation, and deserialized again, to make sure both from_json_dict()
+  and to_json_dict() are working.
+  """
+  instance = cls.from_json_dict(json.loads(raw_data), None)
+  return cls.from_json_dict(instance.to_json_dict(), None)
