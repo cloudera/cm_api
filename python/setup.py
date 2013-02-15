@@ -36,7 +36,7 @@ if platform == 'darwin':
 setup(
   name = 'cm_api',
   version = '2.0.0',    # Compatible with API v2
-  packages = find_packages('src'),
+  packages = find_packages('src', exclude=['cm_api_tests']),
   package_dir = {'cm_api': 'src/cm_api', 'cm_shell': 'src/cm_shell'},
 
   # Project uses simplejson, so ensure that it gets installed or upgraded
