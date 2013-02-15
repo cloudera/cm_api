@@ -875,6 +875,16 @@ class ApiService(BaseApiObject):
         % (self._path(), schedule_id), params=dict(dryRun=dry_run))
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
+  def create_hive_metastore_tables(self):
+    """
+    Creates the Hive metastore tables in the configured database, if it
+    hasn't been done yet.
+
+    @return: Reference to the submitted command.
+    @since: API v3
+    """
+    return self._cmd('hiveCreateMetastoreDatabaseTables')
+
 class ApiServiceSetupInfo(ApiService):
   RO_ATTR = ( )
   RW_ATTR = ('name', 'type', 'config', 'roles')

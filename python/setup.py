@@ -26,7 +26,7 @@ else:
 setup(
   name = 'cm_api',
   version = '1.0.0',    # Compatible with API v1
-  packages = find_packages('src'),
+  packages = find_packages('src', exclude=['cm_api_tests']),
   package_dir = {'cm_api': 'src/cm_api'},
 
   # Project uses simplejson, so ensure that it gets installed or upgraded
