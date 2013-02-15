@@ -524,6 +524,26 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'preserveBlockSize'         : None,
     'preserveReplicationCount'  : None,
     'removeMissingFiles'        : None,
+    'skipChecksumChecks'        : None,
+  }
+
+class ApiHdfsReplicationResult(BaseApiObject):
+  _ATTRIBUTES = {
+    'progress'            : ROAttr(),
+    'counters'            : ROAttr(),
+    'numBytesDryRun'      : ROAttr(),
+    'numFilesDryRun'      : ROAttr(),
+    'numFilesExpected'    : ROAttr(),
+    'numBytesExpected'    : ROAttr(),
+    'numFilesCopied'      : ROAttr(),
+    'numBytesCopied'      : ROAttr(),
+    'numFilesSkipped'     : ROAttr(),
+    'numBytesSkipped'     : ROAttr(),
+    'numFilesDeleted'     : ROAttr(),
+    'numFilesCopyFailed'  : ROAttr(),
+    'numBytesCopyFailed'  : ROAttr(),
+    'setupError'          : ROAttr(),
+    'dryRun'              : ROAttr(),
   }
 
 class ApiHiveTable(BaseApiObject):
@@ -546,6 +566,26 @@ class ApiHiveReplicationArguments(BaseApiObject):
     'dryRun'        : None,
   }
 
+class ApiHiveReplicationResult(BaseApiObject):
+  _ATTRIBUTES = {
+    'tables'                : ROAttr(ApiHiveTable),
+    'errors'                : ROAttr(),
+    'dataReplicationResult' : ROAttr(ApiHdfsReplicationResult),
+    'dryRun'                : ROAttr(),
+  }
+
+class ApiReplicationCommand(ApiCommand):
+  @classmethod
+  def _get_attributes(cls):
+    if not cls.__dict__.has_key('_ATTRIBUTES'):
+      attrs = {
+        'hdfsResult'  : ROAttr(ApiHdfsReplicationResult),
+        'hiveResult'  : ROAttr(ApiHiveReplicationResult),
+      }
+      attrs.update(ApiCommand._get_attributes())
+      cls._ATTRIBUTES = attrs
+    return cls._ATTRIBUTES
+
 class ApiReplicationSchedule(BaseApiObject):
   _ATTRIBUTES = {
     'startTime'       : Attr(datetime.datetime),
@@ -561,7 +601,7 @@ class ApiReplicationSchedule(BaseApiObject):
     'alertOnAbort'    : None,
     'id'              : ROAttr(),
     'nextRun'         : ROAttr(datetime.datetime),
-    'history'         : ROAttr(),
+    'history'         : ROAttr(ApiReplicationCommand),
   }
 
 #

@@ -177,9 +177,13 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEqual(1, sched.interval)
     self.assertFalse(sched.paused)
     self.assertEqual(self._parse_time("2013-01-15T23:11:31.041Z"), sched.nextRun)
-    self.assertEqual(1, len(sched.history))
     self.assertFalse(sched.alertOnStart)
     self.assertIsNotNone(sched.hiveArguments)
+
+    self.assertEqual(1, len(sched.history))
+    self.assertIsInstance(sched.history[0], ApiReplicationCommand)
+    self.assertEqual('default', sched.history[0].hiveResult.tables[0].database)
+    self.assertEqual(92158, sched.history[0].hiveResult.dataReplicationResult.numBytesSkipped)
 
   def test_peers(self):
     RAW = '''{
