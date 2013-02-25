@@ -421,7 +421,10 @@ class ApiService(BaseApiObject):
 
   def create_beeswax_warehouse(self):
     """
+    DEPRECATED: use create_hive_warehouse on the Hive service. Deprecated since v3.
+    
     Create the Beeswax role's warehouse for a Hue service.
+    
     @return: Reference to the submitted command.
     """
     return self._cmd('hueCreateHiveWarehouse')
@@ -884,6 +887,15 @@ class ApiService(BaseApiObject):
     @since: API v3
     """
     return self._cmd('hiveCreateMetastoreDatabaseTables')
+  
+  def create_hive_warehouse(self):
+    """
+    Creates the Hive warehouse directory in HDFS.
+
+    @return: Reference to the submitted command.
+    @since: API v3
+    """
+    return self._cmd('hiveCreateHiveWarehouse')
 
 class ApiServiceSetupInfo(ApiService):
   RO_ATTR = ( )
