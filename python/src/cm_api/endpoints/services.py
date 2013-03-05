@@ -896,6 +896,32 @@ class ApiService(BaseApiObject):
     @since: API v3
     """
     return self._cmd('hiveCreateHiveWarehouse')
+  
+  def create_hive_metastore_database(self):
+    """
+    Create the Hive Metastore Database. Only works with embedded postgresql
+    database. This command should usually be followed by a call to
+    hiveCreateMetastoreDatabaseTables.
+
+    @return: Reference to the submitted command.
+    @since: API v4
+    """
+    self._require_min_api_version(4)
+    return self._cmd('hiveCreateMetastoreDatabaseCommand')
+  
+  def update_hive_metastore_namenodes(self):
+    """
+    Update Hive Metastore to point to a NameNode's Nameservice name instead of
+    hostname. Only available when all Hive Metastore Servers are stopped and
+    HDFS has High Availability.
+    
+    Back up the Hive Metastore Database before running this command.
+
+    @return: Reference to the submitted command.
+    @since: API v4
+    """
+    self._require_min_api_version(4)
+    return self._cmd('hiveUpdateMetastoreNamenodesCommand')
 
 class ApiServiceSetupInfo(ApiService):
   RO_ATTR = ( )
