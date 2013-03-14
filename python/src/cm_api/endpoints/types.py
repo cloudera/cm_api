@@ -543,6 +543,8 @@ class ApiHdfsReplicationResult(BaseApiObject):
     'numFilesCopyFailed'  : ROAttr(),
     'numBytesCopyFailed'  : ROAttr(),
     'setupError'          : ROAttr(),
+    'jobId'               : ROAttr(),
+    'jobDetailsUri'       : ROAttr(),
     'dryRun'              : ROAttr(),
   }
 
