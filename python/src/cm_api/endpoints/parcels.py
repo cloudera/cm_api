@@ -55,6 +55,8 @@ class ApiParcelState(BaseApiObject):
       'totalProgress' : ROAttr(),
       'count'         : ROAttr(),
       'totalCount'    : ROAttr(),
+      'warnings'      : ROAttr(),
+      'errors'        : ROAttr(),
     }
 
   def __init__(self, resource_root):
