@@ -216,11 +216,12 @@ class ApiCluster(BaseApiObject):
     """
     Adds a host to the cluster.
 
+    @param hostIds: List of IDs of hosts to add to cluster.
     @return: A list of ApiHostRef objects of the new
              hosts that were added to the cluster
     """
     resource_root = self._get_resource_root()
-    hostRefList = ApiList([ApiHostRef(resource_root, x) for x in [hostIds]])
+    hostRefList = ApiList([ApiHostRef(resource_root, x) for x in hostIds])
     body = json.dumps(hostRefList.to_json_dict())
     resp = resource_root.post(self._path() + '/hosts', data=body)
     return ApiList.from_json_dict(ApiHostRef, resp, resource_root)[0]
