@@ -912,7 +912,7 @@ class ApiService(BaseApiObject):
     @since: API v4
     """
     self._require_min_api_version(4)
-    return self._cmd('hiveCreateMetastoreDatabaseCommand')
+    return self._cmd('hiveCreateMetastoreDatabase')
 
   def update_hive_metastore_namenodes(self):
     """
@@ -926,7 +926,7 @@ class ApiService(BaseApiObject):
     @since: API v4
     """
     self._require_min_api_version(4)
-    return self._cmd('hiveUpdateMetastoreNamenodesCommand')
+    return self._cmd('hiveUpdateMetastoreNamenodes')
 
 class ApiServiceSetupInfo(ApiService):
   _ATTRIBUTES = {
