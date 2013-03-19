@@ -88,7 +88,7 @@ class TestBaseApiObject(unittest.TestCase):
   def test_init(self):
     obj = Parent(None)
     self.assertTrue(hasattr(obj, 'child'))
-    self.assertFalse(hasattr(obj, 'readOnly'))
+    self.assertTrue(hasattr(obj, 'readOnly'))
 
     obj = Parent(None, date=datetime.datetime.now())
     self.assertIsInstance(obj.date, datetime.datetime)

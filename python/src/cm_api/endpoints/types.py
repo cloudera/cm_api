@@ -167,8 +167,7 @@ class BaseApiObject(object):
     self._resource_root = resource_root
 
     for name, attr in self._get_attributes().iteritems():
-      if not attr or attr.rw:
-        object.__setattr__(self, name, None)
+      object.__setattr__(self, name, None)
     if attrs:
       self._set_attrs(attrs, from_json=False)
 
