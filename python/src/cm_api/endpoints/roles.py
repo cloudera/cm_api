@@ -128,7 +128,7 @@ class ApiRole(BaseApiObject):
     'commissionState'     : ROAttr(),
     'maintenanceMode'     : ROAttr(),
     'maintenanceOwners'   : ROAttr(),
-    'roleConfigGroupRef'  : ROAttr(),
+    'roleConfigGroupRef'  : ROAttr(ApiRoleConfigGroupRef),
   }
 
   def __init__(self, resource_root, name=None, type=None, hostRef=None):
