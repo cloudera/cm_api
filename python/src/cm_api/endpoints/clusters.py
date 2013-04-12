@@ -306,3 +306,48 @@ class ApiCluster(BaseApiObject):
     """
     return host_templates.delete_host_template(self._get_resource_root(), name, self.name)
 
+  def rolling_restart(self, slave_batch_size=None,
+                      slave_fail_count_threshold=None,
+                      sleep_seconds=None,
+                      stale_configs_only=None,
+                      unupgraded_only=None,
+                      roles_to_include=None,
+                      restart_service_names=None):
+    """
+    Command to do a "best-effort" rolling restart of the given cluster,
+    i.e. it does plain restart of services that cannot be rolling restarted,
+    followed by first rolling restarting non-slaves and then rolling restarting
+    the slave roles of services that can be rolling restarted. The slave restarts
+    are done host-by-host.
+    @param: slave_batch_size Number of hosts with slave roles to restart at a time
+            Must be greater than 0. Default is 1.
+    @param: slave_fail_count_threshold The threshold for number of slave host batches that
+            are allowed to fail to restart before the entire command is considered failed.
+            Must be >= 0. Default is 0.
+    @param: sleep_seconds Number of seconds to sleep between restarts of slave host batches.
+            Must be >=0. Default is 0.
+    @param: stale_configs_only Restart roles with stale configs only. Default is false.
+    @param: unupgraded_only Restart roles that haven't been upgraded yet. Default is false.
+    @param: roles_to_include Role types to restart. Default is slave roles only.
+    @param: restart_service_names List of specific services to restart.
+    @return: Reference to the submitted command.
+    @since: API v4
+    """
+    self._require_min_api_version(4)
+    args = dict()
+    if slave_batch_size:
+      args['slaveBatchSize'] = slave_batch_size
+    if slave_fail_count_threshold:
+      args['slaveFailCountThreshold'] = slave_fail_count_threshold
+    if sleep_seconds:
+      args['sleepSeconds'] = sleep_seconds
+    if stale_configs_only:
+      args['staleConfigsOnly'] = stale_configs_only
+    if unupgraded_only:
+      args['unUpgradedOnly'] = unupgraded_only
+    if roles_to_include:
+      args['rolesToInclude'] = roles_to_include
+    if restart_service_names:
+      args['restartServiceNames'] = restart_service_names
+
+    return self._cmd('rollingRestart', data = json.dumps(args))
