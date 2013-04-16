@@ -20,6 +20,9 @@ except ImportError:
   import simplejson as json
 import logging
 import posixpath
+import time
+import socket
+import urllib2
 
 LOG = logging.getLogger(__name__)
 
@@ -35,6 +38,8 @@ class Resource(object):
     """
     self._client = client
     self._path = relpath.strip('/')
+    self.retries = 3
+    self.retry_sleep = 3
 
   @property
   def base_url(self):
@@ -88,7 +93,24 @@ class Resource(object):
 
     @return: A dictionary of the JSON result.
     """
-    return self.invoke("GET", relpath, params)
+    for retry in xrange(self.retries + 1):
+      if retry:
+        time.sleep(self.retry_sleep)
+      try:
+        return self.invoke("GET", relpath, params)
+      except (socket.error, urllib2.URLError) as e:
+        if "timed out" in str(e).lower():
+          log_message = "Timeout issuing GET request for %s." \
+              % (self._join_uri(relpath), )
+          if retry < self.retries:
+            log_message += " Will retry."
+          else:
+            log_message += " No retries left."
+          LOG.warn(log_message, exc_info=True)
+        else:
+          raise
+    else:
+      raise e
 
 
   def delete(self, relpath=None, params=None):

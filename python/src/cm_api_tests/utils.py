@@ -29,6 +29,7 @@ class MockResource(Resource):
   """
 
   def __init__(self, test, version=api_client.API_CURRENT_VERSION):
+    Resource.__init__(self, None)
     self._next_expect = None
     self.test = test
     self.version = version
