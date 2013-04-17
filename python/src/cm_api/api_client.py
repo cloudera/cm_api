@@ -21,7 +21,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.http_client import HttpClient, RestException
-from cm_api.endpoints import cms, clusters, events, hosts, tools, types, users
+from cm_api.endpoints import cms, clusters, events, hosts, tools, types, users, timeseries
 from cm_api.resource import Resource
 
 __docformat__ = "epytext"
@@ -29,7 +29,7 @@ __docformat__ = "epytext"
 LOG = logging.getLogger(__name__)
 
 API_AUTH_REALM = "Cloudera Manager"
-API_CURRENT_VERSION = 3
+API_CURRENT_VERSION = 4
 
 class ApiException(RestException):
   """
@@ -267,6 +267,22 @@ class ApiResource(Resource):
     resp = self.get(path, params=params)
     return types.ApiList.from_json_dict(types.ApiMetric, resp, self)
 
+  def query_timeseries(self, query, from_time, to_time):
+    """
+    Query time series.
+    @param query: Query string.
+    @param from_time: Start of the period to query (optional).
+    @param to_time: End of the period to query (default = now).
+    @return: A list of ApiTimeSeriesResponse.
+    """
+    return timeseries.query_timeseries(self, query, from_time, to_time)
+
+  def get_metric_schema(self):
+    """
+    Get the schema for all of the metrics.
+    @return: A list of ApiMetricSchema.
+    """
+    return timeseries.get_metric_schema(self)
 
 def get_root_resource(server_host, server_port=None,
                       username="admin", password="admin",
