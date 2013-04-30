@@ -89,6 +89,8 @@ class ApiHost(BaseApiObject):
     'commissionState'   : ROAttr(),
     'maintenanceMode'   : ROAttr(),
     'maintenanceOwners' : ROAttr(),
+    'numCores'          : ROAttr(),
+    'totalPhysMemBytes' : ROAttr(),
   }
 
   def __init__(self, resource_root, hostId=None, hostname=None,
