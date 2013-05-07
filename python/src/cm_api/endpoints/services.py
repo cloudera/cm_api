@@ -589,6 +589,38 @@ class ApiService(BaseApiObject):
 
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
+  def enable_jt_ha(self, new_jt_host, force_init_znode=True):
+    """
+    Enable high availability for a MR JobTracker.
+
+    @param new_jt_host: name of the host where the second JobTracker
+                        will be added.
+    @param force_init_znode: Initialize the ZNode used for auto-failover even if
+                             it already exists. This can happen if JobTracker HA
+                             was enabled before and then disabled. Disable operation
+                             doesn't delete this ZNode. Defaults to true.
+    @return: Reference to the submitted command.
+    """
+    args = dict(
+      newJtHost = new_jt_host,
+      forceInitZNode = force_init_znode,
+    )
+    return self._cmd('enableJtHa', data = json.dumps(args))
+
+  def disable_jt_ha(self, active_name):
+    """
+    Disable high availability for a MR JobTracker active-standby pair.
+
+    @param active_name: name of the JobTracker that will be active after
+                        the disable operation. The other JobTracker and
+                        Failover Controllers will be removed.
+    @return: Reference to the submitted command.
+    """
+    args = dict(
+      activeName = active_name,
+    )
+    return self._cmd('disableJtHa', data = json.dumps(args))
+
   def failover_hdfs(self, active_name, standby_name, force=False):
     """
     Initiate a failover of an HDFS NameNode HA pair.
