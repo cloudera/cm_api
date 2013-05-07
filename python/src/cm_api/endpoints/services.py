@@ -183,6 +183,50 @@ class ApiService(BaseApiObject):
     resp = self._get_resource_root().get(path)
     return ApiActivity.from_json_dict(resp, self._get_resource_root())
 
+  def get_impala_queries(self, start_time, end_time, filter_str="", limit=100,\
+     offset=0):
+    """
+    Returns a list of queries that satisfy the filter
+
+    @type  start_time: datetime.datetime
+    @param start_time: Queries must have ended after this time
+    @type  end_time: datetime.datetime
+    @param end_time: Queries must have started before this time
+    @param filter: A filter to apply to the queries. For example:
+    'user = root and queryDuration > 5s'
+    @param limit: The maximum number of results to return
+    @param offset: The offset into the return list
+    """
+    path = self._path() + "/impalaQueries"
+    resp = self._get_resource_root().get(path, \
+        params = {'from':start_time.isoformat(),'to':end_time.isoformat(),\
+            'filter':filter_str, 'limit':limit,'offset':offset})
+    return ApiImpalaQueryResponse.from_json_dict(resp, \
+        self._get_resource_root())
+
+  def cancel_impala_query(self, query_id):
+    """
+    Cancel the query.
+
+    @return The warning message, if any.
+    """
+    path = self._path() + "/impalaQueries/%s" % (query_id) + "/cancel"
+    return ApiImpalaCancelResponse.from_json_dict( \
+        self._get_resource_root().post(path), \
+        self._get_resource_root())
+
+  def get_query_details(self, query_id, format='text'):
+    """
+    Get the query details
+
+    @param profile_format: The format of the response ('text' or 'thrift_encoded')
+    @return The details text
+    """
+    path = self._path() + "/impalaQueries/%s" % (query_id) 
+    return ApiImpalaQueryDetailsResponse.from_json_dict( \
+        self._get_resource_root().get(path, params=dict(format=format)), \
+        self._get_resource_root())
+
   def get_config(self, view = None):
     """
     Retrieve the service's configuration.

@@ -628,6 +628,50 @@ class ApiConfig(BaseApiObject):
   def __str__(self):
     return "<ApiConfig>: %s = %s" % (self.name, self.value)
 
+class ApiImpalaQuery(BaseApiObject):
+  _ATTRIBUTES = {
+    'queryId'          : ROAttr(),
+    'queryState'       : ROAttr(),
+    'queryType'        : ROAttr(),
+    'statement'        : ROAttr(),
+    'database'         : ROAttr(),
+    'rowsProduced'     : ROAttr(),
+    'coordinator'      : ROAttr(ApiHostRef),
+    'user'             : ROAttr(),
+    'startTime'        : ROAttr(datetime.datetime),
+    'endTime'          : ROAttr(datetime.datetime),
+    'detailsAvailable' : ROAttr(),
+    'attributes'       : ROAttr(),
+    'durationMillis'   : ROAttr()
+  }
+
+  def __str__(self):
+    return "<ApiImpalaQuery>: %s" % (self.queryId)
+
+
+class ApiImpalaQueryResponse(BaseApiObject):
+ 
+  _ATTRIBUTES = {
+    'queries'   : ROAttr(ApiImpalaQuery),
+    'warnings'  : ROAttr()
+  }
+
+class ApiImpalaQueryDetailsResponse(BaseApiObject):
+  _ATTRIBUTES = {
+    'details' : ROAttr()
+  }
+
+  def __str__(self):
+    return "<AipImpalaQueryDetailsResponse> %s" % self.details
+
+class ApiImpalaCancelResponse(BaseApiObject):
+  _ATTRIBUTES = {
+    'warning' : ROAttr()
+  }
+
+  def __str__(self):
+    return "<ApiImpalaCancelResponse> %s" % self.warning
+
 def config_to_api_list(dic):
   """
   Converts a python dictionary into a list containing the proper
