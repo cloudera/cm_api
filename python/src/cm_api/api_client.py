@@ -21,7 +21,8 @@ except ImportError:
   import simplejson as json
 
 from cm_api.http_client import HttpClient, RestException
-from cm_api.endpoints import cms, clusters, events, hosts, tools, types, users, timeseries
+from cm_api.endpoints import batch, cms, clusters, events, hosts, tools
+from cm_api.endpoints import types, users, timeseries
 from cm_api.resource import Resource
 
 __docformat__ = "epytext"
@@ -242,6 +243,7 @@ class ApiResource(Resource):
     """Generate an error, but we get to set the error message."""
     return tools.echo_error(self, message)
 
+  # Metrics
 
   def get_metrics(self, path, from_time, to_time, metrics, view, params=None):
     """
@@ -283,6 +285,17 @@ class ApiResource(Resource):
     @return: A list of ApiMetricSchema.
     """
     return timeseries.get_metric_schema(self)
+
+  # Batch
+
+  def do_batch(self, elements):
+    """
+    Execute a batch request with one or more elements. If any element fails,
+    the entire request is rolled back and subsequent elements are ignored.
+    @param elements: A list of ApiBatchRequestElements
+    @return: 2-tuple (overall success, list of ApiBatchResponseElements).
+    """
+    return batch.do_batch(self, elements)
 
 def get_root_resource(server_host, server_port=None,
                       username="admin", password="admin",
