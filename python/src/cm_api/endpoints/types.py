@@ -606,6 +606,27 @@ class ApiReplicationSchedule(BaseApiObject):
   }
 
 #
+# Batch.
+#
+
+class ApiBatchRequestElement(BaseApiObject):
+  """One element in a batch request."""
+  _ATTRIBUTES = {
+    'method'          : None,
+    'url'             : None,
+    'body'            : None,
+    'contentType'     : None,
+    'acceptType'      : None,
+  }
+
+class ApiBatchResponseElement(BaseApiObject):
+  """One element in a batch response."""
+  _ATTRIBUTES = {
+    'statusCode'      : ROAttr(),
+    'response'        : ROAttr(),
+  }
+
+#
 # Configuration helpers.
 #
 
