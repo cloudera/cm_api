@@ -637,7 +637,7 @@ class ApiService(BaseApiObject):
     """
     Enable high availability for a MR JobTracker.
 
-    @param new_jt_host: name of the host where the second JobTracker
+    @param new_jt_host_id: id of the host where the second JobTracker
                         will be added.
     @param force_init_znode: Initialize the ZNode used for auto-failover even if
                              it already exists. This can happen if JobTracker HA
@@ -646,7 +646,7 @@ class ApiService(BaseApiObject):
     @return: Reference to the submitted command.
     """
     args = dict(
-      newJtHost = new_jt_host,
+      newJtHostId = new_jt_host_id,
       forceInitZNode = force_init_znode,
     )
     return self._cmd('enableJtHa', data = json.dumps(args))
