@@ -633,10 +633,14 @@ class ApiService(BaseApiObject):
 
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
-  def enable_jt_ha(self, new_jt_host, force_init_znode=True):
+  def enable_jt_ha(self, new_jt_host, force_init_znode=True, zk_service_name=None):
     """
     Enable high availability for a MR JobTracker.
 
+    @param zk_service_name: Name of the ZooKeeper service to use for auto-failover.
+           If MapReduce service depends on a ZooKeeper service then that ZooKeeper
+           service will be used for auto-failover and in that case this parameter
+           can be omitted.
     @param new_jt_host_id: id of the host where the second JobTracker
                         will be added.
     @param force_init_znode: Initialize the ZNode used for auto-failover even if
@@ -648,6 +652,7 @@ class ApiService(BaseApiObject):
     args = dict(
       newJtHostId = new_jt_host_id,
       forceInitZNode = force_init_znode,
+      zkServiceName = zk_service_name,
     )
     return self._cmd('enableJtHa', data = json.dumps(args))
 
