@@ -121,6 +121,7 @@ class TestReplicationTypes(unittest.TestCase):
           "serviceName" : "HIVE-1"
         },
         "hiveResult" : {
+          "tableCount" : 3,
           "tables" : [ {
             "database" : "default",
             "tableName" : "repl_test_1"
@@ -131,6 +132,7 @@ class TestReplicationTypes(unittest.TestCase):
             "database" : "default",
             "tableName" : "sample_08"
           } ],
+          "errorCount" : 0,
           "errors" : [ ],
           "dataReplicationResult" : {
             "progress" : 100,
@@ -184,6 +186,8 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertIsInstance(sched.history[0], ApiReplicationCommand)
     self.assertEqual('default', sched.history[0].hiveResult.tables[0].database)
     self.assertEqual(92158, sched.history[0].hiveResult.dataReplicationResult.numBytesSkipped)
+    self.assertEqual(3, sched.history[0].hiveResult.tableCount)
+    self.assertEqual(0, sched.history[0].hiveResult.errorCount)
 
   def test_peers(self):
     RAW = '''{
