@@ -569,7 +569,9 @@ class ApiHiveReplicationArguments(BaseApiObject):
 
 class ApiHiveReplicationResult(BaseApiObject):
   _ATTRIBUTES = {
+    'tableCount'            : ROAttr(),
     'tables'                : ROAttr(ApiHiveTable),
+    'errorCount'            : ROAttr(),
     'errors'                : ROAttr(),
     'dataReplicationResult' : ROAttr(ApiHdfsReplicationResult),
     'dryRun'                : ROAttr(),
@@ -671,7 +673,7 @@ class ApiImpalaQuery(BaseApiObject):
 
 
 class ApiImpalaQueryResponse(BaseApiObject):
- 
+
   _ATTRIBUTES = {
     'queries'   : ROAttr(ApiImpalaQuery),
     'warnings'  : ROAttr()
