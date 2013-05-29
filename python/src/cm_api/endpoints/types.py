@@ -222,10 +222,11 @@ class BaseApiObject(object):
         continue
       try:
         value = getattr(self, name)
-        if attr:
-          dic[name] = attr.to_json(value, preserve_ro)
-        else:
-          dic[name] = value
+        if value is not None:
+          if attr:
+            dic[name] = attr.to_json(value, preserve_ro)
+          else:
+            dic[name] = value
       except AttributeError:
         pass
     return dic

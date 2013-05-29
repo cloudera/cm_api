@@ -32,6 +32,12 @@ class Parent(BaseApiObject):
       'readOnly'  : ROAttr(),
     }
 
+class Dummy(BaseApiObject):
+  _ATTRIBUTES = {
+    'foo' : None,
+    'bar' : None,
+  }
+
 class TestBaseApiObject(unittest.TestCase):
 
   def test_props(self):
@@ -94,3 +100,10 @@ class TestBaseApiObject(unittest.TestCase):
     self.assertIsInstance(obj.date, datetime.datetime)
 
     self.assertRaises(AttributeError, Parent, None, readOnly=True)
+
+  def test_empty_property(self):
+    dummy = Dummy(None)
+    dummy.foo = 'foo'
+    json = dummy.to_json_dict()
+    self.assertEqual('foo', json['foo'])
+    self.assertFalse(json.has_key('bar'))
