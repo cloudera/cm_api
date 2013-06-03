@@ -633,7 +633,7 @@ class ApiService(BaseApiObject):
 
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
 
-  def enable_jt_ha(self, new_jt_host, force_init_znode=True, zk_service_name=None):
+  def enable_jt_ha(self, new_jt_host_id, force_init_znode=True, zk_service_name=None):
     """
     Enable high availability for a MR JobTracker.
 
