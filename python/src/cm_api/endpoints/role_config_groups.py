@@ -19,8 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import config_to_json, json_to_config, \
-    ApiList, BaseApiObject
+from cm_api.endpoints.types import *
 from cm_api.endpoints.roles import ApiRole
 
 __docformat__ = "epytext"
@@ -134,15 +133,15 @@ def move_roles(resource_root, service_name, name, role_names,
     cluster_name="default"):
   """
   Moves roles to the specified role config group.
-  
+
   The roles can be moved from any role config group belonging
   to the same service. The role type of the destination group
   must match the role type of the roles.
-  
+
   @param name: The name of the group the roles will be moved to.
   @param role_names: The names of the roles to move.
   @return List of roles which have been moved successfully.
-  """    
+  """
   path = _get_role_config_group_path(
       cluster_name, service_name, name) + '/roles'
   resp = resource_root.put(path,
@@ -153,11 +152,11 @@ def move_roles_to_base_role_config_group(resource_root, service_name,
      role_names, cluster_name="default"):
   """
   Moves roles to the base role config group.
-    
+
   The roles can be moved from any role config group belonging to the same
   service. The role type of the roles may vary. Each role will be moved to
   its corresponding base group depending on its role type.
-  
+
   @param role_names The names of the roles to move.
   @return List of roles which have been moved successfully.
   """
@@ -168,15 +167,22 @@ def move_roles_to_base_role_config_group(resource_root, service_name,
 
 
 class ApiRoleConfigGroup(BaseApiObject):
-  RO_ATTR = ('base', 'serviceRef')
   """
   name is RW only temporarily; once all RCG names are unique,
   this property will be auto-generated and Read-only
   """
-  RW_ATTR = ('name', 'displayName', 'roleType', 'config')
+  _ATTRIBUTES = {
+    'name'        : None,
+    'displayName' : None,
+    'roleType'    : None,
+    'config'      : Attr(ApiConfig),
+    'base'        : ROAttr(),
+    'serviceRef'  : ROAttr(ApiServiceRef),
+  }
 
-  def __init__(self, resource_root, name, displayName, roleType, config = None):
-    BaseApiObject.ctor_helper(**locals())
+  def __init__(self, resource_root, name=None, displayName=None, roleType=None,
+      config=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiRoleConfigGroup>: %s (cluster: %s; service: %s)" % (
@@ -216,7 +222,7 @@ class ApiRoleConfigGroup(BaseApiObject):
   def get_all_roles(self):
     """
     Retrieve the roles in this role config group.
-    
+
     @return List of roles in this role config group.
     """
     path = self._path() + '/roles'
@@ -226,11 +232,11 @@ class ApiRoleConfigGroup(BaseApiObject):
   def move_roles(self, roles):
     """
     Moves roles to this role config group.
-    
+
     The roles can be moved from any role config group belonging
     to the same service. The role type of the destination group
     must match the role type of the roles.
-    
+
     @param roles: The names of the roles to move.
     @return List of roles which have been moved successfully.
     """

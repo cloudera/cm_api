@@ -79,4 +79,4 @@ def deserialize(raw_data, cls):
   and to_json_dict() are working.
   """
   instance = cls.from_json_dict(json.loads(raw_data), None)
-  return cls.from_json_dict(instance.to_json_dict(), None)
+  return cls.from_json_dict(instance.to_json_dict(preserve_ro=True), None)

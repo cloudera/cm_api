@@ -24,4 +24,3 @@ This client code allows you to interact with Cloudera Manager to:
 * Run distributed commands to manage auto-failover, host decommissioning and more
 * View all events and alerts that have occurred in the system
 * Add and remove users from the system
->>>>>>> de5242c... Add the Java client code

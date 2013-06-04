@@ -20,10 +20,7 @@ except ImportError:
   import simplejson as json
 import logging
 
-from cm_api.endpoints.types import config_to_json, json_to_config, \
-    config_to_api_list, ApiCommand, ApiHostRef, ApiList, BaseApiObject, \
-    ApiActivity, ApiReplicationSchedule, ApiServiceRef, \
-    ApiHdfsReplicationArguments, ApiHiveReplicationArguments
+from cm_api.endpoints.types import *
 from cm_api.endpoints import roles, role_config_groups
 
 __docformat__ = "epytext"
@@ -90,21 +87,29 @@ def delete_service(resource_root, name, cluster_name="default"):
 
 
 class ApiService(BaseApiObject):
-  RO_ATTR = ('serviceState', 'healthSummary', 'healthChecks', 'clusterRef',
-             'configStale', 'serviceUrl', 'maintenanceMode', 'maintenanceOwners')
-  RW_ATTR = ('name', 'type')
+  _ATTRIBUTES = {
+    'name'              : None,
+    'type'              : None,
+    'displayName'       : None,
+    'serviceState'      : ROAttr(),
+    'healthSummary'     : ROAttr(),
+    'healthChecks'      : ROAttr(),
+    'clusterRef'        : ROAttr(ApiClusterRef),
+    'configStale'       : ROAttr(),
+    'serviceUrl'        : ROAttr(),
+    'maintenanceMode'   : ROAttr(),
+    'maintenanceOwners' : ROAttr(),
+  }
 
-  def __init__(self, resource_root, name, type):
-    # Unfortunately, the json key is called "type". So our input arg
-    # needs to be called "type" as well, despite it being a python keyword.
-    BaseApiObject.ctor_helper(**locals())
+  def __init__(self, resource_root, name=None, type=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiService>: %s (cluster: %s)" % (
         self.name, self._get_cluster_name())
 
   def _get_cluster_name(self):
-    if self.clusterRef:
+    if hasattr(self, 'clusterRef') and self.clusterRef:
       return self.clusterRef.clusterName
     return None
 
@@ -177,6 +182,50 @@ class ApiService(BaseApiObject):
     path = self._path() + "/activities/%s" % (job_id,)
     resp = self._get_resource_root().get(path)
     return ApiActivity.from_json_dict(resp, self._get_resource_root())
+
+  def get_impala_queries(self, start_time, end_time, filter_str="", limit=100,\
+     offset=0):
+    """
+    Returns a list of queries that satisfy the filter
+
+    @type  start_time: datetime.datetime
+    @param start_time: Queries must have ended after this time
+    @type  end_time: datetime.datetime
+    @param end_time: Queries must have started before this time
+    @param filter: A filter to apply to the queries. For example:
+    'user = root and queryDuration > 5s'
+    @param limit: The maximum number of results to return
+    @param offset: The offset into the return list
+    """
+    path = self._path() + "/impalaQueries"
+    resp = self._get_resource_root().get(path, \
+        params = {'from':start_time.isoformat(),'to':end_time.isoformat(),\
+            'filter':filter_str, 'limit':limit,'offset':offset})
+    return ApiImpalaQueryResponse.from_json_dict(resp, \
+        self._get_resource_root())
+
+  def cancel_impala_query(self, query_id):
+    """
+    Cancel the query.
+
+    @return The warning message, if any.
+    """
+    path = self._path() + "/impalaQueries/%s" % (query_id) + "/cancel"
+    return ApiImpalaCancelResponse.from_json_dict( \
+        self._get_resource_root().post(path), \
+        self._get_resource_root())
+
+  def get_query_details(self, query_id, format='text'):
+    """
+    Get the query details
+
+    @param profile_format: The format of the response ('text' or 'thrift_encoded')
+    @return The details text
+    """
+    path = self._path() + "/impalaQueries/%s" % (query_id) 
+    return ApiImpalaQueryDetailsResponse.from_json_dict( \
+        self._get_resource_root().get(path, params=dict(format=format)), \
+        self._get_resource_root())
 
   def get_config(self, view = None):
     """
@@ -422,9 +471,9 @@ class ApiService(BaseApiObject):
   def create_beeswax_warehouse(self):
     """
     DEPRECATED: use create_hive_warehouse on the Hive service. Deprecated since v3.
-    
+
     Create the Beeswax role's warehouse for a Hue service.
-    
+
     @return: Reference to the submitted command.
     """
     return self._cmd('hueCreateHiveWarehouse')
@@ -583,6 +632,43 @@ class ApiService(BaseApiObject):
       args['standBySharedEditsPath'] = standby_shared_path
 
     return self._cmd('hdfsEnableHa', data = json.dumps(args))
+
+  def enable_jt_ha(self, new_jt_host_id, force_init_znode=True, zk_service_name=None):
+    """
+    Enable high availability for a MR JobTracker.
+
+    @param zk_service_name: Name of the ZooKeeper service to use for auto-failover.
+           If MapReduce service depends on a ZooKeeper service then that ZooKeeper
+           service will be used for auto-failover and in that case this parameter
+           can be omitted.
+    @param new_jt_host_id: id of the host where the second JobTracker
+                        will be added.
+    @param force_init_znode: Initialize the ZNode used for auto-failover even if
+                             it already exists. This can happen if JobTracker HA
+                             was enabled before and then disabled. Disable operation
+                             doesn't delete this ZNode. Defaults to true.
+    @return: Reference to the submitted command.
+    """
+    args = dict(
+      newJtHostId = new_jt_host_id,
+      forceInitZNode = force_init_znode,
+      zkServiceName = zk_service_name,
+    )
+    return self._cmd('enableJtHa', data = json.dumps(args))
+
+  def disable_jt_ha(self, active_name):
+    """
+    Disable high availability for a MR JobTracker active-standby pair.
+
+    @param active_name: name of the JobTracker that will be active after
+                        the disable operation. The other JobTracker and
+                        Failover Controllers will be removed.
+    @return: Reference to the submitted command.
+    """
+    args = dict(
+      activeName = active_name,
+    )
+    return self._cmd('disableJtHa', data = json.dumps(args))
 
   def failover_hdfs(self, active_name, standby_name, force=False):
     """
@@ -887,7 +973,7 @@ class ApiService(BaseApiObject):
     @since: API v3
     """
     return self._cmd('hiveCreateMetastoreDatabaseTables')
-  
+
   def create_hive_warehouse(self):
     """
     Creates the Hive warehouse directory in HDFS.
@@ -896,7 +982,7 @@ class ApiService(BaseApiObject):
     @since: API v3
     """
     return self._cmd('hiveCreateHiveWarehouse')
-  
+
   def create_hive_metastore_database(self):
     """
     Create the Hive Metastore Database. Only works with embedded postgresql
@@ -907,25 +993,29 @@ class ApiService(BaseApiObject):
     @since: API v4
     """
     self._require_min_api_version(4)
-    return self._cmd('hiveCreateMetastoreDatabaseCommand')
-  
+    return self._cmd('hiveCreateMetastoreDatabase')
+
   def update_hive_metastore_namenodes(self):
     """
     Update Hive Metastore to point to a NameNode's Nameservice name instead of
     hostname. Only available when all Hive Metastore Servers are stopped and
     HDFS has High Availability.
-    
+
     Back up the Hive Metastore Database before running this command.
 
     @return: Reference to the submitted command.
     @since: API v4
     """
     self._require_min_api_version(4)
-    return self._cmd('hiveUpdateMetastoreNamenodesCommand')
+    return self._cmd('hiveUpdateMetastoreNamenodes')
 
 class ApiServiceSetupInfo(ApiService):
-  RO_ATTR = ( )
-  RW_ATTR = ('name', 'type', 'config', 'roles')
+  _ATTRIBUTES = {
+    'name'    : None,
+    'type'    : None,
+    'config'  : Attr(ApiConfig),
+    'roles'   : Attr(roles.ApiRole),
+  }
 
   def __init__(self, name=None, type=None,
                config=None, roles=None):
@@ -933,7 +1023,7 @@ class ApiServiceSetupInfo(ApiService):
     resource_root = None
     # Unfortunately, the json key is called "type". So our input arg
     # needs to be called "type" as well, despite it being a python keyword.
-    BaseApiObject.ctor_helper(**locals())
+    BaseApiObject.init(self, None, locals())
 
   def set_config(self, config):
     """

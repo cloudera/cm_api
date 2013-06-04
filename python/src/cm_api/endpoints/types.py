@@ -20,64 +20,183 @@ except ImportError:
   import simplejson as json
 
 import datetime
-import logging
 import time
 
 __docformat__ = "epytext"
 
-LOG = logging.getLogger(__name__)
-
-def _encode(value):
+class Attr(object):
   """
-  Encode a value into JSON.
-
-  . if the value has a 'to_json_dict' method, call it.
-  . if the value is a list, return a list of the encoded elements.
-  . if the value is a date, encode it according to the expected API format.
-  . otherwise, return the value itself.
+  Encapsulates information about an attribute in the JSON encoding of the
+  object. It identifies properties of the attribute such as whether it's
+  read-only, its type, etc.
   """
-  try:
-    # If the value has to_json_dict(), call it
-    value = value.to_json_dict()
-  except AttributeError, ignored:
-    pass
-  try:
-    # Maybe it's a date?
-    value = value.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-  except AttributeError, ignored:
-    pass
+  DATE_FMT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
-  # If value is a list, encode each element.
-  if isinstance(value, list):
-    value = [ _encode(x) for x in value ]
+  def __init__(self, atype=None, rw=True, is_api_list=False):
+    self._atype = atype
+    self._is_api_list = is_api_list
+    self.rw = rw
 
-  return value
+  def to_json(self, value, preserve_ro):
+    """
+    Returns the JSON encoding of the given attribute value.
+
+    If the value has a 'to_json_dict' object, that method is called. Otherwise,
+    the following values are returned for each input type:
+    - datetime.datetime: string with the API representation of a date.
+    - dictionary: if 'atype' is ApiConfig, a list of ApiConfig objects.
+    - python list: python list (or ApiList) with JSON encoding of items
+    - the raw value otherwise
+    """
+    if hasattr(value, 'to_json_dict'):
+      return value.to_json_dict(preserve_ro)
+    elif isinstance(value, dict) and self._atype == ApiConfig:
+      return config_to_api_list(value)
+    elif isinstance(value, datetime.datetime):
+      return value.strftime(self.DATE_FMT)
+    elif isinstance(value, list):
+      if self._is_api_list:
+        return ApiList(value).to_json_dict()
+      else:
+        return [ self.to_json(x, preserve_ro) for x in value ]
+    else:
+      return value
+
+  def from_json(self, resource_root, data):
+    """
+    Parses the given JSON value into an appropriate python object.
+
+    This means:
+    - a datetime.datetime if 'atype' is datetime.datetime
+    - a converted config dictionary or config list if 'atype' is ApiConfig
+    - if the attr is an API list, an ApiList with instances of 'atype'
+    - an instance of 'atype' if it has a 'from_json_dict' method
+    - a python list with decoded versions of the member objects if the input
+      is a python list.
+    - the raw value otherwise
+    """
+    if data is None:
+      return None
+
+    if self._atype == datetime.datetime:
+      return datetime.datetime.strptime(data, self.DATE_FMT)
+    elif self._atype == ApiConfig:
+      # ApiConfig is special. We want a python dictionary for summary views,
+      # but an ApiList for full views. Try to detect each case from the JSON
+      # data.
+      if not data['items']:
+        return { }
+      first = data['items'][0]
+      return json_to_config(data, len(first) == 2)
+    elif self._is_api_list:
+      return ApiList.from_json_dict(self._atype, data, resource_root)
+    elif isinstance(data, list):
+      return [ self.from_json(resource_root, x) for x in data ]
+    elif hasattr(self._atype, 'from_json_dict'):
+      return self._atype.from_json_dict(data, resource_root)
+    else:
+      return data
+
+class ROAttr(Attr):
+  """
+  Subclass that just defines the attribute as read-only.
+  """
+  def __init__(self, atype=None, is_api_list=False):
+    Attr.__init__(self, atype=atype, rw=False, is_api_list=is_api_list)
 
 class BaseApiObject(object):
   """
   The BaseApiObject helps with (de)serialization from/to JSON.
-  To take advantage of it, the derived class needs to define
 
-  RW_ATTR - A list of mutable attributes
-  RO_ATTR - A list of immutable attributes
+  The derived class has two ways of defining custom attributes:
+  - Overwriting the '_ATTRIBUTES' field with the attribute dictionary
+  - Override the _get_attributes() method, in case static initialization of
+    the above field is not possible.
 
-  The derived class's ctor must take all the RW_ATTR as arguments.
-  When de-serializing from JSON, all attributes will be set. Their
-  names are taken from the keys in the JSON object.
+  It's recommended that the _get_attributes() implementation do caching to
+  avoid computing the dictionary on every invocation.
 
-  Reference objects (e.g. hostRef, clusterRef) are automatically
-  deserialized. They can be accessed as attributes.
+  The derived class's constructor must call the base class's init() static
+  method. All constructor arguments (aside from self and resource_root) must
+  be keywords arguments with default values (typically None), or
+  from_json_dict() will not work.
   """
-  RO_ATTR = ( )         # Derived classes should define this
-  RW_ATTR = ( )         # Derived classes should define this
 
-  def __init__(self, resource_root, **rw_attrs):
+  _ATTRIBUTES = { }
+  _WHITELIST = ( '_resource_root', '_attributes' )
+
+  @classmethod
+  def _get_attributes(cls):
+    """
+    Returns a map of property names to attr instances (or None for default
+    attribute behavior) describing the properties of the object.
+
+    By default, this method will return the class's _ATTRIBUTES field.
+    Classes can override this method to do custom initialization of the
+    attributes when needed.
+    """
+    return cls._ATTRIBUTES
+
+  @staticmethod
+  def init(obj, resource_root, attrs=None):
+    """
+    Wraper around the real constructor to avoid issues with the 'self'
+    argument. Call like this, from a subclass's constructor:
+
+      BaseApiObject.init(self, locals())
+    """
+    # This works around http://bugs.python.org/issue2646
+    # We use unicode strings as keys in kwargs.
+    str_attrs = { }
+    if attrs:
+      for k, v in attrs.iteritems():
+        if k not in ('self', 'resource_root'):
+          str_attrs[k] = v
+    BaseApiObject.__init__(obj, resource_root, **str_attrs)
+
+  def __init__(self, resource_root, **attrs):
+    """
+    Initializes internal state and sets all known writable properties of the
+    object to None. Then initializes the properties given in the provided
+    attributes dictionary.
+
+    @param resource_root: API resource object.
+    @param attrs: optional dictionary of attributes to set. This should only
+                  contain r/w attributes.
+    """
     self._resource_root = resource_root
-    for k, v in rw_attrs.items():
-      if k not in self.RW_ATTR:
-        raise ValueError("Unexpected ctor argument '%s' in %s" %
-                         (k, self.__class__.__name__))
-      self._setattr(k, v)
+
+    for name, attr in self._get_attributes().iteritems():
+      object.__setattr__(self, name, None)
+    if attrs:
+      self._set_attrs(attrs, from_json=False)
+
+  def _set_attrs(self, attrs, allow_ro=False, from_json=True):
+    """
+    Sets all the attributes in the dictionary. Optionally, allows setting
+    read-only attributes (e.g. when deserializing from JSON) and skipping
+    JSON deserialization of values.
+    """
+    for k, v in attrs.iteritems():
+      attr = self._check_attr(k, allow_ro)
+      if attr and from_json:
+        v = attr.from_json(self._get_resource_root(), v)
+      object.__setattr__(self, k, v)
+
+  def __setattr__(self, name, val):
+    if name not in BaseApiObject._WHITELIST:
+      self._check_attr(name, False)
+    object.__setattr__(self, name, val)
+
+  def _check_attr(self, name, allow_ro):
+    if name not in self._get_attributes():
+      raise AttributeError('Invalid property %s for class %s.' %
+          (name, self.__class__.__name__))
+    attr = self._get_attributes()[name]
+    if not allow_ro and attr and not attr.rw:
+      raise AttributeError('Attribute %s of class %s is read only.' %
+          (name, self.__class__.__name__))
+    return attr
 
   def _get_resource_root(self):
     return self._resource_root
@@ -89,65 +208,41 @@ class BaseApiObject(object):
           "Class %s does not derive from %s; cannot update attributes." %
           (self.__class__, api_obj.__class__))
 
-    for attr in self.RW_ATTR + self.RO_ATTR:
+    for name in self._get_attributes().keys():
       try:
-        val = getattr(api_obj, attr)
-        setattr(self, attr, val)
+        val = getattr(api_obj, name)
+        setattr(self, name, val)
       except AttributeError, ignored:
         pass
 
-  @staticmethod
-  def ctor_helper(self=None, **kwargs):
-    """
-    Note that we need a kw arg called `self'. The callers typically just
-    pass their locals() to us.
-    """
-    BaseApiObject.__init__(self, **kwargs)
-
-  def _setattr(self, k, v):
-    """Set an attribute. We take care of instantiating reference objects."""
-    # We play tricks when we notice that the attribute `k' ends with `Ref'.
-    # We treat it as a reference object, i.e. another object to be deserialized.
-    if isinstance(v, dict) and k.endswith("Ref"):
-      # A reference, `v' should be a json dictionary
-      cls_name = "Api" + k[0].upper() + k[1:]
-      cls = globals()[cls_name]
-      v = fix_unicode_kwargs(v)
-      v = cls(self._get_resource_root(), **v)
-    setattr(self, k, v)
-
-  def to_json_dict(self):
+  def to_json_dict(self, preserve_ro=False):
     dic = { }
-    for attr in self.RW_ATTR:
+    for name, attr in self._get_attributes().iteritems():
+      if not preserve_ro and attr and not attr.rw:
+        continue
       try:
-        value = getattr(self, attr)
-        dic[attr] = _encode(value)
-      except AttributeError, ignored:
+        value = getattr(self, name)
+        if attr:
+          dic[name] = attr.to_json(value, preserve_ro)
+        else:
+          dic[name] = value
+      except AttributeError:
         pass
     return dic
 
+  def __str__(self):
+    """
+    Default implementation of __str__. Uses the type name and the first
+    attribute retrieved from the attribute map to create the string.
+    """
+    name = self._get_attributes().keys()[0]
+    value = getattr(self, name, None)
+    return "<%s>: %s = %s" % (self.__class__.__name__, name, value)
+
   @classmethod
   def from_json_dict(cls, dic, resource_root):
-    rw_dict = { }
-    for k, v in dic.items():
-      if k in cls.RW_ATTR:
-        rw_dict[k] = v
-        del dic[k]
-    # Construct object based on RW_ATTR
-    rw_dict = fix_unicode_kwargs(rw_dict)
-    obj = cls(resource_root, **rw_dict)
-
-    # Initialize all RO_ATTR to be None
-    for attr in cls.RO_ATTR:
-      obj._setattr(attr, None)
-
-    # Now set the RO_ATTR based on the json
-    for k, v in dic.items():
-      if k in cls.RO_ATTR:
-        obj._setattr(k, v)
-      else:
-        LOG.debug("Unexpected attribute '%s' in %s json" %
-                  (k, cls.__name__))
+    obj = cls(resource_root)
+    obj._set_attrs(dic, allow_ro=True)
     return obj
 
   def _require_min_api_version(self, version):
@@ -196,16 +291,78 @@ class ApiList(object):
     return ApiList(objects)
 
 
+class ApiHostRef(BaseApiObject):
+  _ATTRIBUTES = {
+    'hostId'  : None,
+  }
+
+  def __init__(self, resource_root, hostId=None):
+    BaseApiObject.init(self, resource_root, locals())
+
+  def __str__(self):
+    return "<ApiHostRef>: %s" % (self.hostId)
+
+class ApiServiceRef(BaseApiObject):
+  _ATTRIBUTES = {
+    'clusterName' : None,
+    'serviceName' : None,
+    'peerName'    : None,
+  }
+
+  def __init__(self, resource_root, serviceName=None, clusterName=None,
+      peerName=None):
+    BaseApiObject.init(self, resource_root, locals())
+
+class ApiClusterRef(BaseApiObject):
+  _ATTRIBUTES = {
+    'clusterName' : None,
+  }
+
+  def __init__(self, resource_root, clusterName = None):
+    BaseApiObject.init(self, resource_root, locals())
+
+class ApiRoleRef(BaseApiObject):
+  _ATTRIBUTES = {
+    'clusterName' : None,
+    'serviceName' : None,
+    'roleName'    : None,
+  }
+
+  def __init__(self, resource_root, serviceName=None, roleName=None,
+      clusterName=None):
+    BaseApiObject.init(self, resource_root, locals())
+
+class ApiRoleConfigGroupRef(BaseApiObject):
+  _ATTRIBUTES = {
+    'roleConfigGroupName' : None,
+  }
+
+  def __init__(self, resource_root, roleConfigGroupName=None):
+    BaseApiObject.init(self, resource_root, locals())
+
 class ApiCommand(BaseApiObject):
-  """Information about a command."""
-  RW_ATTR = ( )
-  RO_ATTR = ('id', 'name', 'startTime', 'endTime', 'active', 'success',
-             'resultMessage', 'clusterRef', 'serviceRef', 'roleRef', 'hostRef',
-             'children', 'parent', 'resultDataUrl',)
   SYNCHRONOUS_COMMAND_ID = -1
 
-  def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
+  @classmethod
+  def _get_attributes(cls):
+    if not cls.__dict__.has_key('_ATTRIBUTES'):
+      cls._ATTRIBUTES = {
+        'id'            : ROAttr(),
+        'name'          : ROAttr(),
+        'startTime'     : ROAttr(datetime.datetime),
+        'endTime'       : ROAttr(datetime.datetime),
+        'active'        : ROAttr(),
+        'success'       : ROAttr(),
+        'resultMessage' : ROAttr(),
+        'clusterRef'    : ROAttr(ApiClusterRef),
+        'serviceRef'    : ROAttr(ApiServiceRef),
+        'roleRef'       : ROAttr(ApiRoleRef),
+        'hostRef'       : ROAttr(ApiHostRef),
+        'children'      : ROAttr(ApiCommand, is_api_list=True),
+        'parent'        : ROAttr(ApiCommand),
+        'resultDataUrl' : ROAttr(),
+      }
+    return cls._ATTRIBUTES
 
   def __str__(self):
     return "<ApiCommand>: '%s' (id: %s; active: %s; success: %s)" % (
@@ -213,13 +370,6 @@ class ApiCommand(BaseApiObject):
 
   def _path(self):
     return '/commands/%d' % self.id
-
-  def _setattr(self, k, v):
-    if k == 'children' and v is not None:
-      v = ApiList.from_json_dict(ApiCommand, v, self._get_resource_root())
-    elif k == 'parent' and v is not None:
-      v = ApiCommand.from_json_dict(v, self._get_resource_root())
-    BaseApiObject._setattr(self, k, v)
 
   def fetch(self):
     """
@@ -288,40 +438,57 @@ class ApiCommand(BaseApiObject):
 
 class ApiMetricData(BaseApiObject):
   """Metric reading data."""
-  RW_ATTR = ( )
-  RO_ATTR = ( 'timestamp', 'value' )
+
+  _ATTRIBUTES = {
+    'timestamp' : ROAttr(datetime.datetime),
+    'value'     : ROAttr(),
+  }
 
   def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
+    BaseApiObject.init(self, resource_root)
 
 
 class ApiMetric(BaseApiObject):
   """Metric information."""
-  RW_ATTR = ( )
-  RO_ATTR = ( 'name', 'context', 'unit', 'data', 'displayName', 'description' )
+
+  _ATTRIBUTES = {
+    'name'        : ROAttr(),
+    'context'     : ROAttr(),
+    'unit'        : ROAttr(),
+    'data'        : ROAttr(ApiMetricData),
+    'displayName' : ROAttr(),
+    'description' : ROAttr(),
+  }
 
   def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
-
-  def _setattr(self, k, v):
-    if k == 'data':
-      if v:
-        assert isinstance(v, list)
-        self.data = [ ApiMetricData.from_json_dict(x, self._get_resource_root()) for x in v ]
-    else:
-      BaseApiObject._setattr(self, k, v)
+    BaseApiObject.init(self, resource_root)
 
 #
 # Activities.
 #
 
 class ApiActivity(BaseApiObject):
-  RW_ATTR = ( )
-  RO_ATTR = ( 'name', 'type', 'parent', 'startTime', 'finishTime', 'id',
-      'status', 'user', 'group', 'inputDir', 'outputDir', 'mapper', 'combiner',
-      'reducer', 'queueName', 'schedulerPriority' )
+  _ATTRIBUTES = {
+    'name'              : ROAttr(),
+    'type'              : ROAttr(),
+    'parent'            : ROAttr(),
+    'startTime'         : ROAttr(),
+    'finishTime'        : ROAttr(),
+    'id'                : ROAttr(),
+    'status'            : ROAttr(),
+    'user'              : ROAttr(),
+    'group'             : ROAttr(),
+    'inputDir'          : ROAttr(),
+    'outputDir'         : ROAttr(),
+    'mapper'            : ROAttr(),
+    'combiner'          : ROAttr(),
+    'reducer'           : ROAttr(),
+    'queueName'         : ROAttr(),
+    'schedulerPriority' : ROAttr(),
+  }
+
   def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
+    BaseApiObject.init(self, resource_root)
 
   def __str__(self):
     return "<ApiActivity>: %s (%s)" % (self.name, self.status)
@@ -331,81 +498,179 @@ class ApiActivity(BaseApiObject):
 #
 
 class ApiCmPeer(BaseApiObject):
-  RW_ATTR = ( 'name', 'url', 'username', 'password' )
-  RO_ATTR = ( )
+  _ATTRIBUTES = {
+      'name'      : None,
+      'url'       : None,
+      'username'  : None,
+      'password'  : None,
+    }
 
-  def __repr__(self):
+  def __str__(self):
     return "<ApiPeer>: %s (%s)" % (self.name, self.url)
 
-class ApiReplicationSchedule(BaseApiObject):
-  RW_ATTR = ( 'startTime', 'endTime', 'interval', 'intervalUnit', 'paused',
-      'hdfsArguments', 'hiveArguments', 'alertOnStart', 'alertOnSuccess',
-      'alertOnFail', 'alertOnAbort' )
-  RO_ATTR = ( 'id', 'nextRun', 'history' )
-
-  def _setattr(self, name, value):
-    DATES = ( 'startTime', 'endTime', 'nextRun' )
-    if name in DATES and value and not isinstance(value, datetime.datetime):
-      setattr(self, name, datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%fZ"))
-    elif name == 'hdfsArguments' and isinstance(value, dict):
-      self.hdfsArguments = ApiHdfsReplicationArguments(
-          self._get_resource_root(), **value)
-    elif name == 'hiveArguments' and isinstance(value, dict):
-      self.hiveArguments = ApiHiveReplicationArguments(
-          self._get_resource_root(), **value)
-    else:
-      super(ApiReplicationSchedule, self)._setattr(name, value)
-
 class ApiHdfsReplicationArguments(BaseApiObject):
-  RW_ATTR = ( 'sourceService', 'sourcePath', 'destinationPath',
-      'mapreduceServiceName', 'userName', 'numMaps',
-      'dryRun', 'schedulerPoolName', 'abortOnError', 'preservePermissions',
-      'preserveBlockSize', 'preserveReplicationCount', 'removeMissingFiles',
-      'skipChecksumChecks' )
-  RO_ATTR = ( )
+  _ATTRIBUTES = {
+    'sourceService'             : Attr(ApiServiceRef),
+    'sourcePath'                : None,
+    'destinationPath'           : None,
+    'mapreduceServiceName'      : None,
+    'userName'                  : None,
+    'numMaps'                   : None,
+    'dryRun'                    : None,
+    'schedulerPoolName'         : None,
+    'abortOnError'              : None,
+    'preservePermissions'       : None,
+    'preserveBlockSize'         : None,
+    'preserveReplicationCount'  : None,
+    'removeMissingFiles'        : None,
+    'skipChecksumChecks'        : None,
+  }
 
-  def _setattr(self, name, value):
-    if name == "sourceService" and isinstance(value, dict):
-      self.sourceService = ApiServiceRef(self._get_resource_root(), **value)
-    else:
-      super(ApiHdfsReplicationArguments, self)._setattr(name, value)
+class ApiHdfsReplicationResult(BaseApiObject):
+  _ATTRIBUTES = {
+    'progress'            : ROAttr(),
+    'counters'            : ROAttr(),
+    'numBytesDryRun'      : ROAttr(),
+    'numFilesDryRun'      : ROAttr(),
+    'numFilesExpected'    : ROAttr(),
+    'numBytesExpected'    : ROAttr(),
+    'numFilesCopied'      : ROAttr(),
+    'numBytesCopied'      : ROAttr(),
+    'numFilesSkipped'     : ROAttr(),
+    'numBytesSkipped'     : ROAttr(),
+    'numFilesDeleted'     : ROAttr(),
+    'numFilesCopyFailed'  : ROAttr(),
+    'numBytesCopyFailed'  : ROAttr(),
+    'setupError'          : ROAttr(),
+    'jobId'               : ROAttr(),
+    'jobDetailsUri'       : ROAttr(),
+    'dryRun'              : ROAttr(),
+  }
 
 class ApiHiveTable(BaseApiObject):
-  RW_ATTR = ('database', 'tableName')
-  RO_ATTR = ( )
+  _ATTRIBUTES = {
+    'database'  : None,
+    'tableName' : None,
+  }
 
   def __str__(self):
     return "<ApiHiveTable>: %s, %s" % (self.database, self.tableName)
 
 class ApiHiveReplicationArguments(BaseApiObject):
-  RW_ATTR = ('sourceService', 'tableFilters', 'exportDir', 'force',
-      'replicateData', 'hdfsArguments', 'dryRun')
-  RO_ATTR = ( )
+  _ATTRIBUTES = {
+    'sourceService' : Attr(ApiServiceRef),
+    'tableFilters'  : Attr(ApiHiveTable),
+    'exportDir'     : None,
+    'force'         : None,
+    'replicateData' : None,
+    'hdfsArguments' : Attr(ApiHdfsReplicationArguments),
+    'dryRun'        : None,
+  }
 
-  def _setattr(self, name, value):
-    if name == "sourceService" and isinstance(value, dict):
-      self.sourceService = ApiServiceRef(self._get_resource_root(), **value)
-    elif name == 'hdfsArguments' and isinstance(value, dict):
-      self.hdfsArguments = ApiHdfsReplicationArguments(self._get_resource_root(),
-          **value)
-    elif name == 'tableFilters' and isinstance(value, list):
-      self.tableFilters = [ ApiHiveTable(self._get_resource_root(), **x) for x in value ]
-    else:
-      super(ApiHiveReplicationArguments, self)._setattr(name, value)
+class ApiHiveReplicationResult(BaseApiObject):
+  _ATTRIBUTES = {
+    'tables'                : ROAttr(ApiHiveTable),
+    'errors'                : ROAttr(),
+    'dataReplicationResult' : ROAttr(ApiHdfsReplicationResult),
+    'dryRun'                : ROAttr(),
+  }
+
+class ApiReplicationCommand(ApiCommand):
+  @classmethod
+  def _get_attributes(cls):
+    if not cls.__dict__.has_key('_ATTRIBUTES'):
+      attrs = {
+        'hdfsResult'  : ROAttr(ApiHdfsReplicationResult),
+        'hiveResult'  : ROAttr(ApiHiveReplicationResult),
+      }
+      attrs.update(ApiCommand._get_attributes())
+      cls._ATTRIBUTES = attrs
+    return cls._ATTRIBUTES
+
+class ApiReplicationSchedule(BaseApiObject):
+  _ATTRIBUTES = {
+    'startTime'       : Attr(datetime.datetime),
+    'endTime'         : Attr(datetime.datetime),
+    'interval'        : None,
+    'intervalUnit'    : None,
+    'paused'          : None,
+    'hdfsArguments'   : Attr(ApiHdfsReplicationArguments),
+    'hiveArguments'   : Attr(ApiHiveReplicationArguments),
+    'alertOnStart'    : None,
+    'alertOnSuccess'  : None,
+    'alertOnFail'     : None,
+    'alertOnAbort'    : None,
+    'id'              : ROAttr(),
+    'nextRun'         : ROAttr(datetime.datetime),
+    'history'         : ROAttr(ApiReplicationCommand),
+  }
 
 #
 # Configuration helpers.
 #
 
 class ApiConfig(BaseApiObject):
-  RW_ATTR = ('name', 'value')
-  RO_ATTR = ('required', 'default', 'displayName', 'description',
-      'relatedName', 'validationState', 'validationMessage')
-  def __init__(self, resource_root, name, value = None):
-    BaseApiObject.ctor_helper(**locals())
+  _ATTRIBUTES = {
+    'name'              : None,
+    'value'             : None,
+    'required'          : ROAttr(),
+    'default'           : ROAttr(),
+    'displayName'       : ROAttr(),
+    'description'       : ROAttr(),
+    'relatedName'       : ROAttr(),
+    'validationState'   : ROAttr(),
+    'validationMessage' : ROAttr(),
+  }
+
+  def __init__(self, resource_root, name=None, value=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiConfig>: %s = %s" % (self.name, self.value)
+
+class ApiImpalaQuery(BaseApiObject):
+  _ATTRIBUTES = {
+    'queryId'          : ROAttr(),
+    'queryState'       : ROAttr(),
+    'queryType'        : ROAttr(),
+    'statement'        : ROAttr(),
+    'database'         : ROAttr(),
+    'rowsProduced'     : ROAttr(),
+    'coordinator'      : ROAttr(ApiHostRef),
+    'user'             : ROAttr(),
+    'startTime'        : ROAttr(datetime.datetime),
+    'endTime'          : ROAttr(datetime.datetime),
+    'detailsAvailable' : ROAttr(),
+    'attributes'       : ROAttr(),
+    'durationMillis'   : ROAttr()
+  }
+
+  def __str__(self):
+    return "<ApiImpalaQuery>: %s" % (self.queryId)
+
+
+class ApiImpalaQueryResponse(BaseApiObject):
+ 
+  _ATTRIBUTES = {
+    'queries'   : ROAttr(ApiImpalaQuery),
+    'warnings'  : ROAttr()
+  }
+
+class ApiImpalaQueryDetailsResponse(BaseApiObject):
+  _ATTRIBUTES = {
+    'details' : ROAttr()
+  }
+
+  def __str__(self):
+    return "<AipImpalaQueryDetailsResponse> %s" % self.details
+
+class ApiImpalaCancelResponse(BaseApiObject):
+  _ATTRIBUTES = {
+    'warning' : ROAttr()
+  }
+
+  def __str__(self):
+    return "<ApiImpalaCancelResponse> %s" % self.warning
 
 def config_to_api_list(dic):
   """
@@ -451,47 +716,3 @@ def json_to_config(dic, full = False):
     else:
       config[k] = entry.get('value')
   return config
-
-def fix_unicode_kwargs(dic):
-  """
-  This works around http://bugs.python.org/issue2646
-  We use unicode strings as keys in kwargs.
-  """
-  res = { }
-  for k, v in dic.iteritems():
-    res[str(k)] = v
-  return res
-
-
-#
-# In order for BaseApiObject to automatically instantiate reference objects,
-# it's more convenient for the reference classes to be defined here.
-#
-
-class ApiHostRef(BaseApiObject):
-  RW_ATTR = ('hostId',)
-  def __init__(self, resource_root, hostId):
-    BaseApiObject.ctor_helper(**locals())
-  
-  def __str__(self):
-    return "<ApiHostRef>: %s" % (self.hostId)
-
-class ApiServiceRef(BaseApiObject):
-  RW_ATTR = ('clusterName', 'serviceName', 'peerName')
-  def __init__(self, resource_root, serviceName, clusterName = None, peerName = None):
-    BaseApiObject.ctor_helper(**locals())
-
-class ApiClusterRef(BaseApiObject):
-  RW_ATTR = ('clusterName',)
-  def __init__(self, resource_root, clusterName = None):
-    BaseApiObject.ctor_helper(**locals())
-
-class ApiRoleRef(BaseApiObject):
-  RW_ATTR = ('clusterName', 'serviceName', 'roleName')
-  def __init__(self, resource_root, serviceName, roleName, clusterName = None):
-    BaseApiObject.ctor_helper(**locals())
-
-class ApiRoleConfigGroupRef(BaseApiObject):
-  RW_ATTR = ('roleConfigGroupName',)
-  def __init__(self, resource_root, roleConfigGroupName):
-    BaseApiObject.ctor_helper(**locals())

@@ -19,7 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiList, BaseApiObject, ApiHostRef, ApiCommand
+from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
 
@@ -104,21 +104,24 @@ def apply_host_template(resource_root, name, cluster_name, host_ids, start_roles
   body = json.dumps(ApiList(host_refs).to_json_dict())
   resp = resource_root.post(APPLY_HOST_TEMPLATE_PATH % (cluster_name, name), params=params, data=body)
   return ApiCommand.from_json_dict(resp, resource_root)
-  
+
 
 class ApiHostTemplate(BaseApiObject):
-  RO_ATTR = ('clusterRef',)
-  RW_ATTR = ('name', 'roleConfigGroupRefs')
-  
-  def __init__(self, resource_root, name, roleConfigGroupRefs):
-    BaseApiObject.ctor_helper(**locals())
+  _ATTRIBUTES = {
+    'name'                : None,
+    'roleConfigGroupRefs' : Attr(ApiRoleConfigGroupRef),
+    'clusterRef'          : ROAttr(ApiClusterRef),
+  }
+
+  def __init__(self, resource_root, name=None, roleConfigGroupRefs=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiHostTemplate>: %s (cluster %s)" % (self.name, self.clusterRef.clusterName)
 
   def _path(self):
     return HOST_TEMPLATE_PATH % (self.clusterRef.clusterName, self.name)
-  
+
   def _put(self, dic):
     resp = self._get_resource_root().put(self._path(), data=json.dumps(dic))
     host_template = ApiHostTemplate.from_json_dict(resp, self._get_resource_root())
@@ -145,7 +148,7 @@ class ApiHostTemplate(BaseApiObject):
     dic = self.to_json_dict()
     dic['roleConfigGroupRefs'] = [ x.to_json_dict() for x in role_config_group_refs ]
     return self._put(dic)
-  
+
   def apply_host_template(self, host_ids, start_roles):
     """
     Apply a host template identified by name on the specified hosts and

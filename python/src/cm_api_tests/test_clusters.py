@@ -15,11 +15,21 @@
 # limitations under the License.
 
 import datetime
+import json
+import unittest
+from cm_api.endpoints.clusters import *
+from cm_api.endpoints.types import *
+from cm_api_tests import utils
 
-def api_time_to_datetime(s):
-  """
-  Convert a time string received from the API into a datetime object.
-  @param s: A time string received from the API, e.g. "2012-02-18T01:01:03.234Z"
-  @return: A datetime object.
-  """
-  return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S.%fZ")
+class TestCluster(unittest.TestCase):
+
+  def test_add_hosts(self):
+    resource = utils.MockResource(self)
+    cluster = ApiCluster(resource, name="foo")
+
+    data = ApiList([ ApiHostRef(resource, hostId='foo') ])
+
+    resource.expect("POST", "/clusters/foo/hosts",
+        data=json.dumps(data.to_json_dict()),
+        retdata={ 'items' : [ { 'hostId' : 'foo' } ] })
+    cluster.add_hosts(['foo'])

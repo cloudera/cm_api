@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from cm_api.endpoints.types import ApiList, ApiCommand, BaseApiObject
+from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
 
@@ -50,11 +50,17 @@ class ApiParcelState(BaseApiObject):
   """
   An object that represents the state of a parcel.
   """
-  RO_ATTR = ('progress', 'totalProgress', 'count', 'totalCount')
-  RW_ATTR = ()
+  _ATTRIBUTES = {
+      'progress'      : ROAttr(),
+      'totalProgress' : ROAttr(),
+      'count'         : ROAttr(),
+      'totalCount'    : ROAttr(),
+      'warnings'      : ROAttr(),
+      'errors'        : ROAttr(),
+    }
 
   def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
+    BaseApiObject.init(self, resource_root)
 
   def __str__(self):
     return "<ApiParcelState>: (progress: %s) (totalProgress: %s) (count: %s) (totalCount: %s)" % (
@@ -64,21 +70,16 @@ class ApiParcel(BaseApiObject):
   """
   An object that represents a parcel and allows administrative operations.
   """
-  RO_ATTR = ('product', 'version', 'stage', 'state', 'clusterRef')
-  RW_ATTR = ()
+  _ATTRIBUTES = {
+    'product'     : ROAttr(),
+    'version'     : ROAttr(),
+    'stage'       : ROAttr(),
+    'state'       : ROAttr(ApiParcelState),
+    'clusterRef'  : ROAttr(ApiClusterRef),
+  }
 
   def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
-    
-    # The state may not be present, so we set it to None by default.
-    self.state = None
-
-  def _setattr(self, k, v):
-    if k == 'state':
-      if v:
-        self.state = ApiParcelState.from_json_dict(v, self._get_resource_root())
-    else:
-      BaseApiObject._setattr(self, k, v)
+    BaseApiObject.init(self, resource_root)
 
   def __str__(self):
     return "<ApiParcel>: %s-%s (stage: %s) (state: %s) (cluster: %s)" % (
@@ -112,9 +113,9 @@ class ApiParcel(BaseApiObject):
     return self._cmd('startDownload')
 
   def cancel_download(self):
-    """  
+    """
     Cancels the parcel download. If the parcel is not
-    currently downloading an exception is raised.    
+    currently downloading an exception is raised.
 
     @return: Reference to the completed command.
     """
@@ -140,11 +141,11 @@ class ApiParcel(BaseApiObject):
   def cancel_distribution(self):
     """
     Cancels the parcel distrubution. If the parcel is not
-    currently distributing an exception is raised.     
-    
+    currently distributing an exception is raised.
+
     @return: Reference to the completed command
     """
-    return self._cmd('cancelDistribution')  
+    return self._cmd('cancelDistribution')
 
   def start_removal_of_distribution(self):
     """

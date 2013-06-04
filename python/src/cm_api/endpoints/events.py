@@ -20,8 +20,7 @@ except ImportError:
   import simplejson as json
 import logging
 
-from cm_api.endpoints.types import ApiList, BaseApiObject
-from cm_api.utils import api_time_to_datetime
+from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
 
@@ -52,17 +51,16 @@ def get_event(resource_root, event_id):
 
 
 class ApiEvent(BaseApiObject):
-  RO_ATTR = ('id', 'content', 'timeOccurred', 'timeReceived', 'category',
-             'severity', 'alert', 'attributes')
-  RW_ATTR = ( )
+  _ATTRIBUTES = {
+    'id'            : ROAttr(),
+    'content'       : ROAttr(),
+    'timeOccurred'  : ROAttr(datetime.datetime),
+    'timeReceived'  : ROAttr(datetime.datetime),
+    'category'      : ROAttr(),
+    'severity'      : ROAttr(),
+    'alert'         : ROAttr(),
+    'attributes'    : ROAttr(),
+  }
 
   def __init__(self, resource_root):
-    BaseApiObject.ctor_helper(**locals())
-
-  def _setattr(self, k, v):
-    if k == 'timeOccurred' and v is not None:
-      self.timeOccurred = api_time_to_datetime(v)
-    elif k == 'timeReceived' and v is not None:
-      self.timeReceived = api_time_to_datetime(v)
-    else:
-      BaseApiObject._setattr(self, k, v)
+    BaseApiObject.init(self, resource_root)

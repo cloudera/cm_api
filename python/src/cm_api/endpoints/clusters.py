@@ -19,7 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
-from cm_api.endpoints.types import ApiCommand, ApiList, ApiHostRef, BaseApiObject
+from cm_api.endpoints.types import *
 from cm_api.endpoints import services, parcels, host_templates
 
 __docformat__ = "epytext"
@@ -73,11 +73,15 @@ def delete_cluster(resource_root, name):
 
 
 class ApiCluster(BaseApiObject):
-  RO_ATTR = ('maintenanceMode', 'maintenanceOwners')
-  RW_ATTR = ('name', 'version')
+  _ATTRIBUTES = {
+    'name'              : None,
+    'version'           : None,
+    'maintenanceMode'   : ROAttr(),
+    'maintenanceOwners' : ROAttr(),
+  }
 
-  def __init__(self, resource_root, name, version):
-    BaseApiObject.ctor_helper(**locals())
+  def __init__(self, resource_root, name=None, version=None):
+    BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiCluster>: %s; version: %s" % (self.name, self.version)
@@ -195,7 +199,7 @@ class ApiCluster(BaseApiObject):
     @return: A ApiHostRef of the host that was removed.
     """
     resource_root = self._get_resource_root()
-    resp = resource_root.delete("%s/hosts/%s" % (self._path(), hostId)) 
+    resp = resource_root.delete("%s/hosts/%s" % (self._path(), hostId))
     return ApiHostRef.from_json_dict(resp, resource_root)
 
   def remove_all_hosts(self):
@@ -205,18 +209,19 @@ class ApiCluster(BaseApiObject):
     @return: A list of ApiHostRef objects of the hosts that were removed.
     """
     resource_root = self._get_resource_root()
-    resp = resource_root.delete("%s/hosts" % (self._path(),)) 
+    resp = resource_root.delete("%s/hosts" % (self._path(),))
     return ApiList.from_json_dict(ApiHostRef, resp, self._get_resource_root())
 
   def add_hosts(self, hostIds):
     """
     Adds a host to the cluster.
 
-    @return: A list of ApiHostRef objects of the new 
+    @param hostIds: List of IDs of hosts to add to cluster.
+    @return: A list of ApiHostRef objects of the new
              hosts that were added to the cluster
     """
     resource_root = self._get_resource_root()
-    hostRefList = ApiList([ApiHostRef(resource_root, x) for x in [hostIds]])
+    hostRefList = ApiList([ApiHostRef(resource_root, x) for x in hostIds])
     body = json.dumps(hostRefList.to_json_dict())
     resp = resource_root.post(self._path() + '/hosts', data=body)
     return ApiList.from_json_dict(ApiHostRef, resp, resource_root)[0]
@@ -276,7 +281,7 @@ class ApiCluster(BaseApiObject):
     @return ApiList of ApiHostTemplate objects.
     """
     return host_templates.get_all_host_templates(self._get_resource_root(), self.name)
-  
+
   def get_host_template(self, name):
     """
     Retrieves a host templates by name.
@@ -301,3 +306,48 @@ class ApiCluster(BaseApiObject):
     """
     return host_templates.delete_host_template(self._get_resource_root(), name, self.name)
 
+  def rolling_restart(self, slave_batch_size=None,
+                      slave_fail_count_threshold=None,
+                      sleep_seconds=None,
+                      stale_configs_only=None,
+                      unupgraded_only=None,
+                      roles_to_include=None,
+                      restart_service_names=None):
+    """
+    Command to do a "best-effort" rolling restart of the given cluster,
+    i.e. it does plain restart of services that cannot be rolling restarted,
+    followed by first rolling restarting non-slaves and then rolling restarting
+    the slave roles of services that can be rolling restarted. The slave restarts
+    are done host-by-host.
+    @param: slave_batch_size Number of hosts with slave roles to restart at a time
+            Must be greater than 0. Default is 1.
+    @param: slave_fail_count_threshold The threshold for number of slave host batches that
+            are allowed to fail to restart before the entire command is considered failed.
+            Must be >= 0. Default is 0.
+    @param: sleep_seconds Number of seconds to sleep between restarts of slave host batches.
+            Must be >=0. Default is 0.
+    @param: stale_configs_only Restart roles with stale configs only. Default is false.
+    @param: unupgraded_only Restart roles that haven't been upgraded yet. Default is false.
+    @param: roles_to_include Role types to restart. Default is slave roles only.
+    @param: restart_service_names List of specific services to restart.
+    @return: Reference to the submitted command.
+    @since: API v4
+    """
+    self._require_min_api_version(4)
+    args = dict()
+    if slave_batch_size:
+      args['slaveBatchSize'] = slave_batch_size
+    if slave_fail_count_threshold:
+      args['slaveFailCountThreshold'] = slave_fail_count_threshold
+    if sleep_seconds:
+      args['sleepSeconds'] = sleep_seconds
+    if stale_configs_only:
+      args['staleConfigsOnly'] = stale_configs_only
+    if unupgraded_only:
+      args['unUpgradedOnly'] = unupgraded_only
+    if roles_to_include:
+      args['rolesToInclude'] = roles_to_include
+    if restart_service_names:
+      args['restartServiceNames'] = restart_service_names
+
+    return self._cmd('rollingRestart', data = json.dumps(args))
