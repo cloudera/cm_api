@@ -32,7 +32,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "cluster")
 @XmlType(propOrder = {"name", "version",
-    "maintenanceMode", "maintenanceOwners", "services"})
+    "maintenanceMode", "maintenanceOwners", "services", "parcels"})
 public class ApiCluster {
 
   private String name;
@@ -40,6 +40,7 @@ public class ApiCluster {
   private Boolean maintenanceMode;
   private List<ApiEntityType> maintenanceOwners;
   private List<ApiService> services;
+  private List<ApiParcel> parcels;
 
   public ApiCluster() {
     // For JAX-B
@@ -123,4 +124,16 @@ public class ApiCluster {
     this.services = services;
   }
 
+  /**
+   * Optional. Used during import/export of settings.
+   * Available since API v4.
+   */
+  @XmlElementWrapper(name = "parcels")
+  public List<ApiParcel> getParcels() {
+    return parcels;
+  }
+
+  public void setParcels(List<ApiParcel> parcels) {
+    this.parcels = parcels;
+  }
 }

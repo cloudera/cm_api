@@ -25,7 +25,10 @@ import com.cloudera.api.model.ApiRoleList;
 import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
 import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.FROM;
+import static com.cloudera.api.Parameters.METRICS;
 import static com.cloudera.api.Parameters.ROLE_NAME;
+import static com.cloudera.api.Parameters.TO;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -101,6 +104,18 @@ public interface RolesResource {
    *     <tr>
    *       <td>IMPALA</td>
    *       <td>IMPALAD, STATESTORE</td>
+   *     </tr>
+   *     <tr>
+   *       <td>HIVE</td>
+   *       <td>HIVESERVER2, HIVEMETASTORE, WEBHCAT, GATEWAY</td>
+   *     </tr>
+   *     <tr>
+   *       <td>SOLR</td>
+   *       <td>SOLR_SERVER</td>
+   *     </tr>
+   *     <tr>
+   *       <td>SQOOP</td>
+   *       <td>SQOOP_SERVER</td>
    *     </tr>
    *   </tbody>
    *
@@ -213,11 +228,11 @@ public interface RolesResource {
   @Path("/{roleName}/metrics")
   public ApiMetricList getMetrics(
       @PathParam(ROLE_NAME) String roleName,
-      @QueryParam("from") String from,
-      @QueryParam("to")
+      @QueryParam(FROM) String from,
+      @QueryParam(TO)
         @DefaultValue(DATE_TIME_NOW)
         String to,
-      @QueryParam("metrics") List<String> metrics,
+      @QueryParam(METRICS) List<String> metrics,
       @QueryParam(DATA_VIEW)
         @DefaultValue(DATA_VIEW_DEFAULT)
         DataView dataView);

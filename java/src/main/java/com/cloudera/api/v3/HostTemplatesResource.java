@@ -97,7 +97,7 @@ public interface HostTemplatesResource {
    * <p>
    * Available since API v3.
    * 
-   * @param hostTemplate Host template to delete.
+   * @param hostTemplateName Host template to delete.
    * @return Deleted host template.
    */
   @DELETE

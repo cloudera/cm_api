@@ -150,6 +150,10 @@ public class ClouderaManagerClientBuilder {
   }
 
   public ApiRootResource build() {
+    return build(ApiRootResource.class);
+  }
+
+  protected <T> T build(Class<T> proxyType) {
     JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
 
     String address = generateAddress();
@@ -162,10 +166,11 @@ public class ClouderaManagerClientBuilder {
     if (enableLogging) {
       bean.setFeatures(Arrays.<AbstractFeature>asList(new LoggingFeature()));
     }
-    bean.setResourceClass(ApiRootResource.class);
+    bean.setResourceClass(proxyType);
     bean.setProvider(new JacksonJsonProvider(new ApiObjectMapper()));
 
-    ApiRootResource rootResource = (ApiRootResource) bean.create();
+    @SuppressWarnings("unchecked")
+    T rootResource = (T) bean.create();
     ClientConfiguration config = WebClient.getConfig(rootResource);
     HTTPConduit conduit = (HTTPConduit) config.getConduit();
     if (isTlsEnabled) {

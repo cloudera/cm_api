@@ -17,10 +17,12 @@
 package com.cloudera.api.model;
 
 import com.cloudera.api.ApiObjectMapper;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import org.joda.time.Duration;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
@@ -78,8 +80,8 @@ public class ApiModelTest {
     return objectMapper.readValue(text, type);
   }
 
-  private <T> void checkJson(Class<? extends T> type, T object, boolean encodeOnly)
-      throws IOException {
+  private static <T> void checkJson(Class<? extends T> type, T object,
+      boolean encodeOnly) throws IOException {
     String jsonText = objectToJson(object);
     System.out.println(jsonText);
     if (!encodeOnly) {
@@ -114,9 +116,10 @@ public class ApiModelTest {
     assertTrue(jsonProps.isEmpty());
   }
 
-  private <T> void checkXML(Class<? extends T> type, T object, boolean encodeOnly)
-      throws JAXBException, UnsupportedEncodingException,
-      InstantiationException, IllegalAccessException {
+  private static <T> void checkXML(Class<? extends T> type, T object,
+      boolean encodeOnly)
+          throws JAXBException, UnsupportedEncodingException,
+          InstantiationException, IllegalAccessException {
     String xmlText = objectToXml(object);
     System.out.println(xmlText);
     if (!encodeOnly) {
@@ -126,7 +129,7 @@ public class ApiModelTest {
     }
   }
 
-  private <T> void checkJsonXML(Class<? extends T> type, T object)
+  public static <T> void checkJsonXML(Class<? extends T> type, T object)
       throws IOException, JAXBException, IllegalAccessException,
       InstantiationException {
     checkJson(type, object, false);
@@ -207,9 +210,14 @@ public class ApiModelTest {
     host.setMaintenanceMode(true);
     host.setCommissionState(ApiCommissionState.COMMISSIONED);
     assertTrue(host.getMaintenanceMode());
+
+    // check v4 attributes
+    host.setNumCores(4L);
+    host.setTotalPhysMemBytes(1234L);
     checkJsonProperties(host, "hostId", "ipAddress", "hostname", "rackId",
                         "lastHeartbeat", "healthSummary", "roleRefs",
-                        "hostUrl", "maintenanceMode", "maintenanceOwners", "commissionState");
+                        "hostUrl", "maintenanceMode", "maintenanceOwners",
+                        "commissionState", "numCores", "totalPhysMemBytes");
   }
 
   @Test
@@ -384,7 +392,9 @@ public class ApiModelTest {
         new ApiRoleTypeList(Lists.<String>newArrayList()),
         new ApiServiceList(Lists.<ApiService>newArrayList()),
         new ApiUserList(Lists.<ApiUser>newArrayList()),
-        new ApiHostRefList(Lists.<ApiHostRef>newArrayList())
+        new ApiHostRefList(Lists.<ApiHostRef>newArrayList()),
+        new ApiAuditList(Lists.<ApiAudit>newArrayList()),
+        new ApiReplicationCommandList(Lists.<ApiReplicationCommand>newArrayList())
     )) {
       checkJsonXMLEncoding(o.getClass(), o);
       checkJsonProperties(o, "items");
@@ -415,6 +425,22 @@ public class ApiModelTest {
                         "status", "group", "finishTime", "inputDir",
                         "outputDir", "mapper", "reducer", "combiner",
                         "queueName", "schedulerPriority");
+  }
+
+  @Test
+  public void testAudit() throws Exception {
+    ApiAudit audit = new ApiAudit("service",
+                                  "myName",
+                                  "imp",
+                                  "command",
+                                  "1.2.3.4",
+                                  "resource",
+                                  true,
+                                  250912898047L);
+    checkJsonXMLEncoding(audit.getClass(), audit);
+    checkJsonProperties(audit,
+                        "timestamp", "service", "username", "impersonator",
+                        "ipAddress", "command", "resource", "allowed");
   }
 
   @Test
@@ -626,6 +652,7 @@ public class ApiModelTest {
     res.setTables(Arrays.asList(new ApiHiveTable("db1", "table1")));
     res.setErrors(Arrays.asList(new ApiHiveReplicationError("db1", "table1", "error1")));
     res.setDryRun(true);
+    res.setPhase("foo");
 
     ApiHdfsReplicationResult hdfsRes = new ApiHdfsReplicationResult();
     hdfsRes.setProgress(42);
@@ -636,6 +663,34 @@ public class ApiModelTest {
     ApiReplicationCommand cmd = new ApiReplicationCommand();
     cmd.setHiveResult(res);
     checkJsonXML(cmd.getClass(), cmd);
+  }
+
+  @Test
+  public void testImpalaQuery() throws Exception {
+    ApiImpalaQuery query = new ApiImpalaQuery(
+        "queryId", "statement", "QUERY", "FINISHED", new Date(), new Date(),
+        1L, Maps.<String, String>newHashMap(), "user", "hostId", true, "db",
+        Duration.standardDays(1));
+    checkJsonXMLEncoding(query.getClass(), query);
+    checkJsonProperties(query, "queryId", "statement", "queryType", "queryState",
+                        "startTime", "endTime", "rowsProduced", "attributes",
+                        "user", "coordinator", "detailsAvailable", "database",
+                        "durationMillis");
+
+    ApiImpalaQueryResponse response = new ApiImpalaQueryResponse(
+        ImmutableList.<ApiImpalaQuery>of(), ImmutableList.<String>of());
+    checkJsonXMLEncoding(response.getClass(), response);
+    checkJsonProperties(response, "queries", "warnings");
+
+    ApiImpalaCancelResponse cancelResponse =
+        new ApiImpalaCancelResponse("warning");
+    checkJsonXMLEncoding(cancelResponse.getClass(), cancelResponse);
+    checkJsonProperties(cancelResponse, "warning");
+
+    ApiImpalaQueryDetailsResponse detailsResponse =
+        new ApiImpalaQueryDetailsResponse("details");
+    checkJsonXMLEncoding(detailsResponse.getClass(), detailsResponse);
+    checkJsonProperties(detailsResponse, "details");
   }
 
 }

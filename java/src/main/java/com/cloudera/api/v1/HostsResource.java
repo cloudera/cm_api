@@ -39,8 +39,11 @@ import java.util.Set;
 import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
 import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.FROM;
 import static com.cloudera.api.Parameters.HOST_ID;
 import static com.cloudera.api.Parameters.MESSAGE;
+import static com.cloudera.api.Parameters.METRICS;
+import static com.cloudera.api.Parameters.TO;
 
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -195,13 +198,12 @@ public interface HostsResource {
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
    */
-  @Enterprise
   @GET
   @Path("/{hostId}/metrics")
   public ApiMetricList getMetrics(
       @PathParam(HOST_ID) String hostId,
-      @QueryParam("from") String from,
-      @QueryParam("to")
+      @QueryParam(FROM) String from,
+      @QueryParam(TO)
         @DefaultValue(DATE_TIME_NOW)
         String to,
       @QueryParam("queryNw")
@@ -212,7 +214,7 @@ public interface HostsResource {
         @DefaultValue("true")
         boolean queryStorage,
       @QueryParam("storageIds") Set<String> storageIds,
-      @QueryParam("metrics") Set<String> metrics,
+      @QueryParam(METRICS) Set<String> metrics,
       @QueryParam(DATA_VIEW)
         @DefaultValue(DATA_VIEW_DEFAULT)
         DataView dataView);

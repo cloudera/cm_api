@@ -16,6 +16,7 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.model.ApiCommand;
+import static com.cloudera.api.Parameters.COMMAND_ID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -44,7 +45,7 @@ public interface CommandsResource {
    */
   @GET
   @Path("/{commandId}")
-  public ApiCommand readCommand(@PathParam(value = "commandId") long commandId);
+  public ApiCommand readCommand(@PathParam(COMMAND_ID) long commandId);
 
   /**
    * Abort a running command.
@@ -55,7 +56,6 @@ public interface CommandsResource {
   @Consumes()
   @POST
   @Path("/{commandId}/abort")
-  public ApiCommand abortCommand(
-      @PathParam(value = "commandId") long commandId);
+  public ApiCommand abortCommand(@PathParam(COMMAND_ID) long commandId);
 
 }

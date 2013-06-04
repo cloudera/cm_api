@@ -129,11 +129,9 @@ public interface ClouderaManagerResourceV2 extends ClouderaManagerResource {
   /**
    * Return the Cloudera Management Services resource.
    * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return The Cloudera Management Services resource.
    */
-  @Enterprise
   @Path("/service")
   public MgmtServiceResourceV2 getMgmtServiceResource();
 }

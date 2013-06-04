@@ -64,11 +64,9 @@ public interface RootResourceV1 {
   /**
    * Return the events resource handler.
    * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return The events resource handler.
    */
-  @Enterprise
   @Path("/events")
   public EventsResource getEventsResource();
 

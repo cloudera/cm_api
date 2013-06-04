@@ -46,6 +46,8 @@ public class ApiHost {
   private List<ApiEntityType> maintenanceOwners;
   private ApiCommissionState commissionState;
   private ApiConfigList config;
+  private Long numCores;
+  private Long totalPhysMemBytes;
 
   public ApiHost() {
     // for JAX-B
@@ -75,6 +77,8 @@ public class ApiHost {
     this.maintenanceOwners = host.getMaintenanceOwners();
     this.commissionState = host.getCommissionState();
     this.config = host.getConfig();
+    this.numCores = host.getNumCores();
+    this.totalPhysMemBytes = host.getTotalPhysMemBytes();
   }
 
   @Override
@@ -262,5 +266,33 @@ public class ApiHost {
 
   public void setConfig(ApiConfigList config) {
     this.config = config;
+  }
+
+  /**
+   * Readonly. The number of CPU cores on this host. Only populated after the
+   * host has heartbeated to the server.
+   * Available since API v4.
+   */
+  @XmlElement
+  public Long getNumCores() {
+    return numCores;
+  }
+
+  public void setNumCores(Long numCores) {
+    this.numCores = numCores;
+  }
+
+  /**
+   * Readonly. The amount of physical RAM on this host, in bytes. Only
+   * populated after the host has heartbeated to the server.
+   * Available since API v4.
+   */
+  @XmlElement
+  public Long getTotalPhysMemBytes() {
+    return totalPhysMemBytes;
+  }
+
+  public void setTotalPhysMemBytes(Long totalPhysMemBytes) {
+    this.totalPhysMemBytes = totalPhysMemBytes;
   }
 }

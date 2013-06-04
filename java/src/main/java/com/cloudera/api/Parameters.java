@@ -36,11 +36,22 @@ public final class Parameters {
   static public final String VERSION = "version";
   static public final String ROLE_CONFIG_GROUP_NAME = "roleConfigGroupName";
   static public final String HOST_TEMPLATE_NAME = "hostTemplateName";
+  static public final String CONFIG_FILE_NAME = "configFileName";
+  static public final String COMMAND_ID = "commandId";
+
+  /* Common query params. */
+  static public final String FROM = "from";
+  static public final String TO = "to";
+  static public final String OFFSET = "offset";
+  static public final String LIMIT = "limit";
+  static public final String METRICS = "metrics";
+  static public final String QUERY = "query";
 
   /* Default values. */
   static public final String DATA_VIEW_DEFAULT = "summary";
   static public final String DATA_VIEW_EXPORT = "export";
   public static final String DATE_TIME_NOW = "now";
+  public static final String DAILY_AGGREGATION = "daily";
 
   private Parameters() { }
 

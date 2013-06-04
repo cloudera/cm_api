@@ -29,7 +29,10 @@ import com.google.common.base.Objects;
 @XmlRootElement(name = "hiveReplicationResult")
 public class ApiHiveReplicationResult {
 
+  private String phase;
+  private Integer tableCount;
   private List<ApiHiveTable> tables;
+  private Integer errorCount;
   private List<ApiHiveReplicationError> errors;
   private ApiHdfsReplicationResult dataReplicationResult;
   private boolean dryRun;
@@ -38,7 +41,45 @@ public class ApiHiveReplicationResult {
     // For JAX-B
   }
 
-  /** The list of tables successfully replicated. */
+  /**
+   * Phase the replication is in.
+   * <p/>
+   * If the replication job is still active, this will contain a string
+   * describing the current phase. This will be one of: EXPORT, DATA or
+   * IMPORT, for, respectively, exporting the source metastore information,
+   * replicating table data (if configured), and importing metastore
+   * information in the target.
+   * <p/>
+   * This value will not be present if the replication is not active.
+   * <p/>
+   * Available since API v4.
+   */
+  @XmlElement
+  public String getPhase() {
+    return phase;
+  }
+
+  public void setPhase(String phase) {
+    this.phase = phase;
+  }
+
+  /**
+   * Number of tables that were successfully replicated. Available since API v4.
+   */
+  @XmlElement
+  public Integer getTableCount() {
+    return tableCount;
+  }
+
+  public void setTableCount(Integer tableCount) {
+    this.tableCount = tableCount;
+  }
+
+  /**
+   * The list of tables successfully replicated.
+   * <p/>
+   * Since API v4, this is only available in the full view.
+   */
   @XmlElementWrapper
   public List<ApiHiveTable> getTables() {
     return tables;
@@ -48,7 +89,24 @@ public class ApiHiveReplicationResult {
     this.tables = tables;
   }
 
-  /** List of errors encountered during replication. */
+  /**
+   * Number of errors detected during replication job.
+   * Available since API v4.
+   */
+  @XmlElement
+  public Integer getErrorCount() {
+    return errorCount;
+  }
+
+  public void setErrorCount(Integer errorCount) {
+    this.errorCount = errorCount;
+  }
+
+  /**
+   * List of errors encountered during replication.
+   * <p/>
+   * Since API v4, this is only available in the full view.
+   */
   @XmlElementWrapper
   public List<ApiHiveReplicationError> getErrors() {
     return errors;
@@ -82,6 +140,7 @@ public class ApiHiveReplicationResult {
   public boolean equals(Object o) {
     ApiHiveReplicationResult that = ApiUtils.baseEquals(this, o);
     return this == that || (that != null &&
+        Objects.equal(phase, that.getPhase()) &&
         Objects.equal(tables, that.getTables()) &&
         Objects.equal(errors, that.getErrors()) &&
         dryRun == that.isDryRun());
@@ -89,12 +148,13 @@ public class ApiHiveReplicationResult {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(tables, errors, dryRun);
+    return Objects.hashCode(phase, tables, errors, dryRun);
   }
 
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
+        .add("phase", phase)
         .add("tables", tables)
         .add("errors", errors)
         .add("dryRun", dryRun)

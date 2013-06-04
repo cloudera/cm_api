@@ -142,7 +142,6 @@ public interface ClouderaManagerResource {
    *
    * @return The Cloudera Management Services resource.
    */
-  @Enterprise
   @Path("/service")
   public MgmtServiceResource getMgmtServiceResource();
 

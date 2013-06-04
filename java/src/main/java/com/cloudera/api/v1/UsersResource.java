@@ -48,12 +48,10 @@ public interface UsersResource {
    * be their plain text password. The returned user information will not
    * contain any password information.
    * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param users List of users to create.
    * @return Information about created users.
    */
-  @Enterprise
   @POST
   @Path("/")
   public ApiUserList createUsers(ApiUserList users);
@@ -61,12 +59,10 @@ public interface UsersResource {
   /**
    * Deletes a user from the system.
    * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param userName The name of the user to delete.
    * @return The details of the deleted user.
    */
-  @Enterprise
   @DELETE
   @Path("/{userName}")
   @PermitAll

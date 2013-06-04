@@ -135,7 +135,9 @@ public interface ServicesResourceV3 extends ServicesResourceV2 {
 
   /**
    * Create the Hive warehouse directory, on Hive services.
-   *
+   * <p>
+   * Available since API v3.
+   * </p>
    * @param serviceName The Hive service name.
    * @return Information about the submitted command.
    */

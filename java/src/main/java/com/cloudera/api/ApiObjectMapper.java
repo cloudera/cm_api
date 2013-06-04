@@ -18,7 +18,6 @@ package com.cloudera.api;
 
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
@@ -43,10 +42,14 @@ public class ApiObjectMapper extends ObjectMapper {
             new JaxbAnnotationIntrospector()));
 
     // Print all dates in ISO8601 format
+    setDateFormat(makeISODateFormat());
+  }
+
+  public static DateFormat makeISODateFormat() {
     DateFormat iso8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     Calendar cal = Calendar.getInstance(new SimpleTimeZone(0, "GMT"));
     iso8601.setCalendar(cal);
-    setDateFormat(iso8601);
+    return iso8601;
   }
 
 }

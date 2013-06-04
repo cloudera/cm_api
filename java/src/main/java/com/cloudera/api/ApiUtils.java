@@ -15,6 +15,7 @@
 // limitations under the License.
 package com.cloudera.api;
 
+import org.joda.time.Duration;
 import org.joda.time.Instant;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
@@ -24,11 +25,15 @@ import org.joda.time.format.PeriodFormatter;
 
 import java.util.Date;
 
+import com.google.common.base.Preconditions;
+
 /**
  * A collection of utility methods used by API code.
  */
 public final class ApiUtils {
-  private static final DateTimeFormatter DATE_TIME_FORMATTER =
+  private static final DateTimeFormatter DATE_TIME_PRINTER =
+      ISODateTimeFormat.dateTime();
+  private static final DateTimeFormatter DATE_TIME_PARSER =
       ISODateTimeFormat.dateTimeParser();
   private static final PeriodFormatter PERIOD_FORMATTER =
       ISOPeriodFormat.standard();
@@ -37,15 +42,48 @@ public final class ApiUtils {
     if (value.equalsIgnoreCase(Parameters.DATE_TIME_NOW)) {
       return new Instant();
     }
-    return new Instant(DATE_TIME_FORMATTER.parseMillis(value));
+
+    return new Instant(DATE_TIME_PARSER.parseMillis(value));
   }
 
   public static Date newDateFromString(String value) {
     return new Date(newInstantFromString(value).getMillis());
   }
 
+  public static Date newDateFromMillis(long millis) {
+    return new Date(millis);
+  }
+
   public static Period newPeriodFromString(String value) {
     return PERIOD_FORMATTER.parsePeriod(value);
+  }
+
+  public static String printDate(Date date) {
+    return DATE_TIME_PRINTER.print(new Instant(date));
+  }
+
+  /**
+   * Calculate the fromDate.
+   * If the fromString is not provided, then the fromDate calculated
+   * from the toDate and the window.
+   * @param fromString A string representation of the from date.
+   * @param toDate The to date for this period
+   * @param window The duration of this period
+   * @return the Date object that corresponds to the from date
+   */
+  public static Date getFromDate(
+      String fromString, Date toDate, Duration window) {
+    Date fromDate = null;
+    if (fromString != null) {
+      fromDate = newDateFromString(fromString);
+      Preconditions.checkArgument(
+          fromDate.getTime() < toDate.getTime(),
+          "Invalid period specified: 'to' must be later than 'from'.");
+    } else {
+      Instant fromInstant = new Instant(toDate.getTime()).minus(window);
+      fromDate = new Date(fromInstant.getMillis());
+    }
+    return fromDate;
   }
 
   /**
@@ -71,6 +109,20 @@ public final class ApiUtils {
       return (T) other;
     }
     return null;
+  }
+
+  /**
+   * Check that the given values are sane.
+   *
+   * @param offset Value to use as offset of a list.
+   * @param limit Value to use as limit of a list's size.
+   * @throws IllegalArgumentException If values are not ok.
+   */
+  public static void checkOffsetAndLimit(int offset, int limit) {
+    Preconditions.checkArgument(offset >= 0,
+        "Offset should be greater or equal 0.");
+    Preconditions.checkArgument(limit > 0,
+        "Limit should be greater than 0.");
   }
 
   private ApiUtils() { }

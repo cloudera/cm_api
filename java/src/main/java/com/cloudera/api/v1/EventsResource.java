@@ -18,6 +18,7 @@ package com.cloudera.api.v1;
 
 import com.cloudera.api.model.ApiEvent;
 import com.cloudera.api.model.ApiEventQueryResult;
+import static com.cloudera.api.Parameters.QUERY;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -93,7 +94,7 @@ public interface EventsResource {
       @DefaultValue("100") Integer maxResults,
       @QueryParam(value = "resultOffset")
       @DefaultValue("0") Integer resultOffset,
-      @QueryParam(value = "query") String query);
+      @QueryParam(QUERY) String query);
 
   /**
    * Returns a specific event in the system

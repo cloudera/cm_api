@@ -5,11 +5,11 @@
   <groupId>com.cloudera.api</groupId>
   <artifactId>cloudera-manager-api</artifactId>
   <name>Cloudera Manager API</name>
-  <version>4.5.2</version>
+  <version>4.6.0</version>
 
   <properties>
     <cxf.version>2.5.5</cxf.version>
-    <guava.version>12.0.1</guava.version>
+    <guava.version>14.0</guava.version>
     <jackson2.version>2.0.4</jackson2.version>
     <joda.version>2.1</joda.version>
     <junit.version>4.8.2</junit.version>
@@ -143,6 +143,7 @@
           </execution>
         </executions>
         <configuration>
+          <additionalJOption>-Xwerror</additionalJOption>
           <docfilessubdirs>true</docfilessubdirs>
           <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
           <stylesheetfile>${basedir}/src/javadoc/javadoc.css</stylesheetfile>

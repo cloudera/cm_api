@@ -15,14 +15,14 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
+import com.google.common.base.Objects;
+
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.cloudera.api.ApiUtils;
-import com.google.common.base.Objects;
 
 /**
  * Detailed information about an HDFS replication job.
@@ -44,6 +44,8 @@ public class ApiHdfsReplicationResult {
   private long numFilesCopyFailed;
   private long numBytesCopyFailed;
   private String setupError;
+  private String jobId;
+  private String jobDetailsUri;
   private boolean dryRun;
 
   /** The file copy progress percentage. */
@@ -56,7 +58,12 @@ public class ApiHdfsReplicationResult {
     this.progress = progress;
   }
 
-  /** The counters collected from the replication job. */
+  /**
+   * The counters collected from the replication job.
+   * <p/>
+   * Starting with API v4, the full list of counters is only available in the
+   * full view.
+   */
   @XmlElementWrapper
   public List<ApiHdfsReplicationCounter> getCounters() {
     return counters;
@@ -196,6 +203,34 @@ public class ApiHdfsReplicationResult {
 
   public void setSetupError(String setupError) {
     this.setupError = setupError;
+  }
+
+  /**
+   * Read-only. The MapReduce job ID for the replication job.
+   * Available since API v4.
+   * <p/>
+   * This can be used to query information about the replication job from the
+   * MapReduce server where it was executed. Refer to the "/activities"
+   * resource for services for further details.
+   */
+  public String getJobId() {
+    return jobId;
+  }
+
+  public void setJobId(String jobId) {
+    this.jobId = jobId;
+  }
+
+  /**
+   * Read-only. The URI (relative to the CM server's root) where to find the
+   * Activity Monitor page for the job. Available since API v4.
+   */
+  public String getJobDetailsUri() {
+    return jobDetailsUri;
+  }
+
+  public void setJobDetailsUri(String jobDetailsUri) {
+    this.jobDetailsUri = jobDetailsUri;
   }
 
   /** Whether this was a dry run. */

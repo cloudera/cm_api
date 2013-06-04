@@ -33,10 +33,14 @@ import java.util.List;
 
 import static com.cloudera.api.Parameters.ACTIVITY_ID;
 import static com.cloudera.api.Parameters.CLUSTER_NAME;
+import static com.cloudera.api.Parameters.FROM;
 import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
 import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.METRICS;
+import static com.cloudera.api.Parameters.QUERY;
 import static com.cloudera.api.Parameters.SERVICE_NAME;
+import static com.cloudera.api.Parameters.TO;
 
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -99,7 +103,7 @@ public interface ActivitiesResource {
       @PathParam(SERVICE_NAME) String serviceName,
       @QueryParam("maxResults") @DefaultValue("100") Integer maxResults,
       @QueryParam("resultOffset") @DefaultValue("0") Integer resultOffset,
-      @QueryParam("query") @DefaultValue("status==started;parent==") String query,
+      @QueryParam(QUERY) @DefaultValue("status==started;parent==") String query,
       @QueryParam(DATA_VIEW) @DefaultValue(DATA_VIEW_DEFAULT) DataView dataView);
 
   /**
@@ -199,11 +203,11 @@ public interface ActivitiesResource {
       @PathParam(CLUSTER_NAME) String clusterName,
       @PathParam(SERVICE_NAME) String serviceName,
       @PathParam(ACTIVITY_ID) String activityId,
-      @QueryParam("from") String from,
-      @QueryParam("to")
+      @QueryParam(FROM) String from,
+      @QueryParam(TO)
       @DefaultValue(DATE_TIME_NOW)
       String to,
-      @QueryParam("metrics") List<String> metrics,
+      @QueryParam(METRICS) List<String> metrics,
       @QueryParam(DATA_VIEW)
       @DefaultValue(DATA_VIEW_DEFAULT)
       DataView dataView);

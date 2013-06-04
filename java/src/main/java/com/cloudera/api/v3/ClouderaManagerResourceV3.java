@@ -37,12 +37,10 @@ public interface ClouderaManagerResourceV3 extends ClouderaManagerResourceV2 {
   /**
    * Return the Cloudera Management Services resource.
    * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return The Cloudera Management Services resource.
    */
   @Override
-  @Enterprise
   @Path("/service")
   public MgmtServiceResourceV3 getMgmtServiceResource();
 }
