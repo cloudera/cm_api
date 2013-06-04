@@ -42,6 +42,25 @@ Another example: getting all the services in a cluster:
     hue1
     >>> 
 
+Shell
+-----
+After installing the `cm_api` Python package, you can use the API shell `cmps`
+(CM Python Shell):
+
+    $ cmps -H <host> --user admin --password admin
+    Welcome to the Cloudera Manager Console
+    Select a cluster using 'show clusters' and 'use'
+    cloudera> show clusters
+    +------------------+
+    |   CLUSTER NAME   |
+    +------------------+
+    | Cluster 1 - CDH4 |
+    | Cluster 2 - CDH3 |
+    +------------------+
+    cloudera> 
+
+Please see the `SHELL_README.md` file for more.
+
 Example Scripts
 ---------------
 You can find example scripts in the `python/examples` directory.

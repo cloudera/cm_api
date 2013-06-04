@@ -17,17 +17,28 @@
 
 from setuptools import setup, find_packages
 
-from sys import version_info
+from sys import version_info, platform
+
 if version_info[:2] > (2, 5):
     install_requires = []
 else:
     install_requires = ['simplejson >= 2.0.0']
 
+# Python 2.6 and below requires argparse
+if version_info[:2] < (2, 7):
+    install_requires += ['argparse']
+
+# Mac does not come default with readline, this is needed for autocomplete
+# in the cmps shell
+if platform == 'darwin':
+    install_requires += ['readline']
+
 setup(
   name = 'cm_api',
-  version = '1.0.0',    # Compatible with API v1
+  version = '5.0.0',    # Compatible with API v5
   packages = find_packages('src', exclude=['cm_api_tests']),
-  package_dir = {'cm_api': 'src/cm_api'},
+  package_dir = {'cm_api': 'src/cm_api',
+                 'cm_shell': 'src/cm_shell'},
 
   # Project uses simplejson, so ensure that it gets installed or upgraded
   # on the target machine
@@ -37,4 +48,5 @@ setup(
   description = 'Cloudera Manager API client',
   license = 'Apache License 2.0',
   url = 'https://github.com/cloudera/cm_api',
+  entry_points = { 'console_scripts': [ 'cmps = cm_shell.cmps:main', ]}
 )
