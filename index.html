@@ -104,7 +104,7 @@ Cluster 2 - CDH4
 &nbsp;&nbsp;&nbsp; &lt;dependency&gt;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.cloudera.api&lt;/groupId&gt;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;cloudera-manager-api&lt;/artifactId&gt;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;version&gt;4.5.2&lt;/version&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Or the CM version you work with --&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;version&gt;4.6.0&lt;/version&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- Or the CM version you work with --&gt;
 &nbsp;&nbsp;&nbsp; &lt;/dependency&gt;
 &nbsp;&nbsp;&nbsp; …
 &nbsp; &lt;/dependencies&gt;
@@ -113,11 +113,11 @@ Cluster 2 - CDH4
 </code></pre>
 
 <p>A quick example:</p>
-<pre><code>RootResourceV3 apiRoot = new ClouderaManagerClientBuilder()
+<pre><code>RootResourceV4 apiRoot = new ClouderaManagerClientBuilder()
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .withHost("cm.cloudera.com")
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .withUsernamePassword("admin", "admin")
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .build()
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .getRootV3();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .getRootV4();
 ApiClusterList clusters = apiRoot.getClustersResource()
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .readClusters(DataView.SUMMARY);
 </code></pre>
@@ -125,10 +125,11 @@ ApiClusterList clusters = apiRoot.getClustersResource()
 <h1>Resources</h1>
 
 <ul>
-<li><a href="apidocs/v1/index.html">API v1 documentation</a> (supported since CM4.0).</li>
-<li><a href="apidocs/v2/index.html">API v2 documentation</a> (supported since CM4.1).</li>
+<li><a href="javadoc/4.6/index.html">Javadoc for Java client</a> (CM4.6)</li>
+<li><a href="apidocs/v4/index.html">API v4 documentation</a> (supported since CM4.6).</li>
 <li><a href="apidocs/v3/index.html">API v3 documentation</a> (supported since CM4.5).</li>
-<li><a href="javadoc/4.5/index.html">Javadoc for Java client</a> (CM4.5)</li>
+<li><a href="apidocs/v2/index.html">API v2 documentation</a> (supported since CM4.1).</li>
+<li><a href="apidocs/v1/index.html">API v1 documentation</a> (supported since CM4.0).</li>
 </ul>
 
 <h1>License</h1>
