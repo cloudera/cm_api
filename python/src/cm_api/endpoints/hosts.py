@@ -108,6 +108,14 @@ class ApiHost(BaseApiObject):
     resp = self._get_resource_root().post(path, data=data)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
+  def _put(self):
+    """
+    Update this resource.
+    @return: The updated object.
+    """
+    return self._resource_root.put(self._path(),
+                                   data=json.dumps(self.to_json_dict()))
+
   def get_config(self, view=None):
     """
     Retrieve the host's configuration.
@@ -182,3 +190,10 @@ class ApiHost(BaseApiObject):
     if cmd.success:
       self._update(get_host(self._get_resource_root(), self.hostId))
     return cmd
+
+  def set_rack_id(self, rackId):
+    """
+    Update the rack ID of this host.
+    """
+    self.rackId = rackId
+    self._put()
