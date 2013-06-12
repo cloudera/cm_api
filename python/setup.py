@@ -45,8 +45,17 @@ setup(
   install_requires = install_requires,
 
   author = 'Cloudera, Inc.',
+  author_email = 'scm-users@cloudera.org',
   description = 'Cloudera Manager API client',
+  long_desc = 'cm_api is a Python client to the Cloudera Manager REST API',
   license = 'Apache License 2.0',
-  url = 'https://github.com/cloudera/cm_api',
+  url = 'http://cloudera.github.com/cm_api/',
+  classifiers = [
+        "Development Status :: 5 - Production/Stable",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+  ],
   entry_points = { 'console_scripts': [ 'cmps = cm_shell.cmps:main', ]}
 )
