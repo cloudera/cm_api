@@ -1,4 +1,9 @@
+# Python bytecode
 *.pyc
+
+# Eclipse files
+.classpath
+.project
 
 # Emacs backup files
 *~
