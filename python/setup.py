@@ -35,7 +35,7 @@ if platform == 'darwin':
 
 setup(
   name = 'cm_api',
-  version = '5.0.0',    # Compatible with API v5
+  version = '6.0.0',    # Compatible with API v6
   packages = find_packages('src', exclude=['cm_api_tests']),
   package_dir = {'cm_api': 'src/cm_api',
                  'cm_shell': 'src/cm_shell'},
