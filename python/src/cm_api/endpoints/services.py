@@ -486,6 +486,15 @@ class ApiService(BaseApiObject):
     """
     return self._cmd('hbaseCreateRoot')
 
+  def create_hdfs_tmp(self):
+    """
+    Create the /tmp directory in HDFS with appropriate ownership and permissions.
+  
+    @return: Reference to the submitted command
+    @since: API v2
+    """
+    return self._cmd('hdfsCreateTmpDir')
+
   def refresh(self, *role_names):
     """
     Execute the "refresh" command on a set of roles.
