@@ -696,6 +696,47 @@ class ApiImpalaCancelResponse(BaseApiObject):
   def __str__(self):
     return "<ApiImpalaCancelResponse> %s" % self.warning
 
+class ApiMr2AppInformation(BaseApiObject):
+  _ATTRIBUTES = {
+    'jobState'               : ROAttr()
+  }
+
+  def __str__(self):
+    return "<ApiMr2AppInformation>: %s" % (self.jobState)
+
+class ApiYarnApplication(BaseApiObject):
+  _ATTRIBUTES = {
+    'applicationId'          : ROAttr(),
+    'name'                   : ROAttr(),
+    'user'                   : ROAttr(),
+    'startTime'              : ROAttr(datetime.datetime),
+    'endTime'                : ROAttr(datetime.datetime),
+    'queue'                  : ROAttr(),
+    'rmAppState'             : ROAttr(),
+    'finalStatus'            : ROAttr(),
+    'progress'               : ROAttr(),
+    'mr2AppInformation'      : ROAttr(ApiMr2AppInformation),
+    'attributes'             : ROAttr(),
+  }
+
+  def __str__(self):
+    return "<ApiYarnApplication>: %s" % (self.applicationId)
+
+class ApiYarnApplicationResponse(BaseApiObject):
+
+  _ATTRIBUTES = {
+    'applications'   : ROAttr(ApiYarnApplication),
+    'warnings'       : ROAttr()
+  }
+
+class ApiYarnKillResponse(BaseApiObject):
+  _ATTRIBUTES = {
+    'warning' : ROAttr()
+  }
+
+  def __str__(self):
+    return "<ApiYarnKillResponse> %s" % self.warning
+
 def config_to_api_list(dic):
   """
   Converts a python dictionary into a list containing the proper
