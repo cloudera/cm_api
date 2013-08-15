@@ -227,6 +227,38 @@ class ApiService(BaseApiObject):
         self._get_resource_root().get(path, params=dict(format=format)), \
         self._get_resource_root())
 
+  def get_yarn_applications(self, start_time, end_time, filter_str="", limit=100,\
+      offset=0):
+    """
+    Returns a list of YARN applications that satisfy the filter
+
+    @type  start_time: datetime.datetime
+    @param start_time: Applications must have ended after this time
+    @type  end_time: datetime.datetime
+    @param end_time: Applications must have started before this time
+    @param filter: A filter to apply to the applications. For example:
+    'user = root and applicationDuration > 5s'
+    @param limit: The maximum number of results to return
+    @param offset: The offset into the return list
+    """
+    path = self._path() + "/yarnApplications"
+    resp = self._get_resource_root().get(path, \
+        params = {'from':start_time.isoformat(),'to':end_time.isoformat(),\
+            'filter':filter_str, 'limit':limit,'offset':offset})
+    return ApiYarnApplicationResponse.from_json_dict(resp, \
+        self._get_resource_root())
+
+  def kill_yarn_application(self, application_id):
+    """
+    Kills the application.
+
+    @return The warning message, if any.
+    """
+    path = self._path() + "/yarnApplications/%s" % (application_id) + "/kill"
+    return ApiYarnKillResponse.from_json_dict( \
+        self._get_resource_root().post(path), \
+        self._get_resource_root())
+
   def get_config(self, view = None):
     """
     Retrieve the service's configuration.
