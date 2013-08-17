@@ -9,9 +9,9 @@ Cloudera Manager RESTful API Clients
 
 This project contains all the source, examples and documentation 
 you need to easily build a [Cloudera Manager](http://www.cloudera.com/products-services/tools/) client in 
-[Java](cm_api/tree/master/java) or [Python](cm_api/tree/master/python).
+[Java](java) or [Python](python).
 
-All source in this repository is [Apache-Licensed](cm_api/blob/master/LICENSE.txt).
+All source in this repository is [Apache-Licensed](LICENSE.txt).
 
 This client code allows you to interact with Cloudera Manager to:
 * Manage multiple clusters
