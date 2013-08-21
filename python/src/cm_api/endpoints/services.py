@@ -973,6 +973,16 @@ class ApiService(BaseApiObject):
         % (self._path(), schedule_id), params=dict(dryRun=dry_run))
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 
+  def install_oozie_sharelib(self):
+    """
+    Installs the Oozie ShareLib. Oozie must be stopped before running this
+    command.
+
+    @return: Reference to the submitted command.
+    @since: API v3
+    """
+    return self._cmd('installOozieShareLib')
+
   def create_hive_metastore_tables(self):
     """
     Creates the Hive metastore tables in the configured database, if it
