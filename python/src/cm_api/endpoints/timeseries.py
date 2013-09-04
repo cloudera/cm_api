@@ -15,11 +15,6 @@
 # limitations under the License.
 
 import datetime
-try:
-  import json
-except ImportError:
-  import simplejson as json
-import logging
 
 from cm_api.endpoints.types import *
 
@@ -27,8 +22,6 @@ __docformat__ = "epytext"
 
 TIME_SERIES_PATH   = "/timeseries"
 METRIC_SCHEMA_PATH = "/timeseries/schema"
-
-LOG = logging.getLogger(__name__)
 
 def query_timeseries(resource_root, query, from_time=None, to_time=None):
   """
@@ -51,17 +44,16 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None):
     if isinstance(to_time, datetime.datetime):
       to_time = to_time.isoformat()
     params['to'] = to_time
-  
-  resp = resource_root.get(TIME_SERIES_PATH, params=params)
-  return ApiList.from_json_dict(ApiTimeSeriesResponse, resp, resource_root)
+  return call(resource_root.get, TIME_SERIES_PATH,
+      ApiTimeSeriesResponse, True, params=params)
 
 def get_metric_schema(resource_root):
   """
   Get the schema for all of the metrics.
   @return List of metric schema.
   """
-  resp = resource_root.get(METRIC_SCHEMA_PATH)
-  return ApiList.from_json_dict(ApiMetricSchema, resp, resource_root)
+  return call(resource_root.get, METRIC_SCHEMA_PATH,
+      ApiMetricSchema, True)
 
 
 class ApiTimeSeriesData(BaseApiObject):

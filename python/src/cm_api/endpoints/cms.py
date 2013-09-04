@@ -14,11 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-  import json
-except ImportError:
-  import simplejson as json
-
 from cm_api.endpoints.types import *
 from cm_api.endpoints.services import ApiService
 
@@ -33,7 +28,7 @@ class ApiLicense(BaseApiObject):
   def __init__(self, resource_root):
     BaseApiObject.init(self, resource_root)
 
-class ClouderaManager(BaseApiObject):
+class ClouderaManager(BaseApiResource):
   """
   The Cloudera Manager instance.
 
@@ -43,16 +38,8 @@ class ClouderaManager(BaseApiObject):
   def __init__(self, resource_root):
     BaseApiObject.init(self, resource_root)
 
-  def _cmd(self, command, data = None):
-    """
-    Invokes a global command.
-
-    @param command: Command name.
-    @param data: Optional data to send to the command.
-    @return Information about the submitted command.
-    """
-    resp = self._get_resource_root().post("/cm/commands/" + command, data=data)
-    return ApiCommand.from_json_dict(resp, self._get_resource_root())
+  def _path(self):
+    return '/cm'
 
   def get_commands(self, view=None):
     """
@@ -61,10 +48,8 @@ class ClouderaManager(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return: A list of running commands.
     """
-    resp = self._get_resource_root().get(
-        "/cm/commands",
+    return self._get("commands", ApiCommand, True,
         params = view and dict(view=view) or None)
-    return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
 
   def create_mgmt_service(self, service_setup_info):
     """
@@ -73,9 +58,7 @@ class ClouderaManager(BaseApiObject):
     @param service_setup_info: ApiServiceSetupInfo object.
     @return: The management service instance.
     """
-    body = json.dumps(service_setup_info.to_json_dict())
-    resp = self._get_resource_root().put('/cm/service', data=body)
-    return ApiService.from_json_dict(resp, self._get_resource_root())
+    return self._put("service", ApiService, data=service_setup_info)
 
   def get_service(self):
     """
@@ -83,8 +66,7 @@ class ClouderaManager(BaseApiObject):
 
     @return: An ApiService instance.
     """
-    resp = self._get_resource_root().get('/cm/service')
-    return ApiService.from_json_dict(resp, self._get_resource_root())
+    return self._get("service", ApiService)
 
   def get_license(self):
     """
@@ -92,8 +74,7 @@ class ClouderaManager(BaseApiObject):
 
     @return: License information.
     """
-    resp = self._get_resource_root().get('/cm/license')
-    return ApiLicense.from_json_dict(resp, self._get_resource_root())
+    return self._get("license", ApiLicense)
 
   def update_license(self, license_text):
     """
@@ -123,9 +104,7 @@ class ClouderaManager(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return: Dictionary with configuration data.
     """
-    resp = self._get_resource_root().get('/cm/config',
-        params = view and dict(view=view) or None)
-    return json_to_config(resp, view == 'full')
+    return self._get_config("config", view)
 
   def update_config(self, config):
     """
@@ -134,9 +113,7 @@ class ClouderaManager(BaseApiObject):
     @param: config Dictionary with configuration to update.
     @return: Dictionary with updated configuration.
     """
-    resp = self._get_resource_root().put('/cm/config',
-        data = config_to_json(config))
-    return json_to_config(resp, False)
+    return self._update_config("config", config)
 
   def generate_credentials(self):
     """
@@ -169,7 +146,7 @@ class ClouderaManager(BaseApiObject):
         'endTime': end_datetime.isoformat(),
         'includeInfoLog': includeInfoLog,
     }
-    return self._cmd('collectDiagnosticData', data=json.dumps(args))
+    return self._cmd('collectDiagnosticData', data=args)
 
   def collect_diagnostic_data_45(self, end_datetime, bundle_size_bytes, cluster_name=None):
     """
@@ -184,7 +161,7 @@ class ClouderaManager(BaseApiObject):
         'bundleSizeBytes': bundle_size_bytes,
         'clusterName': cluster_name
     }
-    return self._cmd('collectDiagnosticData', data=json.dumps(args))
+    return self._cmd('collectDiagnosticData', data=args)
 
   def hosts_decommission(self, host_names):
     """
@@ -195,7 +172,7 @@ class ClouderaManager(BaseApiObject):
     @return: Information about the submitted command.
     @since: API v2
     """
-    return self._cmd('hostsDecommission', data=json.dumps({ApiList.LIST_KEY : host_names}))
+    return self._cmd('hostsDecommission', data=[ host_names ])
 
   def hosts_recommission(self, host_names):
     """
@@ -206,7 +183,7 @@ class ClouderaManager(BaseApiObject):
     @return: Information about the submitted command.
     @since: API v2
     """
-    return self._cmd('hostsRecommission', data=json.dumps({ApiList.LIST_KEY : host_names}))
+    return self._cmd('hostsRecommission', data=[ host_names ])
 
   def hosts_start_roles(self, host_names):
     """
@@ -216,7 +193,7 @@ class ClouderaManager(BaseApiObject):
     @return: Information about the submitted command.
     @since: API v2
     """
-    return self._cmd('hostsStartRoles', data=json.dumps({ApiList.LIST_KEY : host_names}))
+    return self._cmd('hostsStartRoles', data=[ host_names ])
 
   def create_peer(self, name, url, username, password):
     """
@@ -229,15 +206,12 @@ class ClouderaManager(BaseApiObject):
     @return: The newly created peer.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    body = json.dumps(
-        ApiCmPeer(self._get_resource_root(),
-                  name=name,
-                  url=url,
-                  username=username,
-                  password=password).to_json_dict())
-    resp = self._get_resource_root().post('/cm/peers', data=body)
-    return ApiCmPeer.from_json_dict(resp, self._get_resource_root())
+    peer = ApiCmPeer(self._get_resource_root(),
+        name=name,
+        url=url,
+        username=username,
+        password=password)
+    return self._post("peers", ApiCmPeer, data=peer, api_version=3)
 
   def delete_peer(self, name):
     """
@@ -247,10 +221,7 @@ class ClouderaManager(BaseApiObject):
     @return: The deleted peer.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    resp = self._get_resource_root()\
-        .delete("/cm/peers/%s" % ( name, ))
-    return ApiCmPeer.from_json_dict(resp, self._get_resource_root())
+    return self._delete("peers/" + name, ApiCmPeer, api_version=3)
 
   def update_peer(self,
       current_name,
@@ -266,15 +237,12 @@ class ClouderaManager(BaseApiObject):
     @return: The updated peer.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    body = json.dumps(
-        ApiCmPeer(self._get_resource_root(),
-                  name=new_name,
-                  url=new_url,
-                  username=username,
-                  password=password).to_json_dict())
-    resp = self._get_resource_root().put('/cm/peers/%s' % (current_name, ), data=body)
-    return ApiCmPeer.from_json_dict(resp, self._get_resource_root())
+    peer = ApiCmPeer(self._get_resource_root(),
+        name=new_name,
+        url=new_url,
+        username=username,
+        password=password)
+    return self._put("peers/" + current_name, data=peer, api_version=3)
 
   def get_peers(self):
     """
@@ -283,9 +251,7 @@ class ClouderaManager(BaseApiObject):
     @return: A list of replication peers.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    resp = self._get_resource_root().get("/cm/peers")
-    return ApiList.from_json_dict(ApiCmPeer, resp, self._get_resource_root())
+    return self._get("peers", ApiCmPeer, True, api_version=3)
 
   def get_peer(self, name):
     """
@@ -295,9 +261,7 @@ class ClouderaManager(BaseApiObject):
     @return: The peer.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    resp = self._get_resource_root().get("/cm/peers/%s" % (name, ))
-    return ApiCmPeer.from_json_dict(resp, self._get_resource_root())
+    return self._get("peers/" + name, ApiCmPeer, api_version=3)
 
   def test_peer_connectivity(self, name):
     """
@@ -307,9 +271,8 @@ class ClouderaManager(BaseApiObject):
     @return: The command representing the test.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    resp = self._get_resource_root().post('/cm/peers/%s/commands/test' % (name, ))
-    return ApiCommand.from_json_dict(resp, self._get_resource_root())
+    return self._post("peers/%s/commands/test" % (name, ), ApiCommand,
+        api_version=3)
 
   def get_all_hosts_config(self, view=None):
     """
@@ -319,9 +282,7 @@ class ClouderaManager(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return: Dictionary with configuration data.
     """
-    params = view and dict(view=view) or None
-    resp = self._get_resource_root().get('/cm/allHosts/config', params=params)
-    return json_to_config(resp, view == 'full')
+    return self._get_config("allHosts/config", view)
 
   def update_all_hosts_config(self, config):
     """
@@ -330,6 +291,4 @@ class ClouderaManager(BaseApiObject):
     @param: config Dictionary with configuration to update.
     @return: Dictionary with updated configuration.
     """
-    resp = self._get_resource_root().put('/cm/allHosts/config',
-        data=config_to_json(config))
-    return json_to_config(resp, False)
+    return self._update_config("allHosts/config", config)

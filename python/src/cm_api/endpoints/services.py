@@ -18,7 +18,6 @@ try:
   import json
 except ImportError:
   import simplejson as json
-import logging
 
 from cm_api.endpoints.types import *
 from cm_api.endpoints import roles, role_config_groups
@@ -28,9 +27,6 @@ __docformat__ = "epytext"
 SERVICES_PATH = "/clusters/%s/services"
 SERVICE_PATH = "/clusters/%s/services/%s"
 ROLETYPES_CFG_KEY = 'roleTypeConfigs'
-
-LOG = logging.getLogger(__name__)
-
 
 def create_service(resource_root, name, service_type,
                    cluster_name="default"):
@@ -43,11 +39,9 @@ def create_service(resource_root, name, service_type,
   @return: An ApiService object
   """
   apiservice = ApiService(resource_root, name, service_type)
-  apiservice_list = ApiList([apiservice])
-  body = json.dumps(apiservice_list.to_json_dict())
-  resp = resource_root.post(SERVICES_PATH % (cluster_name,), data=body)
-  # The server returns a list of created services (with size 1)
-  return ApiList.from_json_dict(ApiService, resp, resource_root)[0]
+  return call(resource_root.post,
+      SERVICES_PATH % (cluster_name,),
+      ApiService, True, data=[apiservice])[0]
 
 def get_service(resource_root, name, cluster_name="default"):
   """
@@ -60,8 +54,7 @@ def get_service(resource_root, name, cluster_name="default"):
   return _get_service(resource_root, "%s/%s" % (SERVICES_PATH % (cluster_name,), name))
 
 def _get_service(resource_root, path):
-  dic = resource_root.get(path)
-  return ApiService.from_json_dict(dic, resource_root)
+  return call(resource_root.get, path, ApiService)
 
 def get_all_services(resource_root, cluster_name="default", view=None):
   """
@@ -70,9 +63,9 @@ def get_all_services(resource_root, cluster_name="default", view=None):
   @param cluster_name: Cluster name
   @return: A list of ApiService objects.
   """
-  dic = resource_root.get(SERVICES_PATH % (cluster_name,),
-          params=view and dict(view=view) or None)
-  return ApiList.from_json_dict(ApiService, dic, resource_root)
+  return call(resource_root.get,
+      SERVICES_PATH % (cluster_name,),
+      ApiService, True, params=view and dict(view=view) or None)
 
 def delete_service(resource_root, name, cluster_name="default"):
   """
@@ -82,11 +75,12 @@ def delete_service(resource_root, name, cluster_name="default"):
   @param cluster_name: Cluster name
   @return: The deleted ApiService object
   """
-  resp = resource_root.delete("%s/%s" % (SERVICES_PATH % (cluster_name,), name))
-  return ApiService.from_json_dict(resp, resource_root)
+  return call(resource_root.delete,
+      "%s/%s" % (SERVICES_PATH % (cluster_name,), name),
+      ApiService)
 
 
-class ApiService(BaseApiObject):
+class ApiService(BaseApiResource):
   _ATTRIBUTES = {
     'name'              : None,
     'type'              : None,
@@ -125,16 +119,9 @@ class ApiService(BaseApiObject):
     else:
       return '/cm/service'
 
-  def _cmd(self, cmd, data=None, params=None):
-    path = self._path() + '/commands/' + cmd
-    resp = self._get_resource_root().post(path, data=data, params=params)
-    return ApiCommand.from_json_dict(resp, self._get_resource_root())
-
-  def _role_cmd(self, cmd, roles):
-    path = self._path() + '/roleCommands/' + cmd
-    data = json.dumps({ ApiList.LIST_KEY : roles })
-    resp = self._get_resource_root().post(path, data = data)
-    return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
+  def _role_cmd(self, cmd, roles, api_version=1):
+    return self._post("roleCommands/" + cmd, ApiCommand, True,
+        data=roles, api_version=api_version)
 
   def _parse_svc_config(self, json_dic, view = None):
     """
@@ -160,30 +147,20 @@ class ApiService(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return: A list of running commands.
     """
-    resp = self._get_resource_root().get(
-        self._path() + '/commands',
+    return self._get("commands", ApiCommand, True,
         params = view and dict(view=view) or None)
-    return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
 
   def get_running_activities(self):
-    path = self._path() + "/activities"
-    resp = self._get_resource_root().get(path)
-    return ApiList.from_json_dict(ApiActivity, resp, self._get_resource_root())
+    return self.query_activities()
 
   def query_activities(self, query_str=None):
-    path = self._path() + "/activities"
-    params = { }
-    if query_str:
-      params['query'] = query_str
-    resp = self._get_resource_root().get(path, params=params)
-    return ApiList.from_json_dict(ApiActivity, resp, self._get_resource_root())
+    return self._get("activities", ApiActivity, True,
+        params=query_str and dict(query=query_str) or dict())
 
   def get_activity(self, job_id):
-    path = self._path() + "/activities/%s" % (job_id,)
-    resp = self._get_resource_root().get(path)
-    return ApiActivity.from_json_dict(resp, self._get_resource_root())
+    return self._get("activities/" + job_id, ApiActivity)
 
-  def get_impala_queries(self, start_time, end_time, filter_str="", limit=100,\
+  def get_impala_queries(self, start_time, end_time, filter_str="", limit=100,
      offset=0):
     """
     Returns a list of queries that satisfy the filter
@@ -196,24 +173,27 @@ class ApiService(BaseApiObject):
     'user = root and queryDuration > 5s'
     @param limit: The maximum number of results to return
     @param offset: The offset into the return list
+    @since: API v4
     """
-    path = self._path() + "/impalaQueries"
-    resp = self._get_resource_root().get(path, \
-        params = {'from':start_time.isoformat(),'to':end_time.isoformat(),\
-            'filter':filter_str, 'limit':limit,'offset':offset})
-    return ApiImpalaQueryResponse.from_json_dict(resp, \
-        self._get_resource_root())
+    params = {
+      'from':   start_time.isoformat(),
+      'to':     end_time.isoformat(),
+      'filter': filter_str,
+      'limit':  limit,
+      'offset': offset,
+    }
+    return self._get("impalaQueries", ApiImpalaQueryResponse,
+        params=params, api_version=4)
 
   def cancel_impala_query(self, query_id):
     """
     Cancel the query.
 
     @return The warning message, if any.
+    @since: API v4
     """
-    path = self._path() + "/impalaQueries/%s" % (query_id) + "/cancel"
-    return ApiImpalaCancelResponse.from_json_dict( \
-        self._get_resource_root().post(path), \
-        self._get_resource_root())
+    return self._post("impalaQueries/%s/cancel" % query_id,
+        ApiImpalaCancelResponse, api_version=4)
 
   def get_query_details(self, query_id, format='text'):
     """
@@ -221,13 +201,12 @@ class ApiService(BaseApiObject):
 
     @param profile_format: The format of the response ('text' or 'thrift_encoded')
     @return The details text
+    @since: API v4
     """
-    path = self._path() + "/impalaQueries/%s" % (query_id) 
-    return ApiImpalaQueryDetailsResponse.from_json_dict( \
-        self._get_resource_root().get(path, params=dict(format=format)), \
-        self._get_resource_root())
+    return self._get("impalaQueries/" + query_id, ApiImpalaQueryDetailsResponse,
+        params=dict(format=format), api_version=4)
 
-  def get_yarn_applications(self, start_time, end_time, filter_str="", limit=100,\
+  def get_yarn_applications(self, start_time, end_time, filter_str="", limit=100,
       offset=0):
     """
     Returns a list of YARN applications that satisfy the filter
@@ -240,24 +219,27 @@ class ApiService(BaseApiObject):
     'user = root and applicationDuration > 5s'
     @param limit: The maximum number of results to return
     @param offset: The offset into the return list
+    @since: API v6
     """
-    path = self._path() + "/yarnApplications"
-    resp = self._get_resource_root().get(path, \
-        params = {'from':start_time.isoformat(),'to':end_time.isoformat(),\
-            'filter':filter_str, 'limit':limit,'offset':offset})
-    return ApiYarnApplicationResponse.from_json_dict(resp, \
-        self._get_resource_root())
+    params = {
+      'from':   start_time.isoformat(),
+      'to':     end_time.isoformat(),
+      'filter': filter_str,
+      'limit':  limit,
+      'offset': offset
+    }
+    return self._get("yarnApplications", ApiYarnApplicationResponse,
+        params=params, api_version=6)
 
   def kill_yarn_application(self, application_id):
     """
     Kills the application.
 
     @return The warning message, if any.
+    @since: API v6
     """
-    path = self._path() + "/yarnApplications/%s" % (application_id) + "/kill"
-    return ApiYarnKillResponse.from_json_dict( \
-        self._get_resource_root().post(path), \
-        self._get_resource_root())
+    return self._post("yarnApplications/%s/kill" % (application_id, ),
+        ApiYarnKillResponse, api_version=6)
 
   def get_config(self, view = None):
     """
@@ -543,8 +525,7 @@ class ApiService(BaseApiObject):
     @param role_names Names of the roles to decommission.
     @return Reference to the submitted command.
     """
-    data = json.dumps({ ApiList.LIST_KEY : role_names })
-    return self._cmd('decommission', data)
+    return self._cmd('decommission', data=role_names)
 
   def recommission(self, *role_names):
     """
@@ -554,8 +535,7 @@ class ApiService(BaseApiObject):
     @return Reference to the submitted command.
     @since: API v2
     """
-    data = json.dumps({ ApiList.LIST_KEY : role_names })
-    return self._cmd('recommission', data)
+    return self._cmd('recommission', data=role_names)
 
   def deploy_client_config(self, *role_names):
     """
@@ -564,8 +544,7 @@ class ApiService(BaseApiObject):
     @param: role_names Names of the roles to decommission.
     @return: Reference to the submitted command.
     """
-    data = json.dumps({ ApiList.LIST_KEY : role_names })
-    return self._cmd('deployClientConfig', data)
+    return self._cmd('deployClientConfig', data=role_names)
 
   def disable_hdfs_auto_failover(self, nameservice):
     """
@@ -574,7 +553,7 @@ class ApiService(BaseApiObject):
     @param nameservice: Affected nameservice.
     @return: Reference to the submitted command.
     """
-    return self._cmd('hdfsDisableAutoFailover', data = json.dumps(nameservice))
+    return self._cmd('hdfsDisableAutoFailover', data=nameservice)
 
   def disable_hdfs_ha(self, active_name, secondary_name,
       start_dependent_services=True, deploy_client_configs=True,
@@ -607,7 +586,7 @@ class ApiService(BaseApiObject):
     else:
       args['disableQuorumStorage'] = disable_quorum_storage
 
-    return self._cmd('hdfsDisableHa', data = json.dumps(args))
+    return self._cmd('hdfsDisableHa', data=args)
 
   def enable_hdfs_auto_failover(self, nameservice, active_fc_name,
       standby_fc_name, zk_service):
@@ -629,7 +608,7 @@ class ApiService(BaseApiObject):
         serviceName = zk_service.name,
         ),
       )
-    return self._cmd('hdfsEnableAutoFailover', data = json.dumps(args))
+    return self._cmd('hdfsEnableAutoFailover', data=args)
 
   def enable_hdfs_ha(self, active_name, active_shared_path, standby_name,
       standby_shared_path, nameservice, start_dependent_services=True,
@@ -672,7 +651,7 @@ class ApiService(BaseApiObject):
       args['activeSharedEditsPath'] = active_shared_path
       args['standBySharedEditsPath'] = standby_shared_path
 
-    return self._cmd('hdfsEnableHa', data = json.dumps(args))
+    return self._cmd('hdfsEnableHa', data=args)
 
   def enable_jt_ha(self, new_jt_host_id, force_init_znode=True, zk_service_name=None):
     """
@@ -695,7 +674,7 @@ class ApiService(BaseApiObject):
       forceInitZNode = force_init_znode,
       zkServiceName = zk_service_name,
     )
-    return self._cmd('enableJtHa', data = json.dumps(args))
+    return self._cmd('enableJtHa', data=args)
 
   def disable_jt_ha(self, active_name):
     """
@@ -709,7 +688,7 @@ class ApiService(BaseApiObject):
     args = dict(
       activeName = active_name,
     )
-    return self._cmd('disableJtHa', data = json.dumps(args))
+    return self._cmd('disableJtHa', data=args)
 
   def failover_hdfs(self, active_name, standby_name, force=False):
     """
@@ -724,7 +703,8 @@ class ApiService(BaseApiObject):
     """
     params = { "force" : "true" and force or "false" }
     args = { ApiList.LIST_KEY : [ active_name, standby_name ] }
-    return self._cmd('hdfsFailover', data = json.dumps(args))
+    return self._cmd('hdfsFailover', data=[ active_name, standby_name ],
+        params = { "force" : "true" and force or "false" })
 
   def format_hdfs(self, *namenodes):
     """
@@ -768,7 +748,7 @@ class ApiService(BaseApiObject):
     if nameservice:
       args['nameservice'] = nameservice
 
-    return self._cmd('hdfsRollEdits', data = json.dumps(args))
+    return self._cmd('hdfsRollEdits', data=args)
 
   def cleanup_zookeeper(self, *servers):
     """
@@ -881,11 +861,11 @@ class ApiService(BaseApiObject):
     if restart_role_names:
       args['restartRoleNames'] = restart_role_names
 
-    return self._cmd('rollingRestart', data = json.dumps(args))
+    return self._cmd('rollingRestart', data=args)
 
   def create_replication_schedule(self,
       start_time, end_time, interval_unit, interval, paused, arguments,
-      alert_on_start=False, alert_on_success=False, alert_on_fail=False,\
+      alert_on_start=False, alert_on_success=False, alert_on_fail=False,
       alert_on_abort=False):
     """
     Create a new replication schedule for this service.
@@ -914,8 +894,6 @@ class ApiService(BaseApiObject):
     @return: The newly created schedule.
     @since: API v3
     """
-    self._require_min_api_version(3)
-
     schedule = ApiReplicationSchedule(self._get_resource_root(),
       startTime=start_time, endTime=end_time, intervalUnit=interval_unit, interval=interval,
       paused=paused, alertOnStart=alert_on_start, alertOnSuccess=alert_on_success,
@@ -932,11 +910,8 @@ class ApiService(BaseApiObject):
     else:
       raise TypeError, 'Replication is not supported for service type ' + self.type
 
-    data = json.dumps(ApiList([schedule]).to_json_dict())
-    resp = self._get_resource_root().post("%s/replications" % self._path(), data=data)
-    data = resp[ApiList.LIST_KEY][0]
-
-    return ApiReplicationSchedule.from_json_dict(data, self._get_resource_root())
+    return self._post("replications", ApiReplicationSchedule, True, [schedule],
+        api_version=3)[0]
 
   def get_replication_schedules(self):
     """
@@ -945,9 +920,8 @@ class ApiService(BaseApiObject):
     @return: A list of replication schedules.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    resp = self._get_resource_root().get("%s/replications" % self._path())
-    return ApiList.from_json_dict(ApiReplicationSchedule, resp, self._get_resource_root())
+    return self._get("replications", ApiReplicationSchedule, True,
+        api_version=3)
 
   def get_replication_schedule(self, schedule_id):
     """
@@ -957,10 +931,8 @@ class ApiService(BaseApiObject):
     @return: The requested schedule.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    resp = self._get_resource_root().get("%s/replications/%d" %
-        (self._path(), schedule_id))
-    return ApiReplicationSchedule.from_json_dict(resp, self._get_resource_root())
+    return self._get("replications/%d" % schedule_id, ApiReplicationSchedule,
+        api_version=3)
 
   def delete_replication_schedule(self, schedule_id):
     """
@@ -970,10 +942,8 @@ class ApiService(BaseApiObject):
     @return: The deleted replication schedule.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    resp = self._get_resource_root().delete("%s/replications/%s"
-        % (self._path(), schedule_id))
-    return ApiReplicationSchedule.from_json_dict(resp, self._get_resource_root())
+    return self._delete("replications/%s" % schedule_id, ApiReplicationSchedule,
+        api_version=3)
 
   def update_replication_schedule(self, schedule_id, schedule):
     """
@@ -984,11 +954,8 @@ class ApiService(BaseApiObject):
     @return: The updated replication schedule.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    data = json.dumps(schedule.to_json_dict())
-    resp = self._get_resource_root().put("%s/replications/%s"
-        % (self._path(), schedule_id), data=data)
-    return ApiReplicationSchedule.from_json_dict(resp, self._get_resource_root())
+    return self._put("replications/%s" % schedule_id, ApiReplicationSchedule,
+        data=schedule, api_version=3)
 
   def trigger_replication_schedule(self, schedule_id, dry_run=False):
     """
@@ -1000,10 +967,9 @@ class ApiService(BaseApiObject):
     @return: The command corresponding to the replication job.
     @since: API v3
     """
-    self._require_min_api_version(3)
-    resp = self._get_resource_root().post("%s/replications/%s/run"
-        % (self._path(), schedule_id), params=dict(dryRun=dry_run))
-    return ApiCommand.from_json_dict(resp, self._get_resource_root())
+    return self._post("replications/%s/run" % schedule_id, ApiCommand,
+        params=dict(dryRun=dry_run),
+        api_version=3)
 
   def install_oozie_sharelib(self):
     """
@@ -1043,8 +1009,7 @@ class ApiService(BaseApiObject):
     @return: Reference to the submitted command.
     @since: API v4
     """
-    self._require_min_api_version(4)
-    return self._cmd('hiveCreateMetastoreDatabase')
+    return self._cmd('hiveCreateMetastoreDatabase', api_version=4)
 
   def update_hive_metastore_namenodes(self):
     """
@@ -1057,8 +1022,7 @@ class ApiService(BaseApiObject):
     @return: Reference to the submitted command.
     @since: API v4
     """
-    self._require_min_api_version(4)
-    return self._cmd('hiveUpdateMetastoreNamenodes')
+    return self._cmd('hiveUpdateMetastoreNamenodes', api_version=4)
 
 class ApiServiceSetupInfo(ApiService):
   _ATTRIBUTES = {

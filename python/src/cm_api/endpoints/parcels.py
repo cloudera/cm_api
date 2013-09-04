@@ -32,8 +32,7 @@ def get_parcel(resource_root, product, version, cluster_name="default"):
   return _get_parcel(resource_root, PARCEL_PATH % (cluster_name, product, version))
 
 def _get_parcel(resource_root, path):
-  dic = resource_root.get(path)
-  return ApiParcel.from_json_dict(dic, resource_root)
+  return call(resource_root.get, path, ApiParcel, api_version=3)
 
 def get_all_parcels(resource_root, cluster_name="default", view=None):
   """
@@ -41,10 +40,10 @@ def get_all_parcels(resource_root, cluster_name="default", view=None):
   @param resource_root: The root Resource object.
   @param cluster_name: Cluster name
   @return: A list of ApiParcel objects.
+  @since: API v3
   """
-  dic = resource_root.get(PARCELS_PATH % (cluster_name,),
-          params=view and dict(view=view) or None)
-  return ApiList.from_json_dict(ApiParcel, dic, resource_root)
+  return call(resource_root.get, PARCELS_PATH % (cluster_name,),
+      ApiParcel, True, params=view and dict(view=view) or None, api_version=3)
 
 class ApiParcelState(BaseApiObject):
   """
@@ -66,9 +65,11 @@ class ApiParcelState(BaseApiObject):
     return "<ApiParcelState>: (progress: %s) (totalProgress: %s) (count: %s) (totalCount: %s)" % (
         self.progress, self.totalProgress, self.count, self.totalCount)
 
-class ApiParcel(BaseApiObject):
+class ApiParcel(BaseApiResource):
   """
   An object that represents a parcel and allows administrative operations.
+
+  @since: API v3
   """
   _ATTRIBUTES = {
     'product'     : ROAttr(),
@@ -85,6 +86,9 @@ class ApiParcel(BaseApiObject):
     return "<ApiParcel>: %s-%s (stage: %s) (state: %s) (cluster: %s)" % (
         self.product, self.version, self.stage, self.state, self._get_cluster_name())
 
+  def _api_version(self):
+    return 3
+
   def _path(self):
     """
     Return the API path for this service.
@@ -95,14 +99,6 @@ class ApiParcel(BaseApiObject):
     if self.clusterRef:
       return self.clusterRef.clusterName
     return None
-
-  def _cmd(self, cmd, data=None, params=None):
-    path = self._path() + '/commands/' + cmd
-    resp = self._get_resource_root().post(path, data=data, params=params)
-    cmd = ApiCommand.from_json_dict(resp, self._get_resource_root())
-    if cmd.success:
-      self._update(_get_parcel(self._get_resource_root(), self._path()))
-    return cmd
 
   def start_download(self):
     """

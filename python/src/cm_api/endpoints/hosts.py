@@ -15,10 +15,6 @@
 # limitations under the License.
 
 import datetime
-try:
-  import json
-except ImportError:
-  import simplejson as json
 
 from cm_api.endpoints.types import *
 
@@ -37,11 +33,7 @@ def create_host(resource_root, host_id, name, ipaddr, rack_id=None):
   @return: An ApiHost object
   """
   apihost = ApiHost(resource_root, host_id, name, ipaddr, rack_id)
-  apihost_list = ApiList([apihost])
-  body = json.dumps(apihost_list.to_json_dict())
-  resp = resource_root.post(HOSTS_PATH, data=body)
-  # The server returns a list of created hosts (with size 1)
-  return ApiList.from_json_dict(ApiHost, resp, resource_root)[0]
+  return call(resource_root.post, HOSTS_PATH, ApiHost, True, data=[apihost])[0]
 
 def get_host(resource_root, host_id):
   """
@@ -50,8 +42,7 @@ def get_host(resource_root, host_id):
   @param host_id: Host id
   @return: An ApiHost object
   """
-  dic = resource_root.get("%s/%s" % (HOSTS_PATH, host_id))
-  return ApiHost.from_json_dict(dic, resource_root)
+  return call(resource_root.get, "%s/%s" % (HOSTS_PATH, host_id), ApiHost)
 
 def get_all_hosts(resource_root, view=None):
   """
@@ -59,9 +50,8 @@ def get_all_hosts(resource_root, view=None):
   @param resource_root: The root Resource object.
   @return: A list of ApiHost objects.
   """
-  dic = resource_root.get(HOSTS_PATH,
+  return call(resource_root.get, HOSTS_PATH, ApiHost, True,
           params=view and dict(view=view) or None)
-  return ApiList.from_json_dict(ApiHost, dic, resource_root)
 
 def delete_host(resource_root, host_id):
   """
@@ -70,11 +60,10 @@ def delete_host(resource_root, host_id):
   @param host_id: Host id
   @return: The deleted ApiHost object
   """
-  resp = resource_root.delete("%s/%s" % (HOSTS_PATH, host_id))
-  return ApiHost.from_json_dict(resp, resource_root)
+  return call(resource_root.delete, "%s/%s" % (HOSTS_PATH, host_id), ApiHost)
 
 
-class ApiHost(BaseApiObject):
+class ApiHost(BaseApiResource):
   _ATTRIBUTES = {
     'hostId'            : None,
     'hostname'          : None,
@@ -103,18 +92,12 @@ class ApiHost(BaseApiObject):
   def _path(self):
     return HOSTS_PATH + '/' + self.hostId
 
-  def _cmd(self, cmd, data=None):
-    path = self._path() + '/commands/' + cmd
-    resp = self._get_resource_root().post(path, data=data)
-    return ApiCommand.from_json_dict(resp, self._get_resource_root())
-
   def _put(self):
     """
     Update this resource.
     @return: The updated object.
     """
-    return self._resource_root.put(self._path(),
-                                   data=json.dumps(self.to_json_dict()))
+    return self._put('', ApiHost, data=self)
 
   def get_config(self, view=None):
     """
@@ -126,10 +109,7 @@ class ApiHost(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return Dictionary with configuration data.
     """
-    path = self._path() + '/config'
-    resp = self._get_resource_root().get(path,
-        params = view and dict(view=view) or None)
-    return json_to_config(resp, view == 'full')
+    return self._get_config("config", view)
 
   def update_config(self, config):
     """
@@ -138,9 +118,7 @@ class ApiHost(BaseApiObject):
     @param config Dictionary with configuration to update.
     @return Dictionary with updated configuration.
     """
-    path = self._path() + '/config'
-    resp = self._get_resource_root().put(path, data = config_to_json(config))
-    return json_to_config(resp)
+    return self._update_config("config", config)
 
   def get_metrics(self, from_time=None, to_time=None, metrics=None,
       ifs=[], storageIds=[], view=None):

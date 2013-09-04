@@ -249,6 +249,7 @@ class TestReplicationRequests(unittest.TestCase):
 
     self.resource.expect("PUT",
         "/clusters/cluster1/services/hdfs1/replications/1",
+        data=return_sched,
         retdata=return_sched.to_json_dict())
     service.update_replication_schedule(1, return_sched)
 
