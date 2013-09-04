@@ -14,11 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-  import json
-except ImportError:
-  import simplejson as json
-
 from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
@@ -53,12 +48,9 @@ def create_role(resource_root,
   """
   apirole = ApiRole(resource_root, role_name, role_type,
                     ApiHostRef(resource_root, host_id))
-  apirole_list = ApiList([apirole])
-  body = json.dumps(apirole_list.to_json_dict())
-  resp = resource_root.post(_get_roles_path(cluster_name, service_name),
-      data=body)
-  # The server returns a list of created roles (with size 1)
-  return ApiList.from_json_dict(ApiRole, resp, resource_root)[0]
+  return call(resource_root.post,
+      _get_roles_path(cluster_name, service_name),
+      ApiRole, True, data=[apirole])[0]
 
 def get_role(resource_root, service_name, name, cluster_name="default"):
   """
@@ -72,8 +64,7 @@ def get_role(resource_root, service_name, name, cluster_name="default"):
   return _get_role(resource_root, _get_role_path(cluster_name, service_name, name))
 
 def _get_role(resource_root, path):
-  dic = resource_root.get(path)
-  return ApiRole.from_json_dict(dic, resource_root)
+  return call(resource_root.get, path, ApiRole)
 
 def get_all_roles(resource_root, service_name, cluster_name="default", view=None):
   """
@@ -83,9 +74,9 @@ def get_all_roles(resource_root, service_name, cluster_name="default", view=None
   @param cluster_name: Cluster name
   @return: A list of ApiRole objects.
   """
-  dic = resource_root.get(_get_roles_path(cluster_name, service_name),
-          params=view and dict(view=view) or None)
-  return ApiList.from_json_dict(ApiRole, dic, resource_root)
+  return call(resource_root.get,
+      _get_roles_path(cluster_name, service_name),
+      ApiRole, True, params=view and dict(view=view) or None)
 
 def get_roles_by_type(resource_root, service_name, role_type,
                       cluster_name="default", view=None):
@@ -109,11 +100,11 @@ def delete_role(resource_root, service_name, name, cluster_name="default"):
   @param cluster_name: Cluster name
   @return: The deleted ApiRole object
   """
-  resp = resource_root.delete(_get_role_path(cluster_name, service_name, name))
-  return ApiRole.from_json_dict(resp, resource_root)
+  return call(resource_root.delete,
+      _get_role_path(cluster_name, service_name, name), ApiRole)
 
 
-class ApiRole(BaseApiObject):
+class ApiRole(BaseApiResource):
   _ATTRIBUTES = {
     'name'                : None,
     'type'                : None,
@@ -143,11 +134,6 @@ class ApiRole(BaseApiObject):
                           self.serviceRef.serviceName,
                           self.name)
 
-  def _cmd(self, cmd, data=None):
-    path = self._path() + '/commands/' + cmd
-    resp = self._get_resource_root().post(path, data=data)
-    return ApiCommand.from_json_dict(resp, self._get_resource_root())
-
   def _get_log(self, log):
     path = "%s/logs/%s" % (self._path(), log)
     return self._get_resource_root().get(path)
@@ -159,10 +145,8 @@ class ApiRole(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return: A list of running commands.
     """
-    resp = self._get_resource_root().get(
-        self._path() + '/commands',
+    return self._get("commands", ApiCommand, True,
         params = view and dict(view=view) or None)
-    return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
 
   def get_config(self, view = None):
     """
@@ -174,10 +158,7 @@ class ApiRole(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return Dictionary with configuration data.
     """
-    path = self._path() + '/config'
-    resp = self._get_resource_root().get(path,
-        params = view and dict(view=view) or None)
-    return json_to_config(resp, view == 'full')
+    return self._get_config("config", view)
 
   def update_config(self, config):
     """
@@ -186,9 +167,7 @@ class ApiRole(BaseApiObject):
     @param config Dictionary with configuration to update.
     @return Dictionary with updated configuration.
     """
-    path = self._path() + '/config'
-    resp = self._get_resource_root().put(path, data = config_to_json(config))
-    return json_to_config(resp)
+    return self._update_config("config", config)
 
   def get_full_log(self):
     """

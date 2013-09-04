@@ -14,11 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-  import json
-except ImportError:
-  import simplejson as json
-
 from cm_api.endpoints.types import *
 from cm_api.endpoints import services, parcels, host_templates
 
@@ -35,11 +30,8 @@ def create_cluster(resource_root, name, version):
   @return: An ApiCluster object
   """
   apicluster = ApiCluster(resource_root, name, version)
-  apicluster_list = ApiList([apicluster])
-  body = json.dumps(apicluster_list.to_json_dict())
-  resp = resource_root.post(CLUSTERS_PATH, data=body)
-  # The server returns a list of created clusters (with size 1)
-  return ApiList.from_json_dict(ApiCluster, resp, resource_root)[0]
+  return call(resource_root.post, CLUSTERS_PATH, ApiCluster, True,
+      data=[apicluster])[0]
 
 def get_cluster(resource_root, name):
   """
@@ -48,8 +40,7 @@ def get_cluster(resource_root, name):
   @param name: Cluster name
   @return: An ApiCluster object
   """
-  dic = resource_root.get("%s/%s" % (CLUSTERS_PATH, name))
-  return ApiCluster.from_json_dict(dic, resource_root)
+  return call(resource_root.get, "%s/%s" % (CLUSTERS_PATH, name), ApiCluster)
 
 def get_all_clusters(resource_root, view=None):
   """
@@ -57,9 +48,8 @@ def get_all_clusters(resource_root, view=None):
   @param resource_root: The root Resource object.
   @return: A list of ApiCluster objects.
   """
-  dic = resource_root.get(CLUSTERS_PATH,
-          params=view and dict(view=view) or None)
-  return ApiList.from_json_dict(ApiCluster, dic, resource_root)
+  return call(resource_root.get, CLUSTERS_PATH, ApiCluster, True,
+      params=view and dict(view=view) or None)
 
 def delete_cluster(resource_root, name):
   """
@@ -68,11 +58,10 @@ def delete_cluster(resource_root, name):
   @param name: Cluster name
   @return: The deleted ApiCluster object
   """
-  resp = resource_root.delete("%s/%s" % (CLUSTERS_PATH, name))
-  return ApiCluster.from_json_dict(resp, resource_root)
+  return call(resource_root.delete, "%s/%s" % (CLUSTERS_PATH, name), ApiCluster)
 
 
-class ApiCluster(BaseApiObject):
+class ApiCluster(BaseApiResource):
   _ATTRIBUTES = {
     'name'              : None,
     'version'           : None,
@@ -89,17 +78,9 @@ class ApiCluster(BaseApiObject):
   def _path(self):
     return "%s/%s" % (CLUSTERS_PATH, self.name)
 
-  def _cmd(self, cmd, data=None):
-    path = self._path() + '/commands/' + cmd
-    resp = self._get_resource_root().post(path, data=data)
-    return ApiCommand.from_json_dict(resp, self._get_resource_root())
-
   def _put(self, dic, params=None):
     """Change cluster attributes"""
-    resp = self._get_resource_root().put(
-        self._path(), params=params, data=json.dumps(dic))
-    cluster = ApiCluster.from_json_dict(resp, self._get_resource_root())
-
+    cluster = self._put('', ApiCluster, data=dic, params=params)
     self._update(cluster)
     return self
 
@@ -110,10 +91,8 @@ class ApiCluster(BaseApiObject):
     @param view: View to materialize ('full' or 'summary')
     @return: A list of running commands.
     """
-    resp = self._get_resource_root().get(
-        self._path() + '/commands',
+    return self._get("commands", ApiCommand, True,
         params = view and dict(view=view) or None)
-    return ApiList.from_json_dict(ApiCommand, resp, self._get_resource_root())
 
   def rename(self, newname):
     """
@@ -187,30 +166,27 @@ class ApiCluster(BaseApiObject):
     Lists all the hosts that are associated with this cluster.
 
     @return: A list of ApiHostRef objects of the hosts in the cluster.
+    @since: API v3
     """
-    resp = self._get_resource_root().get(
-            self._path() + '/hosts')
-    return ApiList.from_json_dict(ApiHostRef, resp, self._get_resource_root())
+    return self._get("hosts", ApiHostRef, True, api_version=3)
 
   def remove_host(self, hostId):
     """
     Removes the association of the host with the cluster.
 
     @return: A ApiHostRef of the host that was removed.
+    @since: API v3
     """
-    resource_root = self._get_resource_root()
-    resp = resource_root.delete("%s/hosts/%s" % (self._path(), hostId))
-    return ApiHostRef.from_json_dict(resp, resource_root)
+    return self._delete("hosts/" + hostId, ApiHostRef, api_version=3)
 
   def remove_all_hosts(self):
     """
     Removes the association of all the hosts with the cluster.
 
     @return: A list of ApiHostRef objects of the hosts that were removed.
+    @since: API v3
     """
-    resource_root = self._get_resource_root()
-    resp = resource_root.delete("%s/hosts" % (self._path(),))
-    return ApiList.from_json_dict(ApiHostRef, resp, self._get_resource_root())
+    return self._delete("hosts", ApiHostRef, True, api_version=3)
 
   def add_hosts(self, hostIds):
     """
@@ -219,12 +195,11 @@ class ApiCluster(BaseApiObject):
     @param hostIds: List of IDs of hosts to add to cluster.
     @return: A list of ApiHostRef objects of the new
              hosts that were added to the cluster
+    @since: API v3
     """
-    resource_root = self._get_resource_root()
-    hostRefList = ApiList([ApiHostRef(resource_root, x) for x in hostIds])
-    body = json.dumps(hostRefList.to_json_dict())
-    resp = resource_root.post(self._path() + '/hosts', data=body)
-    return ApiList.from_json_dict(ApiHostRef, resp, resource_root)[0]
+    hostRefList = [ApiHostRef(self._get_resource_root(), x) for x in hostIds]
+    return self._post("hosts", ApiHostRef, True, data=hostRefList,
+        api_version=3)
 
   def start(self):
     """
@@ -333,7 +308,6 @@ class ApiCluster(BaseApiObject):
     @return: Reference to the submitted command.
     @since: API v4
     """
-    self._require_min_api_version(4)
     args = dict()
     if slave_batch_size:
       args['slaveBatchSize'] = slave_batch_size
@@ -350,4 +324,4 @@ class ApiCluster(BaseApiObject):
     if restart_service_names:
       args['restartServiceNames'] = restart_service_names
 
-    return self._cmd('rollingRestart', data = json.dumps(args))
+    return self._cmd('rollingRestart', data=args, api_version=4)

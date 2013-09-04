@@ -54,7 +54,7 @@ class Attr(object):
       return config_to_api_list(value)
     elif isinstance(value, datetime.datetime):
       return value.strftime(self.DATE_FMT)
-    elif isinstance(value, list):
+    elif isinstance(value, list) or isinstance(value, tuple):
       if self._is_api_list:
         return ApiList(value).to_json_dict()
       else:
@@ -89,7 +89,7 @@ class Attr(object):
       first = data['items'][0]
       return json_to_config(data, len(first) == 2)
     elif self._is_api_list:
-      return ApiList.from_json_dict(self._atype, data, resource_root)
+      return ApiList.from_json_dict(data, resource_root, self._atype)
     elif isinstance(data, list):
       return [ self.from_json(resource_root, x) for x in data ]
     elif hasattr(self._atype, 'from_json_dict'):
@@ -103,6 +103,43 @@ class ROAttr(Attr):
   """
   def __init__(self, atype=None, is_api_list=False):
     Attr.__init__(self, atype=atype, rw=False, is_api_list=is_api_list)
+
+
+def check_api_version(resource_root, min_version):
+  """
+  Checks if the resource_root's API version it at least the given minimum
+  version.
+  """
+  if resource_root.version < min_version:
+    raise Exception("API version %s is required but %s is in use."
+        % (min_version, resource_root.version))
+
+
+def call(method, path, ret_type,
+    ret_is_list=False, data=None, params=None, api_version=1):
+  """
+  Generic function for calling a resource method and automatically dealing with
+  serialization of parameters and deserialization of return values.
+
+  @param method: method to call (must be bound to a resource;
+                 e.g., "resource_root.get").
+  @param path: the full path of the API method to call.
+  @param ret_type: return type of the call.
+  @param ret_is_list: whether the return type is an ApiList.
+  @param data: Optional data to send as payload to the call.
+  @param params: Optional query parameters for the call.
+  @param api_version: minimum API version for the call.
+  """
+  check_api_version(method.im_self, api_version)
+  if data:
+    data = json.dumps(Attr(is_api_list=True).to_json(data, False))
+    ret = method(path, data=data, params=params)
+  else:
+    ret = method(path, params=params)
+  if ret_is_list:
+    return ApiList.from_json_dict(ret, method.im_self, ret_type)
+  else:
+    return ret_type.from_json_dict(ret, method.im_self)
 
 class BaseApiObject(object):
   """
@@ -246,6 +283,28 @@ class BaseApiObject(object):
     obj._set_attrs(dic, allow_ro=True)
     return obj
 
+class BaseApiResource(BaseApiObject):
+  """
+  A specialization of BaseApiObject that provides some utility methods for
+  resources. This class allows easier serialization / deserialization of
+  parameters and return values.
+  """
+
+  def _api_version(self):
+    """
+    Returns the minimum API version for this resource. Defaults to 1.
+    """
+    return 1
+
+  def _path(self):
+    """
+    Returns the path to the resource.
+
+    e.g., for a service 'foo' in cluster 'bar', this should return
+    '/clusters/bar/services/foo'.
+    """
+    raise NotImplementedError
+
   def _require_min_api_version(self, version):
     """
     Raise an exception if the version of the api is less than the given version.
@@ -253,25 +312,84 @@ class BaseApiObject(object):
     @param version: The minimum required version.
     """
     actual_version = self._get_resource_root().version
+    version = max(version, self._api_version())
     if actual_version < version:
       raise Exception("API version %s is required but %s is in use."
           % (version, actual_version))
 
-class ApiList(object):
+  def _cmd(self, command, data=None, params=None, api_version=1):
+    """
+    Invokes a command on the resource. Commands are expected to be under the
+    "commands/" sub-resource.
+    """
+    return self._post("commands/" + command, ApiCommand,
+        data=data, params=params, api_version=api_version)
+
+  def _get_config(self, rel_path, view, api_version=1):
+    """
+    Retrieves an ApiConfig list from the given relative path.
+    """
+    self._require_min_api_version(api_version)
+    params = view and dict(view=view) or None
+    resp = self._get_resource_root().get(self._path() + '/' + rel_path,
+        params=params)
+    return json_to_config(resp, view == 'full')
+
+  def _update_config(self, rel_path, config, api_version=1):
+    self._require_min_api_version(api_version)
+    resp = self._get_resource_root().put(self._path() + '/' + rel_path,
+        data=config_to_json(config))
+    return json_to_config(resp, False)
+
+  def _delete(self, rel_path, ret_type, ret_is_list=False, params=None,
+      api_version=1):
+    return self._call('delete', rel_path, ret_type, ret_is_list, None, params,
+      api_version)
+
+  def _get(self, rel_path, ret_type, ret_is_list=False, params=None,
+      api_version=1):
+    return self._call('get', rel_path, ret_type, ret_is_list, None, params,
+      api_version)
+
+  def _post(self, rel_path, ret_type, ret_is_list=False, data=None, params=None,
+      api_version=1):
+    return self._call('post', rel_path, ret_type, ret_is_list, data, params,
+      api_version)
+
+  def _put(self, rel_path, ret_type, ret_is_list=False, data=None, params=None,
+      api_version=1):
+    return self._call('put', rel_path, ret_type, ret_is_list, data, params,
+      api_version)
+
+  def _call(self, method, rel_path, ret_type, ret_is_list=False, data=None,
+      params=None, api_version=1):
+    return call(getattr(self._get_resource_root(), method),
+        self._path() + '/' + rel_path,
+        ret_type,
+        ret_is_list,
+        data,
+        params,
+        api_version)
+
+class ApiList(BaseApiObject):
   """A list of some api object"""
   LIST_KEY = "items"
 
-  def __init__(self, objects):
-    self.objects = objects
+  def __init__(self, objects, resource_root=None, **attrs):
+    BaseApiObject.__init__(self, resource_root, **attrs)
+    # Bypass checks in BaseApiObject.__setattr__
+    object.__setattr__(self, 'objects', objects)
 
   def __str__(self):
     return "<ApiList>(%d): [%s]" % (
         len(self.objects),
         ", ".join([str(item) for item in self.objects]))
 
-  def to_json_dict(self):
-    return { ApiList.LIST_KEY :
-            [ x.to_json_dict() for x in self.objects ] }
+  def to_json_dict(self, preserve_ro=False):
+    ret = BaseApiObject.to_json_dict(self, preserve_ro)
+    attr = Attr()
+    ret[ApiList.LIST_KEY] = [ attr.to_json(x, preserve_ro) for x in self.objects ]
+    return ret
 
   def __len__(self):
     return self.objects.__len__()
@@ -285,11 +403,14 @@ class ApiList(object):
   def __getslice(self, i, j):
     return self.objects.__getslice__(i, j)
 
-  @staticmethod
-  def from_json_dict(member_cls, dic, resource_root):
+  @classmethod
+  def from_json_dict(cls, dic, resource_root, member_cls=None):
+    if not member_cls:
+      member_cls = cls._MEMBER_CLASS
+    attr = Attr(atype=member_cls)
     json_list = dic[ApiList.LIST_KEY]
-    objects = [ member_cls.from_json_dict(x, resource_root) for x in json_list ]
-    return ApiList(objects)
+    objects = [ attr.from_json(resource_root, x) for x in json_list ]
+    return cls(objects)
 
 
 class ApiHostRef(BaseApiObject):
@@ -628,6 +749,13 @@ class ApiBatchResponseElement(BaseApiObject):
     'statusCode'      : ROAttr(),
     'response'        : ROAttr(),
   }
+
+class ApiBatchResponseList(ApiList):
+  """A list of batch response objects."""
+  _ATTRIBUTES = {
+    'success' : ROAttr(),
+  }
+  _MEMBER_CLASS = ApiBatchResponseElement
 
 #
 # Configuration helpers.

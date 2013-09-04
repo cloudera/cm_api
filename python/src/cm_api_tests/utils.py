@@ -15,6 +15,7 @@
 # limitations under the License.
 
 from cm_api import api_client
+from cm_api.endpoints.types import Attr
 from cm_api.resource import Resource
 
 try:
@@ -52,6 +53,8 @@ class MockResource(Resource):
     if exp_params is not None:
       self.test.assertEquals(exp_params, params)
     if exp_data is not None:
+      if not isinstance(exp_data, str):
+        exp_data = json.dumps(Attr(is_api_list=True).to_json(exp_data, False))
       self.test.assertEquals(exp_data, data)
     if exp_headers is not None:
       self.test.assertEquals(exp_headers, headers)

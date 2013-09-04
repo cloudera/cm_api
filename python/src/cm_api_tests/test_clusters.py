@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
-import json
 import unittest
 from cm_api.endpoints.clusters import *
 from cm_api.endpoints.types import *
@@ -30,6 +28,6 @@ class TestCluster(unittest.TestCase):
     data = ApiList([ ApiHostRef(resource, hostId='foo') ])
 
     resource.expect("POST", "/clusters/foo/hosts",
-        data=json.dumps(data.to_json_dict()),
+        data=data,
         retdata={ 'items' : [ { 'hostId' : 'foo' } ] })
     cluster.add_hosts(['foo'])

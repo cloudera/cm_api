@@ -14,27 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-  import json
-except ImportError:
-  import simplejson as json
-
 from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
 
 BATCH_PATH = "/batch"
-SUCCESS_KEY = "success"
 
 def do_batch(resource_root, elements):
   """
   Execute a batch request with one or more elements. If any element fails,
   the entire request is rolled back and subsequent elements are ignored.
+
   @param elements: A list of ApiBatchRequestElements
-  @return: 2-tuple (overall success, list of ApiBatchResponseElements).
+  @return: an ApiBatchResponseList
+  @since: API v6
   """
-  element_list = ApiList(elements)
-  body = json.dumps(element_list.to_json_dict())
-  resp = resource_root.post(BATCH_PATH, data=body)
-  return resp[SUCCESS_KEY], ApiList.from_json_dict(ApiBatchResponseElement,
-                                                   resp, resource_root)
+  return call(resource_root.post, BATCH_PATH, ApiBatchResponseList,
+      data=elements, api_version=6)

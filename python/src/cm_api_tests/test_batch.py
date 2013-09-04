@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import unittest
 from cm_api.endpoints import batch
 from cm_api.endpoints.types import *
@@ -33,6 +32,9 @@ class TestBatch(unittest.TestCase):
                                         url='/4/5/6/7',
                                         body='asdf'))
     resource.expect("POST", "/batch",
-                    data=json.dumps(ApiList(elems).to_json_dict()),
+                    data=elems,
                     retdata={ 'success' : False, 'items' : [] })
-    batch.do_batch(resource, elems)
+    ret = batch.do_batch(resource, elems)
+    self.assertIsInstance(ret, ApiBatchResponseList)
+    self.assertFalse(ret.success)
+    self.assertEquals(0, len(ret))

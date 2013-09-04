@@ -267,7 +267,7 @@ class ApiResource(Resource):
     if view:
       params['view'] = view
     resp = self.get(path, params=params)
-    return types.ApiList.from_json_dict(types.ApiMetric, resp, self)
+    return types.ApiList.from_json_dict(resp, self, types.ApiMetric)
 
   def query_timeseries(self, query, from_time=None, to_time=None):
     """

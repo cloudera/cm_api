@@ -14,11 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-  import json
-except ImportError:
-  import simplejson as json
-
 from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
@@ -34,12 +29,12 @@ def create_host_template(resource_root, name, cluster_name):
   @param name: Host template name
   @param cluster_name: Cluster name
   @return: An ApiHostTemplate object for the created host template.
+  @since: API v3
   """
   apitemplate = ApiHostTemplate(resource_root, name, [])
-  apitemplate_list = ApiList([apitemplate])
-  body = json.dumps(apitemplate_list.to_json_dict())
-  resp = resource_root.post(HOST_TEMPLATES_PATH % (cluster_name,), data=body)
-  return ApiList.from_json_dict(ApiHostTemplate, resp, resource_root)[0]
+  return call(resource_root.post,
+      HOST_TEMPLATES_PATH % (cluster_name,),
+      ApiHostTemplate, True, data=[apitemplate], api_version=3)[0]
 
 def get_host_template(resource_root, name, cluster_name):
   """
@@ -48,18 +43,22 @@ def get_host_template(resource_root, name, cluster_name):
   @param name: Host template name.
   @param cluster_name: Cluster name.
   @return An ApiHostTemplate object.
+  @since: API v3
   """
-  resp = resource_root.get(HOST_TEMPLATE_PATH % (cluster_name, name))
-  return ApiHostTemplate.from_json_dict(resp, resource_root)
+  return call(resource_root.get,
+      HOST_TEMPLATE_PATH % (cluster_name, name),
+      ApiHostTemplate, api_version=3)
 
 def get_all_host_templates(resource_root, cluster_name="default"):
   """
   Get all host templates in a cluster.
   @param cluster_name: Cluster name.
   @return ApiList of ApiHostTemplate objects for all host templates in a cluster.
+  @since: API v3
   """
-  resp = resource_root.get(HOST_TEMPLATES_PATH % (cluster_name,))
-  return ApiList.from_json_dict(ApiHostTemplate, resp, resource_root)
+  return call(resource_root.get,
+      HOST_TEMPLATES_PATH % (cluster_name,),
+      ApiHostTemplate, True, api_version=3)
 
 def delete_host_template(resource_root, name, cluster_name):
   """
@@ -68,9 +67,11 @@ def delete_host_template(resource_root, name, cluster_name):
   @param name: Host template name.
   @param cluster_name: Cluster name.
   @return The deleted ApiHostTemplate object.
+  @since: API v3
   """
-  resp = resource_root.delete(HOST_TEMPLATE_PATH % (cluster_name, name))
-  return ApiHostTemplate.from_json_dict(resp, resource_root)
+  return call(resource_root.delete,
+      HOST_TEMPLATE_PATH % (cluster_name, name),
+      ApiHostTemplate, api_version=3)
 
 def update_host_template(resource_root, name, cluster_name, api_host_template):
   """
@@ -80,10 +81,11 @@ def update_host_template(resource_root, name, cluster_name, api_host_template):
   @param cluster_name: Cluster name.
   @param api_host_template: The updated host template.
   @return: The updated ApiHostTemplate.
+  @since: API v3
   """
-  body = json.dumps(api_host_template.to_json_dict())
-  resp = resource_root.put(HOST_TEMPLATE_PATH % (cluster_name, name), body)
-  return ApiHostTemplate.from_json_dict(resp, resource_root)
+  return call(resource_root.put,
+      HOST_TEMPLATE_PATH % (cluster_name, name),
+      ApiHostTemplate, data=api_host_template, api_version=3)
 
 def apply_host_template(resource_root, name, cluster_name, host_ids, start_roles):
   """
@@ -95,15 +97,16 @@ def apply_host_template(resource_root, name, cluster_name, host_ids, start_roles
   @param host_ids: List of host ids.
   @param start_roles: Whether to start the created roles or not.
   @return: An ApiCommand object.
+  @since: API v3
   """
   host_refs = []
   for host_id in host_ids:
     host_refs.append(ApiHostRef(resource_root, host_id))
 
   params = {"startRoles" : start_roles}
-  body = json.dumps(ApiList(host_refs).to_json_dict())
-  resp = resource_root.post(APPLY_HOST_TEMPLATE_PATH % (cluster_name, name), params=params, data=body)
-  return ApiCommand.from_json_dict(resp, resource_root)
+  return call(resource_root.post,
+      APPLY_HOST_TEMPLATE_PATH % (cluster_name, name),
+      ApiCommand, data=host_refs, params=params, api_version=3)
 
 
 class ApiHostTemplate(BaseApiObject):
@@ -119,13 +122,14 @@ class ApiHostTemplate(BaseApiObject):
   def __str__(self):
     return "<ApiHostTemplate>: %s (cluster %s)" % (self.name, self.clusterRef.clusterName)
 
+  def _api_version(self):
+    return 3
+
   def _path(self):
     return HOST_TEMPLATE_PATH % (self.clusterRef.clusterName, self.name)
 
   def _put(self, dic):
-    resp = self._get_resource_root().put(self._path(), data=json.dumps(dic))
-    host_template = ApiHostTemplate.from_json_dict(resp, self._get_resource_root())
-
+    host_template = self._put('', ApiHostTemplate, data=self)
     self._update(host_template)
     return self
 

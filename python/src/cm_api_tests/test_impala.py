@@ -15,7 +15,6 @@
 # limitations under the License.
 
 import datetime
-import json
 import unittest
 from cm_api.endpoints.clusters import *
 from cm_api.endpoints.services import *

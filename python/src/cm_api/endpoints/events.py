@@ -14,18 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-  import json
-except ImportError:
-  import simplejson as json
-import logging
-
 from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
 
 EVENTS_PATH = "/events"
-LOG = logging.getLogger(__name__)
 
 def query_events(resource_root, query_str=None):
   """
@@ -33,12 +26,10 @@ def query_events(resource_root, query_str=None):
   @param query_str: Query string.
   @return: A list of ApiEvent.
   """
+  params = None
   if query_str:
     params = dict(query=query_str)
-  else:
-    params = { }
-  resp = resource_root.get(EVENTS_PATH, params=params)
-  return ApiList.from_json_dict(ApiEvent, resp, resource_root)
+  return call(resource_root.get, EVENTS_PATH, ApiEvent, True, params=params)
 
 def get_event(resource_root, event_id):
   """
@@ -46,8 +37,7 @@ def get_event(resource_root, event_id):
   @param event_id: The event ID.
   @return: An ApiEvent.
   """
-  resp = resource_root.get("%s/%s" % (EVENTS_PATH, event_id))
-  return ApiEvent.from_json_dict(resp, resource_root)
+  return call(resource_root.get, "%s/%s" % (EVENTS_PATH, event_id), ApiEvent)
 
 
 class ApiEvent(BaseApiObject):
@@ -61,6 +51,3 @@ class ApiEvent(BaseApiObject):
     'alert'         : ROAttr(),
     'attributes'    : ROAttr(),
   }
-
-  def __init__(self, resource_root):
-    BaseApiObject.init(self, resource_root)
