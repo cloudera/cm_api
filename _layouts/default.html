@@ -1,0 +1,25 @@
+{% include top.html %}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="header">
+                <div class="header-nav">
+                    <span class="navbar-brand"><a href="{{ site.url }}/">Cloudera Manager API</a></span>
+                    <a class="btn btn-primary pull-right" href="{{ site.repository }}">View On GitHub</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row section">
+            <div class="col-xs-3 container sidenav navbar navbar-inverse">
+                {% include sidenav.html %}
+            </div>
+            <div class="col-xs-9 container">
+                {{ content }}
+            </div>
+        </div>
+    </div>
+    {% include footer.html %}
+</body>
+</html>

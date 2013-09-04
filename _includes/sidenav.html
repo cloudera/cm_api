@@ -1,0 +1,46 @@
+    <h4>Getting Started</h4>
+    <ul>
+        <li class="{% if page.id == 'main-page' %}active{% endif %}">
+            <a href="{{ site.url }}/">Introduction</a>
+        </li>
+        <li class="{% if page.id == 'quick-start' %}active{% endif %}">
+            <a href="{{ site.url }}/docs/quick-start/">Quick Start</a>
+        </li>
+        <li class="{% if page.id == 'cm-concepts' %}active{% endif %}">
+            <a href="{{ site.url }}/docs/cm-concepts/">CM Concepts</a>
+        </li>
+        <li>
+            <a href="{{ site.url }}/apidocs/v{{ site.latest_api_version }}/index.html">Full API Docs</a>
+        </li>
+    </ul>
+    <h4>Client Bindings</h4>
+    <ul>
+        <li class="{% if page.id == 'python-client' %}active{% endif %}">
+            <a href="{{ site.url }}/docs/python-client/">Python</a>
+        </li>
+        <li class="{% if page.id == 'java-client' %}active{% endif %}">
+            <a href="{{ site.url }}/docs/java-client/">Java</a>
+        </li>
+    </ul>
+    <!--
+    <h4>Accomplishing API Tasks</h4>
+    <ul>
+        * Configuration & RCG
+        * Service setup
+        * Enable HA
+        * Parcel management
+        * Cluster setup
+        * Health and log
+        * Poll events
+        * Plotting metrics
+    </ul>
+    -->
+    <h4>Resources</h4>
+    <ul>
+        <li class="{% if page.id == 'debugging-tips' %}active{% endif %}">
+            <a href="{{ site.url }}/docs/debugging-tips/">Debugging Tips</a>
+        </li>
+        <li class="{% if page.id == 'releases' %}active{% endif %}">
+            <a href="{{ site.url }}/docs/releases">Older Versions</a>
+        </li>
+    </ul>
