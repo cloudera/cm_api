@@ -267,7 +267,7 @@ class ApiResource(Resource):
     resp = self.get(path, params=params)
     return types.ApiList.from_json_dict(types.ApiMetric, resp, self)
 
-  def query_timeseries(self, query, from_time, to_time):
+  def query_timeseries(self, query, from_time=None, to_time=None):
     """
     Query time series.
     @param query: Query string.

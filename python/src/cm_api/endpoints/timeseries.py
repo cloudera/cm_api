@@ -20,7 +20,6 @@ try:
 except ImportError:
   import simplejson as json
 import logging
-import pprint
 
 from cm_api.endpoints.types import *
 
@@ -36,15 +35,21 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None):
   Query for time series data from the CM time series data store.
   @param query: Query string.
   @param from_time: Start of the period to query (optional).
+                    This may be an ISO format string, or a datetime object.
   @param to_time: End of the period to query (default = now).
+                  This may be an ISO format string, or a datetime object.
   @return List of ApiTimeSeriesResponse
   """
   params = {}
   if query:
     params['query'] = query
   if from_time:
+    if isinstance(from_time, datetime.datetime):
+      from_time = from_time.isoformat()
     params['from'] = from_time
   if to_time:
+    if isinstance(to_time, datetime.datetime):
+      to_time = to_time.isoformat()
     params['to'] = to_time
   
   resp = resource_root.get(TIME_SERIES_PATH, params=params)
