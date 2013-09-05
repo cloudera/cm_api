@@ -22,6 +22,8 @@ package com.cloudera.api.model;
 public enum ApiClusterVersion {
   /** CDH3 version */
   CDH3,
+  /** CDH3u4x version */
+  CDH3u4X,
   /** CDH4 version */
   CDH4
 }

@@ -21,7 +21,9 @@ import com.google.common.base.Joiner;
 public enum DataView {
   SUMMARY,
   FULL,
-  EXPORT;
+  EXPORT,
+  /** All passwords and other sensitive fields are marked as REDACTED. */
+  EXPORT_REDACTED;
 
   // List of supported views
   private static String SUPPORTED_VIEWS =

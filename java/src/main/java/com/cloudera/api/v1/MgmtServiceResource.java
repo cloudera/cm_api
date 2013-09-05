@@ -160,7 +160,12 @@ public interface MgmtServiceResource {
    *   <li>REPORTSMANAGER</li>
    *   <li>EVENTSERVER</li>
    *   <li>ALERTPUBLISHER</li>
+   *   <li>NAVIGATOR</li>
    * </ul>
+   *
+   * <p/>
+   * REPORTSMANAGER aand NAVIGATOR are only available with
+   * Cloudera Manager Enterprise Edition.
    *
    * @param service Role configurartion overrides.
    * @return ApiService The CMS information.
@@ -170,12 +175,16 @@ public interface MgmtServiceResource {
   public ApiService setupCMS(ApiService service);
 
   /**
+   * Return the management roles resource handler.
+   *
    * @return The roles resource handler.
    */
   @Path("/roles")
   public MgmtRolesResource getRolesResource();
 
   /**
+   * Returns the management role commands resource handler.
+   *
    * @return The roles command handler.
    */
   @Path("/roleCommands")

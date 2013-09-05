@@ -15,9 +15,6 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
-// TODO: get rid of the following annotation when we upgrade to Jackson 1.9.
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,8 +35,6 @@ public class ApiRoleTypeList extends ApiListBase<String> {
   }
 
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  @XmlElement(name = "roleType")
-  @JsonProperty(value = ApiListBase.ITEMS_ATTR)
   public List<String> getTypeNames() {
     return values;
   }

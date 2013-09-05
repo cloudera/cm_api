@@ -16,6 +16,7 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -33,7 +34,7 @@ public class ApiHdfsDisableHaArguments {
   private boolean startDependentServices = true;
   private boolean deployClientConfigs = true;
 
-  private boolean disableQuorumJournal = false;
+  private boolean disableQuorumStorage = false;
 
   /** Name of the the NameNode to be kept. */
   @XmlElement
@@ -75,15 +76,15 @@ public class ApiHdfsDisableHaArguments {
     this.deployClientConfigs = deploy;
   }
 
-  /** Whether to disable Quorum Journal. Defaults to false.
+  /** Whether to disable Quorum-based Storage. Defaults to false.
    *
    *  Available since API v2. */
-  public boolean isDisableQuorumJournal() {
-    return disableQuorumJournal;
+  public boolean isDisableQuorumStorage() {
+    return disableQuorumStorage;
   }
 
-  public void setDisableQuorumJournal(boolean disableQuorumJournal) {
-    this.disableQuorumJournal = disableQuorumJournal;
+  public void setDisableQuorumStorage(boolean disableQuorumStorage) {
+    this.disableQuorumStorage = disableQuorumStorage;
   }
 
   public String toString() {
@@ -92,29 +93,23 @@ public class ApiHdfsDisableHaArguments {
                   .add("secondaryName", secondaryName)
                   .add("startDependentServices", startDependentServices)
                   .add("deployClientConfigs", deployClientConfigs)
-                  .add("disableQuorumJournal", disableQuorumJournal)
+                  .add("disableQuorumStorage", disableQuorumStorage)
                   .toString();
   }
 
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiHdfsDisableHaArguments other = (ApiHdfsDisableHaArguments) o;
-    return Objects.equal(activeName, other.getActiveName()) &&
+    ApiHdfsDisableHaArguments other = ApiUtils.baseEquals(this, o);
+    return this == other || (other != null &&
+        Objects.equal(activeName, other.getActiveName()) &&
         Objects.equal(secondaryName, other.getSecondaryName()) &&
         (startDependentServices == other.getStartDependentServices()) &&
         (deployClientConfigs == other.getDeployClientConfigs()) &&
-        (disableQuorumJournal == other.isDisableQuorumJournal());
+        (disableQuorumStorage == other.isDisableQuorumStorage()));
   }
 
   public int hashCode() {
     return Objects.hashCode(activeName, secondaryName, startDependentServices,
-        deployClientConfigs, disableQuorumJournal);
+        deployClientConfigs, disableQuorumStorage);
   }
 
 }

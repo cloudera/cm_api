@@ -33,4 +33,11 @@ public interface RootResourceV3 extends RootResourceV2 {
   @Path("/cm")
   public ClouderaManagerResourceV3 getClouderaManagerResource();
 
+  /**
+   * @return The clusters resource handler.
+   */
+  @Override
+  @Path("/clusters")
+  public ClustersResourceV3 getClustersResource();
+
 }

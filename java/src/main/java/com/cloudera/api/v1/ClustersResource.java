@@ -107,10 +107,17 @@ public interface ClustersResource {
   /**
    * Upgrades the services in the cluster to the CDH4 version.
    * <p>
-   * This command requires that all services in the cluster are stopped, and
-   * that the CDH packages in the hosts used by the cluster be upgraded to
-   * CDH4 before the command is issued.
+   * This command requires that the CDH packages in the hosts used by the
+   * cluster be upgraded to CDH4 before this command is issued. Once issued,
+   * this command will stop all running services before proceeding.
    * <p>
+   * If parcels are used instead of CDH system packages then the following
+   * steps need to happen in order:
+   * <ol>
+   *   <li>Stop all services manually</li>
+   *   <li>Activate parcel</li>
+   *   <li>Run this upgrade command</li>
+   * </ol>
    * The command will upgrade the services and their configuration to the
    * version available in the CDH4 distribution.
    *

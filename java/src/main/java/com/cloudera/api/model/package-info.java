@@ -15,6 +15,10 @@
 // limitations under the License.
 
 /**
+ * Java models of the underlying API JSON objects, with JAX-B annotations.
+ */
+
+/*
  * We set the access type for our JAX-B models to PROPERTY.
  *
  * With PROPERTY, JAX-B will generate bindings for properties (getters/setters)

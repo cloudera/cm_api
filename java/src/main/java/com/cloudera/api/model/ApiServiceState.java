@@ -33,5 +33,7 @@ public enum ApiServiceState {
   /** The service is stopping */
   STOPPING,
   /** The service has stopped */
-  STOPPED
+  STOPPED,
+  /** The service doesn't start or stop */
+  NA
 }

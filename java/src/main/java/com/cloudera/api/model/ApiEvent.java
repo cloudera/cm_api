@@ -16,6 +16,8 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -75,25 +77,14 @@ public class ApiEvent {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiEvent apiEvent = (ApiEvent) o;
-
-    if (id != null ? !id.equals(apiEvent.id) : apiEvent.id != null) {
-      return false;
-    }
-
-    return true;
+    ApiEvent that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(id, that.getId()));
   }
 
   @Override
   public int hashCode() {
-    return id != null ? id.hashCode() : 0;
+    return Objects.hashCode(id);
   }
 
   /** A unique ID for this event. */
@@ -175,7 +166,6 @@ public class ApiEvent {
 
   /** A list of key-value attribute pairs. */
   @XmlElementWrapper(name = "attributes")
-  @XmlElement(name = "attribute")
   public List<ApiEventAttribute> getAttributes() {
     return attributes;
   }

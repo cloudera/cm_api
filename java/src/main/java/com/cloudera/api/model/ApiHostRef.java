@@ -16,6 +16,7 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 /**
@@ -43,25 +44,14 @@ public class ApiHostRef {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiHostRef that = (ApiHostRef) o;
-
-    if (hostId != null ? !hostId.equals(that.hostId) : that.hostId != null) {
-      return false;
-    }
-
-    return true;
+    ApiHostRef that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(hostId, that.getHostId()));
   }
 
   @Override
   public int hashCode() {
-    return hostId != null ? hostId.hashCode() : 0;
+    return Objects.hashCode(hostId);
   }
 
   /** The unique host ID. */

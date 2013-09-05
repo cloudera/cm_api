@@ -15,7 +15,9 @@
 // limitations under the License.
 package com.cloudera.api.v2;
 
+import com.cloudera.api.DataView;
 import com.cloudera.api.Enterprise;
+import com.cloudera.api.Parameters;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiDeployment;
 import com.cloudera.api.model.ApiHostNameList;
@@ -41,13 +43,19 @@ public interface ClouderaManagerResourceV2 extends ClouderaManagerResource {
    * <p/>
    * This object can be used to reconstruct your entire deployment
    * <p/>
-   * Note: Only users with admin privileges are allowed to call this
+   * Note: Only users with admin privileges are allowed to call this.
+   * <p/>
+   * Note: starting with v3, the deployment information contais data about
+   * Cloudera Manager peers configured for the instance. This data contains
+   * plain text authentication information used to connect to the remote peer.
    *
    * @return A complete deployment description
    */
   @GET
   @Path("/deployment")
-  public ApiDeployment getDeployment();
+  public ApiDeployment getDeployment(
+      @DefaultValue(Parameters.DATA_VIEW_EXPORT)
+      @QueryParam(Parameters.DATA_VIEW) DataView dataView);
 
   /**
    * Apply the supplied deployment description to the system. This will
@@ -119,9 +127,11 @@ public interface ClouderaManagerResourceV2 extends ClouderaManagerResource {
       ApiHostNameList hostNameList);
 
   /**
+   * Return the Cloudera Management Services resource.
+   * <p/>
+   *
    * @return The Cloudera Management Services resource.
    */
-  @Enterprise
   @Path("/service")
   public MgmtServiceResourceV2 getMgmtServiceResource();
 }

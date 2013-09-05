@@ -16,6 +16,7 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -55,17 +56,11 @@ public class ApiRoleRef {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiRoleRef that = (ApiRoleRef) o;
-    return Objects.equal(clusterName, that.clusterName) &&
+    ApiRoleRef that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(clusterName, that.clusterName) &&
         Objects.equal(serviceName, that.serviceName) &&
-        Objects.equal(roleName, that.roleName);
+        Objects.equal(roleName, that.roleName));
   }
 
   @Override

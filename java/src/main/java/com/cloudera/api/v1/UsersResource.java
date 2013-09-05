@@ -16,6 +16,7 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
+import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiUser;
 import com.cloudera.api.model.ApiUserList;
 
@@ -46,6 +47,7 @@ public interface UsersResource {
    * When creating new users, the <i>password</i> property of each user should
    * be their plain text password. The returned user information will not
    * contain any password information.
+   * <p/>
    *
    * @param users List of users to create.
    * @return Information about created users.
@@ -56,6 +58,7 @@ public interface UsersResource {
 
   /**
    * Deletes a user from the system.
+   * <p/>
    *
    * @param userName The name of the user to delete.
    * @return The details of the deleted user.

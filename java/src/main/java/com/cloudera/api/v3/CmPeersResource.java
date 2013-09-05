@@ -38,7 +38,8 @@ public interface CmPeersResource {
   /**
    * Retrieves all configured Cloudera Manager peers.
    * <p>
-   * Available since API v3.
+   * Available since API v3. Only available with Cloudera Manager Enterprise
+   * Edition.
    *
    * @return List of Cloudera Manager peers.
    */
@@ -59,7 +60,8 @@ public interface CmPeersResource {
    * creating and using peers involve transferring credentials over the
    * network.
    * <p>
-   * Available since API v3.
+   * Available since API v3. Only available with Cloudera Manager Enterprise
+   * Edition.
    *
    * @param peer Peer to create (see above).
    * @return Information about the created peer.
@@ -71,7 +73,8 @@ public interface CmPeersResource {
   /**
    * Fetch information about an existing Cloudera Manager peer.
    * <p>
-   * Available since API v3.
+   * Available since API v3. Only available with Cloudera Manager Enterprise
+   * Edition.
    *
    * @param peerName Name of peer to retrieve.
    * @return Peer information.
@@ -87,7 +90,8 @@ public interface CmPeersResource {
    * user can be deleted.. Errors while contacting the remote server are
    * non-fatal.
    * <p>
-   * Available since API v3.
+   * Available since API v3. Only available with Cloudera Manager Enterprise
+   * Edition.
    *
    * @param peerName Name of peer to delete.
    * @return Information about the deleted peer.
@@ -108,7 +112,8 @@ public interface CmPeersResource {
    * If changing the peer's URL, an attempt will be made to contact the old
    * Cloudera Manager to delete the existing credentials.
    * <p>
-   * Available since API v3.
+   * Available since API v3. Only available with Cloudera Manager Enterprise
+   * Edition.
    *
    * @param peerName Name of peer to update.
    * @param peer Updated peer information.
@@ -122,7 +127,8 @@ public interface CmPeersResource {
   /**
    * Test the connectivity of a peer.
    * <p>
-   * Available since API v3.
+   * Available since API v3. Only available with Cloudera Manager Enterprise
+   * Edition.
    *
    * @param peerName Name of peer to test.
    * @return Information about the submitted command.

@@ -15,6 +15,7 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -46,15 +47,9 @@ public class ApiClusterRef {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiClusterRef that = (ApiClusterRef) o;
-    return Objects.equal(clusterName, that.clusterName);
+    ApiClusterRef that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(clusterName, that.clusterName));
   }
 
   @Override

@@ -16,6 +16,7 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -49,18 +50,13 @@ public class ApiVersionInfo {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ApiVersionInfo that = (ApiVersionInfo) o;
-    return Objects.equal(version, that.version) &&
+    ApiVersionInfo that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(version, that.version) &&
         Objects.equal(isSnapshot, that.isSnapshot) &&
         Objects.equal(buildUser, that.buildUser) &&
         Objects.equal(buildTimestamp, that.buildTimestamp) &&
-        Objects.equal(gitHash, that.gitHash);
+        Objects.equal(gitHash, that.gitHash));
   }
 
   @Override

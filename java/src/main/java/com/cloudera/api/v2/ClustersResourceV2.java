@@ -37,6 +37,7 @@ public interface ClustersResourceV2 extends ClustersResource {
   /**
    * @return The services resource handler.
    */
+  @Override
   @Path("/{clusterName}/services")
   public ServicesResourceV2 getServicesResource(
       @PathParam(CLUSTER_NAME) String clusterName);

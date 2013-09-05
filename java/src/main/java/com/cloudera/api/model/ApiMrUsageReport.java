@@ -13,19 +13,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package com.cloudera.api.model;
 
-package com.cloudera.api;
+import com.cloudera.api.CsvElementWrapper;
+import java.util.List;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * This exception is throw by the MgmtServiceLocator when failures occur
- */
-public class ServiceLocatorException extends Exception {
-
-  public ServiceLocatorException(String message) {
-    super(message);
+@XmlRootElement(name = "mrUsageReport")
+public class ApiMrUsageReport extends ApiListBase<ApiMrUsageReportRow> {
+  public ApiMrUsageReport() {
   }
 
-  public ServiceLocatorException(String message, Exception e) {
-    super(message, e);
+  public ApiMrUsageReport(List<ApiMrUsageReportRow> values) {
+    super(values);
   }
+
+  /**
+   * A list of per-user usage information at the requested time
+   * granularity.
+   */
+  @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
+  @CsvElementWrapper(rowtype = ApiMrUsageReportRow.class)
+  public List<ApiMrUsageReportRow> getReportRows() {
+    return values;
+  }
+
 }

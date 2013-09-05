@@ -16,17 +16,16 @@
 
 package com.cloudera.api.model;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
+import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
+
+import com.cloudera.api.ApiUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 
 /**
  * A role represents a specific entity that participate in a service. Examples
@@ -50,6 +49,7 @@ public class ApiRole {
   private List<ApiEntityType> maintenanceOwners;
   private ApiCommissionState commissionState;
   private ApiConfigList config;
+  private ApiRoleConfigGroupRef roleConfigGroupRef;
 
   public enum HaStatus {
     ACTIVE,
@@ -76,17 +76,11 @@ public class ApiRole {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiRole that = (ApiRole) o;
-    return Objects.equal(hostRef, that.hostRef) &&
+    ApiRole that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(hostRef, that.hostRef) &&
         Objects.equal(name, that.name) &&
-        Objects.equal(serviceRef, that.serviceRef);
+        Objects.equal(serviceRef, that.serviceRef));
   }
 
   @Override
@@ -153,7 +147,7 @@ public class ApiRole {
   public void setRoleState(ApiRoleState roleState) {
     this.roleState = roleState;
   }
-  
+
   /**
    * Readonly. The commission state of this role.
    * Available since API v2.
@@ -184,7 +178,7 @@ public class ApiRole {
    */
   @XmlElement
   @JsonProperty(value = "configStale")
-  public Boolean isConfigStale() {
+  public Boolean getConfigStale() {
     return configStale;
   }
 
@@ -245,8 +239,7 @@ public class ApiRole {
    * maintenance mode.
    * Available since API v2.
    */
-  @XmlElementWrapper
-  @XmlElement(name = "maintenanceOwner")
+  @XmlElementWrapper(name = "maintenanceOwners")
   public List<ApiEntityType> getMaintenanceOwners() {
     return maintenanceOwners;
   }
@@ -266,5 +259,17 @@ public class ApiRole {
   public void setConfig(ApiConfigList config) {
     this.config = config;
   }
+
+  /**
+   * Readonly. The reference to the role configuration group of this role.
+   * Available since API v3.
+   */
+  @XmlElement
+  public ApiRoleConfigGroupRef getRoleConfigGroupRef() {
+    return roleConfigGroupRef;
+  }
   
+  public void setRoleConfigGroupRef(ApiRoleConfigGroupRef roleConfigGroupRef) {
+    this.roleConfigGroupRef = roleConfigGroupRef;
+  }
 }

@@ -18,12 +18,16 @@ package com.cloudera.api.v2;
 
 import static com.cloudera.api.Parameters.SERVICE_NAME;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import org.apache.cxf.jaxrs.ext.multipart.InputStreamDataSource;
 
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiRoleNameList;
@@ -34,8 +38,23 @@ import com.cloudera.api.v1.ServicesResource;
 public interface ServicesResourceV2 extends ServicesResource {
 
   /**
+   * Download a zip-compressed archive of the client configuration,
+   * of a specific service. This resource does not require any authentication.
+   *
+   * @param serviceName The service name.
+   * @return The archive data.
+   */
+  @GET
+  @PermitAll
+  @Path("/{serviceName}/clientConfig")
+  @Produces(MediaType.APPLICATION_OCTET_STREAM)
+  public InputStreamDataSource getClientConfig(
+      @PathParam(SERVICE_NAME) String serviceName);
+
+  /**
    * @return The roles resource handler.
    */
+  @Override
   @Path("/{serviceName}/roles")
   public RolesResourceV2 getRolesResource(
       @PathParam(SERVICE_NAME) String serviceName);
@@ -43,11 +62,11 @@ public interface ServicesResourceV2 extends ServicesResource {
   /**
    * Put the service into maintenance mode. This is a synchronous command. The
    * result is known immediately upon return.
-   * 
+   *
    * <p>
    * Available since API v2.
    * </p>
-   * 
+   *
    * @param serviceName The service name.
    * @return Synchronous command result.
    */
@@ -60,11 +79,11 @@ public interface ServicesResourceV2 extends ServicesResource {
   /**
    * Take the service out of maintenance mode. This is a synchronous command.
    * The result is known immediately upon return.
-   * 
+   *
    * <p>
    * Available since API v2.
    * </p>
-   * 
+   *
    * @param serviceName The service name.
    * @return Synchronous command result.
    */
@@ -73,13 +92,13 @@ public interface ServicesResourceV2 extends ServicesResource {
   @Path("/{serviceName}/commands/exitMaintenanceMode")
   public ApiCommand exitMaintenanceMode(
       @PathParam(SERVICE_NAME) String serviceName);
-  
+
   /**
    * Recommission roles of a service.
    * <p>
    * The list should contain names of slave roles to recommission.
    * </p>
-   * 
+   *
    * <p>
    * Available since API v2.
    * </p>
@@ -93,4 +112,33 @@ public interface ServicesResourceV2 extends ServicesResource {
   public ApiCommand recommissionCommand(
       @PathParam(SERVICE_NAME) String serviceName,
       ApiRoleNameList roleNames);
+
+  /**
+   * Creates a tmp directory on the HDFS filesystem.
+   * <p>
+   * Available since API v2.
+   * </p>
+   *
+   * @param serviceName Name of the HDFS service on which to run the command.
+   * @return Information about the submitted command
+   */
+  @POST
+  @Path("/{serviceName}/commands/hdfsCreateTmpDir")
+  public ApiCommand hdfsCreateTmpDir(
+      @PathParam(SERVICE_NAME) String serviceName);
+  
+  /**
+   * Creates the Oozie Database Schema in the configured database.
+   * 
+   * <p>
+   * Available since API v2.
+   * </p>
+   * 
+   * @param serviceName Name of the Oozie service on which to run the command.
+   * @return Information about the submitted command
+   */
+  @POST
+  @Path("/{serviceName}/commands/createOozieDb")
+  public ApiCommand createOozieDb(
+      @PathParam(SERVICE_NAME) String serviceName);
 }

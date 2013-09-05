@@ -20,8 +20,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 /**
  * A list of role names.
  */
@@ -37,8 +35,6 @@ public class ApiRoleNameList extends ApiListBase<String> {
   }
 
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  @XmlElement(name = "roleName")
-  @JsonProperty(value = ApiListBase.ITEMS_ATTR)
   public List<String> getRoleNames() {
     return values;
   }

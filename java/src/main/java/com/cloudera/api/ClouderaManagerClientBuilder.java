@@ -16,7 +16,10 @@
 
 package com.cloudera.api;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.google.common.annotations.VisibleForTesting;
+
+import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.feature.AbstractFeature;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
@@ -24,21 +27,24 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class ClouderaManagerClientBuilder {
-  public static int DEFAULT_TCP_PORT = 7180;
-  public static long DEFAULT_CONNECTION_TIMEOUT = 0;
-  public static TimeUnit DEFAULT_CONNECTION_TIMEOUT_UNITS =
+  public static final int DEFAULT_TCP_PORT = 7180;
+  public static final long DEFAULT_CONNECTION_TIMEOUT = 0;
+  public static final TimeUnit DEFAULT_CONNECTION_TIMEOUT_UNITS =
       TimeUnit.MILLISECONDS;
-  public static long DEFAULT_RECEIVE_TIMEOUT = 0;
-  public static TimeUnit DEFAULT_RECEIVE_TIMEOUT_UNITS = TimeUnit.MILLISECONDS;
+  public static final long DEFAULT_RECEIVE_TIMEOUT = 0;
+  public static final TimeUnit DEFAULT_RECEIVE_TIMEOUT_UNITS =
+      TimeUnit.MILLISECONDS;
 
   private URL baseUrl;
   private String hostname;
@@ -51,6 +57,8 @@ public class ClouderaManagerClientBuilder {
   private TimeUnit connectionTimeoutUnits = DEFAULT_CONNECTION_TIMEOUT_UNITS;
   private long receiveTimeout = DEFAULT_RECEIVE_TIMEOUT;
   private TimeUnit receiveTimeoutUnits = DEFAULT_RECEIVE_TIMEOUT_UNITS;
+  private boolean validateCerts = true;
+  private boolean validateCn = true;
 
   public ClouderaManagerClientBuilder withBaseURL(URL baseUrl) {
     this.baseUrl = baseUrl;
@@ -100,6 +108,16 @@ public class ClouderaManagerClientBuilder {
     return this;
   }
 
+  public ClouderaManagerClientBuilder disableTlsCertValidation() {
+    this.validateCerts = false;
+    return this;
+  }
+
+  public ClouderaManagerClientBuilder disableTlsCnValidation() {
+    this.validateCn = false;
+    return this;
+  }
+
   @VisibleForTesting
   String generateAddress() {
     final String apiRootPath = "api/";
@@ -132,8 +150,15 @@ public class ClouderaManagerClientBuilder {
   }
 
   public ApiRootResource build() {
+    return build(ApiRootResource.class);
+  }
+
+  protected <T> T build(Class<T> proxyType) {
     JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
-    bean.setAddress(generateAddress());
+
+    String address = generateAddress();
+    boolean isTlsEnabled = address.startsWith("https://");
+    bean.setAddress(address);
     if (username != null) {
       bean.setUsername(username);
       bean.setPassword(password);
@@ -141,12 +166,23 @@ public class ClouderaManagerClientBuilder {
     if (enableLogging) {
       bean.setFeatures(Arrays.<AbstractFeature>asList(new LoggingFeature()));
     }
-    bean.setResourceClass(ApiRootResource.class);
+    bean.setResourceClass(proxyType);
     bean.setProvider(new JacksonJsonProvider(new ApiObjectMapper()));
 
-    ApiRootResource rootResource = (ApiRootResource) bean.create();
+    @SuppressWarnings("unchecked")
+    T rootResource = (T) bean.create();
     ClientConfiguration config = WebClient.getConfig(rootResource);
-    HTTPClientPolicy policy = ((HTTPConduit) config.getConduit()).getClient();
+    HTTPConduit conduit = (HTTPConduit) config.getConduit();
+    if (isTlsEnabled) {
+      TLSClientParameters tlsParams = new TLSClientParameters();
+      if (!validateCerts) {
+        tlsParams.setTrustManagers(new TrustManager[] { new AcceptAllTrustManager() });
+      }
+      tlsParams.setDisableCNCheck(!validateCn);
+      conduit.setTlsClientParameters(tlsParams);
+    }
+
+    HTTPClientPolicy policy = conduit.getClient();
     policy.setConnectionTimeout(
         connectionTimeoutUnits.toMillis(connectionTimeout));
     policy.setReceiveTimeout(
@@ -170,6 +206,23 @@ public class ClouderaManagerClientBuilder {
           "Client is not using the HTTP transport");
     }
     conduit.close();
+  }
+
+  /** A trust manager that will accept all certificates. */
+  private static class AcceptAllTrustManager implements X509TrustManager {
+
+    public void checkClientTrusted(X509Certificate[] chain, String authType) {
+      // no op.
+    }
+
+    public void checkServerTrusted(X509Certificate[] chain, String authType) {
+      // no op.
+    }
+
+    public X509Certificate[] getAcceptedIssuers() {
+      return null;
+    }
+
   }
 
 }

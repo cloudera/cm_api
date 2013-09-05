@@ -17,9 +17,7 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.DateTimeUtil;
 import com.cloudera.api.Enterprise;
-import com.cloudera.api.ServiceLocatorException;
 import com.cloudera.api.model.ApiConfigList;
 import com.cloudera.api.model.ApiHost;
 import com.cloudera.api.model.ApiHostList;
@@ -40,8 +38,12 @@ import java.util.Set;
 
 import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
+import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.FROM;
 import static com.cloudera.api.Parameters.HOST_ID;
 import static com.cloudera.api.Parameters.MESSAGE;
+import static com.cloudera.api.Parameters.METRICS;
+import static com.cloudera.api.Parameters.TO;
 
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -66,7 +68,6 @@ public interface HostsResource {
    *
    * @param dataView The view to materialize
    * @return A list of hostIds
-   * @todo Support for host filters e.g. withRole=foo
    */
   @GET
   @Path("/")
@@ -125,7 +126,6 @@ public interface HostsResource {
    *                 either "summary" or "full".
    * @return List of host configuration parameters.
    */
-  @Enterprise
   @GET
   @Path("/{hostId}/config")
   public ApiConfigList readHostConfig(
@@ -149,7 +149,6 @@ public interface HostsResource {
    * @param config Configuration changes.
    * @return The new host configuration.
    */
-  @Enterprise
   @PUT
   @Path("/{hostId}/config")
   public ApiConfigList updateHostConfig(
@@ -197,14 +196,13 @@ public interface HostsResource {
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
    */
-  @Enterprise
   @GET
   @Path("/{hostId}/metrics")
   public ApiMetricList getMetrics(
       @PathParam(HOST_ID) String hostId,
-      @QueryParam("from") String from,
-      @QueryParam("to")
-        @DefaultValue(DateTimeUtil.NOW_KEYWORD)
+      @QueryParam(FROM) String from,
+      @QueryParam(TO)
+        @DefaultValue(DATE_TIME_NOW)
         String to,
       @QueryParam("queryNw")
         @DefaultValue("true")
@@ -214,8 +212,8 @@ public interface HostsResource {
         @DefaultValue("true")
         boolean queryStorage,
       @QueryParam("storageIds") Set<String> storageIds,
-      @QueryParam("metrics") Set<String> metrics,
+      @QueryParam(METRICS) Set<String> metrics,
       @QueryParam(DATA_VIEW)
         @DefaultValue(DATA_VIEW_DEFAULT)
-        DataView dataView) throws ServiceLocatorException;
+        DataView dataView);
 }

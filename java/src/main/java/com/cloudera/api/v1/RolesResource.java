@@ -16,8 +16,6 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.ServiceLocatorException;
-import com.cloudera.api.DateTimeUtil;
 import com.cloudera.api.model.ApiCommandList;
 import com.cloudera.api.model.ApiConfigList;
 import com.cloudera.api.model.ApiMetricList;
@@ -26,7 +24,11 @@ import com.cloudera.api.model.ApiRoleList;
 
 import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
+import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.FROM;
+import static com.cloudera.api.Parameters.METRICS;
 import static com.cloudera.api.Parameters.ROLE_NAME;
+import static com.cloudera.api.Parameters.TO;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -65,7 +67,7 @@ public interface RolesResource {
    *     <tr>
    *       <td>HDFS (CDH4)</td>
    *       <td>NAMENODE, DATANODE, SECONDARYNAMENODE, BALANCER, HTTPFS,
-   *           FAILOVERCONTROLLER, GATEWAY</td>
+   *           FAILOVERCONTROLLER, GATEWAY, JOURNALNODE</td>
    *     </tr>
    *     <tr>
    *       <td>MAPREDUCE</td>
@@ -77,7 +79,7 @@ public interface RolesResource {
    *     </tr>
    *     <tr>
    *       <td>YARN</td>
-   *       <td>RESROUCEMANAGER, NODEMANAGER, JOBHISTORY, GATEWAY</td>
+   *       <td>RESOURCEMANAGER, NODEMANAGER, JOBHISTORY, GATEWAY</td>
    *     </tr>
    *     <tr>
    *       <td>OOZIE</td>
@@ -94,6 +96,26 @@ public interface RolesResource {
    *     <tr>
    *       <td>HUE (CDH4)</td>
    *       <td>HUE_SERVER, BEESWAX_SERVER, KT_RENEWER</td>
+   *     </tr>
+   *     <tr>
+   *       <td>FLUME</td>
+   *       <td>AGENT</td>
+   *     </tr>
+   *     <tr>
+   *       <td>IMPALA</td>
+   *       <td>IMPALAD, STATESTORE</td>
+   *     </tr>
+   *     <tr>
+   *       <td>HIVE</td>
+   *       <td>HIVESERVER2, HIVEMETASTORE, WEBHCAT, GATEWAY</td>
+   *     </tr>
+   *     <tr>
+   *       <td>SOLR</td>
+   *       <td>SOLR_SERVER</td>
+   *     </tr>
+   *     <tr>
+   *       <td>SQOOP</td>
+   *       <td>SQOOP_SERVER</td>
    *     </tr>
    *   </tbody>
    *
@@ -206,14 +228,14 @@ public interface RolesResource {
   @Path("/{roleName}/metrics")
   public ApiMetricList getMetrics(
       @PathParam(ROLE_NAME) String roleName,
-      @QueryParam("from") String from,
-      @QueryParam("to")
-        @DefaultValue(DateTimeUtil.NOW_KEYWORD)
+      @QueryParam(FROM) String from,
+      @QueryParam(TO)
+        @DefaultValue(DATE_TIME_NOW)
         String to,
-      @QueryParam("metrics") List<String> metrics,
+      @QueryParam(METRICS) List<String> metrics,
       @QueryParam(DATA_VIEW)
         @DefaultValue(DATA_VIEW_DEFAULT)
-        DataView dataView) throws ServiceLocatorException;
+        DataView dataView);
 
   /**
    * List active role commands.

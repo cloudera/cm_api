@@ -16,6 +16,7 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -38,7 +39,7 @@ public class ApiHdfsHaArguments {
   private boolean startDependentServices = true;
   private boolean deployClientConfigs = true;
 
-  private boolean enableQuorumJournal = false;
+  private boolean enableQuorumStorage = false;
 
   /** Name of the active NameNode. */
   @XmlElement
@@ -50,7 +51,8 @@ public class ApiHdfsHaArguments {
     this.activeName = activeName;
   }
 
-  /** Path to the shared edits directory on the active NameNode's host. */
+  /** Path to the shared edits directory on the active NameNode's host.
+   *  Ignored if Quorum-based Storage is being enabled. */
   @XmlElement
   public String getActiveSharedEditsPath() {
     return annSharedEditsPath;
@@ -70,7 +72,8 @@ public class ApiHdfsHaArguments {
     this.standByName = standByName;
   }
 
-  /** Path to the shared edits directory on the stand-by NameNode's host. */
+  /** Path to the shared edits directory on the stand-by NameNode's host.
+   *  Ignored if Quorum-based Storage is being enabled. */
   @XmlElement
   public String getStandBySharedEditsPath() {
     return sbnSharedEditsPath;
@@ -110,21 +113,20 @@ public class ApiHdfsHaArguments {
     this.deployClientConfigs = deploy;
   }
 
-  /** Whether to enable Quorum Journal. Defaults to false.
+  /** Whether to enable Quorum-based Storage. Defaults to false.
    *
-   *  Enabling Quorum Journal requires a minimum of three and
-   *  an odd number of JournalNodes to be created and configured.
-   *  The JournalNodes must be configured with the Nameservice that
-   *  identifies the HA pair of NameNodes.
+   *  Enabling Quorum-based Storage requires a minimum of three and
+   *  an odd number of JournalNodes to be created and configured
+   *  before enabling HDFS HA.
    *
    *  Available since API v2. */
   @XmlElement
-  public boolean isEnableQuorumJournal() {
-    return enableQuorumJournal;
+  public boolean isEnableQuorumStorage() {
+    return enableQuorumStorage;
   }
 
-  public void setEnableQuorumJournal(boolean enableQuorumJournal) {
-    this.enableQuorumJournal = enableQuorumJournal;
+  public void setEnableQuorumStorage(boolean enableQuorumStorage) {
+    this.enableQuorumStorage = enableQuorumStorage;
   }
 
   public String toString() {
@@ -136,33 +138,27 @@ public class ApiHdfsHaArguments {
                   .add("sbnSharedEditsPath", sbnSharedEditsPath)
                   .add("startDependentServices", startDependentServices)
                   .add("deployClientConfigs", deployClientConfigs)
-                  .add("enableQuorumJournal", enableQuorumJournal)
+                  .add("enableQuorumStorage", enableQuorumStorage)
                   .toString();
   }
 
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiHdfsHaArguments other = (ApiHdfsHaArguments) o;
-    return Objects.equal(nameservice, other.getNameservice()) &&
+    ApiHdfsHaArguments other = ApiUtils.baseEquals(this, o);
+    return this == other || (other != null &&
+        Objects.equal(nameservice, other.getNameservice()) &&
         Objects.equal(activeName, other.getActiveName()) &&
         Objects.equal(annSharedEditsPath, other.getActiveSharedEditsPath()) &&
         Objects.equal(standByName, other.getStandByName()) &&
         Objects.equal(sbnSharedEditsPath, other.getStandBySharedEditsPath()) &&
         (startDependentServices == other.getStartDependentServices()) &&
         (deployClientConfigs == other.getDeployClientConfigs()) &&
-        (enableQuorumJournal == other.isEnableQuorumJournal());
+        (enableQuorumStorage == other.isEnableQuorumStorage()));
   }
 
   public int hashCode() {
     return Objects.hashCode(nameservice, activeName, annSharedEditsPath,
         standByName, sbnSharedEditsPath, startDependentServices,
-        deployClientConfigs, enableQuorumJournal);
+        deployClientConfigs, enableQuorumStorage);
   }
 
 }

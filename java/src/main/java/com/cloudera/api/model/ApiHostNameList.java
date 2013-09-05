@@ -20,8 +20,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 /**
  * A list of host names.
  */
@@ -37,8 +35,6 @@ public class ApiHostNameList extends ApiListBase<String> {
   }
 
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  @XmlElement(name = "hostName")
-  @JsonProperty(value = ApiListBase.ITEMS_ATTR)
   public List<String> getHostNames() {
     return values;
   }

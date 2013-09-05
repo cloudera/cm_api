@@ -16,10 +16,10 @@
 
 package com.cloudera.api;
 
-import org.codehaus.jackson.map.AnnotationIntrospector;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,26 +33,23 @@ public class ApiObjectMapper extends ObjectMapper {
 
   public ApiObjectMapper() {
     // Print the JSON with indentation (ie. pretty print)
-    configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+    configure(SerializationFeature.INDENT_OUTPUT, true);
 
-    // Set up a secondary annotation interceptor for JAXB annotations.
-    AnnotationIntrospector pair = new AnnotationIntrospector.Pair(
-        getSerializationConfig().getAnnotationIntrospector(),
-        new JaxbAnnotationIntrospector());
-    setSerializationConfig(
-        getSerializationConfig().withAnnotationIntrospector(pair));
-
-    pair = new AnnotationIntrospector.Pair(
-        getDeserializationConfig().getAnnotationIntrospector(),
-        new JaxbAnnotationIntrospector());
-    setDeserializationConfig(
-        getDeserializationConfig().withAnnotationIntrospector(pair));
+    // Allow JAX-B annotations.
+    setAnnotationIntrospector(
+        new AnnotationIntrospector.Pair(
+            getSerializationConfig().getAnnotationIntrospector(),
+            new JaxbAnnotationIntrospector()));
 
     // Print all dates in ISO8601 format
+    setDateFormat(makeISODateFormat());
+  }
+
+  public static DateFormat makeISODateFormat() {
     DateFormat iso8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     Calendar cal = Calendar.getInstance(new SimpleTimeZone(0, "GMT"));
     iso8601.setCalendar(cal);
-    setDateFormat(iso8601);
+    return iso8601;
   }
 
 }

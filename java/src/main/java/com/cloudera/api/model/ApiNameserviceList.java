@@ -16,8 +16,6 @@
 
 package com.cloudera.api.model;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,8 +35,6 @@ public class ApiNameserviceList extends ApiListBase<ApiNameservice> {
   }
 
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  @XmlElement(name = "nameservice")
-  @JsonProperty(value = ApiListBase.ITEMS_ATTR)
   public List<ApiNameservice> getNameservices() {
     return values;
   }

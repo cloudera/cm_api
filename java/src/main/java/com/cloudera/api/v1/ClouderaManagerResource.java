@@ -91,14 +91,14 @@ public interface ClouderaManagerResource {
    * The license file should be uploaded using a request with content type
    * "multipart/form-data", instead of being encoded into a JSON representation.
    *
-   * @param licenseData The license file to install.
+   * @param license The license file to install.
    * @return The new license information.
    */
   @POST
   @Path("/license")
   @Consumes(MediaType.MULTIPART_FORM_DATA)
   public ApiLicense updateLicense(
-    @Multipart(value = "license") byte[] licenseData);
+    @Multipart(value = "license") byte[] license);
 
   /**
    * List active global commands.
@@ -136,9 +136,10 @@ public interface ClouderaManagerResource {
   public ApiCommand inspectHostsCommand();
 
   /**
+   * Return the Cloudera Management Services resource.
+   *
    * @return The Cloudera Management Services resource.
    */
-  @Enterprise
   @Path("/service")
   public MgmtServiceResource getMgmtServiceResource();
 
@@ -147,6 +148,8 @@ public interface ClouderaManagerResource {
    * <p>
    * After the command has completed, the {@link ApiCommand} will contain a
    * resultDataUrl from where you can download the result.
+   * <p/>
+   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param args The command arguments.
    * @return Detailed command information.

@@ -125,7 +125,6 @@ public class ApiNameservice {
 
   /** Mount points assigned to this nameservice in a federation. */
   @XmlElementWrapper(name = "mountPoints")
-  @XmlElement(name = "mountPoint")
   public List<String> getMountPoints() {
     return mountPoints;
   }
@@ -134,7 +133,9 @@ public class ApiNameservice {
     this.mountPoints = mountPoints;
   }
 
-  /** Requires "full" view. The high-level health status of this nameservice. */
+  /**
+   * Requires "full" view. The high-level health status of this nameservice.
+   */
   @XmlElement
   public ApiHealthSummary getHealthSummary() {
     return healthSummary;
@@ -144,7 +145,9 @@ public class ApiNameservice {
     this.healthSummary = healthSummary;
   }
 
-  /** Requires "full" view. List of health checks performed on the nameservice.*/
+  /**
+   * Requires "full" view. List of health checks performed on the nameservice.
+   */
   @XmlElement
   public List<ApiHealthCheck> getHealthChecks() {
     return healthChecks;

@@ -15,6 +15,7 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -88,16 +89,10 @@ public class ApiCmPeer {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiCmPeer other = (ApiCmPeer) o;
-    return Objects.equal(name, other.getName()) &&
-        Objects.equal(url, other.getUrl());
+    ApiCmPeer other = ApiUtils.baseEquals(this, o);
+    return this == other || (other != null &&
+        Objects.equal(name, other.getName()) &&
+        Objects.equal(url, other.getUrl()));
   }
 
   @Override

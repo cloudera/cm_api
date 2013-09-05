@@ -15,8 +15,6 @@
 // limitations under the License.
 package com.cloudera.api.v1;
 
-import com.cloudera.api.Enterprise;
-
 import javax.ws.rs.Path;
 
 /**
@@ -62,9 +60,11 @@ public interface RootResourceV1 {
   public UsersResource getUsersResource();
 
   /**
+   * Return the events resource handler.
+   * <p/>
+   *
    * @return The events resource handler.
    */
-  @Enterprise
   @Path("/events")
   public EventsResource getEventsResource();
 

@@ -15,6 +15,7 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 
@@ -51,16 +52,10 @@ public class ApiUser {
   }
 
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiUser other = (ApiUser) o;
-    return Objects.equal(name, other.name) &&
-        Sets.difference(roles, other.roles).isEmpty();
+    ApiUser other = ApiUtils.baseEquals(this, o);
+    return this == other || (other != null &&
+        Objects.equal(name, other.getName()) &&
+        Sets.difference(roles, other.getRoles()).isEmpty());
   }
 
   public int hashCode() {
@@ -116,7 +111,6 @@ public class ApiUser {
    * Current possible values are: "ROLE_ADMIN" or empty.
    */
   @XmlElementWrapper(name = "roles")
-  @XmlElement(name = "name")
   public Set<String> getRoles() {
     return roles;
   }

@@ -16,9 +16,9 @@
 
 package com.cloudera.api.v1;
 
-import com.cloudera.api.ServiceLocatorException;
 import com.cloudera.api.model.ApiEvent;
 import com.cloudera.api.model.ApiEventQueryResult;
+import static com.cloudera.api.Parameters.QUERY;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -84,7 +84,6 @@ public interface EventsResource {
    *    for date time fields.
    *
    * @return The results of the query
-   * @throws java.io.IOException If the event server fails to handle request
    */
   @GET
   @Path("/")
@@ -93,19 +92,16 @@ public interface EventsResource {
       @DefaultValue("100") Integer maxResults,
       @QueryParam(value = "resultOffset")
       @DefaultValue("0") Integer resultOffset,
-      @QueryParam(value = "query") String query)
-      throws IOException, ServiceLocatorException;
+      @QueryParam(QUERY) String query);
 
   /**
    * Returns a specific event in the system
    *
    * @param eventUUID The UUID of the event to read
    * @return The Event object with the specified UUID
-   * @throws java.io.IOException If the event service fail to handle request
    */
   @GET
   @Path("/{eventId}")
-  public ApiEvent readEvent(@PathParam(value = "eventId") String eventUUID)
-      throws IOException, ServiceLocatorException;
+  public ApiEvent readEvent(@PathParam(value = "eventId") String eventUUID);
 
 }

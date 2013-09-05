@@ -16,13 +16,10 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -57,6 +54,8 @@ public class ApiService {
   private List<ApiEntityType> maintenanceOwners;
   private ApiServiceConfig config;
   private List<ApiRole> roles;
+  private String displayName;
+  private List<ApiRoleConfigGroup> roleConfigGroups;
 
   public ApiService() {
     // For JAX-B
@@ -76,17 +75,11 @@ public class ApiService {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiService that = (ApiService) o;
-    return Objects.equal(name, that.name) &&
+    ApiService that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(name, that.name) &&
         Objects.equal(type, that.type) &&
-        Objects.equal(clusterRef, that.clusterRef);
+        Objects.equal(clusterRef, that.clusterRef));
   }
 
   @Override
@@ -159,7 +152,6 @@ public class ApiService {
    * Readonly. Expresses whether the service configuration is stale.
    */
   @XmlElement
-  @JsonProperty(value = "configStale")
   public Boolean getConfigStale() {
     return configStale;
   }
@@ -211,8 +203,7 @@ public class ApiService {
    * maintenance mode.
    * Available since API v2.
    */
-  @XmlElementWrapper
-  @XmlElement(name = "maintenanceOwner")
+  @XmlElementWrapper(name = "maintenanceOwners")
   public List<ApiEntityType> getMaintenanceOwners() {
     return maintenanceOwners;
   }
@@ -233,12 +224,37 @@ public class ApiService {
 
   /** The list of service roles. Optional. */
   @XmlElementWrapper(name = "roles")
-  @XmlElement(name = "role")
   public List<ApiRole> getRoles() {
     return roles;
   }
 
   public void setRoles(List<ApiRole> roles) {
     this.roles = roles;
+  }
+
+  /**
+   * The display name for the service that is shown in the UI.
+   * Available since API v2.
+   */
+  @XmlElement
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
+  }
+
+  /**
+   * The list of role configuration groups in this service. Optional.
+   * Available since API v3.
+   */
+  @XmlElement
+  public List<ApiRoleConfigGroup> getRoleConfigGroups() {
+    return roleConfigGroups;
+  }
+
+  public void setRoleConfigGroups(List<ApiRoleConfigGroup> roleConfigGroups) {
+    this.roleConfigGroups = roleConfigGroups;
   }
 }

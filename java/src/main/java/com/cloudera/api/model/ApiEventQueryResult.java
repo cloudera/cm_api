@@ -23,8 +23,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 @XmlRootElement(name = "eventQueryResult")
 public class ApiEventQueryResult extends ApiListBase<ApiEvent> {
   private long totalResults;
@@ -56,8 +54,6 @@ public class ApiEventQueryResult extends ApiListBase<ApiEvent> {
   }
 
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  @XmlElement(name = "event")
-  @JsonProperty(value = ApiListBase.ITEMS_ATTR)
   public List<ApiEvent> getEvents() {
     return values;
   }

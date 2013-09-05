@@ -16,9 +16,7 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.DateTimeUtil;
 import com.cloudera.api.Enterprise;
-import com.cloudera.api.ServiceLocatorException;
 import com.cloudera.api.model.ApiMetricList;
 import com.cloudera.api.model.ApiNameservice;
 import com.cloudera.api.model.ApiNameserviceList;
@@ -35,7 +33,11 @@ import java.util.List;
 
 import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
+import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.FROM;
+import static com.cloudera.api.Parameters.METRICS;
 import static com.cloudera.api.Parameters.NAMESERVICE_NAME;
+import static com.cloudera.api.Parameters.TO;
 
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
@@ -88,18 +90,17 @@ public interface NameservicesResource {
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
    */
-  @Enterprise
   @GET
   @Path("/{nameservice}/metrics")
   public ApiMetricList getMetrics(
       @PathParam(NAMESERVICE_NAME) String nameservice,
-      @QueryParam("from") String from,
-      @QueryParam("to")
-        @DefaultValue(DateTimeUtil.NOW_KEYWORD)
+      @QueryParam(FROM) String from,
+      @QueryParam(TO)
+        @DefaultValue(DATE_TIME_NOW)
         String to,
-      @QueryParam("metrics") List<String> metrics,
+      @QueryParam(METRICS) List<String> metrics,
       @QueryParam(DATA_VIEW)
         @DefaultValue(DATA_VIEW_DEFAULT)
-        DataView dataView) throws ServiceLocatorException;
+        DataView dataView);
 
 }

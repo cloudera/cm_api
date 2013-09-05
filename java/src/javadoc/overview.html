@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/html">
+    <body>
+    <p>This is the reference for the Java client to
+        <a href="http://www.cloudera.com/content/cloudera/en/products/cloudera-manager.html"
+                target="_blank"><em>Cloduera Manager</em></a> (CM).</p>
+
+    <h1>Getting Started</h1>
+    <p>While the <a href="http://cloudera.github.com/cm_api" target="_blank">CM API</a> is
+        defined as a
+        <a href="http://cloudera.github.io/cm_api/apidocs/latest/index.html"
+           target="_blank">RESTful HTTP API</a>, using JSON objects
+        for requests and responses, you rarely need to interact with the HTTP
+        or JSON layer as a user of the Java client. The Java client is a proxy,
+        built from the same JAX-RS interface that defines the server-side
+        implementation.
+    </p>
+
+    <p>The main entry point to the Java client is via the
+        <code><a href="com/cloudera/api/ClouderaManagerClientBuilder.html">ClouderaManagerClientBuilder</a></code>. For example:
+    </p>
+    <pre><code>
+    RootResourceV3 apiRoot = new ClouderaManagerClientBuilder()
+        .withHost("your.cm.com")
+        .withUsernamePassword("admin", "admin")
+        .build()
+        .getRootV3();
+    </code></pre>
+
+    <h1>Versions and Compatibility</h1>
+    <p>In the snippet above, the final call to <code>getRootV3()</code> returns
+        a <a href="com/cloudera/api/v3/RootResourceV3.html">RootResourceV3</a>.
+        Alternatively, a call to <code>getRootV2()</code> would return the v2
+        equivalent.
+        You should use the version that corresponds to your CM
+        installation, which you can find out by accessing
+        <code>http://your.cm.com:7180/api/version</code>.
+    </p>
+
+    <p>Within the same major version of CM, API support is backwards compatible.
+    For example, CM 4.5 introduces API v3, and it also accepts API requests of
+    v1 (CM 4.0) and v2 (CM 4.1).
+    </p>
+
+    <h1>Error Codes</h1>
+    <p>Upon errors, the client will throw exceptions with HTTP error codes in
+        the 400s and 500s:
+    </p>
+    <ul>
+        <li>400 &mdash; Invalid request parameters; Malformed requests</li>
+        <li>401 &mdash; Authentication failure</li>
+        <li>403 &mdash; Authorization failure</li>
+        <li>404 &mdash; Object not found</li>
+        <li>500 &mdash; Internal API error</li>
+        <li>503 &mdash; Response temporarily unavailable; caller should retry
+            later</li>
+    </ul>
+
+    </body>
+</html>

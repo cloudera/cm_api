@@ -18,9 +18,6 @@ package com.cloudera.api.model;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 
-// TODO: get rid of the following annotation when we upgrade to Jackson 1.9.
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,8 +40,6 @@ public class ApiBulkCommandList extends ApiCommandList {
 
   /** Errors that occurred when issuing individual commands. */
   @XmlElementWrapper(name = "errors")
-  @XmlElement(name = "error")
-  @JsonProperty(value = "errors")
   public List<String> getErrors() {
     return errors;
   }

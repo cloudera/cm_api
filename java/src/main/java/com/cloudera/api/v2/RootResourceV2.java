@@ -18,6 +18,8 @@ package com.cloudera.api.v2;
 
 import com.cloudera.api.v1.RootResourceV1;
 
+import javax.ws.rs.Path;
+
 /**
  * The root of the Cloudera API (v2). Provides access to all sub-resources
  * available in version 2 of the API.
@@ -28,6 +30,7 @@ public interface RootResourceV2 extends RootResourceV1 {
    * @return The clusters resource handler.
    */
   @Override
+  @Path("/clusters")
   public ClustersResourceV2 getClustersResource();
 
   /**
@@ -39,5 +42,6 @@ public interface RootResourceV2 extends RootResourceV1 {
    * @return The clusters resource handler.
    */
   @Override
+  @Path("/hosts")
   public HostsResourceV2 getHostsResource();
 }

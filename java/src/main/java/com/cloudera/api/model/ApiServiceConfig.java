@@ -29,7 +29,10 @@ public class ApiServiceConfig extends ApiConfigList {
 
   private List<ApiRoleTypeConfig> roleTypeConfigs;
 
-  /** List of role type configurations. */
+  /** 
+   * List of role type configurations.
+   * Only available up to API v2.
+   */
   @XmlElement
   public List<ApiRoleTypeConfig> getRoleTypeConfigs() {
     return roleTypeConfigs;

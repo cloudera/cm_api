@@ -17,8 +17,6 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.ServiceLocatorException;
-import com.cloudera.api.DateTimeUtil;
 import com.cloudera.api.model.ApiActivity;
 import com.cloudera.api.model.ApiActivityList;
 import com.cloudera.api.model.ApiMetricList;
@@ -31,14 +29,18 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 import java.util.List;
 
 import static com.cloudera.api.Parameters.ACTIVITY_ID;
 import static com.cloudera.api.Parameters.CLUSTER_NAME;
+import static com.cloudera.api.Parameters.FROM;
 import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
+import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.METRICS;
+import static com.cloudera.api.Parameters.QUERY;
 import static com.cloudera.api.Parameters.SERVICE_NAME;
+import static com.cloudera.api.Parameters.TO;
 
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -93,9 +95,6 @@ public interface ActivitiesResource {
    *
    * @param dataView The view of the activities to materialize
    * @return A list of activities
-   * @throws java.io.IOException on Activity Monitor i/o failure
-   * @throws com.cloudera.api.ServiceLocatorException
-   *    when Activity Monitor service connection could not be created
    */
   @GET
   @Path("/")
@@ -104,9 +103,8 @@ public interface ActivitiesResource {
       @PathParam(SERVICE_NAME) String serviceName,
       @QueryParam("maxResults") @DefaultValue("100") Integer maxResults,
       @QueryParam("resultOffset") @DefaultValue("0") Integer resultOffset,
-      @QueryParam("query") @DefaultValue("status==started;parent==") String query,
-      @QueryParam(DATA_VIEW) @DefaultValue(DATA_VIEW_DEFAULT) DataView dataView)
-      throws IOException, ServiceLocatorException;
+      @QueryParam(QUERY) @DefaultValue("status==started;parent==") String query,
+      @QueryParam(DATA_VIEW) @DefaultValue(DATA_VIEW_DEFAULT) DataView dataView);
 
   /**
    * Returns a specific activity in the system
@@ -116,10 +114,6 @@ public interface ActivitiesResource {
    * @param activityId  The id of the activity to retrieve
    * @param dataView The view of the activity to materialize
    * @return The Activity object with the specified id
-   * @throws java.io.IOException on Activity Monitor i/o failure
-   * @throws com.cloudera.api.ServiceLocatorException
-   *                             when Activity
-   *                             Monitor service connection could not be created
    */
   @GET
   @Path("/{activityId}")
@@ -131,8 +125,7 @@ public interface ActivitiesResource {
                                   String activityId,
                                   @QueryParam(DATA_VIEW)
                                   @DefaultValue(DATA_VIEW_DEFAULT)
-                                  DataView dataView)
-      throws IOException, ServiceLocatorException;
+                                  DataView dataView);
 
 
   /**
@@ -145,10 +138,6 @@ public interface ActivitiesResource {
    * @param resultOffset Specified the offset of activities to return.
    * @param dataView The view of the children to materialize
    * @return The list of child activities for the specified activity
-   * @throws IOException on Activity Monitor i/o failure
-   * @throws com.cloudera.api.ServiceLocatorException
-   *                     when Activity
-   *                     Monitor service connection could not be created
    */
   @GET
   @Path("/{activityId}/children")
@@ -158,8 +147,7 @@ public interface ActivitiesResource {
       @PathParam(ACTIVITY_ID) String activityId,
       @QueryParam("maxResults") @DefaultValue("100") Integer maxResults,
       @QueryParam("resultOffset") @DefaultValue("0") Integer resultOffset,
-      @QueryParam(DATA_VIEW) @DefaultValue(DATA_VIEW_DEFAULT) DataView dataView)
-      throws IOException, ServiceLocatorException;
+      @QueryParam(DATA_VIEW) @DefaultValue(DATA_VIEW_DEFAULT) DataView dataView);
 
   /**
    * Returns a list of similar activities
@@ -169,10 +157,6 @@ public interface ActivitiesResource {
    * @param activityId  The id of the activity
    * @param dataView The view of the activities to materialize
    * @return The list of similar activities to the specified activity
-   * @throws IOException on Activity Monitor i/o failure
-   * @throws com.cloudera.api.ServiceLocatorException
-   *                     when Activity
-   *                     Monitor service connection could not be created
    */
   @GET
   @Path("/{activityId}/similar")
@@ -185,7 +169,7 @@ public interface ActivitiesResource {
       String activityId,
       @QueryParam(DATA_VIEW)
       @DefaultValue(DATA_VIEW_DEFAULT)
-      DataView dataView) throws IOException, ServiceLocatorException;
+      DataView dataView);
 
   /**
    * Fetch metric readings for a particular activity.
@@ -212,8 +196,6 @@ public interface ActivitiesResource {
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
-   * @throws com.cloudera.api.ServiceLocatorException when Activity
-   * Monitor service connection could not be created
    */
   @GET
   @Path("/{activityId}/metrics")
@@ -221,13 +203,13 @@ public interface ActivitiesResource {
       @PathParam(CLUSTER_NAME) String clusterName,
       @PathParam(SERVICE_NAME) String serviceName,
       @PathParam(ACTIVITY_ID) String activityId,
-      @QueryParam("from") String from,
-      @QueryParam("to")
-      @DefaultValue(DateTimeUtil.NOW_KEYWORD)
+      @QueryParam(FROM) String from,
+      @QueryParam(TO)
+      @DefaultValue(DATE_TIME_NOW)
       String to,
-      @QueryParam("metrics") List<String> metrics,
+      @QueryParam(METRICS) List<String> metrics,
       @QueryParam(DATA_VIEW)
       @DefaultValue(DATA_VIEW_DEFAULT)
-      DataView dataView) throws ServiceLocatorException;
+      DataView dataView);
 
 }

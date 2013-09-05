@@ -15,6 +15,7 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 
@@ -30,8 +31,8 @@ import java.util.List;
  * (e.g. CDH3 or CDH4).
  */
 @XmlRootElement(name = "cluster")
-@XmlType(propOrder = {"name", "version", 
-    "maintenanceMode", "maintenanceOwners", "services"})
+@XmlType(propOrder = {"name", "version",
+    "maintenanceMode", "maintenanceOwners", "services", "parcels"})
 public class ApiCluster {
 
   private String name;
@@ -39,6 +40,7 @@ public class ApiCluster {
   private Boolean maintenanceMode;
   private List<ApiEntityType> maintenanceOwners;
   private List<ApiService> services;
+  private List<ApiParcel> parcels;
 
   public ApiCluster() {
     // For JAX-B
@@ -53,15 +55,9 @@ public class ApiCluster {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiCluster other = (ApiCluster) o;
-    return Objects.equal(name, other.name);
+    ApiCluster other = ApiUtils.baseEquals(this, o);
+    return this == other || (other != null &&
+        Objects.equal(name, other.name));
   }
 
   @Override
@@ -107,8 +103,7 @@ public class ApiCluster {
    * maintenance mode.
    * Available since API v2.
    */
-  @XmlElementWrapper
-  @XmlElement(name = "maintenanceOwner")
+  @XmlElementWrapper(name = "maintenanceOwners")
   public List<ApiEntityType> getMaintenanceOwners() {
     return maintenanceOwners;
   }
@@ -120,14 +115,25 @@ public class ApiCluster {
   /**
    * Optional. Used during import/export of settings.
    */
-  @XmlElementWrapper
-  @XmlElement(name = "service")
+  @XmlElementWrapper(name = "services")
   public List<ApiService> getServices() {
-    return services; 
+    return services;
   }
-  
+
   public void setServices(List<ApiService> services) {
     this.services = services;
   }
-  
+
+  /**
+   * Optional. Used during import/export of settings.
+   * Available since API v4.
+   */
+  @XmlElementWrapper(name = "parcels")
+  public List<ApiParcel> getParcels() {
+    return parcels;
+  }
+
+  public void setParcels(List<ApiParcel> parcels) {
+    this.parcels = parcels;
+  }
 }

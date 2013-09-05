@@ -15,11 +15,9 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-
-// TODO: get rid of the following annotation when we upgrade to Jackson 1.9.
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -69,41 +67,13 @@ abstract class ApiListBase<T> implements Iterable<T> {
 
   @Override
   public int hashCode() {
-    int result = 0;
-    if (values != null) {
-      for (T item : values) {
-        result += 31 * result + item.hashCode();
-      }
-    }
-    return result;
+    return Objects.hashCode(values);
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiListBase that = (ApiListBase) o;
-
-    if (values == null) {
-      return that.values == null;
-    }
-
-    if (values.size() != that.values.size()) {
-      return false;
-    }
-
-    for (int i = 0; i < values.size(); i++) {
-      T thisValue = this.values.get(i);
-      Object thatValue = that.values.get(i);
-      if (!thisValue.equals(thatValue)) {
-        return false;
-      }
-    }
-    return true;
+    ApiListBase that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(values, that.values));
   }
 }

@@ -16,8 +16,6 @@
 
 package com.cloudera.api.model;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,8 +35,6 @@ public class ApiHostList extends ApiListBase<ApiHost> {
   }
 
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  @XmlElement(name = "host")
-  @JsonProperty(value = ApiListBase.ITEMS_ATTR)
   public List<ApiHost> getHosts() {
     return values;
   }

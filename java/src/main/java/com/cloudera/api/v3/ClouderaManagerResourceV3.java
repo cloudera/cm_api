@@ -15,6 +15,7 @@
 // limitations under the License.
 package com.cloudera.api.v3;
 
+import com.cloudera.api.Enterprise;
 import com.cloudera.api.v2.ClouderaManagerResourceV2;
 
 import javax.ws.rs.Consumes;
@@ -26,7 +27,20 @@ import javax.ws.rs.core.MediaType;
 @Produces({ MediaType.APPLICATION_JSON })
 public interface ClouderaManagerResourceV3 extends ClouderaManagerResourceV2 {
 
-  @Path("/links")
+  @Path("/allHosts")
+  public AllHostsResource getAllHostsResource();
+
+  @Enterprise
+  @Path("/peers")
   public CmPeersResource getCmPeersResource();
 
+  /**
+   * Return the Cloudera Management Services resource.
+   * <p/>
+   *
+   * @return The Cloudera Management Services resource.
+   */
+  @Override
+  @Path("/service")
+  public MgmtServiceResourceV3 getMgmtServiceResource();
 }

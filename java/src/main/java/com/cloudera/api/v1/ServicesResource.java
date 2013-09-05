@@ -17,8 +17,6 @@ package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
 import com.cloudera.api.Enterprise;
-import com.cloudera.api.DateTimeUtil;
-import com.cloudera.api.ServiceLocatorException;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiCommandList;
 import com.cloudera.api.model.ApiHdfsDisableHaArguments;
@@ -33,7 +31,11 @@ import com.cloudera.api.model.ApiServiceList;
 
 import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
+import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.FROM;
+import static com.cloudera.api.Parameters.METRICS;
 import static com.cloudera.api.Parameters.SERVICE_NAME;
+import static com.cloudera.api.Parameters.TO;
 
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -87,7 +89,7 @@ public interface ServicesResource {
    *     </td>
    *     <tr>
    *       <td>CDH4</td>
-   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN</td>
+   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA, FLUME, HIVE, SOLR, SQOOP</td>
    *     </td>
    *   </tbody>
    * </table>
@@ -205,6 +207,7 @@ public interface ServicesResource {
    * <p>
    * HDFS services from CDH4 that have more than one nameservice will not expose
    * any metrics. Instead, the nameservices should be queried separately.
+   * <p/>
    *
    * @param serviceName The name of the service.
    * @param from Start of the period to query.
@@ -214,19 +217,18 @@ public interface ServicesResource {
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
    */
-  @Enterprise
   @GET
   @Path("/{serviceName}/metrics")
   public ApiMetricList getMetrics(
       @PathParam(SERVICE_NAME) String serviceName,
-      @QueryParam("from") String from,
-      @QueryParam("to")
-        @DefaultValue(DateTimeUtil.NOW_KEYWORD)
+      @QueryParam(FROM) String from,
+      @QueryParam(TO)
+        @DefaultValue(DATE_TIME_NOW)
         String to,
-      @QueryParam("metrics") List<String> metrics,
+      @QueryParam(METRICS) List<String> metrics,
       @QueryParam(DATA_VIEW)
         @DefaultValue(DATA_VIEW_DEFAULT)
-        DataView dataView) throws ServiceLocatorException;
+        DataView dataView);
 
   /**
    * List active service commands.
@@ -363,9 +365,13 @@ public interface ServicesResource {
   /**
    * Create the Beeswax role's Hive warehouse directory, on Hue services.
    *
-   * @param serviceName The Hue service name.
+   * @param serviceName
+   *          The Hue service name.
+   * @deprecated Use hiveCreateHiveWarehouse on the Hive service instead.
+   *             Deprecated since V4.
    * @return Information about the submitted command.
    */
+  @Deprecated
   @POST
   @Consumes()
   @Path("/{serviceName}/commands/hueCreateHiveWarehouse")
@@ -408,6 +414,9 @@ public interface ServicesResource {
    * <p>
    * The client configuration is deployed to the hosts where the given roles
    * are running.
+   * <p/>
+   * Added in v3: an empty role name list will deploy client configs to all
+   * known service roles.
    *
    * @param serviceName The service name.
    * @param roleNames List of role names.
@@ -503,9 +512,11 @@ public interface ServicesResource {
       @PathParam(SERVICE_NAME) String serviceName);
 
   /**
+   * Return the activities resource handler.
+   * <p/>
+   *
    * @return The activities resource handler
    */
-  @Enterprise
   @Path("/{serviceName}/activities")
   public ActivitiesResource getActivitiesResource(
       @PathParam(SERVICE_NAME) String serviceName);

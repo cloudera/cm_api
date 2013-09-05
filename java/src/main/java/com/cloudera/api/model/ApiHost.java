@@ -16,10 +16,10 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -31,7 +31,6 @@ import java.util.List;
  * This is the model for a host in the system.
  */
 @XmlRootElement(name = "host")
-@JsonPropertyOrder(alphabetic = true)
 public class ApiHost {
 
   private String hostId;
@@ -47,11 +46,13 @@ public class ApiHost {
   private List<ApiEntityType> maintenanceOwners;
   private ApiCommissionState commissionState;
   private ApiConfigList config;
+  private Long numCores;
+  private Long totalPhysMemBytes;
 
   public ApiHost() {
     // for JAX-B
   }
-  
+
   /**
    * Copy constructor
    * @param host The host to copy
@@ -76,6 +77,8 @@ public class ApiHost {
     this.maintenanceOwners = host.getMaintenanceOwners();
     this.commissionState = host.getCommissionState();
     this.config = host.getConfig();
+    this.numCores = host.getNumCores();
+    this.totalPhysMemBytes = host.getTotalPhysMemBytes();
   }
 
   @Override
@@ -94,15 +97,9 @@ public class ApiHost {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiHost that = (ApiHost) o;
-    return Objects.equal(hostId, that.hostId);
+    ApiHost that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(hostId, that.getHostId()));
   }
 
   @Override
@@ -171,7 +168,6 @@ public class ApiHost {
    * The list of roles assigned to this host.
    */
   @XmlElementWrapper(name = "roleRefs")
-  @XmlElement(name = "roleRef")
   public List<ApiRoleRef> getRoleRefs() {
     return roleRefs;
   }
@@ -231,7 +227,7 @@ public class ApiHost {
   public void setMaintenanceMode(Boolean maintenanceMode) {
     this.maintenanceMode = maintenanceMode;
   }
-  
+
   /**
    * Readonly. The commission state of this role.
    * Available since API v2.
@@ -250,8 +246,7 @@ public class ApiHost {
    * maintenance mode.
    * Available since API v2.
    */
-  @XmlElementWrapper
-  @XmlElement(name = "maintenanceOwner")
+  @XmlElementWrapper(name = "maintenanceOwners")
   public List<ApiEntityType> getMaintenanceOwners() {
     return maintenanceOwners;
   }
@@ -259,13 +254,41 @@ public class ApiHost {
   public void setMaintenanceOwners(List<ApiEntityType> maintenanceOwners) {
     this.maintenanceOwners = Lists.newArrayList(maintenanceOwners);
   }
-  
+
   @XmlElement
   public ApiConfigList getConfig() {
     return config;
   }
-  
+
   public void setConfig(ApiConfigList config) {
-    this.config = config; 
+    this.config = config;
+  }
+
+  /**
+   * Readonly. The number of CPU cores on this host. Only populated after the
+   * host has heartbeated to the server.
+   * Available since API v4.
+   */
+  @XmlElement
+  public Long getNumCores() {
+    return numCores;
+  }
+
+  public void setNumCores(Long numCores) {
+    this.numCores = numCores;
+  }
+
+  /**
+   * Readonly. The amount of physical RAM on this host, in bytes. Only
+   * populated after the host has heartbeated to the server.
+   * Available since API v4.
+   */
+  @XmlElement
+  public Long getTotalPhysMemBytes() {
+    return totalPhysMemBytes;
+  }
+
+  public void setTotalPhysMemBytes(Long totalPhysMemBytes) {
+    this.totalPhysMemBytes = totalPhysMemBytes;
   }
 }

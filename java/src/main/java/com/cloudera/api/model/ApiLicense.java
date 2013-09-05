@@ -15,6 +15,7 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -22,9 +23,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
-
-// TODO: get rid of the following annotation when we upgrade to Jackson 1.9.
-import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Information about the Cloudera Manager license.
@@ -57,17 +55,11 @@ public class ApiLicense {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiLicense other = (ApiLicense) o;
-    return Objects.equal(owner, other.owner) &&
+    ApiLicense other = ApiUtils.baseEquals(this, o);
+    return this == other || (other != null &&
+        Objects.equal(owner, other.owner) &&
         Objects.equal(uuid, other.uuid) &&
-        Objects.equal(expiration, other.expiration);
+        Objects.equal(expiration, other.expiration));
   }
 
   @Override

@@ -35,5 +35,7 @@ public enum ApiRoleState {
   /** The role is stopping */
   STOPPING,
   /** The role has stopped */
-  STOPPED
+  STOPPED,
+  /** The role doesn't start or stop */
+  NA;
 }

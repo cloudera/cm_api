@@ -16,8 +16,8 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This objects represents a deployment including all clusters, hosts, 
+ * This objects represents a deployment including all clusters, hosts,
  * services, roles, etc in the system.  It can be used to save and restore
  * all settings.
  */
@@ -38,11 +38,14 @@ public class ApiDeployment {
   private List<ApiUser> users;
   private ApiVersionInfo versionInfo;
   private ApiService managementService;
-  
+  private ApiConfigList managerSettings;
+  private ApiConfigList allHostsConfig;
+  private List<ApiCmPeer> peers;
+
   public ApiDeployment() {
     // For JAX-B
   }
-  
+
   public String toString() {
     return Objects.toStringHelper(this)
         .add("timestamp", timestamp)
@@ -50,34 +53,36 @@ public class ApiDeployment {
         .add("hosts", hosts)
         .add("versionInfo", versionInfo)
         .add("managementService", managementService)
+        .add("managerSettings", managerSettings)
+        .add("allHostsConfig", allHostsConfig)
+        .add("peers", peers)
         .toString();
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ApiDeployment that = (ApiDeployment)o;
-    return Objects.equal(timestamp, that.timestamp) &&
-        Objects.equal(clusters, that.clusters) &&
-        Objects.equal(hosts, that.hosts) &&
-        Objects.equal(versionInfo, that.versionInfo) &&
-        Objects.equal(managementService, that.managementService);
+    ApiDeployment that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(timestamp, that.getTimestamp()) &&
+        Objects.equal(clusters, that.getClusters()) &&
+        Objects.equal(hosts, that.getHosts()) &&
+        Objects.equal(versionInfo, that.getVersionInfo()) &&
+        Objects.equal(managementService, that.getManagementService()) &&
+        Objects.equal(managerSettings, that.getManagerSettings()) &&
+        Objects.equal(allHostsConfig, that.getAllHostsConfig()) &&
+        Objects.equal(peers, that.getPeers()));
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(timestamp, clusters, hosts,
-                            versionInfo, managementService);
+                            versionInfo, managementService,
+                            allHostsConfig, peers);
   }
 
   /**
    * Readonly. This timestamp is provided when you request a deployment and
-   * is not required (or even read) when creating a deployment. This 
+   * is not required (or even read) when creating a deployment. This
    * timestamp is useful if you have multiple deployments saved and
    * want to determine which one to use as a restore point.
    */
@@ -92,11 +97,9 @@ public class ApiDeployment {
 
   /**
    * List of clusters in the system including their services, roles and
-   * complete config values. 
+   * complete config values.
    */
   @XmlElementWrapper(name = "clusters")
-  @XmlElement(name = "cluster")
-  @JsonProperty(value = "clusters")
   public List<ApiCluster> getClusters() {
     return clusters;
   }
@@ -109,8 +112,6 @@ public class ApiDeployment {
    * List of hosts in the system
    */
   @XmlElementWrapper(name = "hosts")
-  @XmlElement(name = "host")
-  @JsonProperty(value = "hosts")
   public List<ApiHost> getHosts() {
     return hosts;
   }
@@ -123,8 +124,6 @@ public class ApiDeployment {
    * List of all users in the system
    */
   @XmlElementWrapper(name = "users")
-  @XmlElement(name = "user")
-  @JsonProperty(value = "users")
   public List<ApiUser> getUsers() {
     return users;
   }
@@ -149,6 +148,7 @@ public class ApiDeployment {
    * The full configuration of the Cloudera Manager management service
    * including all the management roles and their config values
    */
+  @XmlElement
   public ApiService getManagementService() {
     return managementService;
   }
@@ -156,4 +156,43 @@ public class ApiDeployment {
   public void setManagementService(ApiService managementService) {
     this.managementService = managementService;
   }
+
+  /**
+   * The full configuration of Cloudera Manager itself including licensing info
+   */
+  @XmlElement
+  public ApiConfigList getManagerSettings() {
+    return managerSettings;
+  }
+
+  public void setManagerSettings(ApiConfigList managerSettings) {
+    this.managerSettings = managerSettings;
+  }
+
+  /**
+   * Configuration parameters that apply to all hosts, unless overridden at
+   * the host level. Available since API v3.
+   */
+  @XmlElement
+  public ApiConfigList getAllHostsConfig() {
+    return allHostsConfig;
+  }
+
+  public void setAllHostsConfig(ApiConfigList allHostsConfig) {
+    this.allHostsConfig = allHostsConfig;
+  }
+
+  /**
+   * The list of peers configured in Cloudera Manager.
+   * Available since API v3.
+   */
+  @XmlElement
+  public List<ApiCmPeer> getPeers() {
+    return peers;
+  }
+
+  public void setPeers(List<ApiCmPeer> peers) {
+    this.peers = peers;
+  }
+
 }

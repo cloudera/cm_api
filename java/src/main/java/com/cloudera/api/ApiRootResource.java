@@ -18,6 +18,8 @@ package com.cloudera.api;
 import com.cloudera.api.v1.RootResourceV1;
 import com.cloudera.api.v2.RootResourceV2;
 import com.cloudera.api.v3.RootResourceV3;
+import com.cloudera.api.v4.RootResourceV4;
+import com.cloudera.api.v5.RootResourceV5;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -30,6 +32,8 @@ import javax.ws.rs.core.MediaType;
  * resources.
  */
 @Path("/")
+@Consumes({ MediaType.APPLICATION_JSON })
+@Produces({ MediaType.APPLICATION_JSON })
 public interface ApiRootResource {
 
   /**
@@ -39,7 +43,7 @@ public interface ApiRootResource {
   RootResourceV1 getRootV1();
 
   /**
-   * @return The v1 root resource.
+   * @return The v2 root resource.
    */
   @Path("/v2")
   RootResourceV2 getRootV2();
@@ -49,6 +53,18 @@ public interface ApiRootResource {
    */
   @Path("/v3")
   RootResourceV3 getRootV3();
+
+  /**
+   * @return The v4 root resource.
+   */
+  @Path("/v4")
+  RootResourceV4 getRootV4();
+
+  /**
+   * @return The v5 root resource.
+   */
+  @Path("/v5")
+  RootResourceV5 getRootV5();
 
   /**
    * Fetch the current API version supported by the server.

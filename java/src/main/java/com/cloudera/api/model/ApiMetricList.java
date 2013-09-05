@@ -15,15 +15,13 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * A list of ApiHost objects
+ * A list of ApiMetric objects
  */
 @XmlRootElement(name = "metricList")
 public class ApiMetricList extends ApiListBase<ApiMetric> {
@@ -36,8 +34,6 @@ public class ApiMetricList extends ApiListBase<ApiMetric> {
   }
 
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  @XmlElement(name = "metric")
-  @JsonProperty(value = ApiListBase.ITEMS_ATTR)
   public List<ApiMetric> getMetrics() {
     return values;
   }

@@ -16,6 +16,7 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.model.ApiCommand;
+import static com.cloudera.api.Parameters.COMMAND_ID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,9 +24,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -41,15 +40,12 @@ public interface CommandsResource {
    * Outside of that return object, there is no way to check the result
    * of a synchronous command.</p>
    *
-   * @param uriInfo The URI of the request.
    * @param commandId The command id.
    * @return Detailed command information.
    */
   @GET
   @Path("/{commandId}")
-  public ApiCommand readCommand(
-      @Context UriInfo uriInfo,
-      @PathParam(value = "commandId") long commandId);
+  public ApiCommand readCommand(@PathParam(COMMAND_ID) long commandId);
 
   /**
    * Abort a running command.
@@ -60,7 +56,6 @@ public interface CommandsResource {
   @Consumes()
   @POST
   @Path("/{commandId}/abort")
-  public ApiCommand abortCommand(
-      @PathParam(value = "commandId") long commandId);
+  public ApiCommand abortCommand(@PathParam(COMMAND_ID) long commandId);
 
 }

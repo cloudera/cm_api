@@ -16,10 +16,8 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
-
-// TODO: get rid of the following annotation when we upgrade to Jackson 1.9.
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -112,20 +110,14 @@ public class ApiConfig {
   }
 
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    ApiConfig other = (ApiConfig) o;
-    return Objects.equal(name, other.name) &&
+    ApiConfig other = ApiUtils.baseEquals(this, o);
+    return this == other || (other != null &&
+        Objects.equal(name, other.name) &&
         Objects.equal(value, other.value) &&
         Objects.equal(required, other.required) &&
         Objects.equal(defaultValue, other.defaultValue) &&
         Objects.equal(displayName, other.displayName) &&
-        Objects.equal(description, other.description);
+        Objects.equal(description, other.description));
   }
 
   public int hashCode() {
@@ -137,7 +129,6 @@ public class ApiConfig {
    * Readonly. Requires "full" view. The default value.
    */
   @XmlElement(name = "default")
-  @JsonProperty(value = "default")
   public String getDefaultValue() {
     return defaultValue;
   }
@@ -216,7 +207,6 @@ public class ApiConfig {
    * work.
    */
   @XmlElement
-  @JsonProperty(value = "required")
   public Boolean getRequired() {
     return required;
   }

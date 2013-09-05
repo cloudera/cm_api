@@ -15,14 +15,13 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Provides detailed information about a submitted command.
@@ -89,7 +88,12 @@ public class ApiCommand {
     this.parent = parent;
   }
 
+  @Override
   public String toString() {
+    return toStringHelper().toString();
+  }
+
+  protected Objects.ToStringHelper toStringHelper() {
     return Objects.toStringHelper(this)
         .add("id", id)
         .add("name", name)
@@ -101,8 +105,7 @@ public class ApiCommand {
         .add("serviceRef", serviceRef)
         .add("roleRef", roleRef)
         .add("hostRef", hostRef)
-        .add("parent", parent)
-        .toString();
+        .add("parent", parent);
   }
 
   /**
@@ -149,7 +152,6 @@ public class ApiCommand {
 
   /** Whether the command is currently active. */
   @XmlElement
-  @JsonProperty(value = "active")
   public boolean isActive() {
     return active;
   }
@@ -160,7 +162,6 @@ public class ApiCommand {
 
   /** If the command is finished, whether it was successful. */
   @XmlElement
-  @JsonProperty(value = "success")
   public Boolean getSuccess() {
     return success;
   }
@@ -252,4 +253,31 @@ public class ApiCommand {
   public void setChildren(ApiCommandList children) {
     this.children = children;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    ApiCommand that = ApiUtils.baseEquals(this, o);
+    return this == that || (that != null &&
+        Objects.equal(id, that.getId()) &&
+        Objects.equal(name, that.getName()) &&
+        Objects.equal(startTime, that.getStartTime()) &&
+        Objects.equal(endTime, that.getEndTime()) &&
+        Objects.equal(active, that.isActive()) &&
+        Objects.equal(success, that.getSuccess()) &&
+        Objects.equal(resultMessage, that.getResultMessage()) &&
+        Objects.equal(resultDataUrl, that.getResultDataUrl()) &&
+        Objects.equal(serviceRef, that.getServiceRef()) &&
+        Objects.equal(roleRef, that.getRoleRef()) &&
+        Objects.equal(hostRef, that.getHostRef()) &&
+        Objects.equal(clusterRef, that.getClusterRef()) &&
+        Objects.equal(parent, that.getParent()));
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id, name, startTime, endTime, active, success,
+        resultMessage, resultDataUrl, serviceRef, roleRef, hostRef, clusterRef,
+        parent);
+  }
+
 }

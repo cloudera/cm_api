@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "collectDiagnosticDataArgs")
 public class ApiCollectDiagnosticDataArguments {
 
+  private long bundleSizeBytes;
   private String startTime;
   private String endTime;
   private boolean includeInfoLog;
@@ -31,13 +32,28 @@ public class ApiCollectDiagnosticDataArguments {
   private String comments;
 
   /**
+   * The maximum approximate bundle size of the output file
+   */
+  public long getBundleSizeBytes() {
+    return bundleSizeBytes;
+  }
+
+  public void setBundleSize(long bundleSizeByte) {
+    this.bundleSizeBytes = bundleSizeByte;
+  }
+  
+  /**
+   * This parameter is ignored as of CM 4.5. 
+   * Use endTime and bundleSize instead.
    * The start time (in ISO 8601 format)
    * of the period to collection statistics for.
    */
+  @Deprecated
   public String getStartTime() {
     return startTime;
   }
 
+  @Deprecated
   public void setStartTime(String startTime) {
     this.startTime = startTime;
   }
@@ -55,13 +71,17 @@ public class ApiCollectDiagnosticDataArguments {
   }
 
   /**
+   * This parameter is ignored as of CM 4.5. 
+   * INFO logs are always collected.
    * Whether to include INFO level logs.
    * WARN, ERROR, and FATAL level logs are always included.
    */
+  @Deprecated
   public boolean isIncludeInfoLog() {
     return includeInfoLog;
   }
 
+  @Deprecated
   public void setIncludeInfoLog(boolean includeInfoLog) {
     this.includeInfoLog = includeInfoLog;
   }
