@@ -179,8 +179,6 @@ public class ApiHost {
   /**
    * Readonly. Requires "full" view.
    * The high-level health status of this host.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    */
   @XmlElement
   public ApiHealthSummary getHealthSummary() {
@@ -194,8 +192,6 @@ public class ApiHost {
   /**
    * Readonly. Requires "full" view.
    * The list of health checks performed on the host, with their results.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    */
   @XmlElement
   public List<ApiHealthCheck> getHealthChecks() {

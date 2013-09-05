@@ -135,8 +135,6 @@ public class ApiNameservice {
 
   /**
    * Requires "full" view. The high-level health status of this nameservice.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    */
   @XmlElement
   public ApiHealthSummary getHealthSummary() {
@@ -149,8 +147,6 @@ public class ApiNameservice {
 
   /**
    * Requires "full" view. List of health checks performed on the nameservice.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    */
   @XmlElement
   public List<ApiHealthCheck> getHealthChecks() {

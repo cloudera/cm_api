@@ -134,6 +134,8 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
    * @param serviceName The Hive service name.
    * @return Information about the submitted command.
    */
+  @POST
+  @Consumes()
   @Path("/{serviceName}/commands/hiveCreateHiveUserDir")
   public ApiCommand createHiveUserDirCommand(
       @PathParam(SERVICE_NAME) String serviceName);
@@ -230,7 +232,7 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
    * Available since API v4.
    *
    * @param hdfsServiceName The HDFS service name.
-   * @param nameService The (optional) HDFS nameservice.
+   * @param nameService The (optional) HDFS nameservice. Required for HA setup.
    * @param from The (optional) start time of the report. Default to 24 hours before "to" time.
    * @param to The (optional) end time of the report. Default to now.
    * @param aggregation The (optional) aggregation period for the data.

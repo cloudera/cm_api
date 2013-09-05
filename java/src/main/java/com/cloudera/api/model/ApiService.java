@@ -138,8 +138,6 @@ public class ApiService {
 
   /**
    * Readonly. The high-level health status of this service.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    */
   @XmlElement
   public ApiHealthSummary getHealthSummary() {
@@ -164,8 +162,6 @@ public class ApiService {
 
   /**
    * Readonly. The list of health checks of this service.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    */
   @XmlElement
   public List<ApiHealthCheck> getHealthChecks() {

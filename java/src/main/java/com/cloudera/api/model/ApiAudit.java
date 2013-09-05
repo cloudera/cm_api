@@ -32,32 +32,35 @@ import java.util.Date;
 @XmlRootElement(name = "audit")
 @XmlType(
     propOrder = {"timestamp", "service", "username", "impersonator",
-        "ipAddress", "command", "resource", "allowed"})
+        "ipAddress", "command", "resource", "operationText", "allowed"})
 public class ApiAudit {
   private String service;
-  private String userName;
+  private String username;
   private String impersonator;
   private String command;
   private String ipAddress;
   private String resource;
   private boolean allowed;
   private long timestamp;
+  private String operationText;
 
   public ApiAudit() {
     // For JAX-B
   }
 
-  public ApiAudit(String service, String userName, String impersonator,
-      String command, String ipAddress, String resource, boolean allowed,
-      Long timestamp) {
+  public ApiAudit(String service, String username,
+                  String impersonator, String command,
+                  String ipAddress, String resource, boolean allowed,
+                  Long timestamp, String operationText) {
     this.service = service;
-    this.userName = userName;
+    this.username = username;
     this.impersonator = impersonator;
     this.command = command;
     this.ipAddress = ipAddress;
     this.resource = resource;
     this.allowed = allowed;
     this.timestamp = timestamp;
+    this.operationText = operationText;
   }
 
   @Override
@@ -66,20 +69,24 @@ public class ApiAudit {
     return this == that || (that != null &&
         allowed == that.allowed &&
         timestamp == that.timestamp &&
-        Objects.equal(userName, that.userName) &&
+        Objects.equal(username, that.username) &&
         Objects.equal(impersonator, that.impersonator) &&
         Objects.equal(service, that.service) &&
         Objects.equal(command, that.command) &&
         Objects.equal(ipAddress, that.ipAddress) &&
-        Objects.equal(resource, that.resource));
+        Objects.equal(resource, that.resource) &&
+        Objects.equal(operationText, that.operationText));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(timestamp, userName, impersonator, service,
-        command, ipAddress, resource, allowed);
+    return Objects.hashCode(timestamp, username, impersonator, service,
+        command, ipAddress, resource, allowed, operationText);
   }
 
+  /**
+   * When the audit event was captured.
+   */
   @XmlElement
   public Date getTimestamp() {
     return ApiUtils.newDateFromMillis(timestamp);
@@ -89,6 +96,9 @@ public class ApiAudit {
     this.timestamp = timestamp;
   }
 
+  /**
+   * Service name associated with this audit.
+   */
   @XmlElement
   public String getService() {
     return service;
@@ -98,15 +108,23 @@ public class ApiAudit {
     this.service = service;
   }
 
+  /**
+   * The user who performed this operation.
+   */
   @XmlElement
   public String getUsername() {
-    return userName;
+    return username;
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUseruame(String userName) {
+    this.username = userName;
   }
 
+  /**
+   * The impersonating user (or the proxy user) who submitted this operation.
+   * This is usually applicable when using services like Oozie or Hue, who
+   * can be configured to impersonate other users and submit jobs.
+   */
   @XmlElement
   public String getImpersonator() {
     return impersonator;
@@ -116,6 +134,9 @@ public class ApiAudit {
     this.impersonator = impersonator;
   }
 
+  /**
+   * The IP address that the client connected from.
+   */
   @XmlElement
   public String getIpAddress() {
     return ipAddress;
@@ -125,6 +146,9 @@ public class ApiAudit {
     this.ipAddress = ipAddress;
   }
 
+  /**
+   * The command/operation that was requested.
+   */
   @XmlElement
   public String getCommand() {
     return command;
@@ -134,6 +158,9 @@ public class ApiAudit {
     this.command = command;
   }
 
+  /**
+   * The resource that the operation was performed on.
+   */
   @XmlElement
   public String getResource() {
     return resource;
@@ -143,6 +170,9 @@ public class ApiAudit {
     this.resource = resource;
   }
 
+  /**
+   * Whether the operation was allowed or denied by the authorization system.
+   */
   @XmlElement
   public boolean getAllowed() {
     return allowed;
@@ -152,4 +182,17 @@ public class ApiAudit {
     this.allowed = allowed;
   }
 
+  /**
+   * The full text of the requested operation. E.g. the full Hive query.
+   * <p>
+   * Available since API v5.
+   */
+  @XmlElement
+  public String getOperationText() {
+    return operationText;
+  }
+
+  public void setOperationText(String operationText) {
+    this.operationText = operationText;
+  }
 }

@@ -13,38 +13,27 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-package com.cloudera.api.v2;
-
-import com.cloudera.api.DataView;
-import com.cloudera.api.model.ApiService;
-import com.cloudera.api.model.ApiServiceConfig;
-import com.cloudera.api.v1.MgmtServiceResource;
+package com.cloudera.api.v5;
+import com.cloudera.api.model.ApiParcelUsage;
+import com.cloudera.api.v3.ParcelsResource;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import static com.cloudera.api.Parameters.DATA_VIEW;
-import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
-
-@Consumes({MediaType.APPLICATION_JSON})
-@Produces({MediaType.APPLICATION_JSON})
-public interface MgmtServiceResourceV2 extends MgmtServiceResource {
+@Consumes({ MediaType.APPLICATION_JSON })
+@Produces({ MediaType.APPLICATION_JSON })
+public interface ParcelsResourceV5 extends ParcelsResource {
 
   /**
-   * Retrieve information about the Cloudera Management Services.
-   *
-   * @return Details about the management service.
+   * Retrieve details parcel usage information for the cluster. This describes
+   * which processes, roles and hosts are using which parcels.
+   * 
+   * @return The parcel usage information.
    */
   @GET
-  @Path("/")
-  public ApiService readService(@QueryParam(DATA_VIEW)
-                                @DefaultValue(DATA_VIEW_DEFAULT)
-                                DataView dataView);
-
+  @Path("/usage")
+  public ApiParcelUsage getParcelUsage();
 }

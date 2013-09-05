@@ -1,19 +1,19 @@
 <enunciate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.25.xsd">
+           xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.27.xsd">
 
   <api-classes>
-    <include pattern="com.cloudera.api.v4.*"/>
+    <include pattern="com.cloudera.api.v5.*"/>
   </api-classes>
 
   <services>
-    <rest defaultRestSubcontext="/api/v4"/>
+    <rest defaultRestSubcontext="/api/v5"/>
   </services>
 
   <modules>
     <docs splashPackage="com.cloudera.api"
           copyright="Cloudera, Inc. All rights reserved."
           docsDir="apidocs"
-          title="Cloudera Manager API v4"
+          title="Cloudera Manager API v5"
           groupRestResources="byPath"
           freemarkerXMLProcessingTemplate="api-docs.fmt"
           css="static/cms/css/api-docs.css"
@@ -28,7 +28,8 @@
     <c disabled="true"/>
     <csharp disabled="true"/>
     <obj-c disabled="true"/>
-    <xml disabled="true"/>
+    <!-- The XML module must be enabled to generate the correct mount point. -->
+    <xml disabled="false"/>
   </modules>
 
 </enunciate>

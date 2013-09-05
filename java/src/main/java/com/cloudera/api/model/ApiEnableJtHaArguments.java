@@ -30,6 +30,9 @@ public class ApiEnableJtHaArguments {
   private String newJtHostId;
   private boolean forceInitZNode = true;
   private String zkServiceName;
+  private String newJtRoleName;
+  private String fc1RoleName;
+  private String fc2RoleName;
 
   /** Id of host on which second JobTracker role will be added. */
   @XmlElement
@@ -67,12 +70,49 @@ public class ApiEnableJtHaArguments {
     this.zkServiceName = zkServiceName;
   }
 
+  /** Name of the second JobTracker role to be created (Optional) */
+  @XmlElement
+  public String getNewJtRoleName() {
+    return newJtRoleName;
+  }
+
+  public void setNewJtRoleName(String newJtRoleName) {
+    this.newJtRoleName = newJtRoleName;
+  }
+
+  /** Name of first Failover Controller role to be created.
+   * This is the Failover Controller co-located with the current
+   * JobTracker (Optional) */
+  @XmlElement
+  public String getFc1RoleName() {
+    return fc1RoleName;
+  }
+
+  public void setFc1RoleName(String fc1RoleName) {
+    this.fc1RoleName = fc1RoleName;
+  }
+
+  /** Name of second Failover Controller role to be created.
+   * This is the Failover Controller co-located with the new
+   * JobTracker (Optional) */
+  @XmlElement
+  public String getFc2RoleName() {
+    return fc2RoleName;
+  }
+
+  public void setFc2RoleName(String fc2RoleName) {
+    this.fc2RoleName = fc2RoleName;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
                   .add("newJtHostId", newJtHostId)
                   .add("forceInitZnode", forceInitZNode)
                   .add("zkServiceName", zkServiceName)
+                  .add("newJtRoleName", newJtRoleName)
+                  .add("fc1RoleName", fc1RoleName)
+                  .add("fc2RoleName", fc2RoleName)
                   .toString();
   }
 
@@ -82,12 +122,16 @@ public class ApiEnableJtHaArguments {
     return this == other || (other != null &&
         Objects.equal(newJtHostId, other.getNewJtHostId()) &&
         Objects.equal(zkServiceName, other.getZkServiceName()) &&
-        (forceInitZNode == other.getForceInitZNode()));
+        (forceInitZNode == other.getForceInitZNode()) &&
+        Objects.equal(newJtRoleName, other.getNewJtRoleName()) &&
+        Objects.equal(fc1RoleName, other.getFc1RoleName()) &&
+        Objects.equal(fc2RoleName, other.getFc2RoleName()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(newJtHostId, forceInitZNode, zkServiceName);
+    return Objects.hashCode(newJtHostId, forceInitZNode, zkServiceName,
+        newJtRoleName, fc1RoleName, fc2RoleName);
   }
 
 }

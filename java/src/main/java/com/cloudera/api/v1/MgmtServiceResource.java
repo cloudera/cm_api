@@ -41,8 +41,6 @@ public interface MgmtServiceResource {
 
   /**
    * Retrieve information about the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return Details about the management service.
    */
@@ -52,8 +50,6 @@ public interface MgmtServiceResource {
 
   /**
    * Retrieve the configuration of the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
@@ -75,8 +71,6 @@ public interface MgmtServiceResource {
    * <p>
    * Attributes that are not listed in the input will maintain their
    * current values in the configuration.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param message Optional message describing the changes.
    * @param config Configuration changes.
@@ -90,8 +84,6 @@ public interface MgmtServiceResource {
 
   /**
    * List the supported role types for the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return List of role types the service supports.
    */
@@ -101,8 +93,6 @@ public interface MgmtServiceResource {
 
   /**
    * List active Cloudera Management Services commands.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
@@ -116,8 +106,6 @@ public interface MgmtServiceResource {
 
   /**
    * Start the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return A reference to the submitted command.
    */
@@ -128,8 +116,6 @@ public interface MgmtServiceResource {
 
   /**
    * Stop the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return A reference to the submitted command.
    */
@@ -140,8 +126,6 @@ public interface MgmtServiceResource {
 
   /**
    * Restart the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return A reference to the submitted command.
    */
@@ -178,8 +162,10 @@ public interface MgmtServiceResource {
    *   <li>ALERTPUBLISHER</li>
    *   <li>NAVIGATOR</li>
    * </ul>
+   *
    * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
+   * REPORTSMANAGER aand NAVIGATOR are only available with
+   * Cloudera Manager Enterprise Edition.
    *
    * @param service Role configurartion overrides.
    * @return ApiService The CMS information.
@@ -190,8 +176,6 @@ public interface MgmtServiceResource {
 
   /**
    * Return the management roles resource handler.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return The roles resource handler.
    */
@@ -200,8 +184,6 @@ public interface MgmtServiceResource {
 
   /**
    * Returns the management role commands resource handler.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return The roles command handler.
    */

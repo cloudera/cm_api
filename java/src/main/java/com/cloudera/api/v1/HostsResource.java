@@ -183,8 +183,6 @@ public interface HostsResource {
    * <p>
    * In the returned data, the network interfaces and storage IDs can be
    * identified by looking at the "context" property of the metric objects.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param hostId The host's ID.
    * @param from Start of the period to query.

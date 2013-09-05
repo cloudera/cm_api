@@ -13,38 +13,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package com.cloudera.api.v5;
 
-package com.cloudera.api.v2;
+import static com.cloudera.api.Parameters.CLUSTER_NAME;
 
-import com.cloudera.api.DataView;
-import com.cloudera.api.model.ApiService;
-import com.cloudera.api.model.ApiServiceConfig;
-import com.cloudera.api.v1.MgmtServiceResource;
+import com.cloudera.api.v4.ClustersResourceV4;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import static com.cloudera.api.Parameters.DATA_VIEW;
-import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
-
-@Consumes({MediaType.APPLICATION_JSON})
-@Produces({MediaType.APPLICATION_JSON})
-public interface MgmtServiceResourceV2 extends MgmtServiceResource {
+/**
+ * The root of the Cloudera API (v5). Provides access to all sub-resources
+ * available in version 5 of the API.
+ */
+@Consumes({ MediaType.APPLICATION_JSON })
+@Produces({ MediaType.APPLICATION_JSON })
+public interface ClustersResourceV5 extends ClustersResourceV4 {
 
   /**
-   * Retrieve information about the Cloudera Management Services.
-   *
-   * @return Details about the management service.
+   * @return the parcels resource handler.
    */
-  @GET
-  @Path("/")
-  public ApiService readService(@QueryParam(DATA_VIEW)
-                                @DefaultValue(DATA_VIEW_DEFAULT)
-                                DataView dataView);
-
+  @Override
+  @Path("/{clusterName}/parcels")
+  public ParcelsResourceV5 getParcelsResource(
+      @PathParam(CLUSTER_NAME) String clusterName);
 }

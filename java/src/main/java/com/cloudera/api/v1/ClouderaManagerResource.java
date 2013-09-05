@@ -137,8 +137,6 @@ public interface ClouderaManagerResource {
 
   /**
    * Return the Cloudera Management Services resource.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return The Cloudera Management Services resource.
    */

@@ -44,8 +44,6 @@ public interface MgmtRolesResource {
 
   /**
    * Create new roles in the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param roles Roles to create.
    * @return List of created roles.
@@ -56,8 +54,6 @@ public interface MgmtRolesResource {
 
   /**
    * Delete a role from the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param roleName The role name.
    * @return The details of the deleted role.
@@ -69,8 +65,6 @@ public interface MgmtRolesResource {
 
   /**
    * List all roles of the Cloudera Management Services.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return List of roles.
    */
@@ -80,8 +74,6 @@ public interface MgmtRolesResource {
 
   /**
    * Retrieve detailed information about a Cloudera Management Services role.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param roleName The role name.
    * @return The details of the role.
@@ -93,8 +85,6 @@ public interface MgmtRolesResource {
 
   /**
    * Retrieve the configuration of a specific Cloudera Management Services role.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param roleName The role to look up.
    * @param dataView The view of the data to materialize,
@@ -118,8 +108,6 @@ public interface MgmtRolesResource {
    * <p>
    * Attributes that are not listed in the input will maintain their
    * current values in the configuration.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param roleName The role to modify.
    * @param message Optional message describing the changes.
@@ -135,8 +123,6 @@ public interface MgmtRolesResource {
 
   /**
    * List active role commands.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param roleName The role name.
    * @param dataView The view of the data to materialize,

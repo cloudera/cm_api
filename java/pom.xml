@@ -5,7 +5,7 @@
   <groupId>com.cloudera.api</groupId>
   <artifactId>cloudera-manager-api</artifactId>
   <name>Cloudera Manager API</name>
-  <version>4.6.0</version>
+  <version>4.7.0</version>
 
   <properties>
     <cxf.version>2.5.5</cxf.version>
@@ -40,7 +40,7 @@
           <plugin>
             <groupId>org.codehaus.enunciate</groupId>
             <artifactId>maven-enunciate-cxf-plugin</artifactId>
-            <version>1.25</version>
+            <version>1.27</version>
             <configuration>
               <configFile>enunciate.xml</configFile>
               <docsDir>${project.build.directory}/classes/restapi</docsDir>
@@ -77,7 +77,7 @@
           <plugin>
             <groupId>org.codehaus.enunciate</groupId>
             <artifactId>maven-enunciate-cxf-plugin</artifactId>
-            <version>1.25</version>
+            <version>1.27</version>
             <configuration>
               <configFile>enunciate.xml</configFile>
               <docsDir>${project.build.directory}/classes/restapi</docsDir>
@@ -152,6 +152,18 @@
           <windowtitle>Cloudera Manager API (${project.version})</windowtitle>
           <bottom>Copyright &#169; Cloudera, Inc. Released under Apache License, Version 2.0.</bottom>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

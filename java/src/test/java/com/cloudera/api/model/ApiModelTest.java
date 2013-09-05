@@ -436,11 +436,13 @@ public class ApiModelTest {
                                   "1.2.3.4",
                                   "resource",
                                   true,
-                                  250912898047L);
+                                  250912898047L,
+                                  "select foo from bar");
     checkJsonXMLEncoding(audit.getClass(), audit);
     checkJsonProperties(audit,
                         "timestamp", "service", "username", "impersonator",
-                        "ipAddress", "command", "resource", "allowed");
+                        "ipAddress", "command", "resource", "allowed",
+                        "operationText");
   }
 
   @Test

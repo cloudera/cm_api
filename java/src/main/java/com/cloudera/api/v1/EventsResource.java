@@ -82,8 +82,6 @@ public interface EventsResource {
    *    <em>=ge=</em>, and <em>=gt=</em>. They stand for "&lt;", "&lt;=",
    *    "&gt;=", "&gt;" respectively. These comparators are only applicable
    *    for date time fields.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @return The results of the query
    */
@@ -98,8 +96,6 @@ public interface EventsResource {
 
   /**
    * Returns a specific event in the system
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param eventUUID The UUID of the event to read
    * @return The Event object with the specified UUID

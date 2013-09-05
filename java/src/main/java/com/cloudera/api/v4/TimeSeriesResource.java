@@ -40,11 +40,9 @@ public interface TimeSeriesResource {
    * Retrieve time-series data from the Cloudera Manager (CM) time-series
    * data store using a tsquery.
    * <p>
-   * Please see the Cloudera Manager User Guide at
-   * <a href="http://www.cloudera.com/content/support/en/documentation.html">
-   * Cloudera Documentation</a> for a description of "The Tsquery Language"
-   * and tsquery examples.
-   * <p/>
+   * Please see the
+   * <a href="http://tiny.cloudera.com/tsquery_doc">
+   * tsquery language documentation</a>.<p/>
    * Available since API v4.
    *
    * @param query Tsquery to run against the CM time-series data store.

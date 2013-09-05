@@ -15,8 +15,6 @@
 // limitations under the License.
 package com.cloudera.api.v1;
 
-import com.cloudera.api.Enterprise;
-
 import javax.ws.rs.Path;
 
 /**

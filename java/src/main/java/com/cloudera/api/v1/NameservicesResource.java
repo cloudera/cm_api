@@ -81,8 +81,6 @@ public interface NameservicesResource {
    * returned metric data, the collection will also contain information about
    * all metrics available, even if no readings are available in the requested
    * window.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param nameservice The nameservice.
    * @param from Start of the period to query.

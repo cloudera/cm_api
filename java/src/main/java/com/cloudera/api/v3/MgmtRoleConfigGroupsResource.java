@@ -45,8 +45,7 @@ public interface MgmtRoleConfigGroupsResource {
    * the Cloudera Management Services.
    * <p>
    * Available since API v3.
-   * Only available with Cloudera Manager Enterprise Edition.
-   * 
+   *
    * @return The list of role config groups for the given service.
    */  
   @GET
@@ -58,8 +57,7 @@ public interface MgmtRoleConfigGroupsResource {
    * in the Cloudera Management Services.
    * <p>
    * Available since API v3.
-   * Only available with Cloudera Manager Enterprise Edition.
-   * 
+   *
    * @param roleConfigGroupName The name of the requested group.
    * @return The requested role config group.
    */
@@ -72,8 +70,7 @@ public interface MgmtRoleConfigGroupsResource {
    * Updates an existing role config group in the Cloudera Management Services.
    * <p>
    * Available since API v3.
-   * Only available with Cloudera Manager Enterprise Edition.
-   * 
+   *
    * @param roleConfigGroupName The name of the group to update.
    * @param roleConfigGroup The updated role config group.
    * @param message The optional message describing the changes.
@@ -91,8 +88,7 @@ public interface MgmtRoleConfigGroupsResource {
    * in the Cloudera Management Services.
    * <p>
    * Available since API v3.
-   * Only available with Cloudera Manager Enterprise Edition.
-   * 
+   *
    * @param roleConfigGroupName The name of the role config group.
    * @return The roles in the role config group.
    */
@@ -106,8 +102,7 @@ public interface MgmtRoleConfigGroupsResource {
    * for the specified role config group in the Cloudera Management Services.
    * <p>
    * Available since API v3.
-   * Only available with Cloudera Manager Enterprise Edition.
-   * 
+   *
    * @param roleConfigGroupName The name of the role config group.
    * @param dataView The view of the data to materialize,
    *                  either "summary" or "full".
@@ -125,8 +120,7 @@ public interface MgmtRoleConfigGroupsResource {
    * in the Cloudera Management Services.
    * <p>
    * Available since API v3.
-   * Only available with Cloudera Manager Enterprise Edition.
-   * 
+   *
    * @param roleConfigGroupName The name of the role config group.
    * @param message Optional message describing the changes.
    * @param config The new config information for the group.

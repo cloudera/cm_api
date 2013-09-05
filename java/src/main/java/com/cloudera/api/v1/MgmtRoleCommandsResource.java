@@ -31,8 +31,6 @@ public interface MgmtRoleCommandsResource {
 
   /**
    * Start a set of Cloudera Management Services roles.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param roleNames The roles to start.
    * @return A list of submitted commands (summary view).
@@ -45,8 +43,6 @@ public interface MgmtRoleCommandsResource {
 
   /**
    * Stop a set of Cloudera Management Services roles.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param rolesNames The roles to stop.
    * @return A list of submitted commands (summary view).
@@ -59,8 +55,6 @@ public interface MgmtRoleCommandsResource {
 
   /**
    * Restart a set of Cloudera Management Services roles.
-   * <p/>
-   * Only available with Cloudera Manager Enterprise Edition.
    *
    * @param roleNames The roles to restart.
    * @return A list of submitted commands (summary view).
