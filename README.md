@@ -27,5 +27,9 @@ Style Guide
   Do not use the Markdown block indentation with highlighting.
 - Use a TOC for long pages. If the last section header is below the fold, it's a
   long page.
-- Render locally to preview your page. See the GitHub Jekyll
+- Render locally to preview your page:
+
+      jekyll serve --watch --baseurl=/cm_api
+
+  Also See the GitHub Jekyll
   [guide](https://help.github.com/articles/using-jekyll-with-pages) for more.
