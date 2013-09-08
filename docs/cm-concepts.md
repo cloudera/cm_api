@@ -77,7 +77,7 @@ time) for configuration purpose. When you update the configuration of a role
 group, all the members of that group get the new configuration.
 
 For example, suppose a group called _Datanode-beefy-group_ has 2 members:
-_DN_host1_ and _DN_host2_. If you change the heap size on the group, both member
+_DN-host1_ and _DN-host2_. If you change the heap size on the group, both member
 DataNodes will inherit that new heap size.
 
 The main purpose of role configuration group is to handle heterogeneous hardware.
