@@ -171,16 +171,18 @@ class ClouderaManager(BaseApiObject):
     }
     return self._cmd('collectDiagnosticData', data=json.dumps(args))
 
-  def collect_diagnostic_data_45(self, end_datetime, bundle_size_bytes):
+  def collect_diagnostic_data_45(self, end_datetime, bundle_size_bytes, cluster_name=None):
     """
     Issue the command to collect diagnostic data.
 
     @param end_datetime: The end of the collection period. Type datetime.
     @param bundle_size_bytes: The target size for the support bundle in bytes
+    @param cluster_name: The cluster to collect or None for all clusters
     """
     args = {
         'endTime': end_datetime.isoformat(),
-        'bundleSizeBytes': bundle_size_bytes
+        'bundleSizeBytes': bundle_size_bytes,
+        'clusterName': cluster_name
     }
     return self._cmd('collectDiagnosticData', data=json.dumps(args))
 
