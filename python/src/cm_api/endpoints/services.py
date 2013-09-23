@@ -1024,6 +1024,40 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('hiveUpdateMetastoreNamenodes', api_version=4)
 
+  def import_mr_configs_into_yarn(self):
+    """
+    Import MapReduce configuration into Yarn, overwriting Yarn configuration.
+
+    You will lose existing Yarn configuration. Read all MapReduce
+    configuration, role assignments, and role configuration groups and update
+    Yarn with corresponding values. MR1 configuration will be converted into
+    the equivalent MR2 configuration.
+
+    Before running this command, Yarn must be stopped and MapReduce must exist
+    with valid configuration.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('importMrConfigsIntoYarn', api_version=6)
+
+  def switch_to_mr2(self):
+    """
+    Change the cluster to use MR2 instead of MR1. Services will be restarted.
+
+    Will perform the following steps:
+    * Update all services that depend on MapReduce to instead depend on Yarn.
+    * Stop MapReduce
+    * Start Yarn (includes MR2)
+    * Deploy Yarn (MR2) Client Configuration
+
+    Available since API v6.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('switchToMr2', api_version=6)
+
 class ApiServiceSetupInfo(ApiService):
   _ATTRIBUTES = {
     'name'    : None,
