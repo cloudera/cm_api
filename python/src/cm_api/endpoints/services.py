@@ -971,6 +971,83 @@ class ApiService(BaseApiResource):
         params=dict(dryRun=dry_run),
         api_version=3)
 
+  def create_snapshot_policy(self, policy):
+    """
+    Create a new snapshot policy for this service.
+    @param policy: The snapshot policy to create
+    @return: The newly created policy.
+    @since: API v6
+    """
+    return self._post("snapshots/policies", ApiSnapshotPolicy, True, [policy],
+        api_version=6)[0]
+
+  def get_snapshot_policies(self, view=None):
+    """
+    Retrieve a list of snapshot policies.
+
+    @param view: View to materialize. Valid values are 'full', 'summary', 'export', 'export_redacted'.
+    @return: A list of snapshot policies.
+    @since: API v6
+    """
+    return self._get("snapshots/policies", ApiSnapshotPolicy, True,
+        params=view and dict(view=view) or None, api_version=6)
+
+  def get_snapshot_policy(self, name, view=None):
+    """
+    Retrieve a single snapshot policy.
+
+    @param name: The name of the snapshot policy to retrieve.
+    @param view: View to materialize. Valid values are 'full', 'summary', 'export', 'export_redacted'.
+    @return: The requested snapshot policy.
+    @since: API v6
+    """
+    return self._get("snapshots/policies/%s" % name, ApiSnapshotPolicy,
+        params=view and dict(view=view) or None, api_version=6)
+
+  def delete_snapshot_policy(self, name):
+    """
+    Delete a snapshot policy.
+
+    @param name: The name of the snapshot policy to delete.
+    @return: The deleted snapshot policy.
+    @since: API v6
+    """
+    return self._delete("snapshots/policies/%s" % name, ApiSnapshotPolicy, api_version=6)
+
+  def update_snapshot_policy(self, name, policy):
+    """
+    Update a snapshot policy.
+
+    @param name: The name of the snapshot policy to update.
+    @param policy: The modified snapshot policy.
+    @return: The updated snapshot policy.
+    @since: API v6
+    """
+    return self._put("snapshots/policies/%s" % name, ApiSnapshotPolicy, data=policy,
+        api_version=6)
+
+  def get_snapshot_command_history(self, name, limit=20, offset=0, view=None):
+    """
+    Retrieve a list of commands triggered by a snapshot policy.
+
+    @param name: The name of the snapshot policy.
+    @param limit: Maximum number of commands to retrieve.
+    @param offset: Index of first command to retrieve.
+    @param view: View to materialize. Valid values are 'full', 'summary', 'export', 'export_redacted'.
+    @return: List of commands triggered by a snapshot policy.
+    @since: API v6
+    """
+    params = {
+      'limit':  limit,
+      'offset': offset,
+    }
+    if view:
+      params['view'] = view
+ 
+    return self._get("snapshots/policies/%s/history" % name, ApiSnapshotCommand, True,
+        params=params, api_version=6)
+
+
   def install_oozie_sharelib(self):
     """
     Installs the Oozie ShareLib. Oozie must be stopped before running this

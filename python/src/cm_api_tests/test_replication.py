@@ -203,7 +203,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEquals("pwd", peer.password)
 
   def _parse_time(self, tstr):
-    return datetime.datetime.strptime(tstr, "%Y-%m-%dT%H:%M:%S.%fZ")
+    return datetime.datetime.strptime(tstr, Attr.DATE_FMT)
 
 
 class TestReplicationRequests(unittest.TestCase):
