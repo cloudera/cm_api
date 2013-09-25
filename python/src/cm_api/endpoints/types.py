@@ -729,6 +729,159 @@ class ApiReplicationSchedule(BaseApiObject):
     'history'         : ROAttr(ApiReplicationCommand),
   }
 
+class ApiHBaseSnapshotPolicyArguments(BaseApiObject):
+  _ATTRIBUTES = {
+    'tableRegExps' : None,
+  }
+
+class ApiHdfsSnapshotPolicyArguments(BaseApiObject):
+  _ATTRIBUTES = {
+    'pathPatterns' : None,
+  }
+
+class ApiHBaseSnapshot(BaseApiObject):
+  _ATTRIBUTES = {
+    'snapshotName'  : None,
+    'tableName'     : None,
+    'creationTime'  : ROAttr(datetime.datetime),
+  }
+
+class ApiHBaseSnapshotError(BaseApiObject):
+  _ATTRIBUTES = {
+    'tableName'     : ROAttr(),
+    'snapshotName'  : ROAttr(),
+    'error'         : ROAttr(),
+  }
+
+class ApiHdfsSnapshot(BaseApiObject):
+  _ATTRIBUTES = {
+    'path'          : None,
+    'snapshotName'  : None,
+    'snapshotPath'  : ROAttr(),
+    'creationTime'  : ROAttr(datetime.datetime),
+  }
+
+class ApiHdfsSnapshotError(BaseApiObject):
+  _ATTRIBUTES = {
+    'path'          : ROAttr(),
+    'snapshotName'  : ROAttr(),
+    'snapshotPath'  : ROAttr(),
+    'error'         : ROAttr(),
+  }
+
+class ApiHBaseSnapshotResult(BaseApiObject):
+  _ATTRIBUTES = {
+    'processedTableCount'       : ROAttr(),
+    'processedTables'           : ROAttr(),
+    'unprocessedTableCount'     : ROAttr(),
+    'unprocessedTables'         : ROAttr(),
+    'createdSnapshotCount'      : ROAttr(),
+    'createdSnapshots'          : ROAttr(ApiHBaseSnapshot),
+    'deletedSnapshotCount'      : ROAttr(),
+    'deletedSnapshots'          : ROAttr(ApiHBaseSnapshot),
+    'creationErrorCount'        : ROAttr(),
+    'creationErrors'            : ROAttr(ApiHBaseSnapshotError),
+    'deletionErrorCount'        : ROAttr(),
+    'deletionErrors'            : ROAttr(ApiHBaseSnapshotError),
+  }
+
+class ApiHdfsSnapshotResult(BaseApiObject):
+  _ATTRIBUTES = {
+    'processedPathCount'       : ROAttr(),
+    'processedPaths'           : ROAttr(),
+    'unprocessedPathCount'     : ROAttr(),
+    'unprocessedPaths'         : ROAttr(),
+    'createdSnapshotCount'     : ROAttr(),
+    'createdSnapshots'         : ROAttr(ApiHdfsSnapshot),
+    'deletedSnapshotCount'     : ROAttr(),
+    'deletedSnapshots'         : ROAttr(ApiHdfsSnapshot),
+    'creationErrorCount'       : ROAttr(),
+    'creationErrors'           : ROAttr(ApiHdfsSnapshotError),
+    'deletionErrorCount'       : ROAttr(),
+    'deletionErrors'           : ROAttr(ApiHdfsSnapshotError),
+  }
+
+class ApiSnapshotCommand(BaseApiObject):
+  @classmethod
+  def _get_attributes(cls):
+    if not cls.__dict__.has_key('_ATTRIBUTES'):
+      attrs = {
+        'hdfsResult'   : ROAttr(ApiHdfsSnapshotResult),
+        'hbaseResult'  : ROAttr(ApiHBaseSnapshotResult),
+      }
+      attrs.update(ApiCommand._get_attributes())
+      cls._ATTRIBUTES = attrs
+    return cls._ATTRIBUTES
+
+class ApiSnapshotPolicy(BaseApiObject):
+  """
+  @type name: str
+  @ivar name: Name of the snapshot policy.
+  @type description: str
+  @ivar description: Description of the snapshot policy.
+  @type hourly_snapshots: int
+  @ivar hourly_snapshots: Number of hourly snapshots to be retained (default: 0).
+  @type daily_snapshots: int
+  @ivar daily_snapshots: Number of daily snapshots to be retained (default: 0).
+  @type weekly_snapshots: int
+  @ivar weekly_snapshots: Number of weekly snapshots to be retained (default: 0).
+  @type monthly_snapshots: int
+  @ivar monthly_snapshots: Number of monthly snapshots to be retained (default: 0).
+  @type yearly_snapshots: int
+  @ivar yearly_snapshots: Number of yearly snapshots to be retained (default: 0).
+  @type hours_for_hourly_snapshots: list of int
+  @ivar hours_for_hourly_snapshots: Hours of the day that hourly snapshots should be created.
+         Valid values are 0 to 23. If this list is empty, then hourly snapshots are
+         created for every hour.
+  @type minute_of_hour: int
+  @ivar minute_of_hour: Minute in the hour that hourly, daily, weekly, monthly and yearly
+         snapshots should be created. Valid values are 0 to 59 (default: 0).
+  @type hour_of_day: int
+  @ivar hour_of_day: Hour in the day that daily, weekly, monthly and yearly snapshots should be created.
+        Valid values are 0 to 23 (default: 0).
+  @type day_of_week: int
+  @ivar day_of_week: Day of the week that weekly snapshots should be created.
+         Valid values are 1 to 7, 1 representing Sunday (default: 1).
+  @type day_of_month: int
+  @ivar day_of_month: Day of the month that monthly and yearly snapshots should be created.
+         Values from 1 to 31 are allowed. Additionally 0 to -30 can be used to
+         specify offsets from the last day of the month (default: 1).
+  @type month_of_year: int
+  @ivar month_of_year: Month of the year that yearly snapshots should be created.
+         Valid values are 1 to 12, 1 representing January (default: 1).
+  @ivar alert_on_start: whether to generate alerts on start of snapshot creation/deletion activity.
+  @ivar alert_on_success: whether to generate alerts on successful completion of snapshot creation/deletion activity.
+  @ivar alert_on_fail: whether to generate alerts on failure of snapshot creation/deletion activity.
+  @ivar alert_on_abort: whether to generate alerts on abort of snapshot creation/deletion activity.
+  @type hbaseArguments: ApiHBaseSnapshotPolicyArguments
+  @ivar hbaseArguments: HBase specific arguments for the replication job.
+  @type hdfsArguments: ApiHdfsSnapshotPolicyArguments
+  @ivar hdfsArguments: HDFS specific arguments for the replication job.
+  """
+  _ATTRIBUTES = {
+    'name'                    : None,
+    'description'             : None,
+    'hourlySnapshots'         : None,
+    'dailySnapshots'          : None,
+    'weeklySnapshots'         : None,
+    'monthlySnapshots'        : None,
+    'yearlySnapshots'         : None,
+    'minuteOfHour'            : None,
+    'hourOfDay'               : None,
+    'dayOfWeek'               : None,
+    'dayOfMonth'              : None,
+    'monthOfYear'             : None,
+    'hoursForHourlySnapshots' : None,
+    'alertOnStart'            : None,
+    'alertOnSuccess'          : None,
+    'alertOnFail'             : None,
+    'alertOnAbort'            : None,
+    'hbaseArguments'          : Attr(ApiHBaseSnapshotPolicyArguments),
+    'hdfsArguments'           : Attr(ApiHdfsSnapshotPolicyArguments),
+    'lastCommand'             : ROAttr(ApiSnapshotCommand),
+    'lastSuccessfulCommand'   : ROAttr(ApiSnapshotCommand),
+  }
+
 #
 # Batch.
 #
