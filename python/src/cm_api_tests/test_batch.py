@@ -36,5 +36,6 @@ class TestBatch(unittest.TestCase):
                     retdata={ 'success' : False, 'items' : [] })
     ret = batch.do_batch(resource, elems)
     self.assertIsInstance(ret, ApiBatchResponseList)
+    self.assertIsInstance(ret.success, bool)
     self.assertFalse(ret.success)
     self.assertEquals(0, len(ret))
