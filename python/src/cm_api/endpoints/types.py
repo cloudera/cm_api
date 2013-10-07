@@ -19,6 +19,7 @@ try:
 except ImportError:
   import simplejson as json
 
+import copy
 import datetime
 import time
 
@@ -408,10 +409,16 @@ class ApiList(BaseApiObject):
     if not member_cls:
       member_cls = cls._MEMBER_CLASS
     attr = Attr(atype=member_cls)
-    json_list = dic[ApiList.LIST_KEY]
-    objects = [ attr.from_json(resource_root, x) for x in json_list ]
-    return cls(objects)
-
+    items = []
+    if ApiList.LIST_KEY in dic:
+      items = [ attr.from_json(resource_root, x) for x in dic[ApiList.LIST_KEY] ]
+    ret = cls(items)
+    if hasattr(cls, '_ATTRIBUTES'):
+      if ApiList.LIST_KEY in dic:
+        dic = copy.copy(dic)
+        del dic[ApiList.LIST_KEY]
+      ret._set_attrs(dic, allow_ro=True)
+    return ret
 
 class ApiHostRef(BaseApiObject):
   _ATTRIBUTES = {
