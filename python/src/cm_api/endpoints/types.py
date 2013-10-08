@@ -416,6 +416,10 @@ class ApiList(BaseApiObject):
     if ApiList.LIST_KEY in dic:
       items = [ attr.from_json(resource_root, x) for x in dic[ApiList.LIST_KEY] ]
     ret = cls(items)
+    # If the class declares custom attributes, populate them based on the input
+    # dict. The check avoids extra overhead for the common case, where we just
+    # have a plain list. _set_attrs() also does not understand the "items"
+    # attribute, so it can't be in the input data.
     if hasattr(cls, '_ATTRIBUTES'):
       if ApiList.LIST_KEY in dic:
         dic = copy.copy(dic)
