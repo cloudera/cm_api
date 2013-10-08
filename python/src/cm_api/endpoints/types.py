@@ -364,8 +364,11 @@ class BaseApiResource(BaseApiObject):
 
   def _call(self, method, rel_path, ret_type, ret_is_list=False, data=None,
       params=None, api_version=1):
+    path = self._path()
+    if rel_path:
+      path += '/' + rel_path
     return call(getattr(self._get_resource_root(), method),
-        self._path() + '/' + rel_path,
+        path,
         ret_type,
         ret_is_list,
         data,
