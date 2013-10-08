@@ -86,7 +86,7 @@ class ApiUser(BaseApiResource):
 
     @return: An ApiUser object
     """
-    apiuser = ApiUser(resource_root, username, roles=['ROLE_ADMIN'])
+    apiuser = ApiUser(self._get_resource_root(), self.name, roles=['ROLE_ADMIN'])
     return self._put('', ApiUser, data=apiuser)
 
   def revoke_admin_role(self):
@@ -96,5 +96,5 @@ class ApiUser(BaseApiResource):
 
     @return: An ApiUser object
     """
-    apiuser = ApiUser(resource_root, username, roles=[])
+    apiuser = ApiUser(self._get_resource_root(), self.name, roles=[])
     return self._put('', ApiUser, data=apiuser)
