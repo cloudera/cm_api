@@ -420,7 +420,7 @@ class ApiList(BaseApiObject):
     # dict. The check avoids extra overhead for the common case, where we just
     # have a plain list. _set_attrs() also does not understand the "items"
     # attribute, so it can't be in the input data.
-    if hasattr(cls, '_ATTRIBUTES'):
+    if cls._ATTRIBUTES:
       if ApiList.LIST_KEY in dic:
         dic = copy.copy(dic)
         del dic[ApiList.LIST_KEY]
@@ -567,6 +567,12 @@ class ApiCommand(BaseApiObject):
     path = self._path() + '/abort'
     resp = self._get_resource_root().post(path)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
+
+class ApiBulkCommandList(ApiList):
+  _ATTRIBUTES = {
+    'errors' : ROAttr(),
+  }
+  _MEMBER_CLASS = ApiCommand
 
 #
 # Metrics.

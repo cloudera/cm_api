@@ -22,11 +22,26 @@ from cm_api_tests import utils
 
 class TestService(unittest.TestCase):
 
-  def test_create_hdfs_tmp(self):
-    resource = utils.MockResource(self)
-    service = ApiService(resource, 'hdfs1', 'HDFS')
-    service.__dict__['clusterRef'] = ApiClusterRef(resource, clusterName='cluster1')
+  def __init__(self, methodName):
+    unittest.TestCase.__init__(self, methodName)
+    self.resource = utils.MockResource(self)
+    self.service = ApiService(self.resource, 'hdfs1', 'HDFS')
+    self.service.__dict__['clusterRef'] = \
+        ApiClusterRef(self.resource, clusterName='cluster1')
 
-    resource.expect("POST", "/clusters/cluster1/services/hdfs1/commands/hdfsCreateTmpDir",
-        retdata=ApiCommand(resource).to_json_dict())
-    service.create_hdfs_tmp()
+  def test_create_hdfs_tmp(self):
+    self.resource.expect("POST", "/clusters/cluster1/services/hdfs1/commands/hdfsCreateTmpDir",
+        retdata=ApiCommand(self.resource).to_json_dict())
+    self.service.create_hdfs_tmp()
+
+  def test_role_cmd(self):
+    args = ['role1', 'role2']
+    expected = ApiBulkCommandList([ApiCommand(self.resource)])
+    expected.__dict__['errors'] = [ 'err1', 'err2' ]
+
+    self.resource.expect("POST", "/clusters/cluster1/services/hdfs1/roleCommands/start",
+        data=ApiList(args),
+        retdata=expected.to_json_dict(True))
+    ret = self.service.start_roles(*args)
+    self.assertEqual(1, len(ret))
+    self.assertEqual(expected.errors, ret.errors)

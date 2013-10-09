@@ -120,7 +120,7 @@ class ApiService(BaseApiResource):
       return '/cm/service'
 
   def _role_cmd(self, cmd, roles, api_version=1):
-    return self._post("roleCommands/" + cmd, ApiCommand, True,
+    return self._post("roleCommands/" + cmd, ApiBulkCommandList,
         data=roles, api_version=api_version)
 
   def _parse_svc_config(self, json_dic, view = None):
@@ -1043,7 +1043,7 @@ class ApiService(BaseApiResource):
     }
     if view:
       params['view'] = view
- 
+
     return self._get("snapshots/policies/%s/history" % name, ApiSnapshotCommand, True,
         params=params, api_version=6)
 

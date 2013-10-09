@@ -29,7 +29,8 @@ def query_events(resource_root, query_str=None):
   params = None
   if query_str:
     params = dict(query=query_str)
-  return call(resource_root.get, EVENTS_PATH, ApiEvent, True, params=params)
+  return call(resource_root.get, EVENTS_PATH, ApiEventQueryResult,
+      params=params)
 
 def get_event(resource_root, event_id):
   """
@@ -51,3 +52,9 @@ class ApiEvent(BaseApiObject):
     'alert'         : ROAttr(),
     'attributes'    : ROAttr(),
   }
+
+class ApiEventQueryResult(ApiList):
+  _ATTRIBUTES = {
+    'totalResults' : ROAttr(),
+  }
+  _MEMBER_CLASS = ApiEvent
