@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 from cm_api.endpoints.types import *
 
 __docformat__ = "epytext"
@@ -109,7 +110,7 @@ def apply_host_template(resource_root, name, cluster_name, host_ids, start_roles
       ApiCommand, data=host_refs, params=params, api_version=3)
 
 
-class ApiHostTemplate(BaseApiObject):
+class ApiHostTemplate(BaseApiResource):
   _ATTRIBUTES = {
     'name'                : None,
     'roleConfigGroupRefs' : Attr(ApiRoleConfigGroupRef),
@@ -128,9 +129,8 @@ class ApiHostTemplate(BaseApiObject):
   def _path(self):
     return HOST_TEMPLATE_PATH % (self.clusterRef.clusterName, self.name)
 
-  def _put(self, dic):
-    host_template = self._put('', ApiHostTemplate, data=self)
-    self._update(host_template)
+  def _do_update(self, update):
+    self._update(self._put('', ApiHostTemplate, data=update))
     return self
 
   def rename(self, new_name):
@@ -139,9 +139,9 @@ class ApiHostTemplate(BaseApiObject):
     @param new_name: New host template name.
     @return: An ApiHostTemplate object.
     """
-    dic = self.to_json_dict()
-    dic['name'] = new_name
-    return self._put(dic)
+    update = copy.copy(self)
+    update.name = new_name
+    return self._do_update(update)
 
   def set_role_config_groups(self, role_config_group_refs):
     """
@@ -149,9 +149,9 @@ class ApiHostTemplate(BaseApiObject):
     @param role_config_group_refs: List of role config group refs.
     @return: An ApiHostTemplate object.
     """
-    dic = self.to_json_dict()
-    dic['roleConfigGroupRefs'] = [ x.to_json_dict() for x in role_config_group_refs ]
-    return self._put(dic)
+    update = copy.copy(self)
+    update.roleConfigGroupRefs = role_config_group_refs
+    return self._do_update(update)
 
   def apply_host_template(self, host_ids, start_roles):
     """
