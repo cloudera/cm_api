@@ -1012,7 +1012,7 @@ class ApiYarnApplication(BaseApiObject):
     'user'                   : ROAttr(),
     'startTime'              : ROAttr(datetime.datetime),
     'endTime'                : ROAttr(datetime.datetime),
-    'queue'                  : ROAttr(),
+    'pool'                   : ROAttr(),
     'rmAppState'             : ROAttr(),
     'finalStatus'            : ROAttr(),
     'progress'               : ROAttr(),
