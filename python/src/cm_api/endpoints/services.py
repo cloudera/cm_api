@@ -957,6 +957,28 @@ class ApiService(BaseApiResource):
     return self._put("replications/%s" % schedule_id, ApiReplicationSchedule,
         data=schedule, api_version=3)
 
+  def get_replication_command_history(self, schedule_id, limit=20, offset=0,
+                                      view=None):
+    """
+    Retrieve a list of commands for a replication schedule.
+
+    @param schedule_id: The id of the replication schedule.
+    @param limit: Maximum number of commands to retrieve.
+    @param offset: Index of first command to retrieve.
+    @param view: View to materialize. Valid values are 'full', 'summary', 'export', 'export_redacted'.
+    @return: List of commands executed for a replication schedule.
+    @since: API v4
+    """
+    params = {
+      'limit':  limit,
+      'offset': offset,
+    }
+    if view:
+      params['view'] = view
+ 
+    return self._get("replications/%s/history" % schedule_id,
+                     ApiReplicationCommand, True, params=params, api_version=4)
+
   def trigger_replication_schedule(self, schedule_id, dry_run=False):
     """
     Trigger replication immediately. Start and end dates on the schedule will be
