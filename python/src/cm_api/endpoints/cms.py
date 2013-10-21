@@ -172,7 +172,7 @@ class ClouderaManager(BaseApiResource):
     @return: Information about the submitted command.
     @since: API v2
     """
-    return self._cmd('hostsDecommission', data=[ host_names ])
+    return self._cmd('hostsDecommission', data=host_names)
 
   def hosts_recommission(self, host_names):
     """
@@ -183,7 +183,7 @@ class ClouderaManager(BaseApiResource):
     @return: Information about the submitted command.
     @since: API v2
     """
-    return self._cmd('hostsRecommission', data=[ host_names ])
+    return self._cmd('hostsRecommission', data=host_names)
 
   def hosts_start_roles(self, host_names):
     """
@@ -193,7 +193,7 @@ class ClouderaManager(BaseApiResource):
     @return: Information about the submitted command.
     @since: API v2
     """
-    return self._cmd('hostsStartRoles', data=[ host_names ])
+    return self._cmd('hostsStartRoles', data=host_names)
 
   def create_peer(self, name, url, username, password):
     """
