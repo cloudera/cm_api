@@ -78,3 +78,17 @@ class TestCMS(unittest.TestCase):
     resource.expect("PUT", "/cm/allHosts/config", data=config_to_json(cfg),
         retdata=json.loads(SUMMARY))
     cms.update_all_hosts_config(cfg)
+
+  def test_host_commission(self):
+    resource = utils.MockResource(self)
+    cms = ClouderaManager(resource)
+
+    resource.expect("POST", "/cm/commands/hostsDecommission",
+        data=[ "host1", "host2" ],
+        retdata={})
+    cms.hosts_decommission([ "host1", "host2" ])
+
+    resource.expect("POST", "/cm/commands/hostsRecommission",
+        data=[ "host1", "host2" ],
+        retdata={})
+    cms.hosts_recommission([ "host1", "host2" ])
