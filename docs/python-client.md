@@ -247,3 +247,84 @@ for cmd in cmds:
 ## -- Output --
 <ApiCommand>: 'Restart' (id: 225; active: True; success: None)
 {% endhighlight %}
+
+Managing Parcels
+------------------------------
+
+These examples cover how to get a new parcel up and running on
+a cluster. Normally you would pick a specific parcel repository
+and parcel version you want to install.
+
+Add a CDH parcel repository. Note that in CDH 4, Impala and Solr are
+in separate parcels. They are included in the CDH 5 parcel.
+
+These examples requires v5 of the CM API or higher.
+
+{% highlight python %}
+# replace parcel_repo with the parcel repo you want to use
+parcel_repo = 'http://archive.cloudera.com/cdh4/parcels/4.3.2.2/'
+cm_config = api.get_cloudera_manager().get_config(view='full')
+repo_config = cm_config['REMOTE_PARCEL_REPO_URLS']
+value = repo_config.value or repo_config.default
+# value is a comma-separated list
+value += ',' + parcel_repo
+api.get_cloudera_manager().update_config({
+  'REMOTE_PARCEL_REPO_URLS': value})
+# wait to make sure parcels are refreshed.
+time.sleep(10)
+{% endhighlight %}
+
+Download the parcel to the CM server.
+
+{% highlight python %}
+# replace cluster_name with the name of your cluster
+cluster_name = 'Cluster 1 - CDH4'
+cluster = api.get_cluster(cluster_name)
+# replace parcel_version with the specific parcel version you want to install
+# After adding your parcel repository to CM, you can use the API to list all parcels and get the precise version string by inspecting:
+# cluster.get_all_parcels() or looking at the URL http://<cm_host>:7180/api/v5/clusters/<cluster_name>/parcels/
+parcel_version = '4.3.2-1.cdh4.3.2.p0.2'
+parcel = cluster.get_parcel('CDH', parcel_version)
+parcel.start_download()
+# unlike other commands, check progress by looking at parcel stage and status
+while True:
+  parcel = cluster.get_parcel('CDH', parcel_version)
+  if parcel.stage == 'DOWNLOADED':
+    break
+  if parcel.state.errors:
+    raise Exception(str(parcel.state.errors))
+  print "progress: %s / %s" % (parcel.state.progress, parcel.state.totalProgress)
+  time.sleep(15) # check again in 15 seconds
+
+print "downloaded CDH parcel version %s on cluster %s" % (parcel_version, cluster_name)
+{% endhighlight %}
+
+Distribute the parcel so all agents on that cluster have a local copy of the parcel.
+
+{% highlight python %}
+parcel.start_distribution()
+while True:
+  parcel = cluster.get_parcel('CDH', parcel_version)
+  if parcel.stage == 'DISTRIBUTED':
+    break
+  if parcel.state.errors:
+    raise Exception(str(parcel.state.errors))
+  print "progress: %s / %s" % (parcel.state.progress, parcel.state.totalProgress)
+  time.sleep(15) # check again in 15 seconds
+
+print "distributed CDH parcel version %s on cluster %s" % (parcel_version, cluster_name)
+{% endhighlight %}
+
+Activate the parcel so services pick up the new binaries upon next restart.
+
+{% highlight python %}
+parcel.activate()
+{% endhighlight %}
+
+Restart your cluster to pick up the new parcel.
+
+{% highlight python %}
+cluster.stop().wait()
+cluster.start().wait()
+{% endhighlight %}
+
