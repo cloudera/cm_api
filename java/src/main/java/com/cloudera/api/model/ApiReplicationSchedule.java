@@ -37,10 +37,11 @@ import com.google.common.base.Objects;
  * which services.
  */
 @XmlRootElement(name = "replicationSchedule")
-public class ApiReplicationSchedule extends ApiSchedule<ApiReplicationCommand> {
+public class ApiReplicationSchedule extends ApiSchedule {
 
   private ApiHdfsReplicationArguments hdfsArguments;
   private ApiHiveReplicationArguments hiveArguments;
+  private List<ApiReplicationCommand> history;
 
   public ApiReplicationSchedule() {
     // For JAX-B.
@@ -73,9 +74,12 @@ public class ApiReplicationSchedule extends ApiSchedule<ApiReplicationCommand> {
 
   /** List of active and/or finished commands for this schedule. */
   @XmlElementWrapper
-  @Override
   public List<ApiReplicationCommand> getHistory() {
-    return super.getHistory();
+    return history;
+  }
+
+  public void setHistory(List<ApiReplicationCommand> history) {
+    this.history = history;
   }
 
   @Override

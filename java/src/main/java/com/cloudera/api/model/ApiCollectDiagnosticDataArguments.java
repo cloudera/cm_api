@@ -30,6 +30,7 @@ public class ApiCollectDiagnosticDataArguments {
   private boolean includeInfoLog;
   private String ticketNumber;
   private String comments;
+  private String clusterName;
 
   /**
    * The maximum approximate bundle size of the output file
@@ -102,5 +103,16 @@ public class ApiCollectDiagnosticDataArguments {
 
   public void setComments(String comments) {
     this.comments = comments;
+  }
+  
+  /**
+   * Name of the cluster to collect. If null, collects from all clusters.
+   */
+  public String getClusterName() { 
+    return clusterName;
+  }
+  
+  public void setClusterName(String clusterName) {
+    this.clusterName = clusterName;
   }
 }

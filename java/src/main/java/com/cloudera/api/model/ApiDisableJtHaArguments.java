@@ -42,7 +42,7 @@ public class ApiDisableJtHaArguments {
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
-                  .add("newJtHost", activeName)
+                  .add("activeName", activeName)
                   .toString();
   }
 

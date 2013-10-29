@@ -39,4 +39,8 @@ public class ApiMrUsageReport extends ApiListBase<ApiMrUsageReportRow> {
     return values;
   }
 
+  public void setReportRows(List<ApiMrUsageReportRow> rows) {
+    this.values = rows;
+  }
+
 }

@@ -19,11 +19,12 @@ package com.cloudera.api.model;
 import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
-import java.util.List;
 
 /**
  * This objects represents a deployment including all clusters, hosts,
@@ -186,7 +187,7 @@ public class ApiDeployment {
    * The list of peers configured in Cloudera Manager.
    * Available since API v3.
    */
-  @XmlElement
+  @XmlElementWrapper
   public List<ApiCmPeer> getPeers() {
     return peers;
   }
@@ -194,5 +195,4 @@ public class ApiDeployment {
   public void setPeers(List<ApiCmPeer> peers) {
     this.peers = peers;
   }
-
 }

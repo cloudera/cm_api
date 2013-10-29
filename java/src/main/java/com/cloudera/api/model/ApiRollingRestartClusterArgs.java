@@ -34,6 +34,7 @@ public class ApiRollingRestartClusterArgs {
   private Integer slaveFailCountThreshold;
   private Boolean staleConfigsOnly;
   private Boolean unUpgradedOnly;
+  private Boolean redeployClientConfiguration;
   private ApiRolesToInclude rolesToInclude;
   private List<String> restartServiceNames;
   
@@ -101,7 +102,17 @@ public class ApiRollingRestartClusterArgs {
   public void setUnUpgradedOnly(Boolean unUpgradedOnly) {
     this.unUpgradedOnly = unUpgradedOnly;
   }
-  
+
+  /** Re-deploy client configuration. Available since API v6. */
+  @XmlElement
+  public Boolean getRedeployClientConfiguration() {
+    return redeployClientConfiguration;
+  }
+
+  public void setRedeployClientConfiguration(Boolean redeployClientConfiguration) {
+    this.redeployClientConfiguration = redeployClientConfiguration;
+  }
+
   /** 
    * Role types to restart. Default is slave roles only.
    */

@@ -161,13 +161,14 @@ public interface MgmtServiceResource {
    *   <li>EVENTSERVER</li>
    *   <li>ALERTPUBLISHER</li>
    *   <li>NAVIGATOR</li>
+   *   <li>NAVIGATORMETASERVER</li>
    * </ul>
    *
    * <p/>
-   * REPORTSMANAGER aand NAVIGATOR are only available with
+   * REPORTSMANAGER, NAVIGATOR and NAVIGATORMETASERVER are only available with
    * Cloudera Manager Enterprise Edition.
    *
-   * @param service Role configurartion overrides.
+   * @param service Role configuration overrides.
    * @return ApiService The CMS information.
    */
   @PUT

@@ -44,16 +44,48 @@ public class ApiRole {
   private ApiHealthSummary healthSummary;
   private List<ApiHealthCheck> healthChecks;
   private Boolean configStale;
+  private ApiConfigStalenessStatus configStalenessStatus;
   private HaStatus haStatus;
   private Boolean maintenanceMode;
   private List<ApiEntityType> maintenanceOwners;
   private ApiCommissionState commissionState;
   private ApiConfigList config;
   private ApiRoleConfigGroupRef roleConfigGroupRef;
+  private ZooKeeperServerMode zooKeeperServerMode;
 
   public enum HaStatus {
     ACTIVE,
     STANDBY,
+    UNKNOWN,
+  }
+
+  /**
+   * The state of the Zookeeper server.
+   */
+  public enum ZooKeeperServerMode {
+    /**
+     * The ZooKeeper Server is a Standalone server.
+     */
+    STANDALONE,
+    /**
+     * The ZooKeeper Server is a Follower in a set of replicas.
+     */
+    REPLICATED_FOLLOWER,
+    /**
+     * The ZooKeeper Server is a Leader in a set of replicas.
+     */
+    REPLICATED_LEADER,
+    /**
+     * The ZooKeeper Server is going through Leader election in a set of replicas.
+     */
+    REPLICATED_LEADER_ELECTION,
+    /**
+     * The ZooKeeper Server is an Observer in a set of replicas.
+     */
+    REPLICATED_OBSERVER,
+    /**
+     * The status of the ZooKeeper Server could not be determined.
+     */
     UNKNOWN,
   }
 
@@ -71,6 +103,7 @@ public class ApiRole {
                   .add("healthSummary", healthSummary)
                   .add("healthChecks", healthChecks)
                   .add("commissionState", commissionState)
+                  .add("roleConfigGroupRef", roleConfigGroupRef)
                   .toString();
   }
 
@@ -80,12 +113,13 @@ public class ApiRole {
     return this == that || (that != null &&
         Objects.equal(hostRef, that.hostRef) &&
         Objects.equal(name, that.name) &&
-        Objects.equal(serviceRef, that.serviceRef));
+        Objects.equal(serviceRef, that.serviceRef) &&
+        Objects.equal(roleConfigGroupRef, that.roleConfigGroupRef));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(name, serviceRef, hostRef, config);
+    return Objects.hashCode(name, serviceRef, hostRef, roleConfigGroupRef);
   }
 
   /**
@@ -175,7 +209,12 @@ public class ApiRole {
 
   /**
    * Readonly. Expresses whether the role configuration is stale.
+   *
+   * @deprecated Use configStalenessStatus instead which exposes more staleness
+   *             state.
+   *             Deprecated since V6.
    */
+  @Deprecated
   @XmlElement
   @JsonProperty(value = "configStale")
   public Boolean getConfigStale() {
@@ -187,9 +226,22 @@ public class ApiRole {
   }
 
   /**
-   * Readonly. The list of health checks of this service.
+   * Readonly. Expresses the role's configuration staleness status.
+   * Available since API v6.
    */
   @XmlElement
+  public ApiConfigStalenessStatus getConfigStalenessStatus() {
+    return configStalenessStatus;
+  }
+
+  public void setConfigStalenessStatus(ApiConfigStalenessStatus configStalenessStatus) {
+    this.configStalenessStatus = configStalenessStatus;
+  }
+
+  /**
+   * Readonly. The list of health checks of this service.
+   */
+  @XmlElementWrapper
   public List<ApiHealthCheck> getHealthChecks() {
     return healthChecks;
   }
@@ -268,8 +320,22 @@ public class ApiRole {
   public ApiRoleConfigGroupRef getRoleConfigGroupRef() {
     return roleConfigGroupRef;
   }
-  
+
   public void setRoleConfigGroupRef(ApiRoleConfigGroupRef roleConfigGroupRef) {
     this.roleConfigGroupRef = roleConfigGroupRef;
+  }
+
+  /**
+   * Readonly. The ZooKeeper server mode for this role. Note that for
+   * non-ZooKeeper Server roles this will be null.
+   * Available since API v6.
+   */
+  @XmlElement
+  public ZooKeeperServerMode getZooKeeperServerMode() {
+    return zooKeeperServerMode;
+  }
+
+  public void setZooKeeperServerMode(ZooKeeperServerMode zooKeeperServerMode) {
+    this.zooKeeperServerMode = zooKeeperServerMode;
   }
 }

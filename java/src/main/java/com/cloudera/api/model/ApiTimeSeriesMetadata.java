@@ -35,6 +35,10 @@ public class ApiTimeSeriesMetadata {
   private Map<String, String> attributes;
   private List<String> unitNumerators;
   private List<String> unitDenominators;
+  private String expression;
+  private String alias;
+  private Long metricCollectionFrequencyMs;
+  public String rollupUsed;
 
   public ApiTimeSeriesMetadata() {
     // For JAX-B
@@ -43,7 +47,8 @@ public class ApiTimeSeriesMetadata {
   public ApiTimeSeriesMetadata(String metricName,
       String entityName, Date startTime, Date endTime,
       Map<String, String> attributes, List<String> unitNumerators,
-      List<String> unitDenominators) {
+      List<String> unitDenominators, String expression, String alias,
+      Long metricCollectionFrequencyMs, String rollupUsed) {
     this.metricName = metricName;
     this.entityName = entityName;
     this.startTime = startTime;
@@ -51,6 +56,10 @@ public class ApiTimeSeriesMetadata {
     this.attributes = attributes;
     this.unitNumerators = unitNumerators;
     this.unitDenominators = unitDenominators;
+    this.expression = expression;
+    this.alias = alias;
+    this.metricCollectionFrequencyMs = metricCollectionFrequencyMs;
+    this.rollupUsed = rollupUsed;
   }
 
   /** The metric name for the time series. */
@@ -117,9 +126,39 @@ public class ApiTimeSeriesMetadata {
   @XmlElement
   public List<String> getUnitDenominators() {
     return unitDenominators;
-  }
+  }  
   
   public void getUnitDenominators(List<String> unitDenominators) {
     this.unitDenominators = unitDenominators;
+  }
+
+  /** The tsquery expression that could be used to extract just this stream. */
+  public String getExpression() {
+    return expression;
+  }
+
+  /**
+   * The alias for this stream's metric. Aliases correspond to use of the 'as'
+   * keyword in the tsquery.
+   */
+  public String getAlias() {
+    return alias;
+  }
+
+  /**
+   * The minimum frequency at which the underlying metric for this stream is
+   * collected. Note that this can be null if the stream returns irregularly
+   * sampled data.
+   */
+  public Long getMetricCollectionFrequencyMs() {
+    return metricCollectionFrequencyMs;
+  }
+
+  /**
+   * The aggregate rollup for the returned data. This can be TEN_MINUTELY,
+   * HOURLY, SIX_HOURLY, DAILY, or WEEKLY.
+   */
+  public String getRollupUsed() {
+    return rollupUsed;
   }
 }

@@ -32,6 +32,8 @@ public class ApiHiveReplicationResult {
   private String phase;
   private Integer tableCount;
   private List<ApiHiveTable> tables;
+  private Integer impalaUDFCount;
+  private List<ApiImpalaUDF> impalaUDFs;
   private Integer errorCount;
   private List<ApiHiveReplicationError> errors;
   private ApiHdfsReplicationResult dataReplicationResult;
@@ -90,6 +92,32 @@ public class ApiHiveReplicationResult {
   }
 
   /**
+   * Number of impala UDFs that were successfully replicated. Available since
+   * API v6.
+   */
+  @XmlElement
+  public Integer getImpalaUDFCount() {
+    return impalaUDFCount;
+  }
+
+  public void setImpalaUDFCount(Integer impalaUDFCount) {
+    this.impalaUDFCount = impalaUDFCount;
+  }
+
+  /**
+   * The list of Impala UDFs successfully replicated. Available since API v6
+   * in the full view.
+   */
+  @XmlElementWrapper
+  public List<ApiImpalaUDF> getImpalaUDFs() {
+    return impalaUDFs;
+  }
+
+  public void setImpalaUDFs(List<ApiImpalaUDF> impalaUDFs) {
+    this.impalaUDFs = impalaUDFs;
+  }
+
+  /**
    * Number of errors detected during replication job.
    * Available since API v4.
    */
@@ -142,13 +170,14 @@ public class ApiHiveReplicationResult {
     return this == that || (that != null &&
         Objects.equal(phase, that.getPhase()) &&
         Objects.equal(tables, that.getTables()) &&
+        Objects.equal(impalaUDFs, that.getImpalaUDFs()) &&
         Objects.equal(errors, that.getErrors()) &&
         dryRun == that.isDryRun());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(phase, tables, errors, dryRun);
+    return Objects.hashCode(phase, tables, impalaUDFs, errors, dryRun);
   }
 
   @Override
@@ -156,6 +185,7 @@ public class ApiHiveReplicationResult {
     return Objects.toStringHelper(this)
         .add("phase", phase)
         .add("tables", tables)
+        .add("impalaUDFs", impalaUDFs)
         .add("errors", errors)
         .add("dryRun", dryRun)
         .toString();

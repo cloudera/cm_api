@@ -18,7 +18,6 @@ package com.cloudera.api.v4;
 import static com.cloudera.api.Parameters.*;
 
 import com.cloudera.api.ApiTimeAggregation;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiDisableJtHaArguments;
 import com.cloudera.api.model.ApiEnableJtHaArguments;
@@ -43,7 +42,7 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
    * Create the Hive Metastore Database. Only works with embedded postgresql
    * database.
    * <p>
-   * This command is to be run whenever a new login and database needs to be
+   * This command is to be run whenever a new user and database needs to be
    * created in the embedded postgresql database for a Hive service. This
    * command should usually be followed by a call to
    * hiveCreateMetastoreDatabaseTables.
@@ -205,10 +204,11 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
       @PathParam(SERVICE_NAME) String serviceName);
 
   /**
+   * Only available with Cloudera Manager Enterprise Edition.
+   *
    * @return The replications resource handler.
    */
   @Path("/{serviceName}/replications")
-  @Enterprise
   @Override
   public ReplicationsResourceV4 getReplicationsResource(
       @PathParam(SERVICE_NAME) String serviceName);
@@ -229,7 +229,8 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
    * This call supports returning JSON or CSV, as determined by the
    * "Accept" header of application/json or text/csv.
    * <p>
-   * Available since API v4.
+   * Available since API v4. Only available with Cloudera Manager Enterprise
+   * Edition.
    *
    * @param hdfsServiceName The HDFS service name.
    * @param nameService The (optional) HDFS nameservice. Required for HA setup.
@@ -242,7 +243,6 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
   @GET
   @Path("/{serviceName}/reports/hdfsUsageReport")
   @Produces({ MediaType.APPLICATION_JSON, "text/csv" })
-  @Enterprise
   public ApiHdfsUsageReport getHdfsUsageReport(
       @PathParam(SERVICE_NAME) String hdfsServiceName,
       @QueryParam(NAMESERVICE_NAME) String nameService,
@@ -259,7 +259,8 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
    * This call supports returning JSON or CSV, as determined by the
    * "Accept" header of application/json or text/csv.
    * <p>
-   * Available since API v4.
+   * Available since API v4. Only available with Cloudera Manager Enterprise
+   * Edition.
    *
    * @param mrServiceName The MR service name.
    * @param from The (optional) start time of the report. Default to 24 hours before "to" time.
@@ -271,7 +272,6 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
   @GET
   @Path("/{serviceName}/reports/mrUsageReport")
   @Produces({ MediaType.APPLICATION_JSON, "text/csv" })
-  @Enterprise
   public ApiMrUsageReport getMrUsageReport(
       @PathParam(SERVICE_NAME) String mrServiceName,
       @QueryParam(FROM) String from,

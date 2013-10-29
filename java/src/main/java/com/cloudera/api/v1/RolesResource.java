@@ -223,7 +223,24 @@ public interface RolesResource {
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
+   * @deprecated This endpoint is not supported as of v6. Use the timeseries API
+   * instead. To get all metrics for a role with the timeseries API use
+   * the query:
+   * <br>
+   * <br>
+   * 'select * where roleName = $ROLE_NAME'.
+   * <br>
+   * <br>
+   * To get specific metrics for a role use the query:
+   * <br>
+   * <br>
+   * 'select $METRIC_NAME1, $METRIC_NAME2 where roleName = $ROLE_NAME'.
+   * <br>
+   * <br>
+   * For more information see the <a href="http://tiny.cloudera.com/tsquery_doc">
+   * tsquery language documentation</a>.<p/>
    */
+  @Deprecated
   @GET
   @Path("/{roleName}/metrics")
   public ApiMetricList getMetrics(

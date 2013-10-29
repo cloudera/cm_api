@@ -148,7 +148,7 @@ public class ApiNameservice {
   /**
    * Requires "full" view. List of health checks performed on the nameservice.
    */
-  @XmlElement
+  @XmlElementWrapper
   public List<ApiHealthCheck> getHealthChecks() {
     return healthChecks;
   }

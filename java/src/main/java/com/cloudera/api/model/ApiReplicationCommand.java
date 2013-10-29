@@ -15,11 +15,9 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
-import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
 /**

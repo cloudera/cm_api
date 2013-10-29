@@ -30,9 +30,17 @@ public class ApiCommandList extends ApiListBase<ApiCommand> {
 
   }
 
+  public ApiCommandList(List<ApiCommand> commands) {
+    super(commands);
+  }
+
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
   public List<ApiCommand> getCommands() {
     return values;
+  }
+
+  public void setCommands(List<ApiCommand> commands) {
+    this.values = commands;
   }
 
 }

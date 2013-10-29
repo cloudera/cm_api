@@ -16,14 +16,32 @@
 
 package com.cloudera.api.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * The CDH version of the cluster.
  */
 public enum ApiClusterVersion {
-  /** CDH3 version */
+  /** CDH3 version. CDH3 is not supported as of CM 5.0. */
+  @Deprecated
   CDH3,
-  /** CDH3u4x version */
+  /** CDH3u4x version. CDH3u4x is not supported as of CM 5.0. */
+  @Deprecated
   CDH3u4X,
   /** CDH4 version */
-  CDH4
+  CDH4,
+  /** CDH5 version */
+  CDH5,
+  /** Unknown version. */
+  UNKNOWN;
+
+  @JsonCreator
+  public static ApiClusterVersion fromString(String version) {
+    try {
+      return ApiClusterVersion.valueOf(version);
+    } catch (IllegalArgumentException iae) {
+      return UNKNOWN;
+    }
+  }
+
 }
