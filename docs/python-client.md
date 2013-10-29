@@ -270,7 +270,7 @@ value = repo_config.value or repo_config.default
 value += ',' + parcel_repo
 api.get_cloudera_manager().update_config({
   'REMOTE_PARCEL_REPO_URLS': value})
-# wait to make sure parcels are refreshed.
+# wait to make sure parcels are refreshed
 time.sleep(10)
 {% endhighlight %}
 
