@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * A cluster represents a set of interdependent services running on a set
  * of hosts. All services on a given cluster are of the same software version
- * (e.g. CDH3 or CDH4).
+ * (e.g. CDH4 or CDH5).
  */
 @XmlRootElement(name = "cluster")
 @XmlType(propOrder = {"name", "version",

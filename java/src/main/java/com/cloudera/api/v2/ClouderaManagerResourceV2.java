@@ -16,7 +16,6 @@
 package com.cloudera.api.v2;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.Parameters;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiDeployment;
@@ -49,6 +48,8 @@ public interface ClouderaManagerResourceV2 extends ClouderaManagerResource {
    * Cloudera Manager peers configured for the instance. This data contains
    * plain text authentication information used to connect to the remote peer.
    *
+   * @param dataView May be one of "export" (default) or "export_redacted".  The latter
+   * replaces configurations that are sensitive with the word "REDACTED".
    * @return A complete deployment description
    */
   @GET

@@ -35,4 +35,9 @@ public class ApiTimeSeriesResponseList extends ApiListBase<ApiTimeSeriesResponse
   public List<ApiTimeSeriesResponse> getResponses() {
     return values;
   }
+
+  public void setResponses(List<ApiTimeSeriesResponse> responses) {
+    this.values = responses;
+  }
+
 }

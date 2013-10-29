@@ -38,6 +38,8 @@ public final class Parameters {
   static public final String HOST_TEMPLATE_NAME = "hostTemplateName";
   static public final String CONFIG_FILE_NAME = "configFileName";
   static public final String COMMAND_ID = "commandId";
+  static public final String POLICY_NAME = "policyName";
+  static public final String PATH = "path";
 
   /* Common query params. */
   static public final String FROM = "from";

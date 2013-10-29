@@ -50,8 +50,8 @@ public interface ImpalaQueriesResource {
    * value of an attribute and looks something like 'rowsFetched = 1' or
    * 'user = root'. Multiple basic filters can be combined into a complex
    * expression using standard and / or boolean logic and parenthesis.
-   * An example of a complex filter is: 'queryDuration > 5s and (user = root or
-   * user = myUserName'.
+   * An example of a complex filter is: 'query_duration > 5s and (user = root or
+   * user = myUserName)'.
    * @param from Returns queries that were active between the from and to times
    * @param to Returns queries that were active between the from and to times
    * @param limit The maximum number of queries to return. Queries will be

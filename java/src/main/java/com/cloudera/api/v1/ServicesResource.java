@@ -16,7 +16,6 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiCommandList;
 import com.cloudera.api.model.ApiHdfsDisableHaArguments;
@@ -84,12 +83,12 @@ public interface ServicesResource {
    *   </thead>
    *   <tbody>
    *     <tr>
-   *       <td>CDH3</td>
-   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE</td>
+   *       <td>CDH4</td>
+   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA, FLUME, HIVE, SOLR, SQOOP, KS_INDEXER</td>
    *     </td>
    *     <tr>
-   *       <td>CDH4</td>
-   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA, FLUME, HIVE, SOLR, SQOOP</td>
+   *       <td>CDH5</td>
+   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA, FLUME, HIVE, SOLR, SQOOP, KS_INDEXER</td>
    *     </td>
    *   </tbody>
    * </table>
@@ -205,7 +204,7 @@ public interface ServicesResource {
    * all metrics available for the service, even if no readings are available
    * in the requested window.
    * <p>
-   * HDFS services from CDH4 that have more than one nameservice will not expose
+   * HDFS services that have more than one nameservice will not expose
    * any metrics. Instead, the nameservices should be queried separately.
    * <p/>
    *
@@ -314,8 +313,6 @@ public interface ServicesResource {
 
   /**
    * Enable high availability (HA) for an HDFS NameNode.
-   * <p>
-   * This command only applies to CDH4 HDFS services.
    * <p>
    * The command will set up the given "active" and "stand-by" NameNodes as
    * an HA pair. Both nodes need to already exist.
@@ -446,8 +443,8 @@ public interface ServicesResource {
   /**
    * Initializes all the server instances of a ZooKeeper service.
    * <p>
-   * This command applies to ZooKeeper services from CDH4. ZooKeeper
-   * server roles need to be initialized before they can be used.
+   * ZooKeeper server roles need to be initialized before they
+   * can be used.
    *
    * @param serviceName The service to start.
    * @return Information about the submitted command.

@@ -39,7 +39,7 @@ public class ApiHdfsHaArguments {
   private boolean startDependentServices = true;
   private boolean deployClientConfigs = true;
 
-  private boolean enableQuorumStorage = false;
+  private boolean enableQuorumStorage = true;
 
   /** Name of the active NameNode. */
   @XmlElement
@@ -113,13 +113,18 @@ public class ApiHdfsHaArguments {
     this.deployClientConfigs = deploy;
   }
 
-  /** Whether to enable Quorum-based Storage. Defaults to false.
+  /**
+   * This parameter has been deprecated as of CM 5.0, where HA
+   * is only supported using Quorum-based Storage.
+   * <p>
+   * Whether to enable Quorum-based Storage.
    *
-   *  Enabling Quorum-based Storage requires a minimum of three and
-   *  an odd number of JournalNodes to be created and configured
-   *  before enabling HDFS HA.
-   *
-   *  Available since API v2. */
+   * Enabling Quorum-based Storage requires a minimum of three and
+   * an odd number of JournalNodes to be created and configured
+   * before enabling HDFS HA.
+   * <p>
+   * Available since API v2. */
+  @Deprecated
   @XmlElement
   public boolean isEnableQuorumStorage() {
     return enableQuorumStorage;

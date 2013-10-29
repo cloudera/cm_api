@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -31,8 +32,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {"message", "causes"})
 public class ApiErrorMessage {
 
-  private final String message;
-  private final List<String> causes;
+  private String message;
+  private List<String> causes;
 
   /**
    * Empty constructor, for JAX-B.
@@ -87,8 +88,17 @@ public class ApiErrorMessage {
     return message;
   }
 
-  @XmlElement
+  public void setMessage(String message) {
+    this.message = message;
+  }
+
+  @XmlElementWrapper
   public List<String> getCauses() {
     return causes;
   }
+
+  public void setCauses(List<String> causes) {
+    this.causes = causes;
+  }
+
 }

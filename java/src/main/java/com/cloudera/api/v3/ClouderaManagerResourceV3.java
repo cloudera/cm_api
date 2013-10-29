@@ -15,7 +15,6 @@
 // limitations under the License.
 package com.cloudera.api.v3;
 
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.v2.ClouderaManagerResourceV2;
 
 import javax.ws.rs.Consumes;
@@ -30,7 +29,9 @@ public interface ClouderaManagerResourceV3 extends ClouderaManagerResourceV2 {
   @Path("/allHosts")
   public AllHostsResource getAllHostsResource();
 
-  @Enterprise
+  /**
+   * Only available with Cloudera Manager Enterprise Edition.
+   */
   @Path("/peers")
   public CmPeersResource getCmPeersResource();
 

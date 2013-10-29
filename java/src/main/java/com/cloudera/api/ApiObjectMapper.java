@@ -17,6 +17,7 @@
 package com.cloudera.api;
 
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
@@ -40,6 +41,9 @@ public class ApiObjectMapper extends ObjectMapper {
         new AnnotationIntrospector.Pair(
             getSerializationConfig().getAnnotationIntrospector(),
             new JaxbAnnotationIntrospector()));
+
+    // Make Jackson respect @XmlElementWrapper.
+    enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
 
     // Print all dates in ISO8601 format
     setDateFormat(makeISODateFormat());

@@ -15,10 +15,10 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
-import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 /**
  * A list of clusters.
@@ -37,6 +37,10 @@ public class ApiClusterList extends ApiListBase<ApiCluster> {
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
   public List<ApiCluster> getClusters() {
     return values;
+  }
+
+  public void setClusters(List<ApiCluster> clusters) {
+    this.values = clusters;
   }
 
 }

@@ -34,10 +34,13 @@ public class ApiCmPeerList extends ApiListBase<ApiCmPeer> {
     super(peers);
   }
 
-
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
   public List<ApiCmPeer> getCmPeers() {
     return values;
+  }
+
+  public void setCmPeers(List<ApiCmPeer> peers) {
+    this.values = peers;
   }
 
 }

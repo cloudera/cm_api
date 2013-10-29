@@ -36,4 +36,8 @@ public class ApiActivityList extends ApiListBase<ApiActivity> {
     return values;
   }
 
+  public void setActivities(List<ApiActivity> activities) {
+    this.values = activities;
+  }
+
 }

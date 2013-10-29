@@ -71,6 +71,7 @@ public class ApiRole {
                   .add("healthSummary", healthSummary)
                   .add("healthChecks", healthChecks)
                   .add("commissionState", commissionState)
+                  .add("roleConfigGroupRef", roleConfigGroupRef)
                   .toString();
   }
 
@@ -80,12 +81,13 @@ public class ApiRole {
     return this == that || (that != null &&
         Objects.equal(hostRef, that.hostRef) &&
         Objects.equal(name, that.name) &&
-        Objects.equal(serviceRef, that.serviceRef));
+        Objects.equal(serviceRef, that.serviceRef) &&
+        Objects.equal(roleConfigGroupRef, that.roleConfigGroupRef));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(name, serviceRef, hostRef, config);
+    return Objects.hashCode(name, serviceRef, hostRef, roleConfigGroupRef);
   }
 
   /**
@@ -189,7 +191,7 @@ public class ApiRole {
   /**
    * Readonly. The list of health checks of this service.
    */
-  @XmlElement
+  @XmlElementWrapper
   public List<ApiHealthCheck> getHealthChecks() {
     return healthChecks;
   }
@@ -268,7 +270,7 @@ public class ApiRole {
   public ApiRoleConfigGroupRef getRoleConfigGroupRef() {
     return roleConfigGroupRef;
   }
-  
+
   public void setRoleConfigGroupRef(ApiRoleConfigGroupRef roleConfigGroupRef) {
     this.roleConfigGroupRef = roleConfigGroupRef;
   }

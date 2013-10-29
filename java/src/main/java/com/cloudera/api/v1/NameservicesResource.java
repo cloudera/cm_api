@@ -16,7 +16,6 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiMetricList;
 import com.cloudera.api.model.ApiNameservice;
 import com.cloudera.api.model.ApiNameserviceList;

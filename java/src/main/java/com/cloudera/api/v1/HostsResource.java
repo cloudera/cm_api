@@ -17,7 +17,6 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiConfigList;
 import com.cloudera.api.model.ApiHost;
 import com.cloudera.api.model.ApiHostList;

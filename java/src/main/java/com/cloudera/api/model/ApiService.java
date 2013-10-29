@@ -56,6 +56,7 @@ public class ApiService {
   private List<ApiRole> roles;
   private String displayName;
   private List<ApiRoleConfigGroup> roleConfigGroups;
+  private List<ApiReplicationSchedule> replicationSchedules;
 
   public ApiService() {
     // For JAX-B
@@ -84,7 +85,7 @@ public class ApiService {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(name, type, clusterRef, config, roles);
+    return Objects.hashCode(name, type, clusterRef);
   }
 
   /**
@@ -163,7 +164,7 @@ public class ApiService {
   /**
    * Readonly. The list of health checks of this service.
    */
-  @XmlElement
+  @XmlElementWrapper
   public List<ApiHealthCheck> getHealthChecks() {
     return healthChecks;
   }
@@ -249,12 +250,25 @@ public class ApiService {
    * The list of role configuration groups in this service. Optional.
    * Available since API v3.
    */
-  @XmlElement
+  @XmlElementWrapper
   public List<ApiRoleConfigGroup> getRoleConfigGroups() {
     return roleConfigGroups;
   }
 
   public void setRoleConfigGroups(List<ApiRoleConfigGroup> roleConfigGroups) {
     this.roleConfigGroups = roleConfigGroups;
+  }
+
+  /**
+   * The list of replication schedules for this service. Optional.
+   * Available since API v5.
+   */
+  @XmlElementWrapper
+  public List<ApiReplicationSchedule> getReplicationSchedules() {
+    return replicationSchedules;
+  }
+
+  public void setReplicationSchedules(List<ApiReplicationSchedule> replicationSchedules) {
+    this.replicationSchedules = replicationSchedules;
   }
 }

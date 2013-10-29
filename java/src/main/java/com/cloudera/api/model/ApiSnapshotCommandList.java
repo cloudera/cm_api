@@ -13,21 +13,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.cloudera.api;
+package com.cloudera.api.model;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
-/**
- * Annotation for features available in the Enterprise edition of Cloudera Manager.
- * <p>
- * The annotation can be used both at the class / interface level, or at the
- * method level.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.METHOD })
-public @interface Enterprise {
+/** A list of snapshot commands. */
+@XmlRootElement(name = "snapshotCommandList")
+public class ApiSnapshotCommandList extends
+    ApiListBase<ApiSnapshotCommand> {
 
+  public ApiSnapshotCommandList() {
+    // For JAX-B.
+  }
+
+  public ApiSnapshotCommandList(List<ApiSnapshotCommand> commands) {
+    super(commands);
+  }
+
+  @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
+  public List<ApiSnapshotCommand> getCommands() {
+    return values;
+  }
+
+  public void setCommands(List<ApiSnapshotCommand> commands) {
+    values = commands;
+  }
 }

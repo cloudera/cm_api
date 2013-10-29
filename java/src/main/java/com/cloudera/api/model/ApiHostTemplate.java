@@ -55,7 +55,8 @@ public class ApiHostTemplate {
     ApiHostTemplate that = ApiUtils.baseEquals(this, o);
     return this == that || (that != null &&
         Objects.equal(name, that.name) &&
-        Objects.equal(clusterRef, that.clusterRef));
+        Objects.equal(clusterRef, that.clusterRef) &&
+        Objects.equal(roleConfigGroupRefs, that.roleConfigGroupRefs));
   }
 
   @Override
