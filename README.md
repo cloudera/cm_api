@@ -31,5 +31,7 @@ Style Guide
 
       jekyll serve --watch --baseurl=/cm_api
 
+  Then point your browser to http://localhost:4000/cm_api/
+
   Also See the GitHub Jekyll
   [guide](https://help.github.com/articles/using-jekyll-with-pages) for more.

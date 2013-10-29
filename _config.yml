@@ -7,5 +7,5 @@ google_analytics_id:    UA-2275969-20
 safe:                   true
 lsi:                    false
 
-latest_api_version:     5
-latest_cm_version:      4.7.0
+latest_api_version:     6
+latest_cm_version:      5.0.0-beta-1
