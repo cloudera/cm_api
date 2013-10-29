@@ -109,7 +109,8 @@ public class ApiHost {
 
   /**
    * A unique host identifier.
-   * Typically identical to the hostname, i.e. the host's FQDN.
+   * This is not the same as the hostname (FQDN). It is a distinct
+   * value that remains the same even if the hostname changes.
    */
   @XmlElement
   public String getHostId() {
@@ -193,7 +194,7 @@ public class ApiHost {
    * Readonly. Requires "full" view.
    * The list of health checks performed on the host, with their results.
    */
-  @XmlElement
+  @XmlElementWrapper
   public List<ApiHealthCheck> getHealthChecks() {
     return healthChecks;
   }

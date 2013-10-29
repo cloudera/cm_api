@@ -39,4 +39,8 @@ public class ApiReplicationScheduleList extends
     return values;
   }
 
+  public void setSchedules(List<ApiReplicationSchedule> schedules) {
+    this.values = schedules;
+  }
+
 }

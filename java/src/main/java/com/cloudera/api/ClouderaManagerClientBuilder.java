@@ -169,8 +169,7 @@ public class ClouderaManagerClientBuilder {
     bean.setResourceClass(proxyType);
     bean.setProvider(new JacksonJsonProvider(new ApiObjectMapper()));
 
-    @SuppressWarnings("unchecked")
-    T rootResource = (T) bean.create();
+    T rootResource = bean.create(proxyType);
     ClientConfiguration config = WebClient.getConfig(rootResource);
     HTTPConduit conduit = (HTTPConduit) config.getConduit();
     if (isTlsEnabled) {

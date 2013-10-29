@@ -17,7 +17,6 @@ package com.cloudera.api.v4;
 
 import static com.cloudera.api.Parameters.CLUSTER_NAME;
 
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiRollingRestartClusterArgs;
 import com.cloudera.api.v3.ClustersResourceV3;
@@ -48,7 +47,8 @@ public interface ClustersResourceV4 extends ClustersResourceV3 {
    * the slave roles of services that can be rolling restarted. The slave restarts
    * are done host-by-host.
    * <p>
-   * Available since API v4.
+   * Available since API v4. Only available with Cloudera Manager Enterprise
+   * Edition.
    * 
    * @param clusterName The name of the cluster.
    * @param args Arguments for the rolling restart command.
@@ -57,7 +57,6 @@ public interface ClustersResourceV4 extends ClustersResourceV3 {
   @POST
   @Consumes
   @Path("/{clusterName}/commands/rollingRestart")
-  @Enterprise
   public ApiCommand rollingRestart(
       @PathParam(CLUSTER_NAME) String clusterName,
       ApiRollingRestartClusterArgs args);

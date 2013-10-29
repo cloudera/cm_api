@@ -19,9 +19,13 @@ package com.cloudera.api.model;
 import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * A reference to a host.
  */
+@XmlRootElement(name = "hostRef")
 public class ApiHostRef {
 
   private String hostId;
@@ -55,6 +59,7 @@ public class ApiHostRef {
   }
 
   /** The unique host ID. */
+  @XmlElement
   public String getHostId() {
     return hostId;
   }

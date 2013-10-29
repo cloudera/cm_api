@@ -29,6 +29,7 @@ public class ApiHiveReplicationError {
 
   private String database;
   private String tableName;
+  private String impalaUDF;
   private String error;
 
   public ApiHiveReplicationError() {
@@ -37,8 +38,14 @@ public class ApiHiveReplicationError {
 
   public ApiHiveReplicationError(String database, String tableName,
       String error) {
+    this(database, tableName, null, error);
+  }
+
+  public ApiHiveReplicationError(String database, String tableName,
+      String impalaUDF, String error) {
     this.database = database;
     this.tableName = tableName;
+    this.impalaUDF = impalaUDF;
     this.error = error;
   }
 
@@ -62,6 +69,16 @@ public class ApiHiveReplicationError {
     this.tableName = tableName;
   }
 
+  /** UDF signature, includes the UDF name and parameter types. */
+  @XmlElement
+  public String getImpalaUDF() {
+    return impalaUDF;
+  }
+
+  public void setImpalaUDF(String impalaUDF) {
+    this.impalaUDF = impalaUDF;
+  }
+
   /** Description of the error. */
   @XmlElement
   public String getError() {
@@ -77,6 +94,7 @@ public class ApiHiveReplicationError {
     return Objects.toStringHelper(this)
         .add("database", database)
         .add("tableName", tableName)
+        .add("impalaUDF", impalaUDF)
         .add("error", error)
         .toString();
   }
@@ -87,12 +105,13 @@ public class ApiHiveReplicationError {
     return (this == that) || (that != null &&
         Objects.equal(database, that.getDatabase()) &&
         Objects.equal(tableName, that.getTableName()) &&
+        Objects.equal(impalaUDF, that.getImpalaUDF()) &&
         Objects.equal(error, that.getError()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(database, tableName, error);
+    return Objects.hashCode(database, tableName, impalaUDF, error);
   }
 
 }

@@ -17,7 +17,6 @@ package com.cloudera.api.v3;
 
 import static com.cloudera.api.Parameters.SERVICE_NAME;
 
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiRollEditsArgs;
 import com.cloudera.api.model.ApiRollingRestartArgs;
@@ -37,10 +36,12 @@ import javax.ws.rs.core.MediaType;
 public interface ServicesResourceV3 extends ServicesResourceV2 {
 
   /**
-   * @return The replications resource handler.
+   * Returns the replications resource handler.
+   * <p>
+   * Available since API v3. Only available with Cloudera Manager Enterprise
+   * Edition.
    */
   @Path("/{serviceName}/replications")
-  @Enterprise
   public ReplicationsResource getReplicationsResource(
       @PathParam(SERVICE_NAME) String serviceName);
 
@@ -57,7 +58,6 @@ public interface ServicesResourceV3 extends ServicesResourceV2 {
    */
   @POST
   @Path("/{serviceName}/commands/rollingRestart")
-  @Enterprise
   public ApiCommand rollingRestart(
       @PathParam(SERVICE_NAME) String serviceName,
       ApiRollingRestartArgs args);

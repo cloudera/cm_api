@@ -38,6 +38,13 @@ public final class Parameters {
   static public final String HOST_TEMPLATE_NAME = "hostTemplateName";
   static public final String CONFIG_FILE_NAME = "configFileName";
   static public final String COMMAND_ID = "commandId";
+  static public final String POLICY_NAME = "policyName";
+  static public final String PATH = "path";
+  static public final String CONTENT_TYPE = "contentType";
+  static public final String DESIRED_ROLLUP = "desiredRollup";
+  static public final String MUST_USE_DESIRED_ROLLUP = "mustUseDesiredRollup";
+  static public final String FILTER = "filter";
+  static public final String COMMAND_NAME = "commandName";
 
   /* Common query params. */
   static public final String FROM = "from";
@@ -50,8 +57,13 @@ public final class Parameters {
   /* Default values. */
   static public final String DATA_VIEW_DEFAULT = "summary";
   static public final String DATA_VIEW_EXPORT = "export";
-  public static final String DATE_TIME_NOW = "now";
-  public static final String DAILY_AGGREGATION = "daily";
+  static public final String DATE_TIME_NOW = "now";
+  static public final String DAILY_AGGREGATION = "daily";
+  static public final String FILTER_DEFAULT = "";
+
+  /* Common filtering properties. */
+  static public final String HOSTNAME = "hostname";
+  static public final String ROLE_TYPE = "type";
 
   private Parameters() { }
 

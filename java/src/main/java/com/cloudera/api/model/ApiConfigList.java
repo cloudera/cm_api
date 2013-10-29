@@ -39,4 +39,8 @@ public class ApiConfigList extends ApiListBase<ApiConfig> {
     return values;
   }
 
+  public void setConfigs(List<ApiConfig> configs) {
+    this.values = configs;
+  }
+
 }

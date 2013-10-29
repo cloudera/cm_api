@@ -18,21 +18,45 @@ package com.cloudera.api.model;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.cloudera.api.CsvElementWrapper;
+
 import java.util.List;
 
 @XmlRootElement(name = "timeSeriesResponseList")
 public class ApiTimeSeriesResponseList extends ApiListBase<ApiTimeSeriesResponse> {
 
+  private List<ApiTimeSeriesRow> timeSeriesRows;
+
   public ApiTimeSeriesResponseList() {
   }
 
-  public ApiTimeSeriesResponseList(List<ApiTimeSeriesResponse> responses) {
+  public ApiTimeSeriesResponseList(
+      final List<ApiTimeSeriesResponse> responses,
+      final List<ApiTimeSeriesRow> rows) {
     super(responses);
+    this.timeSeriesRows = rows;
   }
 
   /** The list of responses for this query response list. */
   @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
   public List<ApiTimeSeriesResponse> getResponses() {
     return values;
+  }
+
+  public void setResponses(List<ApiTimeSeriesResponse> responses) {
+    this.values = responses;
+  }
+
+  @CsvElementWrapper(rowtype = ApiTimeSeriesRow.class,
+                     dateTimeFormat = "yyyy-MM-dd HH:mm:ss.SSS")
+  @XmlTransient
+  public List<ApiTimeSeriesRow> getTimeSeriesRows() {
+    return timeSeriesRows;
+  }
+
+  public void setTimeSeriesRows(List<ApiTimeSeriesRow> rows) {
+    this.timeSeriesRows = rows;
   }
 }

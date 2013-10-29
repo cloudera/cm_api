@@ -47,6 +47,7 @@ public class ApiHdfsReplicationResult {
   private String jobId;
   private String jobDetailsUri;
   private boolean dryRun;
+  private List<String> snapshottedDirs;
 
   /** The file copy progress percentage. */
   @XmlElement
@@ -243,6 +244,19 @@ public class ApiHdfsReplicationResult {
     this.dryRun = dryRun;
   }
 
+  /**
+   * The list of directories for which snapshots were taken and used as part of
+   * this replication.
+   */
+  @XmlElement
+  public List<String> getSnapshottedDirs() {
+    return snapshottedDirs;
+  }
+
+  public void setSnapshottedDirs(List<String> snapshottedDirs) {
+    this.snapshottedDirs = snapshottedDirs;
+  }
+
   @Override
   public boolean equals(Object o) {
     ApiHdfsReplicationResult that = ApiUtils.baseEquals(this, o);
@@ -250,12 +264,14 @@ public class ApiHdfsReplicationResult {
         Objects.equal(progress, that.getProgress()) &&
         Objects.equal(counters, that.getCounters()) &&
         Objects.equal(setupError, that.getSetupError()) &&
-        dryRun == that.isDryRun());
+        dryRun == that.isDryRun() &&
+        Objects.equal(snapshottedDirs, that.getSnapshottedDirs()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(progress, counters, setupError, dryRun);
+    return Objects.hashCode(progress, counters, setupError, dryRun,
+        snapshottedDirs);
   }
 
   @Override
@@ -265,6 +281,7 @@ public class ApiHdfsReplicationResult {
         .add("counters", counters)
         .add("setupError", setupError)
         .add("dryRun", dryRun)
+        .add("snapshottedDirs", snapshottedDirs)
         .toString();
   }
 

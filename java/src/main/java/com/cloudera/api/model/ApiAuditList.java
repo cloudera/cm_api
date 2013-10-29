@@ -34,4 +34,9 @@ public class ApiAuditList extends ApiListBase<ApiAudit> {
   public List<ApiAudit> getAudits() {
     return values;
   }
+
+  public void setAudits(List<ApiAudit> audits) {
+    this.values = audits;
+  }
+
 }
