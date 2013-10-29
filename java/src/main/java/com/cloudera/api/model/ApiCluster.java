@@ -28,14 +28,15 @@ import java.util.List;
 /**
  * A cluster represents a set of interdependent services running on a set
  * of hosts. All services on a given cluster are of the same software version
- * (e.g. CDH3 or CDH4).
+ * (e.g. CDH4 or CDH5).
  */
 @XmlRootElement(name = "cluster")
-@XmlType(propOrder = {"name", "version",
+@XmlType(propOrder = {"name", "displayName", "version",
     "maintenanceMode", "maintenanceOwners", "services", "parcels"})
 public class ApiCluster {
 
   private String name;
+  private String displayName;
   private ApiClusterVersion version;
   private Boolean maintenanceMode;
   private List<ApiEntityType> maintenanceOwners;
@@ -65,7 +66,13 @@ public class ApiCluster {
     return Objects.hashCode(name);
   }
 
-  /** The name of the cluster */
+  /**
+   * The name of the cluster.
+   * <p>
+   * Immutable since API v6.
+   * <p>
+   * Prior to API v6, will contain the display name of the cluster.
+   */
   @XmlElement
   public String getName() {
     return name;
@@ -73,6 +80,20 @@ public class ApiCluster {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  /**
+   * The display name of the cluster that is shown in the UI.
+   * <p>
+   * Available since API v6.
+   */
+  @XmlElement
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
   }
 
   /** The CDH version of the cluster. */

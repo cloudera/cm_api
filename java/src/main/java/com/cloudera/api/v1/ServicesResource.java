@@ -15,8 +15,15 @@
 // limitations under the License.
 package com.cloudera.api.v1;
 
+import static com.cloudera.api.Parameters.DATA_VIEW;
+import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
+import static com.cloudera.api.Parameters.DATE_TIME_NOW;
+import static com.cloudera.api.Parameters.FROM;
+import static com.cloudera.api.Parameters.METRICS;
+import static com.cloudera.api.Parameters.SERVICE_NAME;
+import static com.cloudera.api.Parameters.TO;
+
 import com.cloudera.api.DataView;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiCommandList;
 import com.cloudera.api.model.ApiHdfsDisableHaArguments;
@@ -29,23 +36,16 @@ import com.cloudera.api.model.ApiService;
 import com.cloudera.api.model.ApiServiceConfig;
 import com.cloudera.api.model.ApiServiceList;
 
-import static com.cloudera.api.Parameters.DATA_VIEW;
-import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
-import static com.cloudera.api.Parameters.DATE_TIME_NOW;
-import static com.cloudera.api.Parameters.FROM;
-import static com.cloudera.api.Parameters.METRICS;
-import static com.cloudera.api.Parameters.SERVICE_NAME;
-import static com.cloudera.api.Parameters.TO;
-
 import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -84,15 +84,14 @@ public interface ServicesResource {
    *   </thead>
    *   <tbody>
    *     <tr>
-   *       <td>CDH3</td>
-   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE</td>
-   *     </td>
-   *     <tr>
    *       <td>CDH4</td>
-   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA, FLUME, HIVE, SOLR, SQOOP</td>
+   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA, FLUME, HIVE, SOLR, SQOOP, KS_INDEXER</td>
    *     </td>
    *   </tbody>
    * </table>
+   *
+   * As of V6, GET /{clusterName}/serviceTypes should be used to get
+   * the service types available to the cluster.
    *
    * @param services Details of the services to create.
    * @return List of created services.
@@ -205,7 +204,7 @@ public interface ServicesResource {
    * all metrics available for the service, even if no readings are available
    * in the requested window.
    * <p>
-   * HDFS services from CDH4 that have more than one nameservice will not expose
+   * HDFS services that have more than one nameservice will not expose
    * any metrics. Instead, the nameservices should be queried separately.
    * <p/>
    *
@@ -216,7 +215,25 @@ public interface ServicesResource {
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
+   * @deprecated This endpoint is not supported as of v6. Use the timeseries API
+   * instead. To get all metrics for a service with the timeseries API use
+   * the query:
+   * <br>
+   * <br>
+   * 'select * where serviceName = $SERVICE_NAME'.
+   * <br>
+   * <br>
+   * To get specific metrics for a service use a comma-separated list of
+   * the metric names as follows:
+   * <br>
+   * <br>
+   * 'select $METRIC_NAME1, $METRIC_NAME2 where serviceName = $SERVICE_NAME'.
+   * <br>
+   * <br>
+   * For more information see the <a href="http://tiny.cloudera.com/tsquery_doc">
+   * tsquery language documentation</a>.<p/>
    */
+  @Deprecated
   @GET
   @Path("/{serviceName}/metrics")
   public ApiMetricList getMetrics(
@@ -256,7 +273,9 @@ public interface ServicesResource {
    * @param serviceName The HDFS service name.
    * @param nameservice The nameservice name.
    * @return Information about the submitted command.
+   * @deprecated This endpoint is not supported v6 onwards. Use hdfsDisableNnHa on the HDFS service instead.
    */
+  @Deprecated
   @POST
   @Path("/{serviceName}/commands/hdfsDisableAutoFailover")
   @Consumes({MediaType.TEXT_PLAIN,MediaType.APPLICATION_JSON})
@@ -272,11 +291,13 @@ public interface ServicesResource {
    * modified will be stopped. The command arguments provide options to
    * re-start these services and to re-deploy the client configurations for
    * services of the cluster after HA has been disabled.
-   *
+   * 
    * @param serviceName The HDFS service name.
    * @param args Arguments for the command.
    * @return Information about the submitted command.
+   * @deprecated This endpoint is not supported v6 onwards. Use hdfsDisableNnHa on the HDFS service instead.
    */
+  @Deprecated
   @POST
   @Path("/{serviceName}/commands/hdfsDisableHa")
   public ApiCommand hdfsDisableHaCommand(
@@ -305,7 +326,9 @@ public interface ServicesResource {
    * @param serviceName The HDFS service name.
    * @param args Arguments for the command.
    * @return Information about the submitted command.
+   * @deprecated This endpoint is not supported v6 onwards. Use hdfsEnableNnHa on the HDFS service instead.
    */
+  @Deprecated
   @POST
   @Path("/{serviceName}/commands/hdfsEnableAutoFailover")
   public ApiCommand hdfsEnableAutoFailoverCommand(
@@ -314,8 +337,6 @@ public interface ServicesResource {
 
   /**
    * Enable high availability (HA) for an HDFS NameNode.
-   * <p>
-   * This command only applies to CDH4 HDFS services.
    * <p>
    * The command will set up the given "active" and "stand-by" NameNodes as
    * an HA pair. Both nodes need to already exist.
@@ -334,7 +355,9 @@ public interface ServicesResource {
    * @param serviceName The HDFS service name.
    * @param args Arguments for the command.
    * @return Information about the submitted command.
+   * @deprecated This endpoint is not supported v6 onwards. Use hdfsEnableNnHa on the HDFS service instead.
    */
+  @Deprecated
   @POST
   @Path("/{serviceName}/commands/hdfsEnableHa")
   public ApiCommand hdfsEnableHaCommand(
@@ -446,8 +469,8 @@ public interface ServicesResource {
   /**
    * Initializes all the server instances of a ZooKeeper service.
    * <p>
-   * This command applies to ZooKeeper services from CDH4. ZooKeeper
-   * server roles need to be initialized before they can be used.
+   * ZooKeeper server roles need to be initialized before they
+   * can be used.
    *
    * @param serviceName The service to start.
    * @return Information about the submitted command.

@@ -39,4 +39,8 @@ public class ApiHostList extends ApiListBase<ApiHost> {
     return values;
   }
 
+  public void setHosts(List<ApiHost> hosts) {
+    this.values = hosts;
+  }
+
 }

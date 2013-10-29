@@ -19,8 +19,6 @@ import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -55,7 +53,7 @@ public class ApiUser {
     ApiUser other = ApiUtils.baseEquals(this, o);
     return this == other || (other != null &&
         Objects.equal(name, other.getName()) &&
-        Sets.difference(roles, other.getRoles()).isEmpty());
+        Objects.equal(roles, other.getRoles()));
   }
 
   public int hashCode() {
@@ -108,7 +106,8 @@ public class ApiUser {
 
   /**
    * A list of roles this user belongs to.
-   * Current possible values are: "ROLE_ADMIN" or empty.
+   * Current possible values are: "ROLE_ADMIN", "ROLE_LIMITED", "ROLE_USER"
+   * or empty (implies "ROLE_USER").
    */
   @XmlElementWrapper(name = "roles")
   public Set<String> getRoles() {

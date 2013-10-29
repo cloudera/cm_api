@@ -15,17 +15,19 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
-import java.util.Date;
-import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-
 import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
+import java.util.Date;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * Base class for commands that can be scheduled in Cloudera Manager.
+ * <p/>
+ * Note that schedule IDs are not preserved upon import.
+ * <p/>
  */
-public abstract class ApiSchedule<T extends ApiCommand> {
+public abstract class ApiSchedule {
   private Long id;
   private Date startTime;
   private Date endTime;
@@ -33,7 +35,6 @@ public abstract class ApiSchedule<T extends ApiCommand> {
   private ApiScheduleInterval intervalUnit;
   private boolean paused;
   private Date nextRun;
-  private List<T> history;
   private boolean alertOnStart;
   private boolean alertOnSuccess;
   private boolean alertOnFail;
@@ -115,18 +116,6 @@ public abstract class ApiSchedule<T extends ApiCommand> {
 
   public void setNextRun(Date nextRun) {
     this.nextRun = nextRun;
-  }
-
-  /**
-   * History of executions of this schedule, sorted in reverse chronological
-   * order.
-   */
-  public List<T> getHistory() {
-    return history;
-  }
-
-  public void setHistory(List<T> history) {
-    this.history = history;
   }
 
   /**

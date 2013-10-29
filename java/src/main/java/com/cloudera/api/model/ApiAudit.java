@@ -41,7 +41,7 @@ public class ApiAudit {
   private String ipAddress;
   private String resource;
   private boolean allowed;
-  private long timestamp;
+  private Date timestamp;
   private String operationText;
 
   public ApiAudit() {
@@ -51,7 +51,7 @@ public class ApiAudit {
   public ApiAudit(String service, String username,
                   String impersonator, String command,
                   String ipAddress, String resource, boolean allowed,
-                  Long timestamp, String operationText) {
+                  Date timestamp, String operationText) {
     this.service = service;
     this.username = username;
     this.impersonator = impersonator;
@@ -68,7 +68,7 @@ public class ApiAudit {
     ApiAudit that = ApiUtils.baseEquals(this, o);
     return this == that || (that != null &&
         allowed == that.allowed &&
-        timestamp == that.timestamp &&
+        Objects.equal(timestamp, that.timestamp) &&
         Objects.equal(username, that.username) &&
         Objects.equal(impersonator, that.impersonator) &&
         Objects.equal(service, that.service) &&
@@ -84,15 +84,30 @@ public class ApiAudit {
         command, ipAddress, resource, allowed, operationText);
   }
 
+  @Override
+  public String toString() {
+    return Objects.toStringHelper(this)
+      .add("service", service)
+      .add("username", username)
+      .add("impersonator", impersonator)
+      .add("command", command)
+      .add("ipAddress", ipAddress)
+      .add("resource", resource)
+      .add("allowed", allowed)
+      .add("timestamp", timestamp)
+      .add("operationText", operationText)
+      .toString();
+  }
+
   /**
    * When the audit event was captured.
    */
   @XmlElement
   public Date getTimestamp() {
-    return ApiUtils.newDateFromMillis(timestamp);
+    return timestamp;
   }
 
-  public void setTimestamp(long timestamp) {
+  public void setTimestamp(Date timestamp) {
     this.timestamp = timestamp;
   }
 
@@ -116,7 +131,7 @@ public class ApiAudit {
     return username;
   }
 
-  public void setUseruame(String userName) {
+  public void setUsername(String userName) {
     this.username = userName;
   }
 

@@ -28,7 +28,7 @@ import java.util.Date;
 import com.google.common.base.Preconditions;
 
 /**
- * A collection of utility methods used by API code.
+ * A collection of utility methods and common constants used by API code.
  */
 public final class ApiUtils {
   private static final DateTimeFormatter DATE_TIME_PRINTER =
@@ -37,6 +37,13 @@ public final class ApiUtils {
       ISODateTimeFormat.dateTimeParser();
   private static final PeriodFormatter PERIOD_FORMATTER =
       ISOPeriodFormat.standard();
+
+  /**
+   * A special path component contained in the path for an HDFS snapshot dir.
+   *
+   * Copied from org.apache.hadoop.hdfs.protocol.HdfsConstants.
+   */
+  public final static String DOT_SNAPSHOT_DIR = ".snapshot";
 
   public static Instant newInstantFromString(String value) {
     if (value.equalsIgnoreCase(Parameters.DATE_TIME_NOW)) {

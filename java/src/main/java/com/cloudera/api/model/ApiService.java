@@ -50,12 +50,15 @@ public class ApiService {
   private ApiHealthSummary healthSummary;
   private List<ApiHealthCheck> healthChecks;
   private Boolean configStale;
+  private ApiConfigStalenessStatus configStalenessStatus;
   private Boolean maintenanceMode;
   private List<ApiEntityType> maintenanceOwners;
   private ApiServiceConfig config;
   private List<ApiRole> roles;
   private String displayName;
   private List<ApiRoleConfigGroup> roleConfigGroups;
+  private List<ApiReplicationSchedule> replicationSchedules;
+  private List<ApiSnapshotPolicy> snapshotPolicies;
 
   public ApiService() {
     // For JAX-B
@@ -84,7 +87,7 @@ public class ApiService {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(name, type, clusterRef, config, roles);
+    return Objects.hashCode(name, type, clusterRef);
   }
 
   /**
@@ -150,7 +153,12 @@ public class ApiService {
 
   /**
    * Readonly. Expresses whether the service configuration is stale.
+   *
+   * @deprecated Use configStalenessStatus instead which exposes more staleness
+   *             state.
+   *             Deprecated since V6.
    */
+  @Deprecated
   @XmlElement
   public Boolean getConfigStale() {
     return configStale;
@@ -161,9 +169,23 @@ public class ApiService {
   }
 
   /**
-   * Readonly. The list of health checks of this service.
+   * Readonly. Expresses the service's configuration staleness status which is
+   * based on the staleness status of its roles.
+   * Available since API v6.
    */
   @XmlElement
+  public ApiConfigStalenessStatus getConfigStalenessStatus() {
+    return configStalenessStatus;
+  }
+
+  public void setConfigStalenessStatus(ApiConfigStalenessStatus configStalenessStatus) {
+    this.configStalenessStatus = configStalenessStatus;
+  }
+
+  /**
+   * Readonly. The list of health checks of this service.
+   */
+  @XmlElementWrapper
   public List<ApiHealthCheck> getHealthChecks() {
     return healthChecks;
   }
@@ -249,12 +271,38 @@ public class ApiService {
    * The list of role configuration groups in this service. Optional.
    * Available since API v3.
    */
-  @XmlElement
+  @XmlElementWrapper
   public List<ApiRoleConfigGroup> getRoleConfigGroups() {
     return roleConfigGroups;
   }
 
   public void setRoleConfigGroups(List<ApiRoleConfigGroup> roleConfigGroups) {
     this.roleConfigGroups = roleConfigGroups;
+  }
+
+  /**
+   * The list of replication schedules for this service. Optional.
+   * Available since API v6.
+   */
+  @XmlElementWrapper
+  public List<ApiReplicationSchedule> getReplicationSchedules() {
+    return replicationSchedules;
+  }
+
+  public void setReplicationSchedules(List<ApiReplicationSchedule> replicationSchedules) {
+    this.replicationSchedules = replicationSchedules;
+  }
+
+  /**
+   * The list of snapshot policies for this service. Optional.
+   * Available since API v6.
+   */
+  @XmlElementWrapper
+  public List<ApiSnapshotPolicy> getSnapshotPolicies() {
+    return snapshotPolicies;
+  }
+
+  public void setSnapshotPolicies(List<ApiSnapshotPolicy> snapshotPolicies) {
+    this.snapshotPolicies = snapshotPolicies;
   }
 }
