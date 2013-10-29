@@ -60,6 +60,14 @@ class ClouderaManager(BaseApiResource):
     """
     return self._put("service", ApiService, data=service_setup_info)
 
+  def delete_mgmt_service(self):
+    """
+    Delete the Cloudera Management Service.
+
+    @return: The deleted management service instance.
+    """
+    return self._delete("service", ApiService, api_version=6)
+
   def get_service(self):
     """
     Return the Cloudera Management Services instance.
