@@ -82,17 +82,18 @@ def delete_service(resource_root, name, cluster_name="default"):
 
 class ApiService(BaseApiResource):
   _ATTRIBUTES = {
-    'name'              : None,
-    'type'              : None,
-    'displayName'       : None,
-    'serviceState'      : ROAttr(),
-    'healthSummary'     : ROAttr(),
-    'healthChecks'      : ROAttr(),
-    'clusterRef'        : ROAttr(ApiClusterRef),
-    'configStale'       : ROAttr(),
-    'serviceUrl'        : ROAttr(),
-    'maintenanceMode'   : ROAttr(),
-    'maintenanceOwners' : ROAttr(),
+    'name'                  : None,
+    'type'                  : None,
+    'displayName'           : None,
+    'serviceState'          : ROAttr(),
+    'healthSummary'         : ROAttr(),
+    'healthChecks'          : ROAttr(),
+    'clusterRef'            : ROAttr(ApiClusterRef),
+    'configStale'           : ROAttr(),
+    'configStalenessStatus' : ROAttr(),
+    'serviceUrl'            : ROAttr(),
+    'maintenanceMode'       : ROAttr(),
+    'maintenanceOwners'     : ROAttr(),
   }
 
   def __init__(self, resource_root, name=None, type=None):
