@@ -106,20 +106,21 @@ def delete_role(resource_root, service_name, name, cluster_name="default"):
 
 class ApiRole(BaseApiResource):
   _ATTRIBUTES = {
-    'name'                : None,
-    'type'                : None,
-    'hostRef'             : Attr(ApiHostRef),
-    'roleState'           : ROAttr(),
-    'healthSummary'       : ROAttr(),
-    'healthChecks'        : ROAttr(),
-    'serviceRef'          : ROAttr(ApiServiceRef),
-    'configStale'         : ROAttr(),
-    'haStatus'            : ROAttr(),
-    'roleUrl'             : ROAttr(),
-    'commissionState'     : ROAttr(),
-    'maintenanceMode'     : ROAttr(),
-    'maintenanceOwners'   : ROAttr(),
-    'roleConfigGroupRef'  : ROAttr(ApiRoleConfigGroupRef),
+    'name'                  : None,
+    'type'                  : None,
+    'hostRef'               : Attr(ApiHostRef),
+    'roleState'             : ROAttr(),
+    'healthSummary'         : ROAttr(),
+    'healthChecks'          : ROAttr(),
+    'serviceRef'            : ROAttr(ApiServiceRef),
+    'configStale'           : ROAttr(),
+    'configStalenessStatus' : ROAttr(),
+    'haStatus'              : ROAttr(),
+    'roleUrl'               : ROAttr(),
+    'commissionState'       : ROAttr(),
+    'maintenanceMode'       : ROAttr(),
+    'maintenanceOwners'     : ROAttr(),
+    'roleConfigGroupRef'    : ROAttr(ApiRoleConfigGroupRef),
   }
 
   def __init__(self, resource_root, name=None, type=None, hostRef=None):
