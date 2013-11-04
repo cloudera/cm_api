@@ -691,6 +691,40 @@ class ApiService(BaseApiResource):
     )
     return self._cmd('disableJtHa', data=args)
 
+  def enable_rm_ha(self, new_rm_host_id, zk_service_name=None):
+    """
+    Enable high availability for a YARN ResourceManager.
+
+    @param new_rm_host_id: id of the host where the second ResourceManager
+                           will be added.
+    @param zk_service_name: Name of the ZooKeeper service to use for auto-failover.
+           If YARN service depends on a ZooKeeper service then that ZooKeeper
+           service will be used for auto-failover and in that case this parameter
+           can be omitted.
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    args = dict(
+      newRmHostId = new_rm_host_id,
+      zkServiceName = zk_service_name
+    )
+    return self._cmd('enableRmHa', data=args)
+
+  def disable_rm_ha(self, active_name):
+    """
+    Disable high availability for a YARN ResourceManager active-standby pair.
+
+    @param active_name: name of the ResourceManager that will be active after
+                        the disable operation. The other ResourceManager
+                        will be removed.
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    args = dict(
+      activeName = active_name
+    )
+    return self._cmd('disableRmHa', data=args)
+
   def failover_hdfs(self, active_name, standby_name, force=False):
     """
     Initiate a failover of an HDFS NameNode HA pair.
