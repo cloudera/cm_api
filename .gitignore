@@ -8,3 +8,5 @@
 # Emacs backup files
 *~
 
+# Maven build dir
+target
