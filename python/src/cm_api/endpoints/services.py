@@ -593,6 +593,7 @@ class ApiService(BaseApiResource):
       standby_fc_name, zk_service):
     """
     Enable auto-failover for an HDFS nameservice.
+    This command is no longer supported with API v6 onwards. Use enable_nn_ha instead.
 
     @param nameservice: Nameservice for which to enable auto-failover.
     @param active_fc_name: Name of failover controller to create for active node.
@@ -600,6 +601,10 @@ class ApiService(BaseApiResource):
     @param zk_service: ZooKeeper service to use.
     @return: Reference to the submitted command.
     """
+    version = self._get_resource_root().version
+    if version >= 6:
+      raise Exception("This command is no longer supported with API v6 onwards. Use enable_nn_ha instead.")
+
     args = dict(
       nameservice = nameservice,
       activeFCName = active_fc_name,
@@ -616,6 +621,7 @@ class ApiService(BaseApiResource):
       deploy_client_configs=True, enable_quorum_storage=False):
     """
     Enable high availability for an HDFS NameNode.
+    This command is no longer supported with API v6 onwards. Use enable_nn_ha instead.
 
     @param active_name: name of active NameNode.
     @param active_shared_path: shared edits path for active NameNode.
@@ -632,6 +638,10 @@ class ApiService(BaseApiResource):
                                   Availability.
     @return: Reference to the submitted command.
     """
+    version = self._get_resource_root().version
+    if version >= 6:
+      raise Exception("This command is no longer supported with API v6 onwards. Use enable_nn_ha instead.")
+
     args = dict(
       activeName = active_name,
       standByName = standby_name,
@@ -641,7 +651,6 @@ class ApiService(BaseApiResource):
     )
 
     if enable_quorum_storage:
-      version = self._get_resource_root().version
       if version < 2:
         raise AttributeError("Quorum-based Storage is not supported prior to Cloudera Manager 4.1.")
       else:
@@ -653,6 +662,51 @@ class ApiService(BaseApiResource):
       args['standBySharedEditsPath'] = standby_shared_path
 
     return self._cmd('hdfsEnableHa', data=args)
+
+  def enable_nn_ha(self, active_name, standby_host_id, nameservice, jns,
+      standby_name_dir_list=None, qj_name=None, standby_name=None, 
+      active_fc_name=None, standby_fc_name=None, zk_service_name=None):
+    """
+    Enable High Availability (HA) with Auto-Failover for an HDFS NameNode.
+    @param active_name: Name of Active NameNode.
+    @param standby_host_id: ID of host where Standby NameNode will be created.
+    @param nameservice: Nameservice to be used while enabling HA.
+                        Optional if Active NameNode already has this config set.
+    @param jns: List of Journal Nodes to be created during the command.
+                Each element of the list must be a dict containing the following keys:
+                jnHostId : ID of the host where the new JournalNode will be created.
+                jnName: Name of the JournalNode role (optional)
+                jnEditsDir: Edits dir of the JournalNode. Can be omitted if the config
+                            is already set at RCG level.
+    @param standby_name_dir_list: List of directories for the new Standby NameNode.
+                                  If not provided then it will use same dirs as Active NameNode.
+    @param qj_name: Name of the journal located on each JournalNodes' filesystem.
+                    This can be optionally provided if the config hasn't been already set for the Active NameNode.
+                    If this isn't provided and Active NameNode doesn't also have the config,
+                    then nameservice is used by default.
+    @param standby_name: Name of the Standby NameNode role to be created (Optional).
+    @param active_fc_name: Name of the Active Failover Controller role to be created (Optional).
+    @param standby_fc_name: Name of the Standby Failover Controller role to be created (Optional).
+    @param zk_service_name: Name of the ZooKeeper service to use for auto-failover.
+                            If HDFS service already depends on a ZooKeeper service then that ZooKeeper
+                            service will be used for auto-failover and in that case this parameter
+                            can either be omitted or should be the same ZooKeeper service.
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    args = dict (
+      activeNnName = active_name,
+      standbyNnName = standby_name,
+      standbyNnHostId = standby_host_id,
+      standbyNameDirList = standby_name_dir_list,
+      nameservice = nameservice,
+      qjName = qj_name,
+      activeFcName = active_fc_name,
+      standbyFcName = standby_fc_name,
+      zkServiceName = zk_service_name,
+      jns = jns
+    )
+    return self._cmd('hdfsEnableNnHa', data=args, api_version=6)
 
   def enable_jt_ha(self, new_jt_host_id, force_init_znode=True, zk_service_name=None):
     """
