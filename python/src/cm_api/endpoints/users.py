@@ -47,8 +47,9 @@ def create_user(resource_root, username, password, roles):
   @param resource_root: The root Resource object
   @param username: Username
   @param password: Password
-  @param roles: List of roles for the user. This should be [] for a
-                regular user, or ['ROLE_ADMIN'] for an admin.
+  @param roles: List of roles for the user. This should be [] or ['ROLE_USER']
+                for a regular user, ['ROLE_ADMIN'] for an admin, or
+                ['ROLE_LIMITED'] for a limited admin.
   @return: An ApiUser object
   """
   apiuser = ApiUser(resource_root, username, password=password, roles=roles)
@@ -66,6 +67,19 @@ def delete_user(resource_root, username):
   return call(resource_root.delete,
       '%s/%s' % (USERS_PATH, username), ApiUser)
 
+def update_user(resource_root, user):
+  """
+  Update a user.
+
+  Replaces the user's details with those provided.
+
+  @param resource_root: The root Resource object
+  @param user: An ApiUser object
+  @return An ApiUser object
+  """
+  return call(resource_root.put,
+      '%s/%s' % (USERS_PATH, user.name), ApiUser, data=user)
+
 class ApiUser(BaseApiResource):
   _ATTRIBUTES = {
     'name'      : None,
@@ -82,7 +96,8 @@ class ApiUser(BaseApiResource):
   def grant_admin_role(self):
     """
     Grant admin access to a user. If the user already has admin access, this
-    does nothing.
+    does nothing. If the user currently has a non-admin role, it will be replaced
+    with the admin role.
 
     @return: An ApiUser object
     """
@@ -92,7 +107,8 @@ class ApiUser(BaseApiResource):
   def revoke_admin_role(self):
     """
     Revoke admin access from a user. If the user does not have admin access,
-    this does nothing.
+    this does nothing. After revocation, the user will have the un-privileged
+    regular user role.
 
     @return: An ApiUser object
     """
