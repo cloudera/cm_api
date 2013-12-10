@@ -23,7 +23,8 @@ __docformat__ = "epytext"
 TIME_SERIES_PATH   = "/timeseries"
 METRIC_SCHEMA_PATH = "/timeseries/schema"
 
-def query_timeseries(resource_root, query, from_time=None, to_time=None):
+def query_timeseries(resource_root, query, from_time=None, to_time=None,
+    desired_rollup=None, must_use_desired_rollup=None):
   """
   Query for time series data from the CM time series data store.
   @param query: Query string.
@@ -31,6 +32,12 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None):
                     This may be an ISO format string, or a datetime object.
   @param to_time: End of the period to query (default = now).
                   This may be an ISO format string, or a datetime object.
+  @param rollup_desired: The aggregate rollup to get data for. This can be
+                         RAW, TEN_MINUTELY, HOURLY, SIX_HOURLY, DAILY, or
+                         WEEKLY. Note that rollup desired is only a hint unless
+                         must_use_desired_rollup is set to true.
+  @param must_use_desired_rollup: Indicates that the monitoring server should
+                                  return the data at the rollup desired.
   @return List of ApiTimeSeriesResponse
   """
   params = {}
@@ -44,6 +51,10 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None):
     if isinstance(to_time, datetime.datetime):
       to_time = to_time.isoformat()
     params['to'] = to_time
+  if desired_rollup:
+    params['desiredRollup'] = desired_rollup
+  if must_use_desired_rollup:
+    params['mustUseDesiredRollup'] = must_use_desired_rollup
   return call(resource_root.get, TIME_SERIES_PATH,
       ApiTimeSeriesResponse, True, params=params)
 
@@ -72,6 +83,10 @@ class ApiTimeSeriesMetadata(BaseApiObject):
     'attributes'        : ROAttr(),
     'unitNumerators'    : ROAttr(),
     'unitDenominators'  : ROAttr(),
+    'expression'        : ROAttr(),
+    'alias'             : ROAttr(),
+    'metricCollectionFrequencyMs': ROAttr(),
+    'rollupUsed'        : ROAttr()
     }
 
 class ApiTimeSeries(BaseApiObject):

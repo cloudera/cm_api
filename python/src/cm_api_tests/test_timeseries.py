@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+import datetime
 import unittest
 from cm_api.endpoints.timeseries import *
 from cm_api.endpoints.types import ApiList
@@ -74,12 +74,15 @@ class TestTimeSeries(unittest.TestCase):
     }'''
 
     api_resource = utils.MockResource(self)
+    time = datetime.datetime.now()
     api_resource.expect("GET", "/timeseries", 
-                        retdata=json.loads(TIME_SERIES))
+                        retdata=json.loads(TIME_SERIES),
+                        params={ 'from':time.isoformat(), 'to':time.isoformat(),
+                                 'query':'select cpu_percent'})
     responses = query_timeseries(api_resource, 
                                  "select cpu_percent", 
-                                 None, 
-                                 None)
+                                 time, 
+                                 time)
     
     self.assertIsInstance(responses, ApiList)
     self.assertEqual(1, len(responses))
@@ -103,6 +106,20 @@ class TestTimeSeries(unittest.TestCase):
       self.assertEqual("SAMPLE", data.type)
       self.assertIsInstance(data.timestamp, datetime.datetime)
       self.assertTrue(data.value)
+
+    # Test the with-rollups call
+    api_resource.expect("GET", "/timeseries",
+                        retdata=json.loads(TIME_SERIES),
+                        params={ 'from':time.isoformat(), 'to':time.isoformat(),
+                                 'query':'select cpu_percent',
+                                 'desiredRollup':'RAW',
+                                 'mustUseDesiredRollup': True})
+    responses = query_timeseries(api_resource,
+                                 "select cpu_percent",
+                                 time,
+                                 time,
+                                 "RAW",
+                                 True)
 
 
   def test_get_metric_schema(self):
