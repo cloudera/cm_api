@@ -602,8 +602,6 @@ class ApiService(BaseApiResource):
     @return: Reference to the submitted command.
     """
     version = self._get_resource_root().version
-    if version >= 6:
-      raise Exception("This command is no longer supported with API v6 onwards. Use enable_nn_ha instead.")
 
     args = dict(
       nameservice = nameservice,
@@ -639,8 +637,6 @@ class ApiService(BaseApiResource):
     @return: Reference to the submitted command.
     """
     version = self._get_resource_root().version
-    if version >= 6:
-      raise Exception("This command is no longer supported with API v6 onwards. Use enable_nn_ha instead.")
 
     args = dict(
       activeName = active_name,
