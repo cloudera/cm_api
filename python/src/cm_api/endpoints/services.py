@@ -661,7 +661,8 @@ class ApiService(BaseApiResource):
 
   def enable_nn_ha(self, active_name, standby_host_id, nameservice, jns,
       standby_name_dir_list=None, qj_name=None, standby_name=None, 
-      active_fc_name=None, standby_fc_name=None, zk_service_name=None):
+      active_fc_name=None, standby_fc_name=None, zk_service_name=None,
+      force_init_znode=True, clear_existing_standby_name_dirs=True, clear_existing_jn_edits_dir=True):
     """
     Enable High Availability (HA) with Auto-Failover for an HDFS NameNode.
     @param active_name: Name of Active NameNode.
@@ -687,6 +688,14 @@ class ApiService(BaseApiResource):
                             If HDFS service already depends on a ZooKeeper service then that ZooKeeper
                             service will be used for auto-failover and in that case this parameter
                             can either be omitted or should be the same ZooKeeper service.
+    @param force_init_znode: Indicates if the ZNode should be force initialized if it is
+                             already present. Useful while re-enabling High Availability. (Default: TRUE)
+    @param clear_existing_standby_name_dirs: Indicates if the existing name directories for Standby NameNode
+                                             should be cleared during the workflow.
+                                             Useful while re-enabling High Availability. (Default: TRUE)
+    @param clear_existing_jn_edits_dir: Indicates if the existing edits directories for the JournalNodes
+                                        for the specified nameservice should be cleared during the workflow.
+                                        Useful while re-enabling High Availability. (Default: TRUE)
     @return: Reference to the submitted command.
     @since: API v6
     """
@@ -700,6 +709,9 @@ class ApiService(BaseApiResource):
       activeFcName = active_fc_name,
       standbyFcName = standby_fc_name,
       zkServiceName = zk_service_name,
+      forceInitZNode = force_init_znode,
+      clearExistingStandbyNameDirs = clear_existing_standby_name_dirs,
+      clearExistingJnEditsDir = clear_existing_jn_edits_dir,
       jns = jns
     )
     return self._cmd('hdfsEnableNnHa', data=args, api_version=6)
