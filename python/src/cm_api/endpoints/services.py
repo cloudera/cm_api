@@ -716,7 +716,8 @@ class ApiService(BaseApiResource):
     )
     return self._cmd('hdfsEnableNnHa', data=args, api_version=6)
 
-  def enable_jt_ha(self, new_jt_host_id, force_init_znode=True, zk_service_name=None):
+  def enable_jt_ha(self, new_jt_host_id, force_init_znode=True, zk_service_name=None,
+      new_jt_name=None, fc1_name=None, fc2_name=None):
     """
     Enable high availability for a MR JobTracker.
 
@@ -730,12 +731,21 @@ class ApiService(BaseApiResource):
                              it already exists. This can happen if JobTracker HA
                              was enabled before and then disabled. Disable operation
                              doesn't delete this ZNode. Defaults to true.
+    @param new_jt_name: Name of the second JobTracker role to be created.
+    @param fc1_name: Name of the Failover Controller role that is co-located with
+                     the existing JobTracker.
+    @param fc2_name: Name of the Failover Controller role that is co-located with
+                     the new JobTracker.
     @return: Reference to the submitted command.
+    @since: API v5
     """
     args = dict(
       newJtHostId = new_jt_host_id,
       forceInitZNode = force_init_znode,
       zkServiceName = zk_service_name,
+      newJtRoleName = new_jt_name,
+      fc1RoleName = fc1_name,
+      fc2RoleName = fc2_name
     )
     return self._cmd('enableJtHa', data=args)
 
