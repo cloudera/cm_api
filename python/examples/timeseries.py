@@ -69,7 +69,7 @@ from cm_api.api_client import ApiResource
 CM_HOST = 'localhost'
 CM_USER = 'admin'
 CM_PASSWD = 'admin'
-CM_USE_TLS = True
+CM_USE_TLS = False
 
 LOG = logging.getLogger(__name__)
 
