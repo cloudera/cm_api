@@ -593,6 +593,7 @@ def main():
     parser.add_argument('--password', action='store', dest='password')
     parser.add_argument('-e', '--execute', action='store', dest='execute')
     parser.add_argument('-s', '--seperator', action='store', dest='seperator')
+    parser.add_argument('-t', '--tls', action='store_const', dest='use_tls', const=True, default=False)
     args = parser.parse_args()
 
     # Check if a username was suplied, if not, prompt the user
@@ -605,12 +606,12 @@ def main():
 
     # Attempt to authenticate using the API
     global api
-    api = ApiResource(args.hostname, args.port, args.username, args.password)
+    api = ApiResource(args.hostname, args.port, args.username, args.password, args.use_tls)
     try:
         api.echo("ping")
     except ApiException:
         try:
-            api = ApiResource(args.hostname, args.port, args.username, args.password, version=1)
+            api = ApiResource(args.hostname, args.port, args.username, args.password, args.use_tls, version=1)
             api.echo("ping")
         except ApiException:
             print("Unable to Authenticate")

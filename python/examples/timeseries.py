@@ -69,6 +69,7 @@ from cm_api.api_client import ApiResource
 CM_HOST = 'localhost'
 CM_USER = 'admin'
 CM_PASSWD = 'admin'
+CM_USE_TLS = False
 
 LOG = logging.getLogger(__name__)
 
@@ -76,7 +77,7 @@ class TimeSeriesQuery(object):
   """
   """
   def __init__(self):
-    self._api = ApiResource(CM_HOST, username=CM_USER, password=CM_PASSWD)
+    self._api = ApiResource(CM_HOST, username=CM_USER, password=CM_PASSWD, use_tls=CM_USE_TLS)
 
   def query(self, query, from_time, to_time):
     return self._api.query_timeseries(query, from_time, to_time)
