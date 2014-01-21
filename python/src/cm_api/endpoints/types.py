@@ -780,7 +780,7 @@ class ApiHdfsSnapshot(BaseApiObject):
   _ATTRIBUTES = {
     'path'          : None,
     'snapshotName'  : None,
-    'snapshotPath'  : ROAttr(),
+    'snapshotPath'  : None,
     'creationTime'  : ROAttr(datetime.datetime),
   }
 
