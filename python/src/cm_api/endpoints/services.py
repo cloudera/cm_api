@@ -207,6 +207,15 @@ class ApiService(BaseApiResource):
     return self._get("impalaQueries/" + query_id, ApiImpalaQueryDetailsResponse,
         params=dict(format=format), api_version=4)
 
+  def create_impala_user_dir(self):
+    """
+    Create the Impala user directory
+
+    @return Reference to submitted command.
+    @since: API v6
+    """
+    return self._cmd('impalaCreateUserDir', api_version=6)
+
   def get_yarn_applications(self, start_time, end_time, filter_str="", limit=100,
       offset=0):
     """
@@ -232,6 +241,7 @@ class ApiService(BaseApiResource):
     return self._get("yarnApplications", ApiYarnApplicationResponse,
         params=params, api_version=6)
 
+
   def kill_yarn_application(self, application_id):
     """
     Kills the application.
@@ -241,6 +251,24 @@ class ApiService(BaseApiResource):
     """
     return self._post("yarnApplications/%s/kill" % (application_id, ),
         ApiYarnKillResponse, api_version=6)
+
+  def create_yarn_job_history_dir(self):
+    """
+    Create the Yarn job history directory.
+
+    @return Reference to submitted command.
+    @since: API v6
+    """
+    return self._cmd('yarnCreateJobHistoryDirCommand', api_version=6)
+
+  def create_yarn_node_manager_remote_app_log_dir(self):
+    """
+    Create the Yarn NodeManager remote application log directory.
+
+    @return Reference to submitted command.
+    @since: API v6
+    """
+    return self._cmd('yarnNodeManagerRemoteAppLogDirCommand', api_version=6)
 
   def get_config(self, view = None):
     """
