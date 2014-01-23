@@ -166,9 +166,15 @@ class ApiService(BaseApiResource):
     """
     Returns a list of queries that satisfy the filter
 
-    @type  start_time: datetime.datetime
+    @type start_time: datetime.datetime. Note that the datetime must either be
+                      time zone aware or specified in the server time zone. See
+                      the python datetime documentation for more details about
+                      python's time zone handling.
     @param start_time: Queries must have ended after this time
-    @type  end_time: datetime.datetime
+    @type end_time: datetime.datetime. Note that the datetime must either be
+                    time zone aware or specified in the server time zone. See
+                    the python datetime documentation for more details about
+                    python's time zone handling.
     @param end_time: Queries must have started before this time
     @param filter: A filter to apply to the queries. For example:
     'user = root and queryDuration > 5s'
@@ -220,11 +226,15 @@ class ApiService(BaseApiResource):
       offset=0):
     """
     Returns a list of YARN applications that satisfy the filter
-
-    @type  start_time: datetime.datetime
+    @type start_time: datetime.datetime. Note that the datetime must either be
+                      time zone aware or specified in the server time zone. See
+                      the python datetime documentation for more details about
+                      python's time zone handling.
     @param start_time: Applications must have ended after this time
-    @type  end_time: datetime.datetime
-    @param end_time: Applications must have started before this time
+    @type end_time: datetime.datetime. Note that the datetime must either be
+                    time zone aware or specified in the server time zone. See
+                    the python datetime documentation for more details about
+                    python's time zone handling.
     @param filter: A filter to apply to the applications. For example:
     'user = root and applicationDuration > 5s'
     @param limit: The maximum number of results to return
