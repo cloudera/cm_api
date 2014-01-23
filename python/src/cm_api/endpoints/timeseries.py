@@ -29,9 +29,16 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None,
   Query for time series data from the CM time series data store.
   @param query: Query string.
   @param from_time: Start of the period to query (optional).
-                    This may be an ISO format string, or a datetime object.
+  @type from_time: datetime.datetime Note the that datetime must either be time
+                   zone aware or specified in the server time zone. See the
+                   python datetime documentation for more details about python's
+                   time zone handling.
   @param to_time: End of the period to query (default = now).
                   This may be an ISO format string, or a datetime object.
+  @type to_time: datetime.datetime Note the that datetime must either be time
+                 zone aware or specified in the server time zone. See the
+                 python datetime documentation for more details about python's
+                 time zone handling.
   @param rollup_desired: The aggregate rollup to get data for. This can be
                          RAW, TEN_MINUTELY, HOURLY, SIX_HOURLY, DAILY, or
                          WEEKLY. Note that rollup desired is only a hint unless
@@ -44,13 +51,9 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None,
   if query:
     params['query'] = query
   if from_time:
-    if isinstance(from_time, datetime.datetime):
-      from_time = from_time.isoformat()
-    params['from'] = from_time
+    params['from'] = from_time.isoformat()
   if to_time:
-    if isinstance(to_time, datetime.datetime):
-      to_time = to_time.isoformat()
-    params['to'] = to_time
+    params['to'] = to_time.isoformat()
   if desired_rollup:
     params['desiredRollup'] = desired_rollup
   if must_use_desired_rollup:
