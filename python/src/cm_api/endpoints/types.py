@@ -720,6 +720,7 @@ class ApiHiveReplicationResult(BaseApiObject):
     'errors'                : ROAttr(),
     'dataReplicationResult' : ROAttr(ApiHdfsReplicationResult),
     'dryRun'                : ROAttr(),
+    'phase'                 : ROAttr(),
   }
 
 class ApiReplicationCommand(ApiCommand):
