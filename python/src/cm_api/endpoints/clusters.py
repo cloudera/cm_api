@@ -217,7 +217,16 @@ class ApiCluster(BaseApiResource):
     """
     return self._cmd('stop')
 
-  def deploy_client_config(self):
+  def restart(self):
+    """
+    Restart all services in the cluster.
+    Services are restarted in the appropriate order given their dependencies.
+
+    @return: Reference to the submitted command.
+    """
+    return self._cmd('restart')
+
+def deploy_client_config(self):
     """
     Deploys client configuration to the hosts on the cluster.
 
