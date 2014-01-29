@@ -226,6 +226,26 @@ class ApiCluster(BaseApiResource):
     """
     return self._cmd('deployClientConfig')
 
+  def upgrade_services(self):
+    """
+    Upgrades the services in the cluster to CDH5 version.
+    This command requires that the CDH packages in the hosts used by the
+    cluster be upgraded to CDH5 before this command is issued. Once issued,
+    this command will stop all running services before proceeding.
+
+    If parcels are used instead of CDH system packages then the following
+    steps need to happen in order:
+    1. Stop all services manually
+    2. Activate parcel
+    3. Run this upgrade command
+
+    The command will upgrade the services and their configuration to the
+    version available in the CDH5 distribution.
+
+    @return: Reference to the submitted command.
+    """
+    return self._cmd('upgradeServices')
+
   def enter_maintenance_mode(self):
     """
     Put the cluster in maintenance mode.
