@@ -226,7 +226,7 @@ class ApiCluster(BaseApiResource):
     """
     return self._cmd('restart')
 
-def deploy_client_config(self):
+  def deploy_client_config(self):
     """
     Deploys client configuration to the hosts on the cluster.
 
