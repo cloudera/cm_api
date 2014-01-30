@@ -213,6 +213,27 @@ class ApiService(BaseApiResource):
     return self._get("impalaQueries/" + query_id, ApiImpalaQueryDetailsResponse,
         params=dict(format=format), api_version=4)
 
+  def create_impala_catalog_database(self):
+    """
+    Create the Impala Catalog Database. Only works with embedded postgresql
+    database. This command should usually be followed by a call to
+    create_impala_catalog_database_tables.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('impalaCreateCatalogDatabase', api_version=6)
+
+  def create_impala_catalog_database_tables(self):
+    """
+    Creates the Impala Catalog Database tables in the configured database.
+    Will do nothing if tables already exist. Will not perform an upgrade.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('impalaCreateCatalogDatabaseTables', api_version=6)
+
   def create_impala_user_dir(self):
     """
     Create the Impala user directory
@@ -1227,13 +1248,13 @@ class ApiService(BaseApiResource):
 
   def create_hive_metastore_tables(self):
     """
-    Creates the Hive metastore tables in the configured database, if it
-    hasn't been done yet.
+    Creates the Hive metastore tables in the configured database.
+    Will do nothing if tables already exist. Will not perform an upgrade.
 
     @return: Reference to the submitted command.
     @since: API v3
     """
-    return self._cmd('hiveCreateMetastoreDatabaseTables')
+    return self._cmd('hiveCreateMetastoreDatabaseTables', api_version=3)
 
   def create_hive_warehouse(self):
     """
@@ -1248,7 +1269,7 @@ class ApiService(BaseApiResource):
     """
     Create the Hive Metastore Database. Only works with embedded postgresql
     database. This command should usually be followed by a call to
-    hiveCreateMetastoreDatabaseTables.
+    create_hive_metastore_tables.
 
     @return: Reference to the submitted command.
     @since: API v4
