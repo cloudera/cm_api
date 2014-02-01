@@ -469,8 +469,20 @@ class ApiService(BaseApiResource):
 
   def get_metrics(self, from_time=None, to_time=None, metrics=None, view=None):
     """
-    Retrieve metric readings for the service.
+    This endpoint is not supported as of v6. Use the timeseries API
+    instead. To get all metrics for a service with the timeseries API use
+    the query:
 
+    'select * where serviceName = $SERVICE_NAME'.
+
+    To get specific metrics for a service use a comma-separated list of
+    the metric names as follows:
+
+    'select $METRIC_NAME1, $METRIC_NAME2 where serviceName = $SERVICE_NAME'.
+
+    For more information see http://tiny.cloudera.com/tsquery_doc
+
+    Retrieve metric readings for the service.
     @param from_time: A datetime; start of the period to query (optional).
     @param to_time: A datetime; end of the period to query (default = now).
     @param metrics: List of metrics to query (default = all).
