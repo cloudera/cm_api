@@ -99,6 +99,45 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEquals("db1", args.tableFilters[0].database)
     self.assertEquals("table1", args.tableFilters[0].tableName)
 
+  def test_hive_results(self):
+    RAW = '''{
+      "phase" : "EXPORT",
+      "tableCount" : 1,
+      "tables" : [
+        { "database" : "db1", "tableName" : "table1" }
+      ],
+      "impalaUDFCount" : 1,
+      "impalaUDFs" : [
+        { "database" : "db1", "signature" : "func1(STRING)" }
+      ],
+      "errorCount" : 1,
+      "errors" : [
+        { "database" : "db1", "tableName" : "table2",
+          "impalaUDF" : "func2(INT)", "error" : "message" }
+      ],
+      "dataReplicationResult" : {
+        "progress" : 50
+      },
+      "dryRun" : false
+    }'''
+    res = utils.deserialize(RAW, ApiHiveReplicationResult)
+    self.assertEquals('EXPORT', res.phase)
+    self.assertEquals(1, res.tableCount)
+    self.assertEquals(1, len(res.tables))
+    self.assertEquals('db1', res.tables[0].database)
+    self.assertEquals('table1', res.tables[0].tableName)
+    self.assertEquals(1, res.impalaUDFCount)
+    self.assertEquals(1, len(res.impalaUDFs))
+    self.assertEquals('db1', res.impalaUDFs[0].database)
+    self.assertEquals('func1(STRING)', res.impalaUDFs[0].signature)
+    self.assertEquals(1, res.errorCount)
+    self.assertEquals('db1', res.errors[0]['database'])
+    self.assertEquals('table2', res.errors[0]['tableName'])
+    self.assertEquals('func2(INT)', res.errors[0]['impalaUDF'])
+    self.assertEquals('message', res.errors[0]['error'])
+    self.assertEquals(50, res.dataReplicationResult.progress)
+    self.assertFalse(res.dryRun)
+
   def test_schedule(self):
     RAW = '''{
       "id" : 39,
