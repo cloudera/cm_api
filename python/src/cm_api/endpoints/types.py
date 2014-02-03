@@ -1012,6 +1012,19 @@ class ApiImpalaCancelResponse(BaseApiObject):
   def __str__(self):
     return "<ApiImpalaCancelResponse> %s" % self.warning
 
+class ApiImpalaQueryAttribute(BaseApiObject):
+
+  _ATTRIBUTES = {
+    'name'               : ROAttr(),
+    'type'               : ROAttr(),
+    'displayName'        : ROAttr(),
+    'supportsHistograms' : ROAttr(),
+    'description'        : ROAttr()
+  }
+
+  def __str__(self):
+    return "<ApiImpalaQueryAttribute> %s" % name
+
 class ApiMr2AppInformation(BaseApiObject):
   _ATTRIBUTES = {
     'jobState'               : ROAttr()
@@ -1051,6 +1064,19 @@ class ApiYarnKillResponse(BaseApiObject):
 
   def __str__(self):
     return "<ApiYarnKillResponse> %s" % self.warning
+
+class ApiYarnApplicationAttribute(BaseApiObject):
+
+  _ATTRIBUTES = {
+    'name'               : ROAttr(),
+    'type'               : ROAttr(),
+    'displayName'        : ROAttr(),
+    'supportsHistograms' : ROAttr(),
+    'description'        : ROAttr()
+  }
+
+  def __str__(self):
+    return "<ApiYarnApplicationAttribute> %s" % name
 
 def config_to_api_list(dic):
   """
