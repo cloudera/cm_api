@@ -46,3 +46,18 @@ class TestYarn(unittest.TestCase):
     resp = service.kill_yarn_application('randomId')
     self.assertEquals('test', resp.warning)
 
+  def test_attributes(self):
+    resource = utils.MockResource(self)
+    service = ApiService(resource, name="bar")
+
+    resource.expect("GET", "/cm/service/yarnApplications/attributes",
+        retdata=[{ 'name' : 'test',
+                  'type' : 'STRING',
+                  'displayName' : 'testDisplayName',
+                  'supportsHistograms' : True,
+                  'description' : 'testDescription' }])
+    resp = service.get_yarn_application_attributes()
+    self.assertEquals(1, len(resp))
+    attr = resp[0]
+    self.assertIsInstance(attr, ApiYarnApplicationAttribute)
+    self.assertEquals('test', attr.name)

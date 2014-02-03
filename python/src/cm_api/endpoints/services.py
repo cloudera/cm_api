@@ -213,6 +213,27 @@ class ApiService(BaseApiResource):
     return self._get("impalaQueries/" + query_id, ApiImpalaQueryDetailsResponse,
         params=dict(format=format), api_version=4)
 
+  def get_impala_query_attributes(self):
+    """
+    Returns the list of all attributes that the Service Monitor can associate
+    with Impala queries.
+
+    Examples of attributes include the user who issued the query and the
+    number of HDFS bytes read by the query.
+
+    These attributes can be used to search for specific Impala queries through
+    the get_impala_queries API. For example the 'user' attribute could be used
+    in the search 'user = root'. If the attribute is numeric it can also be used
+    as a metric in a tsquery (ie, 'select hdfs_bytes_read from IMPALA_QUERIES').
+
+    Note that this response is identical for all Impala services.
+
+    @return A list of the Impala query attributes
+    @since API v6
+    """
+    return self._get("impalaQueries/attributes", ApiImpalaQueryAttribute,
+        api_version=6)
+
   def create_impala_catalog_database(self):
     """
     Create the Impala Catalog Database. Only works with embedded postgresql
@@ -272,7 +293,6 @@ class ApiService(BaseApiResource):
     return self._get("yarnApplications", ApiYarnApplicationResponse,
         params=params, api_version=6)
 
-
   def kill_yarn_application(self, application_id):
     """
     Kills the application.
@@ -282,6 +302,27 @@ class ApiService(BaseApiResource):
     """
     return self._post("yarnApplications/%s/kill" % (application_id, ),
         ApiYarnKillResponse, api_version=6)
+
+  def get_yarn_application_attributes(self):
+    """
+    Returns the list of all attributes that the Service Monitor can associate
+    with YARN applications.
+
+    Examples of attributes include the user who ran the application and the
+    number of maps completed by the application.
+
+    These attributes can be used to search for specific YARN applications through
+    the get_yarn_applications API. For example the 'user' attribute could be used
+    in the search 'user = root'. If the attribute is numeric it can also be used
+    as a metric in a tsquery (ie, 'select maps_completed from YARN_APPLICATIONS').
+
+    Note that this response is identical for all YARN services.
+
+    @return A list of the YARN application attributes
+    @since API v6
+    """
+    return self._get("yarnApplications/attributes", ApiYarnApplicationAttribute,
+        api_version=6)
 
   def create_yarn_job_history_dir(self):
     """

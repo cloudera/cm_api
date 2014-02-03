@@ -54,3 +54,19 @@ class TestImpala(unittest.TestCase):
         retdata={ 'warning' : 'test' })
     resp = service.cancel_impala_query('randomId')
     self.assertEquals('test', resp.warning)
+
+  def test_attributes(self):
+    resource = utils.MockResource(self)
+    service = ApiService(resource, name="bar")
+
+    resource.expect("GET", "/cm/service/impalaQueries/attributes",
+        retdata=[{ 'name' : 'test',
+                  'type' : 'STRING',
+                  'displayName' : 'testDisplayName',
+                  'supportsHistograms' : True,
+                  'description' : 'testDescription' }])
+    resp = service.get_impala_query_attributes()
+    self.assertEquals(1, len(resp))
+    attr = resp[0]
+    self.assertIsInstance(attr, ApiImpalaQueryAttribute)
+    self.assertEquals('test', attr.name)
