@@ -701,6 +701,15 @@ class ApiHiveTable(BaseApiObject):
   def __str__(self):
     return "<ApiHiveTable>: %s, %s" % (self.database, self.tableName)
 
+class ApiImpalaUDF(BaseApiObject):
+  _ATTRIBUTES = {
+    'database'  : ROAttr(),
+    'signature' : ROAttr(),
+  }
+
+  def __str__(self):
+    return "<ApiImpalaUDF>: %s, %s" % (self.database, self.signature)
+
 class ApiHiveReplicationArguments(BaseApiObject):
   _ATTRIBUTES = {
     'sourceService' : Attr(ApiServiceRef),
@@ -716,6 +725,8 @@ class ApiHiveReplicationResult(BaseApiObject):
   _ATTRIBUTES = {
     'tableCount'            : ROAttr(),
     'tables'                : ROAttr(ApiHiveTable),
+    'impalaUDFCount'        : ROAttr(),
+    'impalaUDFs'            : ROAttr(ApiImpalaUDF),
     'errorCount'            : ROAttr(),
     'errors'                : ROAttr(),
     'dataReplicationResult' : ROAttr(ApiHdfsReplicationResult),
