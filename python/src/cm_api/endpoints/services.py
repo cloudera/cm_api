@@ -1265,6 +1265,15 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('hiveCreateHiveWarehouse')
 
+  def create_hive_userdir(self):
+    """
+    Creates the Hive user directory in HDFS.
+
+    @return: Reference to the submitted command.
+    @since: API v4
+    """
+    return self._cmd('hiveCreateHiveUserDir')
+
   def create_hive_metastore_database(self):
     """
     Create the Hive Metastore Database. Only works with embedded postgresql
