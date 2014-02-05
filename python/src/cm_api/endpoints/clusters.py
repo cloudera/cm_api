@@ -62,6 +62,7 @@ def delete_cluster(resource_root, name):
 
 class ApiCluster(BaseApiResource):
   _ATTRIBUTES = {
+    'immutableName'     : None,
     'name'              : None,
     'version'           : None,
     'maintenanceMode'   : ROAttr(),
