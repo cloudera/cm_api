@@ -662,6 +662,7 @@ class ApiService(BaseApiResource):
   def disable_hdfs_auto_failover(self, nameservice):
     """
     Disable auto-failover for a highly available HDFS nameservice.
+    This command is no longer supported with API v6 onwards. Use disable_nn_ha instead.
 
     @param nameservice: Affected nameservice.
     @return: Reference to the submitted command.
@@ -673,6 +674,7 @@ class ApiService(BaseApiResource):
                       disable_quorum_storage=False):
     """
     Disable high availability for an HDFS NameNode.
+    This command is no longer supported with API v6 onwards. Use disable_nn_ha instead.
 
     @param active_name: Name of the NameNode to keep.
     @param secondary_name: Name of (existing) SecondaryNameNode to link to
@@ -828,6 +830,28 @@ class ApiService(BaseApiResource):
     )
     return self._cmd('hdfsEnableNnHa', data=args, api_version=6)
 
+  def disable_nn_ha(self, active_name, snn_host_id, snn_check_point_dir_list,
+      snn_name=None):
+    """
+    Disable high availability with automatic failover for an HDFS NameNode.
+
+    @param active_name: Name of the NamdeNode role that is going to be active after
+                        High Availability is disabled.
+    @param snn_host_id: Id of the host where the new SecondaryNameNode will be created.
+    @param snn_check_point_dir_list : List of directories used for checkpointing
+                                      by the new SecondaryNameNode.
+    @param snn_name: Name of the new SecondaryNameNode role (Optional).
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    args = dict(
+      activeNnName = active_name,
+      snnHostId = snn_host_id,
+      snnCheckpointDirList = snn_check_point_dir_list,
+      snnName = snn_name
+    )
+    return self._cmd('hdfsDisableNnHa', data=args, api_version=6)
+
   def enable_jt_ha(self, new_jt_host_id, force_init_znode=True, zk_service_name=None,
       new_jt_name=None, fc1_name=None, fc2_name=None):
     """
@@ -908,6 +932,46 @@ class ApiService(BaseApiResource):
       activeName = active_name
     )
     return self._cmd('disableRmHa', data=args)
+
+  def enable_oozie_ha(self, new_oozie_server_host_ids, new_oozie_server_role_names=None,
+    zk_service_name=None, load_balancer_host_port=None):
+    """
+    Enable high availability for Oozie.
+
+    @param new_oozie_server_host_ids: List of IDs of the hosts on which new Oozie Servers
+                                      will be added.
+    @param new_oozie_server_role_names: List of names of the new Oozie Servers. This is an
+                                        optional argument, but if provided, it should
+                                        match the length of host IDs provided.
+    @param zk_service_name: Name of the ZooKeeper service that will be used for Oozie HA.
+                            This is an optional parameter if the Oozie to ZooKeeper
+                            dependency is already set.
+    @param load_balancer_host_port: Address and port of the load balancer used for Oozie HA.
+                                    This is an optional parameter if this config is already set.
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    args = dict(
+      newOozieServerHostIds = new_oozie_server_host_ids,
+      newOozieServerRoleNames = new_oozie_server_role_names,
+      zkServiceName = zk_service_name,
+      loadBalancerHostPort = load_balancer_host_port
+    )
+    return self._cmd('oozieEnableHa', data=args, api_version=6)
+
+  def disable_oozie_ha(self, active_name):
+    """
+    Disable high availability for Oozie
+
+    @param active_name: Name of the Oozie Server that will be active after
+                        High Availability is disabled.
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    args = dict(
+      activeName = active_name
+    )
+    return self._cmd('oozieDisableHa', data=args, api_version=6)
 
   def failover_hdfs(self, active_name, standby_name, force=False):
     """
