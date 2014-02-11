@@ -17,12 +17,22 @@
   <xs:element name="collectDiagnosticDataArgs" type="apiCollectDiagnosticDataArguments"/>
   <xs:element name="command" type="apiCommand"/>
   <xs:element name="commandList" type="apiCommandList"/>
+  <xs:element name="commandMetadata" type="apiCommandMetadata"/>
+  <xs:element name="commandMetadataList" type="apiCommandMetadataList"/>
   <xs:element name="config" type="apiConfig"/>
   <xs:element name="configList" type="apiConfigList"/>
+  <xs:element name="apiDashboard" type="apiDashboard"/>
+  <xs:element name="apiDashboardList" type="apiDashboardList"/>
   <xs:element name="deployment" type="apiDeployment"/>
   <xs:element name="disableJtHaArgs" type="apiDisableJtHaArguments"/>
+  <xs:element name="hdfsDisableNnHaArgs" type="apiDisableNnHaArguments"/>
+  <xs:element name="disableOozieHaArgs" type="apiDisableOozieHaArguments"/>
+  <xs:element name="disableRmHaArgs" type="apiDisableRmHaArguments"/>
   <xs:element name="echoMessage" type="apiEcho"/>
   <xs:element name="enableJtHaArgs" type="apiEnableJtHaArguments"/>
+  <xs:element name="enableNnHaArgs" type="apiEnableNnHaArguments"/>
+  <xs:element name="enableOozieHaArgs" type="apiEnableOozieHaArguments"/>
+  <xs:element name="enableRmHaArgs" type="apiEnableRmHaArguments"/>
   <xs:element name="event" type="apiEvent"/>
   <xs:element name="eventQueryResult" type="apiEventQueryResult"/>
   <xs:element name="hbaseSnapshot" type="apiHBaseSnapshot"/>
@@ -58,6 +68,8 @@
   <xs:element name="impalaQuery" type="apiImpalaQuery"/>
   <xs:element name="impalaQueryDetailsResponse" type="apiImpalaQueryDetailsResponse"/>
   <xs:element name="impalaQueryResponse" type="apiImpalaQueryResponse"/>
+  <xs:element name="impalaUDF" type="apiImpalaUDF"/>
+  <xs:element name="jnArgs" type="apiJournalNodeArguments"/>
   <xs:element name="license" type="apiLicense"/>
   <xs:element name="metric" type="apiMetric"/>
   <xs:element name="metricData" type="apiMetricData"/>
@@ -82,6 +94,7 @@
   <xs:element name="replicationCommandList" type="apiReplicationCommandList"/>
   <xs:element name="replicationSchedule" type="apiReplicationSchedule"/>
   <xs:element name="replicationScheduleList" type="apiReplicationScheduleList"/>
+  <xs:element name="restartClusterArgs" type="apiRestartClusterArgs"/>
   <xs:element name="role" type="apiRole"/>
   <xs:element name="roleConfigGroup" type="apiRoleConfigGroup"/>
   <xs:element name="roleConfigGroupList" type="apiRoleConfigGroupList"/>
@@ -98,6 +111,7 @@
   <xs:element name="serviceConfig" type="apiServiceConfig"/>
   <xs:element name="serviceList" type="apiServiceList"/>
   <xs:element name="serviceRef" type="apiServiceRef"/>
+  <xs:element name="serviceTypeList" type="apiServiceTypeList"/>
   <xs:element name="snapshotCommand" type="apiSnapshotCommand"/>
   <xs:element name="snapshotCommandList" type="apiSnapshotCommandList"/>
   <xs:element name="snapshotPolicy" type="apiSnapshotPolicy"/>
@@ -111,6 +125,8 @@
   <xs:element name="userList" type="apiUserList"/>
   <xs:element name="cmVersionInfo" type="apiVersionInfo"/>
   <xs:element name="yarnApplication" type="apiYarnApplication"/>
+  <xs:element name="yarnApplicationAttribute" type="apiYarnApplicationAttribute"/>
+  <xs:element name="yarnApplicationAttributeList" type="apiYarnApplicationAttributeList"/>
   <xs:element name="yarnApplicationResponse" type="apiYarnApplicationResponse"/>
   <xs:element name="yarnKillResponse" type="apiYarnKillResponse"/>
   <xs:complexType name="apiActivity">
@@ -547,7 +563,20 @@ of hosts. All services on a given cluster are of the same software version
       <xs:element name="name" type="xs:string" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
-            <![CDATA[The name of the cluster]]>
+            <![CDATA[The name of the cluster.
+<p>
+Immutable since API v6.
+<p>
+Prior to API v6, will contain the display name of the cluster.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="displayName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The display name of the cluster that is shown in the UI.
+<p>
+Available since API v6.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -938,6 +967,64 @@ The list contains only the summary view of the children.]]>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="apiCommandMetadata">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Provides metadata information about a command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The name of of the command.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="argSchema" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The command arguments schema.
+This is in the form of json schema and
+describes the structure of the command
+arguments. If null, the command does not
+take arguments.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiCommandMetadataList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of command metadata.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[The list of command metadata objects.]]>
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="commandMetadataItems" type="apiCommandMetadata" minOccurs="0" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      <![CDATA[The list of command metadata objects.]]>
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:simpleType name="apiCommissionState">
     <xs:annotation>
       <xs:documentation>
@@ -1056,6 +1143,62 @@ A message explaining the parameter's validation state.]]>
             <xs:complexType>
               <xs:sequence>
                 <xs:element name="configs" type="apiConfig" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="apiConfigStalenessStatus">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Represents the configuration staleness status of an entity.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FRESH"/>
+      <xs:enumeration value="STALE_REFRESHABLE"/>
+      <xs:enumeration value="STALE"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="apiDashboard">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A dashboard definition. Dashboards are composed of tsquery-based charts.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Returns the dashboard name.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="json" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Returns the json structure for the dashboard. This should be treated as
+an opaque blob.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiDashboardList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of dashboard definitions.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="dashboards" type="apiDashboard" minOccurs="0" maxOccurs="unbounded"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -1206,6 +1349,71 @@ Available since API v3.]]>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
+  <xs:complexType name="apiDisableNnHaArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for Disable NameNode High Availability command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="activeNnName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the NamdeNode role that is going to be active after
+High Availability is disabled.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="snnHostId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Id of the host where the new SecondaryNameNode will be created.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="snnCheckpointDirList" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[List of directories used for checkpointing by the new SecondaryNameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="snnName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the new SecondaryNameNode role (Optional).]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiDisableOozieHaArguments">
+    <xs:sequence>
+      <xs:element name="activeName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the Oozie Server that will be active after HA is disabled.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiDisableRmHaArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for Disable RM HA command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="activeName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the ResourceManager that will be active after HA is disabled.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="apiEcho">
     <xs:annotation>
       <xs:documentation>
@@ -1270,6 +1478,196 @@ JobTracker (Optional)]]>
             <![CDATA[Name of second Failover Controller role to be created.
 This is the Failover Controller co-located with the new
 JobTracker (Optional)]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiEnableNnHaArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for Enable NameNode High Availability command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="activeNnName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the NameNode role that is going to be made Highly Available.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standbyNnName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the new Standby NameNode role that will be created during the
+command (Optional).]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standbyNnHostId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Id of the host on which new Standby NameNode will be created.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standbyNameDirList" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[List of directories for the new Standby NameNode.
+If not provided then it will use same dirs as Active NameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="nameservice" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Nameservice to be used while enabling Highly Available.
+It must be specified if Active NameNode isn't configured with it.
+If Active NameNode is already configured, then this need not
+be specified. However, if it is still specified, it must match
+the existing config for the Active NameNode.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="qjName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the journal located on each JournalNodes' filesystem.
+This can be optionally provided if the config hasn't already been set for the
+Active NameNode.
+If this isn't provided and Active NameNode doesn't also have the config,
+then nameservice is used by default. If Active NameNode already has this configured,
+then it much match the existing config.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="activeFcName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the FailoverController role to be created on
+Active NameNode's host (Optional).]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="standbyFcName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the FailoverController role to be created on
+Standby NameNode's host (Optional).]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="zkServiceName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the ZooKeeper service to be used for Auto-Failover.
+This MUST be provided if HDFS doesn't have a ZooKeeper dependency.
+If the dependency is already set, then this should be the name of the same
+ZooKeeper service, but can also be omitted in that case.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="jns" type="apiJournalNodeArguments" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Arguments for the JournalNodes to be created during the command.
+Must be provided only if JournalNodes don't exist already in HDFS.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="forceInitZNode" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Boolean indicating if the ZNode should be force initialized if it is
+already present. Useful while re-enabling High Availability. (Default: TRUE)]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="clearExistingStandbyNameDirs" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Boolean indicating if the existing name directories for Standby NameNode
+should be cleared during the workflow.
+Useful while re-enabling High Availability. (Default: TRUE)]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="clearExistingJnEditsDir" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Boolean indicating if the existing edits directories for the JournalNodes
+for the specified nameservice should be cleared during the workflow.
+Useful while re-enabling High Availability. (Default: TRUE)]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiEnableOozieHaArguments">
+    <xs:sequence>
+      <xs:element name="newOozieServerHostIds" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[IDs of the hosts on which new Oozie Servers will be added.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="newOozieServerRoleNames" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Names of the new Oozie Servers. This is an optional argument,
+but if provided, it should match the length of host IDs provided.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="zkServiceName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the ZooKeeper service that will be used for Oozie HA.
+This is an optional parameter if the Oozie to ZooKeeper dependency is
+already set in CM.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="loadBalancerHostPort" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Address of the load balancer used for Oozie HA.
+This is an optional parameter if this config is already set in CM.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiEnableRmHaArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for enable RM HA command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="newRmHostId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Id of host on which second ResourceManager role will be added.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="newRmRoleName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the second ResourceManager role to be created (Optional)]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="zkServiceName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the ZooKeeper service that will be used for auto-failover.
+This is an optional parameter if the Yarn to ZooKeeper dependency is
+already set in CM.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -2667,6 +3065,13 @@ in the source will be stored in "/new_root/foo/bar" in the target.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="impalaUDF" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[UDF signature, includes the UDF name and parameter types.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="error" type="xs:string" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
@@ -2723,6 +3128,34 @@ Since API v4, this is only available in the full view.]]>
                   <![CDATA[The list of tables successfully replicated.
 <p/>
 Since API v4, this is only available in the full view.]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="impalaUDFCount" type="xs:int" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Number of impala UDFs that were successfully replicated. Available since
+API v6.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="impalaUDFs" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The list of Impala UDFs successfully replicated. Available since API v6
+in the full view.]]>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="impalaUDFs" type="apiImpalaUDF" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[The list of Impala UDFs successfully replicated. Available since API v6
+in the full view.]]>
                 </xs:documentation>
               </xs:annotation>
             </xs:element>
@@ -3396,6 +3829,61 @@ for more details.
             </xs:element>
           </xs:sequence>
         </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiImpalaUDF">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[An impala UDF identifier.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="database" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of the database to which this UDF belongs.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="signature" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[UDF signature, includes the UDF name and parameter types.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiJournalNodeArguments">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used as part of ApiEnableNnHaArguments to
+specify JournalNodes.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="jnName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Name of new JournalNode to be created. (Optional)]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="jnHostId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[ID of the host where the new JournalNode will be created.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="jnEditsDir" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Path to the JournalNode edits directory. Need not be specified
+if it is already set at RoleConfigGroup level.]]>
+          </xs:documentation>
+        </xs:annotation>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
@@ -4361,6 +4849,30 @@ which services.]]>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="apiRestartClusterArgs">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for Cluster Restart command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="restartOnlyStaleServices" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Only restart services that have stale configuration and their dependent
+services.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="redeployClientConfiguration" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Re-deploy client configuration for all services in the cluster.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="apiRole">
     <xs:annotation>
       <xs:documentation>
@@ -4424,6 +4936,14 @@ Available since API v2.]]>
         <xs:annotation>
           <xs:documentation>
             <![CDATA[Readonly. Expresses whether the role configuration is stale.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="configStalenessStatus" type="apiConfigStalenessStatus" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Expresses the role's configuration staleness status.
+Available since API v6.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -4505,12 +5025,36 @@ Available since API v3.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="zooKeeperServerMode" type="zooKeeperServerMode" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. The ZooKeeper server mode for this role. Note that for
+non-ZooKeeper Server roles this will be null.
+Available since API v6.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="haStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ACTIVE"/>
       <xs:enumeration value="STANDBY"/>
+      <xs:enumeration value="UNKNOWN"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="zooKeeperServerMode">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[The state of the Zookeeper server.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="STANDALONE"/>
+      <xs:enumeration value="REPLICATED_FOLLOWER"/>
+      <xs:enumeration value="REPLICATED_LEADER"/>
+      <xs:enumeration value="REPLICATED_LEADER_ELECTION"/>
+      <xs:enumeration value="REPLICATED_OBSERVER"/>
       <xs:enumeration value="UNKNOWN"/>
     </xs:restriction>
   </xs:simpleType>
@@ -4821,6 +5365,13 @@ This argument is for ADVANCED users only.
           </xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="redeployClientConfiguration" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Re-deploy client configuration. Available since API v6.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="rolesToInclude" type="apiRolesToInclude" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
@@ -5002,6 +5553,15 @@ Whether it's running, etc.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="configStalenessStatus" type="apiConfigStalenessStatus" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Expresses the service's configuration staleness status which is
+based on the staleness status of its roles.
+Available since API v6.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="healthChecks" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
@@ -5115,7 +5675,7 @@ Available since API v3.]]>
         <xs:annotation>
           <xs:documentation>
             <![CDATA[The list of replication schedules for this service. Optional.
-Available since API v5.]]>
+Available since API v6.]]>
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -5124,7 +5684,27 @@ Available since API v5.]]>
               <xs:annotation>
                 <xs:documentation>
                   <![CDATA[The list of replication schedules for this service. Optional.
-Available since API v5.]]>
+Available since API v6.]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="snapshotPolicies" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The list of snapshot policies for this service. Optional.
+Available since API v6.]]>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="snapshotPolicies" type="apiSnapshotPolicy" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[The list of snapshot policies for this service. Optional.
+Available since API v6.]]>
                 </xs:documentation>
               </xs:annotation>
             </xs:element>
@@ -5226,6 +5806,26 @@ service.]]>
       <xs:enumeration value="NA"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:complexType name="apiServiceTypeList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A list of service types that exists for a given cluster.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="typeNames" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="apiSnapshotCommand">
     <xs:annotation>
       <xs:documentation>
@@ -5723,7 +6323,8 @@ property will always be empty when reading information from a server.]]>
         <xs:annotation>
           <xs:documentation>
             <![CDATA[A list of roles this user belongs to.
-Current possible values are: "ROLE_ADMIN" or empty.]]>
+Current possible values are: "ROLE_ADMIN", "ROLE_LIMITED", "ROLE_USER"
+or empty (implies "ROLE_USER").]]>
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -5732,7 +6333,8 @@ Current possible values are: "ROLE_ADMIN" or empty.]]>
               <xs:annotation>
                 <xs:documentation>
                   <![CDATA[A list of roles this user belongs to.
-Current possible values are: "ROLE_ADMIN" or empty.]]>
+Current possible values are: "ROLE_ADMIN", "ROLE_LIMITED", "ROLE_USER"
+or empty (implies "ROLE_USER").]]>
                 </xs:documentation>
               </xs:annotation>
             </xs:element>
@@ -5872,7 +6474,7 @@ this will return null.]]>
       <xs:element name="pool" type="xs:string" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
-            <![CDATA[The queue the application was submitted to.]]>
+            <![CDATA[The pool the application was submitted to.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -5908,6 +6510,73 @@ pairs here. For more details see the Cloudera Manager documentation.]]>
       <xs:element name="mr2AppInformation" type="apiMr2AppInformation" minOccurs="0"/>
       <xs:element name="state" type="xs:string" minOccurs="0"/>
     </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiYarnApplicationAttribute">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Metadata about a YARN application attribute.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The name of the attribute. This name can be used in filters, for example
+'user' could be used in the filter 'user = root'.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="type" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The type of the attribute. Valid types are STRING, NUMBER, BOOLEAN, BYTES,
+MILLISECONDS, BYTES_PER_SECOND, BYTE_SECONDS.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="displayName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The display name for the attribute.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="supportsHistograms" type="xs:boolean" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether the Service Monitor can generate a histogram of the distribution
+of the attribute across applications.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="description" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The description of the attribute.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiYarnApplicationAttributeList">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[The list of all attributes that are applicable to YARN applications.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="apiListBase">
+        <xs:sequence>
+          <xs:element name="items" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="attributes" type="apiYarnApplicationAttribute" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="apiYarnApplicationResponse">
     <xs:annotation>
