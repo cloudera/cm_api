@@ -576,6 +576,18 @@ class ApiBulkCommandList(ApiList):
   }
   _MEMBER_CLASS = ApiCommand
 
+class ApiCommandMetadata(BaseApiObject):
+  _ATTRIBUTES = {
+    'name'      : ROAttr(),
+    'argSchema' : ROAttr(),
+  }
+
+  def __init__(self, resource_root):
+    BaseApiObject.init(self, resource_root)
+
+  def __str__(self):
+    return "<ApiCommandMetadata>: %s (%s)" % (self.name, self.argSchema)
+
 #
 # Metrics.
 #
