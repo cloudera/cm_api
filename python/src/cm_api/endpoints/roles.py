@@ -240,3 +240,15 @@ class ApiRole(BaseApiResource):
     if cmd.success:
       self._update(_get_role(self._get_resource_root(), self._path()))
     return cmd
+
+  def list_commands_by_name(self):
+    """
+    Lists all the commands that can be executed by name
+    on the provided role.
+
+    @return: A list of command metadata objects
+    @since: API v6
+    """
+    return self._get("commandsByName", ApiCommandMetadata, True, api_version=6)
+
+

@@ -774,7 +774,7 @@ class ApiService(BaseApiResource):
     return self._cmd('hdfsEnableHa', data=args)
 
   def enable_nn_ha(self, active_name, standby_host_id, nameservice, jns,
-      standby_name_dir_list=None, qj_name=None, standby_name=None, 
+      standby_name_dir_list=None, qj_name=None, standby_name=None,
       active_fc_name=None, standby_fc_name=None, zk_service_name=None,
       force_init_znode=True, clear_existing_standby_name_dirs=True, clear_existing_jn_edits_dir=True):
     """
@@ -1258,7 +1258,7 @@ class ApiService(BaseApiResource):
     }
     if view:
       params['view'] = view
- 
+
     return self._get("replications/%s/history" % schedule_id,
                      ApiReplicationCommand, True, params=params, api_version=4)
 
@@ -1448,6 +1448,40 @@ class ApiService(BaseApiResource):
     @since: API v6
     """
     return self._cmd('switchToMr2', api_version=6)
+
+  def role_command_by_name(self, command_name, *role_names):
+    """
+    Executes a role command by name on the specified
+    roles
+
+    @param command_name: The name of the command.
+    @param role_names: The role names to execute this command on.
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._role_cmd(command_name, role_names, api_version=6)
+
+  def service_command_by_name(self, command_name):
+    """
+    Executes a command on the service specified
+    by name.
+
+    @param command_name: The name of the command.
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd(command_name, api_version=6)
+
+  def list_commands_by_name(self):
+    """
+    Lists all the commands that can be executed by name
+    on the provided service.
+
+    @return: A list of command metadata objects
+    @since: API v6
+    """
+    return self._get("commandsByName", ApiCommandMetadata, True,
+        api_version=6)
 
 class ApiServiceSetupInfo(ApiService):
   _ATTRIBUTES = {
