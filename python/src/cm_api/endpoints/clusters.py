@@ -60,7 +60,6 @@ def delete_cluster(resource_root, name):
   """
   return call(resource_root.delete, "%s/%s" % (CLUSTERS_PATH, name), ApiCluster)
 
-
 class ApiCluster(BaseApiResource):
   _ATTRIBUTES = {
     'name'              : None,
@@ -83,6 +82,15 @@ class ApiCluster(BaseApiResource):
     cluster = self._put('', ApiCluster, data=dic, params=params)
     self._update(cluster)
     return self
+
+  def get_service_types(self):
+    """
+    Get all service types supported by this cluster.
+
+    @return: A list of service types (strings)
+    """
+    resp = self._get_resource_root().get(self._path() + '/serviceTypes')
+    return resp[ApiList.LIST_KEY]
 
   def get_commands(self, view=None):
     """
