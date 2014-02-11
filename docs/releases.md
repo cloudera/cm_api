@@ -19,9 +19,9 @@ Releases
     <tbody>
         <tr>
             <td>v6</td>
-            <td>CM 5.0 (currently in beta1)</td>
+            <td>CM 5.0 (currently in beta2)</td>
             <td><a href="{{ site.url }}/apidocs/v6/index.html">API docs</a>,
-                <a href="{{ site.url }}/javadoc/5.0.0-beta-1/index.html">Javadoc</a>
+                <a href="{{ site.url }}/javadoc/5.0.0-beta-2/index.html">Javadoc</a>
             </td>
         </tr>
         <tr>
