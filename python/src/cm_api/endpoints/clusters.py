@@ -78,7 +78,7 @@ class ApiCluster(BaseApiResource):
   def _path(self):
     return "%s/%s" % (CLUSTERS_PATH, self.name)
 
-  def _put(self, dic, params=None):
+  def _put_cluster(self, dic, params=None):
     """Change cluster attributes"""
     cluster = self._put('', ApiCluster, data=dic, params=params)
     self._update(cluster)
@@ -112,8 +112,11 @@ class ApiCluster(BaseApiResource):
     @since: API v2
     """
     dic = self.to_json_dict()
-    dic['name'] = newname
-    return self._put(dic)
+    if self._get_resource_root().version < 6:
+      dic['name'] = newname
+    else:
+      dic['displayName'] = newname
+    return self._put_cluster(dic)
 
   def create_service(self, name, service_type):
     """
