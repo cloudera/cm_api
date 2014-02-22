@@ -65,11 +65,12 @@ class ApiCluster(BaseApiResource):
     'name'              : None,
     'displayName'       : None,
     'version'           : None,
+    'fullVersion'       : None,
     'maintenanceMode'   : ROAttr(),
     'maintenanceOwners' : ROAttr(),
   }
 
-  def __init__(self, resource_root, name=None, version=None):
+  def __init__(self, resource_root, name=None, version=None, fullVersion=None):
     BaseApiObject.init(self, resource_root, locals())
 
   def __str__(self):
@@ -116,6 +117,18 @@ class ApiCluster(BaseApiResource):
       dic['name'] = newname
     else:
       dic['displayName'] = newname
+    return self._put_cluster(dic)
+
+  def update_cdh_version(self, new_cdh_version):
+    """
+    Manually set the CDH version.
+
+    @param new_cdh_version: New CDH version, e.g. 4.5.1
+    @return: An ApiCluster object
+    @since: API v6
+    """
+    dic = self.to_json_dict()
+    dic['fullVersion'] = new_cdh_version
     return self._put_cluster(dic)
 
   def create_service(self, name, service_type):

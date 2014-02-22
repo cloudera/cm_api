@@ -31,3 +31,14 @@ class TestCluster(unittest.TestCase):
         data=data,
         retdata={ 'items' : [ { 'hostId' : 'foo' } ] })
     cluster.add_hosts(['foo'])
+
+  def test_update_cdh_version(self):
+    resource = utils.MockResource(self)
+    cluster = ApiCluster(resource, name="foo")
+
+    data = ApiCluster(resource, name='foo', fullVersion='4.2.1')
+
+    resource.expect("PUT", "/clusters/foo",
+        data=data,
+        retdata={ 'name' : 'foo'})
+    cluster.update_cdh_version('4.2.1')
