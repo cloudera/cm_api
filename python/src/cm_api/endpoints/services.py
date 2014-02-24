@@ -1033,6 +1033,15 @@ class ApiService(BaseApiResource):
 
     return self._cmd('hdfsRollEdits', data=args)
 
+  def upgrade_hdfs_metadata(self):
+    """
+    Upgrade HDFS Metadata as part of a major version upgrade.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('hdfsUpgradeMetadata', api_version=6)
+
   def cleanup_zookeeper(self, *servers):
     """
     Cleanup a ZooKeeper service or roles.
@@ -1361,7 +1370,16 @@ class ApiService(BaseApiResource):
     @return: Reference to the submitted command.
     @since: API v3
     """
-    return self._cmd('installOozieShareLib')
+    return self._cmd('installOozieShareLib', api_version=3)
+
+  def upgrade_oozie_db(self):
+    """
+    Upgrade Oozie Database schema as part of a major version upgrade.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('oozieUpgradeDb', api_version=6)
 
   def create_hive_metastore_tables(self):
     """
