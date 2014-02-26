@@ -1506,7 +1506,7 @@
 
     <h3>Metrics</h3>
 
-    <p>In the Enterprise Edition, you can get metrics related to hosts,
+    <p>You can get metrics related to hosts,
     services, roles and activities. The call by default fetches data points from
     the last 5 minutes.
     <code>
