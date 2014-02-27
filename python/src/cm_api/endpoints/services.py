@@ -1043,6 +1043,15 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('hdfsUpgradeMetadata', api_version=6)
 
+  def upgrade_hive_metastore(self):
+    """
+    Upgrade Hive Metastore as part of a major version upgrade.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('hiveUpgradeMetastore', api_version=6)
+
   def cleanup_zookeeper(self, *servers):
     """
     Cleanup a ZooKeeper service or roles.
