@@ -1043,6 +1043,24 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('hdfsUpgradeMetadata', api_version=6)
 
+  def upgrade_hbase(self):
+    """
+    Upgrade HBase data in HDFS and ZooKeeper as part of upgrade from CDH4 to CDH5.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('hbaseUpgrade', api_version=6)
+
+  def upgrade_sqoop_db(self):
+    """
+    Upgrade Sqoop Database schema as part of a major version upgrade.
+
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    return self._cmd('sqoopUpgradeDb', api_version=6)
+
   def upgrade_hive_metastore(self):
     """
     Upgrade Hive Metastore as part of a major version upgrade.
