@@ -300,3 +300,32 @@ class ClouderaManager(BaseApiResource):
     @return: Dictionary with updated configuration.
     """
     return self._update_config("allHosts/config", config)
+
+  def auto_assign_roles(self):
+    """
+    Automatically assign roles to hosts and create the roles for the Cloudera
+    Management Service.
+
+    Assignments are done based on number of hosts in the deployment and hardware
+    specifications. Existing roles will be taken into account and their
+    assignments will be not be modified. The deployment should not have any
+    clusters when calling this endpoint. If it does, an exception will be thrown
+    preventing any role assignments.
+    @since API v6
+    """
+    self._put("service/autoAssignRoles", None, api_version=6)
+
+  def auto_configure(self):
+    """
+    Automatically configures roles of the Cloudera Management Service.
+
+    Overwrites some existing configurations. Only default role config groups
+    must exist before calling this endpoint. Other role config groups must not
+    exist. If they do, an exception will be thrown preventing any
+    configuration. Ignores any clusters (and their services and roles)
+    colocated with the Cloudera Management Service. To avoid over-committing
+    the heap on hosts, place the Cloudera Management Service roles on machines
+    not used by any of the clusters.
+    @since API v6
+    """
+    self._put("service/autoConfigure", None, api_version=6)
