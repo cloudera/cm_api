@@ -379,3 +379,28 @@ class ApiCluster(BaseApiResource):
       args['restartServiceNames'] = restart_service_names
 
     return self._cmd('rollingRestart', data=args, api_version=4)
+
+  def auto_assign_roles(self):
+    """
+    Automatically assign roles to hosts and create the roles for all the services in a cluster.
+
+    Assignments are done based on services in the cluster and hardware specifications.
+    Existing roles will be taken into account and their assignments will be not be modified.
+    @since API v6
+    """
+    self._put("autoAssignRoles", None, api_version=6)
+
+  def auto_configure(self):
+    """
+    Automatically configures roles and services in a cluster.
+
+    Overwrites some existing configurations. Might create new role config
+    groups. Only default role config groups must exist before calling this
+    endpoint. Other role config groups must not exist. If they do, an exception
+    will be thrown preventing any configuration. Ignores the Cloudera
+    Management Service even if colocated with roles of this cluster. To avoid
+    over-committing the heap on hosts, assign hosts to this cluster that are
+    not being used by the Cloudera Management Service.
+    @since API v6
+    """
+    self._put("autoConfigure", None, api_version=6)

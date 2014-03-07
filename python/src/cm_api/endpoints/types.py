@@ -137,7 +137,9 @@ def call(method, path, ret_type,
     ret = method(path, data=data, params=params)
   else:
     ret = method(path, params=params)
-  if ret_is_list:
+  if ret_type is None:
+    return
+  elif ret_is_list:
     return ApiList.from_json_dict(ret, method.im_self, ret_type)
   elif isinstance(ret, list):
     return [ ret_type.from_json_dict(x, method.im_self) for x in ret ]
