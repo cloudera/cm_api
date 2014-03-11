@@ -31,6 +31,12 @@ If your system does not have `pip`, you can get it from your distro:
     ## ... or use `yum install' if you are on CentOS
 
 
+Epydoc
+======
+Here is the latest [epydoc]({{ site.url }}/epydoc/{{ site.latest_cm_version }}/index.html),
+for API version {{ site.latest_api_version }} (CM {{site.latest_cm_version}}).
+
+
 Basic Usage
 ===========
 Each subsection continues from the previous one.
