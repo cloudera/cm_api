@@ -39,13 +39,13 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None,
                  zone aware or specified in the server time zone. See the
                  python datetime documentation for more details about python's
                  time zone handling.
-  @param rollup_desired: The aggregate rollup to get data for. This can be
+  @param desired_rollup: The aggregate rollup to get data for. This can be
                          RAW, TEN_MINUTELY, HOURLY, SIX_HOURLY, DAILY, or
                          WEEKLY. Note that rollup desired is only a hint unless
                          must_use_desired_rollup is set to true.
   @param must_use_desired_rollup: Indicates that the monitoring server should
                                   return the data at the rollup desired.
-  @return List of ApiTimeSeriesResponse
+  @return: List of ApiTimeSeriesResponse
   """
   params = {}
   if query:
@@ -64,7 +64,7 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None,
 def get_metric_schema(resource_root):
   """
   Get the schema for all of the metrics.
-  @return List of metric schema.
+  @return: List of metric schema.
   """
   return call(resource_root.get, METRIC_SCHEMA_PATH,
       ApiMetricSchema, True)

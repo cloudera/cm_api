@@ -44,10 +44,10 @@ class Attr(object):
 
     If the value has a 'to_json_dict' object, that method is called. Otherwise,
     the following values are returned for each input type:
-    - datetime.datetime: string with the API representation of a date.
-    - dictionary: if 'atype' is ApiConfig, a list of ApiConfig objects.
-    - python list: python list (or ApiList) with JSON encoding of items
-    - the raw value otherwise
+     - datetime.datetime: string with the API representation of a date.
+     - dictionary: if 'atype' is ApiConfig, a list of ApiConfig objects.
+     - python list: python list (or ApiList) with JSON encoding of items
+     - the raw value otherwise
     """
     if hasattr(value, 'to_json_dict'):
       return value.to_json_dict(preserve_ro)
@@ -68,13 +68,13 @@ class Attr(object):
     Parses the given JSON value into an appropriate python object.
 
     This means:
-    - a datetime.datetime if 'atype' is datetime.datetime
-    - a converted config dictionary or config list if 'atype' is ApiConfig
-    - if the attr is an API list, an ApiList with instances of 'atype'
-    - an instance of 'atype' if it has a 'from_json_dict' method
-    - a python list with decoded versions of the member objects if the input
-      is a python list.
-    - the raw value otherwise
+     - a datetime.datetime if 'atype' is datetime.datetime
+     - a converted config dictionary or config list if 'atype' is ApiConfig
+     - if the attr is an API list, an ApiList with instances of 'atype'
+     - an instance of 'atype' if it has a 'from_json_dict' method
+     - a python list with decoded versions of the member objects if the input
+       is a python list.
+     - the raw value otherwise
     """
     if data is None:
       return None
@@ -151,9 +151,9 @@ class BaseApiObject(object):
   The BaseApiObject helps with (de)serialization from/to JSON.
 
   The derived class has two ways of defining custom attributes:
-  - Overwriting the '_ATTRIBUTES' field with the attribute dictionary
-  - Override the _get_attributes() method, in case static initialization of
-    the above field is not possible.
+   - Overwriting the '_ATTRIBUTES' field with the attribute dictionary
+   - Override the _get_attributes() method, in case static initialization of
+     the above field is not possible.
 
   It's recommended that the _get_attributes() implementation do caching to
   avoid computing the dictionary on every invocation.
@@ -185,7 +185,7 @@ class BaseApiObject(object):
     Wraper around the real constructor to avoid issues with the 'self'
     argument. Call like this, from a subclass's constructor:
 
-      BaseApiObject.init(self, locals())
+     - BaseApiObject.init(self, locals())
     """
     # This works around http://bugs.python.org/issue2646
     # We use unicode strings as keys in kwargs.
@@ -515,7 +515,6 @@ class ApiCommand(BaseApiObject):
     """
     Retrieve updated data about the command from the server.
 
-    @param resource_root: The root Resource object.
     @return: A new ApiCommand object.
     """
     if self.id == ApiCommand.SYNCHRONOUS_COMMAND_ID:
@@ -562,7 +561,6 @@ class ApiCommand(BaseApiObject):
     """
     Abort a running command.
 
-    @param resource_root: The root Resource object.
     @return: A new ApiCommand object with the updated information.
     """
     if self.id == ApiCommand.SYNCHRONOUS_COMMAND_ID:
@@ -1097,8 +1095,8 @@ def config_to_api_list(dic):
   Converts a python dictionary into a list containing the proper
   ApiConfig encoding for configuration data.
 
-  @param dic Key-value pairs to convert.
-  @return JSON dictionary of an ApiConfig list (*not* an ApiList).
+  @param dic: Key-value pairs to convert.
+  @return: JSON dictionary of an ApiConfig list (*not* an ApiList).
   """
   config = [ ]
   for k, v in dic.iteritems():
@@ -1112,8 +1110,8 @@ def config_to_json(dic):
   The payload matches the expected "apiConfig list" type used to update
   configuration parameters using the API.
 
-  @param dic Key-value pairs to convert.
-  @return String with the JSON-encoded data.
+  @param dic: Key-value pairs to convert.
+  @return: String with the JSON-encoded data.
   """
   return json.dumps(config_to_api_list(dic))
 
@@ -1124,9 +1122,9 @@ def json_to_config(dic, full = False):
   When materializing the full view, the values in the dictionary will be
   instances of ApiConfig, instead of strings.
 
-  @param dic JSON-decoded config dictionary.
-  @param full Whether to materialize the full view of the config data.
-  @return Python dictionary with config data.
+  @param dic: JSON-decoded config dictionary.
+  @param full: Whether to materialize the full view of the config data.
+  @return: Python dictionary with config data.
   """
   config = { }
   for entry in dic['items']:

@@ -27,8 +27,8 @@ def create_dashboards(resource_root, dashboard_list):
   """
   Creates the list of dashboards. If any of the dashboards already exist
   this whole command will fail and no dashboards will be created.
-  @since API v6
-  @return The list of dashboards created.
+  @since: API v6
+  @return: The list of dashboards created.
   """
   return call(resource_root.post, DASHBOARDS_PATH, ApiDashboard, \
       ret_is_list=True, data=dashboard_list)
@@ -36,8 +36,8 @@ def create_dashboards(resource_root, dashboard_list):
 def get_dashboards(resource_root):
   """
   Returns the list of all dashboards.
-  @since API v6
-  @return A list of API dashboard objects.
+  @since: API v6
+  @return: A list of API dashboard objects.
   """
   return call(resource_root.get, DASHBOARDS_PATH, ApiDashboard, \
      ret_is_list=True)
@@ -46,8 +46,8 @@ def get_dashboard(resource_root, dashboard_name):
   """
   Returns a dashboard definition for the specified name. This dashboard
   can be imported with the createDashboards API.
-  @since API v6
-  @return An API dasbhboard object.
+  @since: API v6
+  @return: An API dasbhboard object.
   """
   return call(resource_root.get, _get_dashboard_path(dashboard_name), \
       ApiDashboard)
@@ -55,8 +55,8 @@ def get_dashboard(resource_root, dashboard_name):
 def delete_dashboard(resource_root, dashboard_name):
   """
   Deletes a dashboard.
-  @since API v6
-  @return The deleted dashboard.
+  @since: API v6
+  @return: The deleted dashboard.
   """
   return call(resource_root.delete, _get_dashboard_path(dashboard_name), \
       ApiDashboard)

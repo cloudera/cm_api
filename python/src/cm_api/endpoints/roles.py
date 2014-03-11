@@ -158,7 +158,7 @@ class ApiRole(BaseApiResource):
     view contains ApiConfig instances as the values.
 
     @param view: View to materialize ('full' or 'summary')
-    @return Dictionary with configuration data.
+    @return: Dictionary with configuration data.
     """
     return self._get_config("config", view)
 
@@ -166,8 +166,8 @@ class ApiRole(BaseApiResource):
     """
     Update the role's configuration.
 
-    @param config Dictionary with configuration to update.
-    @return Dictionary with updated configuration.
+    @param config: Dictionary with configuration to update.
+    @return: Dictionary with updated configuration.
     """
     return self._update_config("config", config)
 
@@ -213,7 +213,7 @@ class ApiRole(BaseApiResource):
     @param to_time: A datetime; end of the period to query (default = now).
     @param metrics: List of metrics to query (default = all).
     @param view: View to materialize ('full' or 'summary')
-    @return List of metrics and their readings.
+    @return: List of metrics and their readings.
     """
     return self._get_resource_root().get_metrics(self._path() + '/metrics',
         from_time, to_time, metrics, view)

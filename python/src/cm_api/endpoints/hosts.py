@@ -107,7 +107,7 @@ class ApiHost(BaseApiResource):
     view contains ApiConfig instances as the values.
 
     @param view: View to materialize ('full' or 'summary')
-    @return Dictionary with configuration data.
+    @return: Dictionary with configuration data.
     """
     return self._get_config("config", view)
 
@@ -115,8 +115,8 @@ class ApiHost(BaseApiResource):
     """
     Update the host's configuration.
 
-    @param config Dictionary with configuration to update.
-    @return Dictionary with updated configuration.
+    @param config: Dictionary with configuration to update.
+    @return: Dictionary with updated configuration.
     """
     return self._update_config("config", config)
 
@@ -141,7 +141,7 @@ class ApiHost(BaseApiResource):
     @param ifs: network interfaces to query. Default all, use None to disable.
     @param storageIds: storage IDs to query. Default all, use None to disable.
     @param view: View to materialize ('full' or 'summary')
-    @return List of metrics and their readings.
+    @return: List of metrics and their readings.
     """
     params = { }
     if ifs:
