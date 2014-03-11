@@ -61,7 +61,7 @@ def delete_user(resource_root, username):
   Delete user by username.
 
   @param resource_root: The root Resource object
-  @param: username Username
+  @param username: Username
   @return: An ApiUser object
   """
   return call(resource_root.delete,
@@ -75,7 +75,7 @@ def update_user(resource_root, user):
 
   @param resource_root: The root Resource object
   @param user: An ApiUser object
-  @return An ApiUser object
+  @return: An ApiUser object
   """
   return call(resource_root.put,
       '%s/%s' % (USERS_PATH, user.name), ApiUser, data=user)

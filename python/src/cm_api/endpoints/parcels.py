@@ -23,9 +23,10 @@ PARCEL_PATH = "/clusters/%s/parcels/products/%s/versions/%s"
 
 def get_parcel(resource_root, product, version, cluster_name="default"):
   """
-  Lookup a service by name
+  Lookup a parcel by name
   @param resource_root: The root Resource object.
-  @param name: Service name
+  @param product: Parcel product name
+  @param version: Parcel version
   @param cluster_name: Cluster name
   @return: An ApiService object
   """

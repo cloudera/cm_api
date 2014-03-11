@@ -66,7 +66,7 @@ class ApiResource(Resource):
     @param password: Login password.
     @param use_tls: Whether to use tls (https).
     @param version: API version.
-    @return Resource object referring to the root.
+    @return: Resource object referring to the root.
     """
     self._version = version
     protocol = use_tls and "https" or "http"
@@ -101,9 +101,9 @@ class ApiResource(Resource):
     """
     Create a new cluster.
 
-    @param name Cluster name.
-    @param version Cluster CDH version.
-    @return The created cluster.
+    @param name: Cluster name.
+    @param version: Cluster CDH version.
+    @return: The created cluster.
     """
     return clusters.create_cluster(self, name, version)
 
@@ -119,7 +119,7 @@ class ApiResource(Resource):
   def get_all_clusters(self, view = None):
     """
     Retrieve a list of all clusters.
-    @param view View to materialize ('full' or 'summary').
+    @param view: View to materialize ('full' or 'summary').
     @return: A list of ApiCluster objects.
     """
     return clusters.get_all_clusters(self, view)
@@ -128,8 +128,8 @@ class ApiResource(Resource):
     """
     Look up a cluster by name.
 
-    @param name Cluster name.
-    @return An ApiCluster object.
+    @param name: Cluster name.
+    @return: An ApiCluster object.
     """
     return clusters.get_cluster(self, name)
 
@@ -139,10 +139,10 @@ class ApiResource(Resource):
     """
     Create a host.
 
-    @param host_id  The host id.
-    @param name     Host name
-    @param ipaddr   IP address
-    @param rack_id  Rack id. Default None.
+    @param host_id:  The host id.
+    @param name:     Host name
+    @param ipaddr:   IP address
+    @param rack_id:  Rack id. Default None.
     @return: An ApiHost object
     """
     return hosts.create_host(self, host_id, name, ipaddr, rack_id)
@@ -151,8 +151,8 @@ class ApiResource(Resource):
     """
     Delete a host by id.
 
-    @param host_id Host id
-    @return The deleted ApiHost object
+    @param host_id: Host id
+    @return: The deleted ApiHost object
     """
     return hosts.delete_host(self, host_id)
 
@@ -160,8 +160,8 @@ class ApiResource(Resource):
     """
     Get all hosts
 
-    @param view View to materialize ('full' or 'summary').
-    @return A list of ApiHost objects.
+    @param view: View to materialize ('full' or 'summary').
+    @return: A list of ApiHost objects.
     """
     return hosts.get_all_hosts(self, view)
 
@@ -169,7 +169,7 @@ class ApiResource(Resource):
     """
     Look up a host by id.
 
-    @param host_id Host id
+    @param host_id: Host id
     @return: An ApiHost object
     """
     return hosts.get_host(self, host_id)
@@ -210,7 +210,7 @@ class ApiResource(Resource):
     """
     Delete user by username.
 
-    @param: username Username
+    @param username: Username
     @return: An ApiUser object
     """
     return users.delete_user(self, username)
@@ -254,7 +254,7 @@ class ApiResource(Resource):
     @param metrics: List of metrics to query (default = all).
     @param view: View to materialize ('full' or 'summary')
     @param params: Other query parameters.
-    @return List of metrics and their readings.
+    @return: List of metrics and their readings.
     """
     if not params:
       params = { }

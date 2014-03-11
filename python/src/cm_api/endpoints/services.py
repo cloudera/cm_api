@@ -177,8 +177,8 @@ class ApiService(BaseApiResource):
                     the python datetime documentation for more details about
                     python's time zone handling.
     @param end_time: Queries must have started before this time
-    @param filter: A filter to apply to the queries. For example:
-    'user = root and queryDuration > 5s'
+    @param filter_str: A filter to apply to the queries. For example:
+                       'user = root and queryDuration > 5s'
     @param limit: The maximum number of results to return
     @param offset: The offset into the return list
     @since: API v4
@@ -197,7 +197,8 @@ class ApiService(BaseApiResource):
     """
     Cancel the query.
 
-    @return The warning message, if any.
+    @param query_id: The query ID
+    @return: The warning message, if any.
     @since: API v4
     """
     return self._post("impalaQueries/%s/cancel" % query_id,
@@ -207,8 +208,9 @@ class ApiService(BaseApiResource):
     """
     Get the query details
 
-    @param profile_format: The format of the response ('text' or 'thrift_encoded')
-    @return The details text
+    @param query_id: The query ID
+    @param format: The format of the response ('text' or 'thrift_encoded')
+    @return: The details text
     @since: API v4
     """
     return self._get("impalaQueries/" + query_id, ApiImpalaQueryDetailsResponse,
@@ -229,7 +231,7 @@ class ApiService(BaseApiResource):
 
     Note that this response is identical for all Impala services.
 
-    @return A list of the Impala query attributes
+    @return: A list of the Impala query attributes
     @since API v6
     """
     return self._get("impalaQueries/attributes", ApiImpalaQueryAttribute,
@@ -260,7 +262,7 @@ class ApiService(BaseApiResource):
     """
     Create the Impala user directory
 
-    @return Reference to submitted command.
+    @return: Reference to submitted command.
     @since: API v6
     """
     return self._cmd('impalaCreateUserDir', api_version=6)
@@ -278,8 +280,8 @@ class ApiService(BaseApiResource):
                     time zone aware or specified in the server time zone. See
                     the python datetime documentation for more details about
                     python's time zone handling.
-    @param filter: A filter to apply to the applications. For example:
-    'user = root and applicationDuration > 5s'
+    @param filter_str: A filter to apply to the applications. For example:
+                       'user = root and applicationDuration > 5s'
     @param limit: The maximum number of results to return
     @param offset: The offset into the return list
     @since: API v6
@@ -298,7 +300,7 @@ class ApiService(BaseApiResource):
     """
     Kills the application.
 
-    @return The warning message, if any.
+    @return: The warning message, if any.
     @since: API v6
     """
     return self._post("yarnApplications/%s/kill" % (application_id, ),
@@ -319,7 +321,7 @@ class ApiService(BaseApiResource):
 
     Note that this response is identical for all YARN services.
 
-    @return A list of the YARN application attributes
+    @return: A list of the YARN application attributes
     @since API v6
     """
     return self._get("yarnApplications/attributes", ApiYarnApplicationAttribute,
@@ -329,7 +331,7 @@ class ApiService(BaseApiResource):
     """
     Create the Yarn job history directory.
 
-    @return Reference to submitted command.
+    @return: Reference to submitted command.
     @since: API v6
     """
     return self._cmd('yarnCreateJobHistoryDirCommand', api_version=6)
@@ -338,7 +340,7 @@ class ApiService(BaseApiResource):
     """
     Create the Yarn NodeManager remote application log directory.
 
-    @return Reference to submitted command.
+    @return: Reference to submitted command.
     @since: API v6
     """
     return self._cmd('yarnNodeManagerRemoteAppLogDirCommand', api_version=6)
@@ -356,7 +358,7 @@ class ApiService(BaseApiResource):
     view contains ApiConfig instances as the values.
 
     @param view: View to materialize ('full' or 'summary')
-    @return 2-tuple (service config dictionary, role type configurations)
+    @return: 2-tuple (service config dictionary, role type configurations)
     """
     path = self._path() + '/config'
     resp = self._get_resource_root().get(path,
@@ -367,9 +369,9 @@ class ApiService(BaseApiResource):
     """
     Update the service's configuration.
 
-    @param svc_config Dictionary with service configuration to update.
-    @param rt_configs Dict of role type configurations to update.
-    @return 2-tuple (service config dictionary, role type configurations)
+    @param svc_config: Dictionary with service configuration to update.
+    @param rt_configs: Dict of role type configurations to update.
+    @return: 2-tuple (service config dictionary, role type configurations)
     """
     path = self._path() + '/config'
 
@@ -404,8 +406,8 @@ class ApiService(BaseApiResource):
     """
     Delete a role by name.
 
-    @param name Role name
-    @return The deleted ApiRole object
+    @param name: Role name
+    @return: The deleted ApiRole object
     """
     return roles.delete_role(self._get_resource_root(), self.name, name,
         self._get_cluster_name())
@@ -529,7 +531,7 @@ class ApiService(BaseApiResource):
     @param to_time: A datetime; end of the period to query (default = now).
     @param metrics: List of metrics to query (default = all).
     @param view: View to materialize ('full' or 'summary')
-    @return List of metrics and their readings.
+    @return: List of metrics and their readings.
     """
     return self._get_resource_root().get_metrics(self._path() + '/metrics',
         from_time, to_time, metrics, view)
@@ -538,7 +540,7 @@ class ApiService(BaseApiResource):
     """
     Start a service.
 
-    @return Reference to the submitted command.
+    @return: Reference to the submitted command.
     """
     return self._cmd('start')
 
@@ -546,7 +548,7 @@ class ApiService(BaseApiResource):
     """
     Stop a service.
 
-    @return Reference to the submitted command.
+    @return: Reference to the submitted command.
     """
     return self._cmd('stop')
 
@@ -554,7 +556,7 @@ class ApiService(BaseApiResource):
     """
     Restart a service.
 
-    @return Reference to the submitted command.
+    @return: Reference to the submitted command.
     """
     return self._cmd('restart')
 
@@ -610,7 +612,7 @@ class ApiService(BaseApiResource):
     """
     Create the root directory of an HBase service.
 
-    @return Reference to the submitted command.
+    @return: Reference to the submitted command.
     """
     return self._cmd('hbaseCreateRoot')
 
@@ -627,7 +629,7 @@ class ApiService(BaseApiResource):
     """
     Execute the "refresh" command on a set of roles.
 
-    @param: role_names Names of the roles to refresh.
+    @param role_names: Names of the roles to refresh.
     @return: Reference to the submitted command.
     """
     return self._role_cmd('refresh', role_names)
@@ -636,8 +638,8 @@ class ApiService(BaseApiResource):
     """
     Decommission roles in a service.
 
-    @param role_names Names of the roles to decommission.
-    @return Reference to the submitted command.
+    @param role_names: Names of the roles to decommission.
+    @return: Reference to the submitted command.
     """
     return self._cmd('decommission', data=role_names)
 
@@ -645,8 +647,8 @@ class ApiService(BaseApiResource):
     """
     Recommission roles in a service.
 
-    @param role_names Names of the roles to recommission.
-    @return Reference to the submitted command.
+    @param role_names: Names of the roles to recommission.
+    @return: Reference to the submitted command.
     @since: API v2
     """
     return self._cmd('recommission', data=role_names)
@@ -655,7 +657,7 @@ class ApiService(BaseApiResource):
     """
     Deploys client configuration to the hosts where roles are running.
 
-    @param: role_names Names of the roles to decommission.
+    @param role_names: Names of the roles to decommission.
     @return: Reference to the submitted command.
     """
     return self._cmd('deployClientConfig', data=role_names)
@@ -786,10 +788,10 @@ class ApiService(BaseApiResource):
                         Optional if Active NameNode already has this config set.
     @param jns: List of Journal Nodes to be created during the command.
                 Each element of the list must be a dict containing the following keys:
-                jnHostId : ID of the host where the new JournalNode will be created.
-                jnName: Name of the JournalNode role (optional)
-                jnEditsDir: Edits dir of the JournalNode. Can be omitted if the config
-                            is already set at RCG level.
+                  - B{jnHostId}: ID of the host where the new JournalNode will be created.
+                  - B{jnName}: Name of the JournalNode role (optional)
+                  - B{jnEditsDir}: Edits dir of the JournalNode. Can be omitted if the config
+                    is already set at RCG level.
     @param standby_name_dir_list: List of directories for the new Standby NameNode.
                                   If not provided then it will use same dirs as Active NameNode.
     @param qj_name: Name of the journal located on each JournalNodes' filesystem.
@@ -994,8 +996,8 @@ class ApiService(BaseApiResource):
     """
     Format NameNode instances of an HDFS service.
 
-    @param namenodes Name of NameNode instances to format.
-    @return List of submitted commands.
+    @param namenodes: Name of NameNode instances to format.
+    @return: List of submitted commands.
     """
     return self._role_cmd('hdfsFormat', namenodes)
 
@@ -1014,8 +1016,8 @@ class ApiService(BaseApiResource):
     """
     Initialize a NameNode's shared edits directory.
 
-    @param namenodes Name of NameNode instances.
-    @return List of submitted commands.
+    @param namenodes: Name of NameNode instances.
+    @return: List of submitted commands.
     """
     return self._role_cmd('hdfsInitializeSharedDir', namenodes)
 
@@ -1106,7 +1108,7 @@ class ApiService(BaseApiResource):
     """
     Synchronize the Hue server's database.
 
-    @param: servers Name of Hue Server roles to synchronize.
+    @param servers: Name of Hue Server roles to synchronize.
     @return: List of submitted commands.
     """
     return self._role_cmd('hueSyncDb', servers)
@@ -1144,23 +1146,23 @@ class ApiService(BaseApiResource):
                       restart_role_names=None):
     """
     Rolling restart the roles of a service. The sequence is:
-    1. Restart all the non-slave roles
-    2. If slaves are present restart them in batches of size specified
-    3. Perform any post-command needed after rolling restart
+      1. Restart all the non-slave roles
+      2. If slaves are present restart them in batches of size specified
+      3. Perform any post-command needed after rolling restart
 
-    @param: slave_batch_size Number of slave roles to restart at a time
-            Must be greater than 0. Default is 1.
-            For HDFS, this number should be less than the replication factor (default 3)
-            to ensure data availability during rolling restart.
-    @param: slave_fail_count_threshold The threshold for number of slave batches that
-            are allowed to fail to restart before the entire command is considered failed.
-            Must be >= 0. Default is 0.
-    @param: sleep_seconds Number of seconds to sleep between restarts of slave role batches.
+    @param slave_batch_size: Number of slave roles to restart at a time
+           Must be greater than 0. Default is 1.
+           For HDFS, this number should be less than the replication factor (default 3)
+           to ensure data availability during rolling restart.
+    @param slave_fail_count_threshold: The threshold for number of slave batches that
+           are allowed to fail to restart before the entire command is considered failed.
+           Must be >= 0. Default is 0.
+    @param sleep_seconds: Number of seconds to sleep between restarts of slave role batches.
             Must be >=0. Default is 0.
-    @param: stale_configs_only Restart roles with stale configs only. Default is false.
-    @param: unupgraded_only Restart roles that haven't been upgraded yet. Default is false.
-    @param: restart_role_types Role types to restart. If not specified, all startable roles are restarted.
-    @param: restart_role_names List of specific roles to restart.
+    @param stale_configs_only: Restart roles with stale configs only. Default is false.
+    @param unupgraded_only: Restart roles that haven't been upgraded yet. Default is false.
+    @param restart_role_types: Role types to restart. If not specified, all startable roles are restarted.
+    @param restart_role_names: List of specific roles to restart.
             If none are specified, then all roles of specified role types are restarted.
     @return: Reference to the submitted command.
     @since: API v3

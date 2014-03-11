@@ -146,8 +146,8 @@ class ApiCluster(BaseApiResource):
     """
     Delete a service by name.
 
-    @param name Service name
-    @return The deleted ApiService object
+    @param name: Service name
+    @return: The deleted ApiService object
     """
     return services.delete_service(self._get_resource_root(), name, self.name)
 
@@ -269,9 +269,9 @@ class ApiCluster(BaseApiResource):
 
     If parcels are used instead of CDH system packages then the following
     steps need to happen in order:
-    1. Stop all services manually
-    2. Activate parcel
-    3. Run this upgrade command
+      1. Stop all services manually
+      2. Activate parcel
+      3. Run this upgrade command
 
     The command will upgrade the services and their configuration to the
     version available in the CDH5 distribution.
@@ -307,7 +307,7 @@ class ApiCluster(BaseApiResource):
   def get_all_host_templates(self):
     """
     Retrieves all host templates in the cluster.
-    @return ApiList of ApiHostTemplate objects.
+    @return: ApiList of ApiHostTemplate objects.
     """
     return host_templates.get_all_host_templates(self._get_resource_root(), self.name)
 
@@ -315,7 +315,7 @@ class ApiCluster(BaseApiResource):
     """
     Retrieves a host templates by name.
     @param name: Host template name.
-    @return An ApiHostTemplate object.
+    @return: An ApiHostTemplate object.
     """
     return host_templates.get_host_template(self._get_resource_root(), name, self.name)
 
@@ -323,7 +323,7 @@ class ApiCluster(BaseApiResource):
     """
     Creates a host template.
     @param name: Name of the host template to create.
-    @return An ApiHostTemplate object.
+    @return: An ApiHostTemplate object.
     """
     return host_templates.create_host_template(self._get_resource_root(), name, self.name)
 
@@ -331,7 +331,7 @@ class ApiCluster(BaseApiResource):
     """
     Deletes a host template.
     @param name: Name of the host template to delete.
-    @return An ApiHostTemplate object.
+    @return: An ApiHostTemplate object.
     """
     return host_templates.delete_host_template(self._get_resource_root(), name, self.name)
 
@@ -348,17 +348,17 @@ class ApiCluster(BaseApiResource):
     followed by first rolling restarting non-slaves and then rolling restarting
     the slave roles of services that can be rolling restarted. The slave restarts
     are done host-by-host.
-    @param: slave_batch_size Number of hosts with slave roles to restart at a time
-            Must be greater than 0. Default is 1.
-    @param: slave_fail_count_threshold The threshold for number of slave host batches that
-            are allowed to fail to restart before the entire command is considered failed.
-            Must be >= 0. Default is 0.
-    @param: sleep_seconds Number of seconds to sleep between restarts of slave host batches.
-            Must be >=0. Default is 0.
-    @param: stale_configs_only Restart roles with stale configs only. Default is false.
-    @param: unupgraded_only Restart roles that haven't been upgraded yet. Default is false.
-    @param: roles_to_include Role types to restart. Default is slave roles only.
-    @param: restart_service_names List of specific services to restart.
+    @param slave_batch_size: Number of hosts with slave roles to restart at a time
+           Must be greater than 0. Default is 1.
+    @param slave_fail_count_threshold: The threshold for number of slave host batches that
+           are allowed to fail to restart before the entire command is considered failed.
+           Must be >= 0. Default is 0.
+    @param sleep_seconds: Number of seconds to sleep between restarts of slave host batches.
+           Must be >=0. Default is 0.
+    @param stale_configs_only: Restart roles with stale configs only. Default is false.
+    @param unupgraded_only: Restart roles that haven't been upgraded yet. Default is false.
+    @param roles_to_include: Role types to restart. Default is slave roles only.
+    @param restart_service_names: List of specific services to restart.
     @return: Reference to the submitted command.
     @since: API v4
     """

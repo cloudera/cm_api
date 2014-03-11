@@ -135,7 +135,7 @@ def move_roles(resource_root, service_name, name, role_names,
 
   @param name: The name of the group the roles will be moved to.
   @param role_names: The names of the roles to move.
-  @return List of roles which have been moved successfully.
+  @return: List of roles which have been moved successfully.
   @since: API v3
   """
   return call(resource_root.put,
@@ -151,8 +151,8 @@ def move_roles_to_base_role_config_group(resource_root, service_name,
   service. The role type of the roles may vary. Each role will be moved to
   its corresponding base group depending on its role type.
 
-  @param role_names The names of the roles to move.
-  @return List of roles which have been moved successfully.
+  @param role_names: The names of the roles to move.
+  @return: List of roles which have been moved successfully.
   @since: API v3
   """
   return call(resource_root.put,
@@ -200,7 +200,7 @@ class ApiRoleConfigGroup(BaseApiResource):
     view contains ApiConfig instances as the values.
 
     @param view: View to materialize ('full' or 'summary').
-    @return Dictionary with configuration data.
+    @return: Dictionary with configuration data.
     """
     path = self._path() + '/config'
     resp = self._get_resource_root().get(path,
@@ -211,8 +211,8 @@ class ApiRoleConfigGroup(BaseApiResource):
     """
     Update the group's configuration.
 
-    @param config Dictionary with configuration to update.
-    @return Dictionary with updated configuration.
+    @param config: Dictionary with configuration to update.
+    @return: Dictionary with updated configuration.
     """
     path = self._path() + '/config'
     resp = self._get_resource_root().put(path, data = config_to_json(config))
@@ -222,7 +222,7 @@ class ApiRoleConfigGroup(BaseApiResource):
     """
     Retrieve the roles in this role config group.
 
-    @return List of roles in this role config group.
+    @return: List of roles in this role config group.
     """
     return self._get("roles", ApiRole, True)
 
@@ -235,7 +235,7 @@ class ApiRoleConfigGroup(BaseApiResource):
     must match the role type of the roles.
 
     @param roles: The names of the roles to move.
-    @return List of roles which have been moved successfully.
+    @return: List of roles which have been moved successfully.
     """
     return move_roles(self._get_resource_root(), self.serviceRef.serviceName,
         self.name, roles, self.serviceRef.clusterName)

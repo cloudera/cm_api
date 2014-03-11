@@ -118,7 +118,7 @@ class ClouderaManager(BaseApiResource):
     """
     Update the CM configuration.
 
-    @param: config Dictionary with configuration to update.
+    @param config: Dictionary with configuration to update.
     @return: Dictionary with updated configuration.
     """
     return self._update_config("config", config)
@@ -296,7 +296,7 @@ class ClouderaManager(BaseApiResource):
     """
     Update the default configuration for all hosts.
 
-    @param: config Dictionary with configuration to update.
+    @param config: Dictionary with configuration to update.
     @return: Dictionary with updated configuration.
     """
     return self._update_config("allHosts/config", config)

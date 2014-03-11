@@ -43,7 +43,7 @@ def get_host_template(resource_root, name, cluster_name):
   @param resource_root: The root Resource object.
   @param name: Host template name.
   @param cluster_name: Cluster name.
-  @return An ApiHostTemplate object.
+  @return: An ApiHostTemplate object.
   @since: API v3
   """
   return call(resource_root.get,
@@ -54,7 +54,7 @@ def get_all_host_templates(resource_root, cluster_name="default"):
   """
   Get all host templates in a cluster.
   @param cluster_name: Cluster name.
-  @return ApiList of ApiHostTemplate objects for all host templates in a cluster.
+  @return: ApiList of ApiHostTemplate objects for all host templates in a cluster.
   @since: API v3
   """
   return call(resource_root.get,
@@ -67,7 +67,7 @@ def delete_host_template(resource_root, name, cluster_name):
   @param resource_root: The root Resource object.
   @param name: Host template name.
   @param cluster_name: Cluster name.
-  @return The deleted ApiHostTemplate object.
+  @return: The deleted ApiHostTemplate object.
   @since: API v3
   """
   return call(resource_root.delete,
