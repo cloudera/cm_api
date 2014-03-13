@@ -1402,6 +1402,15 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('installOozieShareLib', api_version=3)
 
+  def create_oozie_db(self):
+    """
+    Creates the Oozie Database Schema in the configured database.
+
+    @return: Reference to the submitted command.
+    @since: API v2
+    """
+    return self._cmd('createOozieDb', api_version=2)
+
   def upgrade_oozie_db(self):
     """
     Upgrade Oozie Database schema as part of a major version upgrade.
