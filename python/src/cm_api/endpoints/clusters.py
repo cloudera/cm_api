@@ -262,6 +262,10 @@ class ApiCluster(BaseApiResource):
 
   def upgrade_services(self):
     """
+    This command is no longer recommended with API v6 onwards. It simply does
+    not work when parcels are used, and even with packages it may fail due to
+    a race. Use upgrade_cdh instead.
+
     Upgrades the services in the cluster to CDH5 version.
     This command requires that the CDH packages in the hosts used by the
     cluster be upgraded to CDH5 before this command is issued. Once issued,
@@ -277,6 +281,7 @@ class ApiCluster(BaseApiResource):
     version available in the CDH5 distribution.
 
     @return: Reference to the submitted command.
+    @deprecated since API v6
     """
     return self._cmd('upgradeServices')
 
@@ -404,3 +409,32 @@ class ApiCluster(BaseApiResource):
     @since API v6
     """
     self._put("autoConfigure", None, api_version=6)
+
+  def upgrade_cdh(self, deploy_client_config=True, start_all_services=True, cdh_parcel_version=None):
+    """
+    Perform CDH upgrade to the next major version.
+
+    If using packages, CDH packages on all hosts of the cluster must be
+    manually upgraded before this command is issued.
+ 
+    The command will upgrade the services and their configuration to the
+    version available in the CDH5 distribution. All running services will
+    be stopped before proceeding.
+
+    @param deploy_client_config: Whether to deploy client configurations
+           after the upgrade. Default is True.
+    @param start_all_services: Whether to start all services after the upgrade.
+           Default is True.
+    @param cdh_parcel_version: If using parcels, the full version of an
+           already distributed parcel for the next major CDH version. Default
+           is None. Example versions are: '5.0.0-1.cdh5.0.0.p0.11' or
+           '5.0.2-1.cdh5.0.2.p0.32'
+    @return: Reference to the submitted command.
+    @since: API v6
+    """
+    args = dict()
+    args['deployClientConfig'] = deploy_client_config
+    args['startAllServices'] = start_all_services
+    if cdh_parcel_version:
+      args['cdhParcelVersion'] = cdh_parcel_version
+    return self._cmd('upgradeCdh', data=args, api_version=6)
