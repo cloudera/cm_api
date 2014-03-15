@@ -42,3 +42,17 @@ class TestCluster(unittest.TestCase):
         data=data,
         retdata={ 'name' : 'foo'})
     cluster.update_cdh_version('4.2.1')
+ 
+  def test_upgrade_cdh(self):
+    resource = utils.MockResource(self)
+    cluster = ApiCluster(resource, name="foo")
+
+    data = dict()
+    data['deployClientConfig'] = False
+    data['startAllServices'] = True
+    data['cdhParcelVersion'] = '5.0.0.1-cdh5-1.2.3'
+
+    resource.expect("POST", "/clusters/foo/commands/upgradeCdh",
+        data=data,
+        retdata={ 'name' : 'foo'})
+    cluster.upgrade_cdh(False, True, data['cdhParcelVersion'])
