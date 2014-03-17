@@ -39,7 +39,7 @@ Releases
             </td>
         </tr>
         <tr>
-            <td>v4</td>
+            <td>v3</td>
             <td>CM 4.5</td>
             <td><a href="{{ site.url }}/apidocs/v3/index.html">API docs</a></td>
         </tr>
