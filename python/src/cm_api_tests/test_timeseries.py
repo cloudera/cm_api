@@ -49,11 +49,38 @@ class TestTimeSeries(unittest.TestCase):
           "data" : [ {
             "timestamp" : "2013-05-08T22:59:06.000Z",
             "value" : 1.7,
-            "type" : "SAMPLE"
+            "type" : "SAMPLE",
+            "aggregateStatistics" : {
+              "sampleTime": "2013-05-08T22:58:06.000Z",
+              "sampleValue": 317,
+              "count": 3,
+              "min": 305,
+              "minTime": "2013-05-08T22:58:06.000Z",
+              "max": 317,
+              "maxTime": "2013-05-08T22:58:06.000Z",
+              "mean": 311.6666666666667,
+              "stdDev": 6.110100926606199,
+              "crossEntityMetadata": {
+                "maxEntityDisplayName": "DATANODE (host1.com)",
+                "minEntityDisplayName": "DATANODE (host2.com)",
+                "numEntities": 3
+              }
+            }
           }, {
             "timestamp" : "2013-05-08T23:00:06.000Z",
             "value" : 3.5,
-            "type" : "SAMPLE"
+            "type" : "SAMPLE",
+            "aggregateStatistics" : {
+              "sampleTime": "2013-05-08T22:58:07.000Z",
+              "sampleValue": 319,
+              "count": 3,
+              "min": 304,
+              "minTime": "2013-05-08T22:58:07.000Z",
+              "max": 319,
+              "maxTime": "2013-05-08T22:58:07.000Z",
+              "mean": 311.6666666666667,
+              "stdDev": 6.110100926606199
+            }
           }, {
             "timestamp" : "2013-05-08T23:01:06.000Z",
             "value" : 2.1,
@@ -75,15 +102,15 @@ class TestTimeSeries(unittest.TestCase):
 
     api_resource = utils.MockResource(self)
     time = datetime.datetime.now()
-    api_resource.expect("GET", "/timeseries", 
+    api_resource.expect("GET", "/timeseries",
                         retdata=json.loads(TIME_SERIES),
                         params={ 'from':time.isoformat(), 'to':time.isoformat(),
                                  'query':'select cpu_percent'})
-    responses = query_timeseries(api_resource, 
-                                 "select cpu_percent", 
-                                 time, 
+    responses = query_timeseries(api_resource,
+                                 "select cpu_percent",
+                                 time,
                                  time)
-    
+
     self.assertIsInstance(responses, ApiList)
     self.assertEqual(1, len(responses))
     response = responses[0]
@@ -106,6 +133,21 @@ class TestTimeSeries(unittest.TestCase):
       self.assertEqual("SAMPLE", data.type)
       self.assertIsInstance(data.timestamp, datetime.datetime)
       self.assertTrue(data.value)
+    # first and second points have aggregate data.
+    data  = timeseries.data[0]
+    self.assertIsNotNone(data.aggregateStatistics)
+    self.assertIsInstance(data.aggregateStatistics, ApiTimeSeriesAggregateStatistics)
+    self.assertEqual(317, data.aggregateStatistics.sampleValue)
+    xEntityMetadata = data.aggregateStatistics.crossEntityMetadata
+    self.assertIsNotNone(xEntityMetadata)
+    self.assertIsInstance(xEntityMetadata, ApiTimeSeriesCrossEntityMetadata)
+    self.assertEqual("DATANODE (host1.com)", xEntityMetadata.maxEntityDisplayName)
+    data  = timeseries.data[1]
+    self.assertIsNotNone(data.aggregateStatistics)
+    self.assertIsInstance(data.aggregateStatistics, ApiTimeSeriesAggregateStatistics)
+    self.assertEqual(319, data.aggregateStatistics.sampleValue)
+    xEntityMetadata = data.aggregateStatistics.crossEntityMetadata
+    self.assertIsNone(xEntityMetadata)
 
     # Test the with-rollups call
     api_resource.expect("GET", "/timeseries",
@@ -146,15 +188,15 @@ class TestTimeSeries(unittest.TestCase):
     }'''
 
     api_resource = utils.MockResource(self)
-    api_resource.expect("GET", "/timeseries/schema", 
+    api_resource.expect("GET", "/timeseries/schema",
                         retdata=json.loads(METRICS))
     metrics = get_metric_schema(api_resource)
-    
+
     self.assertIsInstance(metrics, ApiList)
     self.assertEqual(2, len(metrics))
     metric = metrics[0]
     self.assertIsInstance(metric, ApiMetricSchema)
-    self.assertEqual("event_drain_success_count_flume_sink_min_rate", 
+    self.assertEqual("event_drain_success_count_flume_sink_min_rate",
                      metric.name)
     self.assertFalse(metric.isCounter)
     self.assertEqual("events", metric.unitNumerator)
