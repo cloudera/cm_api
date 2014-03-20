@@ -69,12 +69,33 @@ def get_metric_schema(resource_root):
   return call(resource_root.get, METRIC_SCHEMA_PATH,
       ApiMetricSchema, True)
 
+class ApiTimeSeriesCrossEntityMetadata(BaseApiObject):
+  _ATTRIBUTES = {
+    'maxEntityDisplayName' : ROAttr(),
+    'minEntityDisplayName' : ROAttr(),
+    'numEntities'          : ROAttr()
+    }
+
+class ApiTimeSeriesAggregateStatistics(BaseApiObject):
+  _ATTRIBUTES = {
+    'sampleTime'  : ROAttr(datetime.datetime),
+    'sampleValue' : ROAttr(),
+    'count'       : ROAttr(),
+    'min'         : ROAttr(),
+    'minTime'     : ROAttr(datetime.datetime),
+    'max'         : ROAttr(),
+    'maxTime'     : ROAttr(datetime.datetime),
+    'mean'        : ROAttr(),
+    'stdDev'      : ROAttr(),
+    'crossEntityMetadata' : ROAttr(ApiTimeSeriesCrossEntityMetadata)
+    }
 
 class ApiTimeSeriesData(BaseApiObject):
   _ATTRIBUTES = {
     'timestamp' : ROAttr(datetime.datetime),
     'value'     : ROAttr(),
     'type'      : ROAttr(),
+    'aggregateStatistics' : ROAttr(ApiTimeSeriesAggregateStatistics)
     }
 
 class ApiTimeSeriesMetadata(BaseApiObject):
