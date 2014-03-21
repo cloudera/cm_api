@@ -281,7 +281,7 @@ class ApiCluster(BaseApiResource):
     version available in the CDH5 distribution.
 
     @return: Reference to the submitted command.
-    @deprecated since API v6
+    @deprecated: since API v6
     """
     return self._cmd('upgradeServices')
 
@@ -391,7 +391,7 @@ class ApiCluster(BaseApiResource):
 
     Assignments are done based on services in the cluster and hardware specifications.
     Existing roles will be taken into account and their assignments will be not be modified.
-    @since API v6
+    @since: API v6
     """
     self._put("autoAssignRoles", None, api_version=6)
 
@@ -406,7 +406,7 @@ class ApiCluster(BaseApiResource):
     Management Service even if colocated with roles of this cluster. To avoid
     over-committing the heap on hosts, assign hosts to this cluster that are
     not being used by the Cloudera Management Service.
-    @since API v6
+    @since: API v6
     """
     self._put("autoConfigure", None, api_version=6)
 

@@ -311,7 +311,7 @@ class ClouderaManager(BaseApiResource):
     assignments will be not be modified. The deployment should not have any
     clusters when calling this endpoint. If it does, an exception will be thrown
     preventing any role assignments.
-    @since API v6
+    @since: API v6
     """
     self._put("service/autoAssignRoles", None, api_version=6)
 
@@ -326,6 +326,6 @@ class ClouderaManager(BaseApiResource):
     colocated with the Cloudera Management Service. To avoid over-committing
     the heap on hosts, place the Cloudera Management Service roles on machines
     not used by any of the clusters.
-    @since API v6
+    @since: API v6
     """
     self._put("service/autoConfigure", None, api_version=6)
