@@ -329,3 +329,63 @@ class ClouderaManager(BaseApiResource):
     @since: API v6
     """
     self._put("service/autoConfigure", None, api_version=6)
+
+  def host_install(self, user_name, host_names, ssh_port=None, password=None,
+          private_key=None, passphrase=None, parallel_install_count=None,
+          cm_repo_url=None, gpg_key_custom_url=None):
+    """
+    Install Cloudera Manager Agent on a set of hosts.
+
+    @param user_name: The username used to authenticate with the hosts. Root access
+                      to your hosts is required to install Cloudera packages. The
+                      installer will connect to your hosts via SSH and log in either
+                      directly as root or as another user with password-less sudo
+                      privileges to become root.
+    @param host_names: List of names of hosts to configure for use with
+                       Cloudera Manager. A host may be specified by a
+                       hostname(FQDN) or an IP address.
+    @param ssh_port: SSH port. If unset, defaults to 22.
+    @param password: The password used to authenticate with the hosts. Specify
+                     either this or a private key. For password-less login, use
+                     an empty string as password.
+    @param private_key: The private key to authenticate with the hosts. Specify
+                        either this or a password.
+    @param passphrase: The passphrase associated with the private key used to
+                       authenticate with the hosts (optional).
+    @param parallel_install_count: Number of simultaneous installations.
+                                   Defaults to 10. Running a large number of
+                                   installations at once can consume large amounts
+                                   of network bandwidth and other system resources.
+    @param cm_repo_url: The Cloudera Manager repository URL to use (optional).
+                        Example for SLES, Redhat or other RPM based distributions:
+                        http://archive-primary.cloudera.com/cm5/redhat/6/x86_64/cm/5/
+                        Example for Ubuntu or other Debian based distributions:
+                        "deb http://archive.cloudera.com/cm5/ubuntu/lucid/amd64/cm/ lucid-cm5 contrib"
+    @param gpg_key_custom_url: The Cloudera Manager public GPG key (optional).
+                               Example for SLES, Redhat or other RPM based distributions:
+                               http://archive-primary.cloudera.com/cm5/redhat/6/x86_64/cm/RPM-GPG-KEY-cloudera
+                               Example for Ubuntu or other Debian based distributions:
+                               http://archive.cloudera.com/debian/archive.key
+    @return: Information about the submitted command.
+    @since: API v6
+    """
+    host_install_args = {}
+    if user_name:
+     host_install_args['userName'] = user_name
+    if host_names:
+      host_install_args['hostNames'] = host_names
+    if ssh_port:
+     host_install_args['sshPort'] = ssh_port
+    if password:
+     host_install_args['password'] = password
+    if private_key:
+     host_install_args['privateKey'] = private_key
+    if passphrase:
+     host_install_args['passphrase'] = passphrase
+    if parallel_install_count:
+     host_install_args['parallelInstallCount'] = parallel_install_count
+    if cm_repo_url:
+     host_install_args['cmRepoUrl'] = cm_repo_url
+    if gpg_key_custom_url:
+     host_install_args['gpgKeyCustomUrl'] = gpg_key_custom_url
+    return self._cmd('hostInstall', data=host_install_args)
