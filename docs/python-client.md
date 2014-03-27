@@ -146,6 +146,8 @@ Getting Metrics
 First we look at what metrics are available:
 
 {% highlight python %}
+# NOTE: this does not work starting in v6 of the api (CM5.0.0). Use the
+# timeseries endpoint dicussed below or set your api version to v5.
 metrics = hdfs.get_metrics()
 print len(metrics)
 ## -- Output --
@@ -251,7 +253,73 @@ for cmd in cmds:
   print cmd
 
 ## -- Output --
-<ApiCommand>: 'Restart' (id: 225; active: True; success: None)
+# <ApiCommand>: 'Restart' (id: 225; active: True; success: None)
+{% endhighlight %}
+
+Configuring Services and Roles
+------------------------------
+First, lets look at all possible service configs. For legacy reasons, this is a
+2-tuple of service configs and an empty dictionary (as of API v3), so you have
+to add "\[0\]" below.
+{% highlight python %}
+for name, config in hdfs.get_config(view='full')[0].items():
+  print "%s - %s - %s" % (name, config.relatedName, config.description)
+
+## -- Output -- (just one line of many)
+# dfs_replication - dfs.replication - Default block replication. The number of replications to make when the file is created. The default value is used if a replication number is not specified.
+{% endhighlight %}
+
+Now let's change dfs_replication to 2. We use "dfs_replication" and not
+dfs.replication" because we must match the keys of the config view. This is
+also the same value as ApiConfig.name.
+
+{% highlight python %}
+hdfs.update_config({'dfs_replication': 2})
+# returns current configs, excluding defaults. Same as hdfs.get_config()
+## -- Output --
+# ({u'dfs_block_local_path_access_user': u'impala', u'zookeeper_service': u'zookeeper', u'dfs_replication': u'2'}, {})
+{% endhighlight %}
+
+Configuring roles is done similarly. Normally you want to modify groups instead
+of modifying each role one by one.
+
+First, find the group(s).
+{% highlight python %}
+dn_groups = []
+for group in hdfs.get_all_role_config_groups():
+  if group.roleType == 'DATANODE':
+    dn_groups.append(group)
+{% endhighlight %}
+
+See all possible role configuration. It's the same for all groups of the same
+role type in clusters with the same CDH version.
+
+{% highlight python %}
+for name, config in dn_groups[0].get_config(view='full').items():
+  print "%s - %s - %s" % (name, config.relatedName, config.description)
+
+## -- Output -- (just one line of many)
+# process_auto_restart -  - When set, this role's process is automatically (and transparently) restarted in the event of an unexpected failure.
+{% endhighlight %}
+
+Let's configure our data nodes to auto-restart.
+
+{% highlight python %}
+for group in dn_groups:
+  group.update_config({'process_auto_restart': True})
+# returns config summary for group.
+## -- Output --
+# {u'dfs_datanode_data_dir_perm': u'755', u'dfs_data_dir_list': u'/dfs/dn', u'process_auto_restart': u'true'}
+{% endhighlight %}
+
+To reset a config to default, pass in a value of None.
+
+{% highlight python %}
+for group in dn_groups:
+  group.update_config({'process_auto_restart': None})
+# note process_auto_restart is missing from return value now
+## -- Output --
+# {u'dfs_datanode_data_dir_perm': u'755', u'dfs_data_dir_list': u'/dfs/dn'}
 {% endhighlight %}
 
 Managing Parcels
