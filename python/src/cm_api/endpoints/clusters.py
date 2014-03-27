@@ -21,15 +21,21 @@ __docformat__ = "epytext"
 
 CLUSTERS_PATH = "/clusters"
 
-def create_cluster(resource_root, name, version):
+def create_cluster(resource_root, name, version, fullVersion=None):
   """
   Create a cluster
   @param resource_root: The root Resource object.
   @param name: Cluster name
-  @param version: Cluster CDH version
+  @param version: Cluster CDH major version (eg: "4")
+                  - The CDH minor version will be assumed to be the
+                    latest released version, if 'fullVersion' is not
+                    specified.
+  @param fullVersion: Cluster's full CDH version. (eg: "4.6.0")
+                        - If specified, 'version' will be ignored.
+                        - Since: v6
   @return: An ApiCluster object
   """
-  apicluster = ApiCluster(resource_root, name, version)
+  apicluster = ApiCluster(resource_root, name, version, fullVersion)
   return call(resource_root.post, CLUSTERS_PATH, ApiCluster, True,
       data=[apicluster])[0]
 
