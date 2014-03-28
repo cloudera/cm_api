@@ -35,9 +35,14 @@ def create_cluster(resource_root, name, version, fullVersion=None):
                         - Since: v6
   @return: An ApiCluster object
   """
+  if fullVersion is not None:
+    api_version = 6
+  else:
+    api_version = 1
+
   apicluster = ApiCluster(resource_root, name, version, fullVersion)
   return call(resource_root.post, CLUSTERS_PATH, ApiCluster, True,
-      data=[apicluster])[0]
+              data=[apicluster], api_version=api_version)[0]
 
 def get_cluster(resource_root, name):
   """
