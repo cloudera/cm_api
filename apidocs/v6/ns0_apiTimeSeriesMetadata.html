@@ -71,6 +71,7 @@
                 <li><a href="ns0_apiBatchResponse.html">apiBatchResponse</a></li>
                 <li><a href="ns0_apiBatchResponseElement.html">apiBatchResponseElement</a></li>
                 <li><a href="ns0_apiBulkCommandList.html">apiBulkCommandList</a></li>
+                <li><a href="ns0_apiCdhUpgradeArgs.html">apiCdhUpgradeArgs</a></li>
                 <li><a href="ns0_apiCluster.html">apiCluster</a></li>
                 <li><a href="ns0_apiClusterList.html">apiClusterList</a></li>
                 <li><a href="ns0_apiClusterRef.html">apiClusterRef</a></li>
@@ -141,6 +142,7 @@
                 <li><a href="ns0_apiImpalaUDF.html">apiImpalaUDF</a></li>
                 <li><a href="ns0_apiJournalNodeArguments.html">apiJournalNodeArguments</a></li>
                 <li><a href="ns0_apiLicense.html">apiLicense</a></li>
+                <li><a href="ns0_apiLicensedFeatureUsage.html">apiLicensedFeatureUsage</a></li>
                 <li><a href="ns0_apiListBase.html">apiListBase</a></li>
                 <li><a href="ns0_apiMetric.html">apiMetric</a></li>
                 <li><a href="ns0_apiMetricData.html">apiMetricData</a></li>
@@ -194,6 +196,8 @@
                 <li><a href="ns0_apiSnapshotPolicy.html">apiSnapshotPolicy</a></li>
                 <li><a href="ns0_apiSnapshotPolicyList.html">apiSnapshotPolicyList</a></li>
                 <li><a href="ns0_apiTimeSeries.html">apiTimeSeries</a></li>
+                <li><a href="ns0_apiTimeSeriesAggregateStatistics.html">apiTimeSeriesAggregateStatistics</a></li>
+                <li><a href="ns0_apiTimeSeriesCrossEntityMetadata.html">apiTimeSeriesCrossEntityMetadata</a></li>
                 <li><a href="ns0_apiTimeSeriesData.html">apiTimeSeriesData</a></li>
                 <li><a href="ns0_apiTimeSeriesMetadata.html">apiTimeSeriesMetadata</a></li>
                 <li><a href="ns0_apiTimeSeriesResponse.html">apiTimeSeriesResponse</a></li>
@@ -250,7 +254,10 @@
           </td>
           <td>
             
-                The entity name for the time series data.
+                The display name for the entity associated with this time series.
+For example, if this was a time series for an HDFS service the entity name
+might be something like "My HDFS Service". If it was for a host it might
+be something like "myhost.mysite.com".
               
           </td>
         </tr>
@@ -283,7 +290,14 @@
           </td>
           <td>
             
-                The attributes for the time series.
+                The attributes for the time series. Note that the entityName entry in
+this map is not the same as the entityName field in this
+ApiTimeSeriesMetadata. The entityName entry in this map is a unique
+identifier for the entity and not the name displayed in the UI.
+
+For example, if this was a time series for the YARN Job History Server
+the entityName entry in this map might be something like
+"yarn-JOBHISTORY-6bd17ceb1489aae93fef4c867350d0dd"
               
           </td>
         </tr>
@@ -306,6 +320,54 @@
           <td>
             
                 The denominators of the units for the time series.
+              
+          </td>
+        </tr>
+        <tr>
+          <td>expression</td>
+          <td>
+            expression (string)
+          </td>
+          <td>
+            
+                The tsquery expression that could be used to extract just this stream.
+              
+          </td>
+        </tr>
+        <tr>
+          <td>alias</td>
+          <td>
+            alias (string)
+          </td>
+          <td>
+            
+                The alias for this stream's metric. Aliases correspond to use of the 'as'
+keyword in the tsquery.
+              
+          </td>
+        </tr>
+        <tr>
+          <td>metricCollectionFrequencyMs</td>
+          <td>
+            metricCollectionFrequencyMs (long)
+          </td>
+          <td>
+            
+                The minimum frequency at which the underlying metric for this stream is
+collected. Note that this can be null if the stream returns irregularly
+sampled data.
+              
+          </td>
+        </tr>
+        <tr>
+          <td>rollupUsed</td>
+          <td>
+            rollupUsed (string)
+          </td>
+          <td>
+            
+                The aggregate rollup for the returned data. This can be TEN_MINUTELY,
+HOURLY, SIX_HOURLY, DAILY, or WEEKLY.
               
           </td>
         </tr>

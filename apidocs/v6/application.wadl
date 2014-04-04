@@ -537,15 +537,21 @@ contain any password information.
       </wadl:param>
       <wadl:method name="PUT">
         <wadl:doc>
-          <![CDATA[<p>Update an existing cluster.</p>
-
-<p>You may not change a cluster's CDH version using this API call.
-Use the "upgradeService" cluster command instead.</p>
-
-<p>To rename the cluster, pass in a json structure that has the new
-cluster name.</p>
-
-<p>Available since API v2.</p>]]>
+          <![CDATA[Update an existing cluster.
+<p>
+To update the CDH version, provide the new value in the "fullVersion"
+property. Setting a correct version that matches the actual installed software
+will ensure the correct version-specific features, such as services, roles,
+commands, and configurations. This need not be manually set for clusters
+using parcels. In general this action is only necessary after the CDH
+packages have been manually updated. Note that a downgrade may be rejected
+if it would render existing services or roles unusable. For major upgrade,
+the "upgradeService" cluster command should be used instead.</p>
+<p>
+To rename the cluster, provide the new name in the "displayName"
+property for API >= 6, or in the "name" property for API <=5.
+<p>
+Available since API v2.]]>
         </wadl:doc>
         <wadl:request>
           <wadl:representation mediaType="application/json"/>
@@ -743,6 +749,25 @@ The license file should be uploaded using a request with content type
           <wadl:doc>
             <![CDATA[The new license information.]]>
           </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v6/cm/licensedFeatureUsage">
+      <wadl:method name="GET">
+        <wadl:doc>
+          <![CDATA[Retrieve a summary of licensed feature usage.
+<p/>
+This command will return information about what Cloudera Enterprise
+licensed features are in use in the clusters being managed by this Cloudera
+Manager, as well as totals for usage across all clusters.
+<p/>
+The specific features described can vary between different versions of
+Cloudera Manager.
+<p/>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:response>
           <wadl:representation mediaType="application/json"/>
         </wadl:response>
       </wadl:method>
@@ -1154,6 +1179,50 @@ be changed.]]>
         </wadl:response>
       </wadl:method>
     </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/autoAssignRoles">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Automatically assign roles to hosts and create the roles for all the services in a cluster.
+<p>
+Assignments are done based on services and hosts in the cluster, and hardware specifications.
+If no hosts are added to the cluster, an exception will be thrown preventing any
+role assignments.
+Existing roles will be taken into account and their assignments will be
+not be modified.
+<p>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:request/>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/autoConfigure">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Automatically configures roles and services in a cluster.
+<p>
+Overwrites some existing configurations. Might create new role config groups.
+Only default role config groups must exist before calling this endpoint.
+Other role config groups must not exist. If they do, an exception will be thrown
+preventing any configuration.
+Ignores the Cloudera Management Service even if colocated with roles of this
+cluster. To avoid over-committing the heap on hosts, assign hosts to this cluster
+that are not being used by the Cloudera Management Service.
+<p>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:request/>
+      </wadl:method>
+    </wadl:resource>
     <wadl:resource path="/api/v6/clusters/{clusterName}/commands">
       <wadl:param name="clusterName" style="template">
         <wadl:doc>
@@ -1452,9 +1521,10 @@ Kerberos, and haven't had their credentials generated yet.]]>
       <wadl:method name="POST">
         <wadl:doc>
           <![CDATA[Perform installation on a set of hosts.
+<p/>
 This command installs Cloudera Manager Agent on a
 set of hosts.
-<p>
+<p/>
 Available since API v6.]]>
         </wadl:doc>
         <wadl:request>
@@ -1611,6 +1681,38 @@ Edition.]]>
         </wadl:response>
       </wadl:method>
     </wadl:resource>
+    <wadl:resource path="/api/v6/cm/service/autoAssignRoles">
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Automatically assign roles to hosts and create the roles for the Cloudera Management Service.
+<p>
+Assignments are done based on number of hosts in the deployment and hardware specifications.
+If no hosts are part of the deployment, an exception will be thrown preventing any role assignments.
+Existing roles will be taken into account and their assignments will be not be modified.
+The deployment should not have any clusters when calling this endpoint. If it does,
+an exception will be thrown preventing any role assignments.
+<p>
+Available since API v6.]]>
+        </wadl:doc>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v6/cm/service/autoConfigure">
+      <wadl:method name="PUT">
+        <wadl:doc>
+          <![CDATA[Automatically configures roles of the Cloudera Management Service.
+<p>
+Overwrites some existing configurations.
+Only default role config groups must exist before calling this endpoint.
+Other role config groups must not exist. If they do, an exception will be thrown
+preventing any configuration.
+Ignores any clusters (and their services and roles) colocated with the Cloudera
+Management Service. To avoid over-committing the heap on hosts, place the
+Cloudera Management Service roles on machines not used by any of the clusters.
+<p>
+Available since API v6.]]>
+        </wadl:doc>
+      </wadl:method>
+    </wadl:resource>
     <wadl:resource path="/api/v6/cm/service/commands">
       <wadl:method name="GET">
         <wadl:doc>
@@ -1740,6 +1842,20 @@ Available since API v3.]]>
           </wadl:doc>
           <wadl:representation mediaType="application/json"/>
         </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v6/cm/trial/begin">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Begin trial license.]]>
+        </wadl:doc>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v6/cm/trial/end">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[End trial license.]]>
+        </wadl:doc>
       </wadl:method>
     </wadl:resource>
     <wadl:resource path="/api/v6/commands/{commandId}/abort">
@@ -2005,6 +2121,28 @@ The result is known immediately upon return.
         </wadl:response>
       </wadl:method>
     </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/commands/poolsRefresh">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Updates all refreshable configuration files for services with
+Dynamic Resource Pools.
+<p>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
     <wadl:resource path="/api/v6/clusters/{clusterName}/commands/refresh">
       <wadl:param name="clusterName" style="template">
         <wadl:doc>
@@ -2136,6 +2274,38 @@ Services are started in the appropriate order given their dependencies.]]>
 Services are stopped in the appropriate order given their dependencies.]]>
         </wadl:doc>
         <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/commands/upgradeCdh">
+      <wadl:param name="clusterName" style="template">
+        <wadl:doc>
+          <![CDATA[The name of the cluster.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Perform CDH upgrade to the next major version.
+<p>
+If using packages, CDH packages on all hosts of the cluster must be
+manually upgraded before this command is issued.
+<p>
+The command will upgrade the services and their configuration to the
+version available in the CDH5 distribution. All running services will
+be stopped before proceeding.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[Arguments for the command. See ApiCdhUpgradeArgs.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="*/*" element="cdhUpgradeArgs"/>
+          <wadl:representation mediaType="application/xml" element="cdhUpgradeArgs"/>
+        </wadl:request>
         <wadl:response>
           <wadl:doc>
             <![CDATA[Information about the submitted command.]]>
@@ -3779,6 +3949,30 @@ Available since API v2.
         </wadl:response>
       </wadl:method>
     </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/services/{serviceName}/commands/hbaseUpgrade">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HBase service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Upgrade HBase data in HDFS and ZooKeeper as part of upgrade from CDH4 to CDH5.
+<p/>
+This is required in order to run HBase after upgrade.
+<p/>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
     <wadl:resource path="/api/v6/clusters/{clusterName}/services/{serviceName}/commands/hdfsCreateTmpDir">
       <wadl:param name="serviceName" style="template">
         <wadl:doc>
@@ -4080,6 +4274,36 @@ Available since API v3.]]>
         </wadl:response>
       </wadl:method>
     </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/services/{serviceName}/commands/hdfsUpgradeMetadata">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The HDFS service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Upgrade HDFS Metadata as part of a major version upgrade.
+<p/>
+When doing a major version upgrade for HDFS, it is necessary to start HDFS
+in a special mode where it will do any necessary upgrades of stored
+metadata. Trying to start HDFS normally will result in an error message and
+the NameNode(s) failing to start.
+<p/>
+The metadata upgrade must eventually be finalized, using the
+hdfsFinalizeMetadataUpgrade command on the NameNode.
+<p/>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
     <wadl:resource path="/api/v6/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateHiveUserDir">
       <wadl:param name="serviceName" style="template">
         <wadl:doc>
@@ -4208,6 +4432,31 @@ Available since API v4.]]>
         </wadl:response>
       </wadl:method>
     </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/services/{serviceName}/commands/hiveUpgradeMetastore">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The Hive service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Upgrade Hive Metastore as part of a major version upgrade.
+<p/>
+When doing a major version upgrade for Hive, it is necessary to upgrade
+data in the metastore database.
+<p/>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
     <wadl:resource path="/api/v6/clusters/{clusterName}/services/{serviceName}/commands/hueCreateHiveWarehouse">
       <wadl:param name="serviceName" style="template">
         <wadl:doc>
@@ -4237,7 +4486,9 @@ Available since API v4.]]>
       <wadl:param name="clusterName" style="template"/>
       <wadl:method name="POST">
         <wadl:doc>
-          <![CDATA[Create the Impala Catalog Database. Only works with embedded postgresql
+          <![CDATA[<strong>Not needed in CM 5.0.0 Release, since Impala Catalog Database
+is not yet available in CDH as of this release.</strong>
+Create the Impala Catalog Database. Only works with embedded postgresql
 database.
 <p>
 This command is to be run whenever a new user and database needs to be
@@ -4265,7 +4516,9 @@ Available since API v6.]]>
       <wadl:param name="clusterName" style="template"/>
       <wadl:method name="POST">
         <wadl:doc>
-          <![CDATA[Create the Impala Catalog Database tables.
+          <![CDATA[<strong>Not needed in CM 5.0.0 Release, since Impala Catalog Database
+is not yet available in CDH as of this release.</strong>
+Create the Impala Catalog Database tables.
 <p>
 This command is to be run whenever a new database has been specified. Will
 do nothing if tables already exist. Will not perform an upgrade. Only
@@ -4368,10 +4621,12 @@ Available since API v4.]]>
       <wadl:method name="POST">
         <wadl:doc>
           <![CDATA[Creates directory for Oozie user in HDFS and installs the ShareLib in it.
-
-<p>
+<p/>
+This command should be re-run after a major version upgrade to refresh the
+ShareLib to the latest version.
+<p/>
 Available since API v3.
-</p>]]>
+<p/>]]>
         </wadl:doc>
         <wadl:request/>
         <wadl:response>
@@ -4437,6 +4692,31 @@ being modified will be stopped and restarted after enabling Oozie HA.]]>
           </wadl:doc>
           <wadl:representation mediaType="application/json"/>
         </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/services/{serviceName}/commands/oozieUpgradeDb">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The Oozie service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Upgrade Oozie Database schema as part of a major version upgrade.
+<p/>
+When doing a major version upgrade for Oozie, it is necessary to upgrade
+the schema of its database before Oozie can run successfully.
+<p/>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:request/>
         <wadl:response>
           <wadl:doc>
             <![CDATA[Information about the submitted command.]]>
@@ -4516,6 +4796,31 @@ Edition.]]>
           <wadl:representation mediaType="application/json"/>
         </wadl:request>
         <wadl:response>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v6/clusters/{clusterName}/services/{serviceName}/commands/sqoopUpgradeDb">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[The Sqoop service name.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Upgrade Sqoop Database schema as part of a major version upgrade.
+<p/>
+When doing a major version upgrade for Sqoop, it is necessary to upgrade
+the schema of its database before Sqoop can run successfully.
+<p/>
+Available since API v6.]]>
+        </wadl:doc>
+        <wadl:request/>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
           <wadl:representation mediaType="application/json"/>
         </wadl:response>
       </wadl:method>

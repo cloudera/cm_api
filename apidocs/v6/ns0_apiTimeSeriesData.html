@@ -71,6 +71,7 @@
                 <li><a href="ns0_apiBatchResponse.html">apiBatchResponse</a></li>
                 <li><a href="ns0_apiBatchResponseElement.html">apiBatchResponseElement</a></li>
                 <li><a href="ns0_apiBulkCommandList.html">apiBulkCommandList</a></li>
+                <li><a href="ns0_apiCdhUpgradeArgs.html">apiCdhUpgradeArgs</a></li>
                 <li><a href="ns0_apiCluster.html">apiCluster</a></li>
                 <li><a href="ns0_apiClusterList.html">apiClusterList</a></li>
                 <li><a href="ns0_apiClusterRef.html">apiClusterRef</a></li>
@@ -141,6 +142,7 @@
                 <li><a href="ns0_apiImpalaUDF.html">apiImpalaUDF</a></li>
                 <li><a href="ns0_apiJournalNodeArguments.html">apiJournalNodeArguments</a></li>
                 <li><a href="ns0_apiLicense.html">apiLicense</a></li>
+                <li><a href="ns0_apiLicensedFeatureUsage.html">apiLicensedFeatureUsage</a></li>
                 <li><a href="ns0_apiListBase.html">apiListBase</a></li>
                 <li><a href="ns0_apiMetric.html">apiMetric</a></li>
                 <li><a href="ns0_apiMetricData.html">apiMetricData</a></li>
@@ -194,6 +196,8 @@
                 <li><a href="ns0_apiSnapshotPolicy.html">apiSnapshotPolicy</a></li>
                 <li><a href="ns0_apiSnapshotPolicyList.html">apiSnapshotPolicyList</a></li>
                 <li><a href="ns0_apiTimeSeries.html">apiTimeSeries</a></li>
+                <li><a href="ns0_apiTimeSeriesAggregateStatistics.html">apiTimeSeriesAggregateStatistics</a></li>
+                <li><a href="ns0_apiTimeSeriesCrossEntityMetadata.html">apiTimeSeriesCrossEntityMetadata</a></li>
                 <li><a href="ns0_apiTimeSeriesData.html">apiTimeSeriesData</a></li>
                 <li><a href="ns0_apiTimeSeriesMetadata.html">apiTimeSeriesMetadata</a></li>
                 <li><a href="ns0_apiTimeSeriesResponse.html">apiTimeSeriesResponse</a></li>
@@ -262,6 +266,22 @@
           <td>
             
                 The type of the time series data.
+              
+          </td>
+        </tr>
+        <tr>
+          <td>aggregateStatistics</td>
+          <td>
+            aggregateStatistics (<a href="ns0_apiTimeSeriesAggregateStatistics.html">apiTimeSeriesAggregateStatistics</a>)
+          </td>
+          <td>
+            
+                Available from v6 for data points containing aggregate data. It includes
+further statistics about the data point. An aggregate can be across
+entities (e.g., fd_open_across_datanodes), over time (e.g., a daily point
+for the fd_open metric for a specific DataNode), or both (e.g., a daily
+point for the fd_open_across_datanodes metric). If the data point is for
+non-aggregate date this will return null.
               
           </td>
         </tr>

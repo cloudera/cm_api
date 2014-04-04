@@ -9,6 +9,7 @@
   <xs:element name="batchResponse" type="apiBatchResponse"/>
   <xs:element name="batchResponseElement" type="apiBatchResponseElement"/>
   <xs:element name="bulkCommandList" type="apiBulkCommandList"/>
+  <xs:element name="cdhUpgradeArgs" type="apiCdhUpgradeArgs"/>
   <xs:element name="cluster" type="apiCluster"/>
   <xs:element name="clusterList" type="apiClusterList"/>
   <xs:element name="clusterRef" type="apiClusterRef"/>
@@ -71,6 +72,7 @@
   <xs:element name="impalaUDF" type="apiImpalaUDF"/>
   <xs:element name="jnArgs" type="apiJournalNodeArguments"/>
   <xs:element name="license" type="apiLicense"/>
+  <xs:element name="licensedFeatureUsage" type="apiLicensedFeatureUsage"/>
   <xs:element name="metric" type="apiMetric"/>
   <xs:element name="metricData" type="apiMetricData"/>
   <xs:element name="metricList" type="apiMetricList"/>
@@ -117,6 +119,8 @@
   <xs:element name="snapshotPolicy" type="apiSnapshotPolicy"/>
   <xs:element name="snapshotPolicyList" type="apiSnapshotPolicyList"/>
   <xs:element name="timeSeries" type="apiTimeSeries"/>
+  <xs:element name="timeSeriesAggregateStatistics" type="apiTimeSeriesAggregateStatistics"/>
+  <xs:element name="timeSeriesCrossEntityMetadata" type="apiTimeSeriesCrossEntityMetadata"/>
   <xs:element name="timeSeriesData" type="apiTimeSeriesData"/>
   <xs:element name="timeSeriesMetaData" type="apiTimeSeriesMetadata"/>
   <xs:element name="timeSeriesResponse" type="apiTimeSeriesResponse"/>
@@ -551,6 +555,38 @@ second list with information about errors issuing specific commands.]]>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="apiCdhUpgradeArgs">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Arguments used for the CDH Upgrade command.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="cdhParcelVersion" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[If using parcels, the full version of an already distributed parcel for the
+next major CDH version. Default is None. Example versions are:
+'5.0.0-1.cdh5.0.0.p0.11' or '5.0.2-1.cdh5.0.2.p0.32']]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="deployClientConfig" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether to deploy client configurations after the upgrade. Default is True.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="startAllServices" type="xs:boolean" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Whether to start all services after the upgrade. Default is True.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="apiCluster">
     <xs:annotation>
       <xs:documentation>
@@ -584,6 +620,17 @@ Available since API v6.]]>
         <xs:annotation>
           <xs:documentation>
             <![CDATA[The CDH version of the cluster.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="fullVersion" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The full CDH version of the cluster. The expected format is three dot
+separated version numbers, e.g. "4.2.1" or "5.0.0". The full version takes
+precedence over the version field during cluster creation.
+<p>
+Available since API v6.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -3917,6 +3964,70 @@ if it is already set at RoleConfigGroup level.]]>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
+  <xs:complexType name="apiLicensedFeatureUsage">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Information about the number of nodes using which product features.
+<p>
+Usage information is provided for individual clusters, as well as totals
+across all clusters.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="totals" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Map from named features to the total number of nodes using those features.]]>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="key" minOccurs="1" type="xs:string"/>
+                  <xs:element name="value" minOccurs="1" type="xs:int"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="clusters" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Map from clusters to maps of named features to the number of nodes in the
+cluster using those features.]]>
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="key" minOccurs="1" type="xs:string"/>
+                  <xs:element name="value" minOccurs="1">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="key" minOccurs="1" type="xs:string"/>
+                              <xs:element name="value" minOccurs="1" type="xs:int"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="apiListBase" abstract="true">
     <xs:annotation>
       <xs:documentation>
@@ -5562,6 +5673,16 @@ Available since API v6.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="clientConfigStalenessStatus" type="apiConfigStalenessStatus" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Readonly. Expresses the service's client configuration staleness status
+which is marked as stale if any of the service's hosts have missing client
+configurations or if any of the deployed client configurations are stale.
+Available since API v6.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="healthChecks" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
@@ -6113,6 +6234,140 @@ Time series are returned by executing a tsquery.]]>
       </xs:element>
     </xs:sequence>
   </xs:complexType>
+  <xs:complexType name="apiTimeSeriesAggregateStatistics">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[Statistics related to one time series aggregate data point. It is
+available from v6 for data points containing aggregate data. It includes
+further statistics about the data point. An aggregate can be across
+entities (e.g., fd_open_across_datanodes), over time (e.g., a daily point
+for the fd_open metric for a specific DataNode), or both (e.g., a daily
+point for the fd_open_across_datanodes metric). If the data point is for
+non-aggregate date this will return null.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="sampleTime" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The timestamp of the sample data point.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="sampleValue" type="xs:double" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The sample data point value representing an actual sample value picked
+from the underlying data that is being aggregated.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="count" type="xs:long" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The number of individual data points aggregated in this data point.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="min" type="xs:double" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[This minimum value encountered while producing this aggregate data point.
+If this is a cross-time aggregate then this is the minimum value
+encountered during the aggregation period. If this is a cross-entity
+aggregate then this is the minimum value encountered across all entities.
+If this is a cross-time, cross-entity aggregate, then this is the minimum
+value for any entity across the aggregation period.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="minTime" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The timestamp of the minimum data point.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="max" type="xs:double" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[This maximum value encountered while producing this aggregate data point.
+If this is a cross-time aggregate then this is the maximum value
+encountered during the aggregation period. If this is a cross-entity
+aggregate then this is the maximum value encountered across all entities.
+If this is a cross-time, cross-entity aggregate, then this is the maximum
+value for any entity across the aggregation period.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="maxTime" type="xs:dateTime" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The timestamp of the maximum data point.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="mean" type="xs:double" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The mean of the values of all data-points for this aggregate data point.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="stdDev" type="xs:double" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The standard deviation of the values of all data-points for this aggregate
+data point.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="crossEntityMetadata" type="apiTimeSeriesCrossEntityMetadata" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[If the data-point is for a cross entity aggregate (e.g.,
+fd_open_across_datanodes) returns the cross entity metadata, null otherwise.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="apiTimeSeriesCrossEntityMetadata">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[A class holding additional metadata to the ApiTimeSeriesAggregateStatistics
+class that applies specifically to cross-entity aggregate metrics.]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="maxEntityDisplayName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The display name of the entity that had the maximum value for the
+cross-entity aggregate metric.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="minEntityDisplayName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The display name of the entity that had the minimum value for the
+cross-entity aggregate metric.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="numEntities" type="xs:double" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The number of entities covered by this point. For a raw cross-entity point
+this number is exact. For a rollup point this number is an average, since
+the number of entities being aggregated can change over the aggregation
+period.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="apiTimeSeriesData">
     <xs:annotation>
       <xs:documentation>
@@ -6141,6 +6396,18 @@ Time series are returned by executing a tsquery.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
+      <xs:element name="aggregateStatistics" type="apiTimeSeriesAggregateStatistics" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[Available from v6 for data points containing aggregate data. It includes
+further statistics about the data point. An aggregate can be across
+entities (e.g., fd_open_across_datanodes), over time (e.g., a daily point
+for the fd_open metric for a specific DataNode), or both (e.g., a daily
+point for the fd_open_across_datanodes metric). If the data point is for
+non-aggregate date this will return null.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="apiTimeSeriesMetadata">
@@ -6160,7 +6427,10 @@ Time series are returned by executing a tsquery.]]>
       <xs:element name="entityName" type="xs:string" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
-            <![CDATA[The entity name for the time series data.]]>
+            <![CDATA[The display name for the entity associated with this time series.
+For example, if this was a time series for an HDFS service the entity name
+might be something like "My HDFS Service". If it was for a host it might
+be something like "myhost.mysite.com".]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>
@@ -6181,7 +6451,13 @@ Time series are returned by executing a tsquery.]]>
       <xs:element name="attributes" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
-            <![CDATA[The attributes for the time series.]]>
+            <![CDATA[The attributes for the time series. Note that the entityName entry in
+this map is not the same as the entityName field in this
+ApiTimeSeriesMetadata. The entityName entry in this map is a unique
+identifier for the entity and not the name displayed in the UI.
+For example, if this was a time series for the YARN Job History Server
+the entityName entry in this map might be something like
+"yarn-JOBHISTORY-6bd17ceb1489aae93fef4c867350d0dd"]]>
           </xs:documentation>
         </xs:annotation>
         <xs:complexType>
@@ -6208,6 +6484,38 @@ Time series are returned by executing a tsquery.]]>
         <xs:annotation>
           <xs:documentation>
             <![CDATA[The denominators of the units for the time series.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="expression" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The tsquery expression that could be used to extract just this stream.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="alias" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The alias for this stream's metric. Aliases correspond to use of the 'as'
+keyword in the tsquery.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="metricCollectionFrequencyMs" type="xs:long" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The minimum frequency at which the underlying metric for this stream is
+collected. Note that this can be null if the stream returns irregularly
+sampled data.]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="rollupUsed" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            <![CDATA[The aggregate rollup for the returned data. This can be TEN_MINUTELY,
+HOURLY, SIX_HOURLY, DAILY, or WEEKLY.]]>
           </xs:documentation>
         </xs:annotation>
       </xs:element>

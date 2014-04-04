@@ -71,6 +71,7 @@
                 <li><a href="ns0_apiBatchResponse.html">apiBatchResponse</a></li>
                 <li><a href="ns0_apiBatchResponseElement.html">apiBatchResponseElement</a></li>
                 <li><a href="ns0_apiBulkCommandList.html">apiBulkCommandList</a></li>
+                <li><a href="ns0_apiCdhUpgradeArgs.html">apiCdhUpgradeArgs</a></li>
                 <li><a href="ns0_apiCluster.html">apiCluster</a></li>
                 <li><a href="ns0_apiClusterList.html">apiClusterList</a></li>
                 <li><a href="ns0_apiClusterRef.html">apiClusterRef</a></li>
@@ -141,6 +142,7 @@
                 <li><a href="ns0_apiImpalaUDF.html">apiImpalaUDF</a></li>
                 <li><a href="ns0_apiJournalNodeArguments.html">apiJournalNodeArguments</a></li>
                 <li><a href="ns0_apiLicense.html">apiLicense</a></li>
+                <li><a href="ns0_apiLicensedFeatureUsage.html">apiLicensedFeatureUsage</a></li>
                 <li><a href="ns0_apiListBase.html">apiListBase</a></li>
                 <li><a href="ns0_apiMetric.html">apiMetric</a></li>
                 <li><a href="ns0_apiMetricData.html">apiMetricData</a></li>
@@ -194,6 +196,8 @@
                 <li><a href="ns0_apiSnapshotPolicy.html">apiSnapshotPolicy</a></li>
                 <li><a href="ns0_apiSnapshotPolicyList.html">apiSnapshotPolicyList</a></li>
                 <li><a href="ns0_apiTimeSeries.html">apiTimeSeries</a></li>
+                <li><a href="ns0_apiTimeSeriesAggregateStatistics.html">apiTimeSeriesAggregateStatistics</a></li>
+                <li><a href="ns0_apiTimeSeriesCrossEntityMetadata.html">apiTimeSeriesCrossEntityMetadata</a></li>
                 <li><a href="ns0_apiTimeSeriesData.html">apiTimeSeriesData</a></li>
                 <li><a href="ns0_apiTimeSeriesMetadata.html">apiTimeSeriesMetadata</a></li>
                 <li><a href="ns0_apiTimeSeriesResponse.html">apiTimeSeriesResponse</a></li>
@@ -319,6 +323,20 @@ Whether it's running, etc.
             
                 Readonly. Expresses the service's configuration staleness status which is
 based on the staleness status of its roles.
+Available since API v6.
+              
+          </td>
+        </tr>
+        <tr>
+          <td>clientConfigStalenessStatus</td>
+          <td>
+            clientConfigStalenessStatus (<a href="ns0_apiConfigStalenessStatus.html">apiConfigStalenessStatus</a>)
+          </td>
+          <td>
+            
+                Readonly. Expresses the service's client configuration staleness status
+which is marked as stale if any of the service's hosts have missing client
+configurations or if any of the deployed client configurations are stale.
 Available since API v6.
               
           </td>

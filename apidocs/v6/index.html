@@ -107,7 +107,7 @@ expand the URL path to include the user identifier.  For example,
 </tbody>
 </table>
 <p>
-Keep in mind that not all collections supports all operations.  For example,
+Keep in mind that not all collections support all operations.  For example,
 events in the system are read-only; you cannot create new events with
 the API.
 </p>
@@ -129,7 +129,7 @@ called 'view' e.g. 'GET /users?view=full'.
       <p>
         The Cloudera Manager API uses <a href="http://tools.ietf.org/html/rfc2617">HTTP
         basic access authentication</a>. It accepts the same user credentials
-        as the web interface. Different users may have different level of access,
+        as the web interface. Different users may have different levels of access,
         as defined by their roles. (See the user management API calls for more.)
         With every authenticated request, the server returns a session cookie,
         which can be subsequently used for authentication.
@@ -178,15 +178,19 @@ called 'view' e.g. 'GET /users?view=full'.
         <li><a href="path__batch.html">/batch</a></li>
         <li><a href="path__clusters.html">/clusters</a></li>
         <li><a href="path__clusters_-clusterName-.html">/clusters/{clusterName}</a></li>
+        <li><a href="path__clusters_-clusterName-_autoAssignRoles.html">/clusters/{clusterName}/autoAssignRoles</a></li>
+        <li><a href="path__clusters_-clusterName-_autoConfigure.html">/clusters/{clusterName}/autoConfigure</a></li>
         <li><a href="path__clusters_-clusterName-_commands.html">/clusters/{clusterName}/commands</a></li>
         <li><a href="path__clusters_-clusterName-_commands_deployClientConfig.html">/clusters/{clusterName}/commands/deployClientConfig</a></li>
         <li><a href="path__clusters_-clusterName-_commands_enterMaintenanceMode.html">/clusters/{clusterName}/commands/enterMaintenanceMode</a></li>
         <li><a href="path__clusters_-clusterName-_commands_exitMaintenanceMode.html">/clusters/{clusterName}/commands/exitMaintenanceMode</a></li>
+        <li><a href="path__clusters_-clusterName-_commands_poolsRefresh.html">/clusters/{clusterName}/commands/poolsRefresh</a></li>
         <li><a href="path__clusters_-clusterName-_commands_refresh.html">/clusters/{clusterName}/commands/refresh</a></li>
         <li><a href="path__clusters_-clusterName-_commands_restart.html">/clusters/{clusterName}/commands/restart</a></li>
         <li><a href="path__clusters_-clusterName-_commands_rollingRestart.html">/clusters/{clusterName}/commands/rollingRestart</a></li>
         <li><a href="path__clusters_-clusterName-_commands_start.html">/clusters/{clusterName}/commands/start</a></li>
         <li><a href="path__clusters_-clusterName-_commands_stop.html">/clusters/{clusterName}/commands/stop</a></li>
+        <li><a href="path__clusters_-clusterName-_commands_upgradeCdh.html">/clusters/{clusterName}/commands/upgradeCdh</a></li>
         <li><a href="path__clusters_-clusterName-_commands_upgradeServices.html">/clusters/{clusterName}/commands/upgradeServices</a></li>
         <li><a href="path__clusters_-clusterName-_hosts.html">/clusters/{clusterName}/hosts</a></li>
         <li><a href="path__clusters_-clusterName-_hosts_-hostId-.html">/clusters/{clusterName}/hosts/{hostId}</a></li>
@@ -226,6 +230,7 @@ called 'view' e.g. 'GET /users?view=full'.
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_enterMaintenanceMode.html">/clusters/{clusterName}/services/{serviceName}/commands/enterMaintenanceMode</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_exitMaintenanceMode.html">/clusters/{clusterName}/services/{serviceName}/commands/exitMaintenanceMode</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hbaseCreateRoot.html">/clusters/{clusterName}/services/{serviceName}/commands/hbaseCreateRoot</a></li>
+        <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hbaseUpgrade.html">/clusters/{clusterName}/services/{serviceName}/commands/hbaseUpgrade</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsCreateTmpDir.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsCreateTmpDir</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsDisableAutoFailover.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsDisableAutoFailover</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsDisableHa.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsDisableHa</a></li>
@@ -235,11 +240,13 @@ called 'view' e.g. 'GET /users?view=full'.
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsEnableNnHa.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsEnableNnHa</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsFailover.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsFailover</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsRollEdits.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsRollEdits</a></li>
+        <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsUpgradeMetadata.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsUpgradeMetadata</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveCreateHiveUserDir.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateHiveUserDir</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveCreateHiveWarehouse.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateHiveWarehouse</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveCreateMetastoreDatabase.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateMetastoreDatabase</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveCreateMetastoreDatabaseTables.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateMetastoreDatabaseTables</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveUpdateMetastoreNamenodes.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveUpdateMetastoreNamenodes</a></li>
+        <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveUpgradeMetastore.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveUpgradeMetastore</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hueCreateHiveWarehouse.html">/clusters/{clusterName}/services/{serviceName}/commands/hueCreateHiveWarehouse</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaCreateCatalogDatabase.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaCreateCatalogDatabase</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaCreateCatalogDatabaseTables.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaCreateCatalogDatabaseTables</a></li>
@@ -249,9 +256,11 @@ called 'view' e.g. 'GET /users?view=full'.
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_installOozieShareLib.html">/clusters/{clusterName}/services/{serviceName}/commands/installOozieShareLib</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_oozieDisableHa.html">/clusters/{clusterName}/services/{serviceName}/commands/oozieDisableHa</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_oozieEnableHa.html">/clusters/{clusterName}/services/{serviceName}/commands/oozieEnableHa</a></li>
+        <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_oozieUpgradeDb.html">/clusters/{clusterName}/services/{serviceName}/commands/oozieUpgradeDb</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_recommission.html">/clusters/{clusterName}/services/{serviceName}/commands/recommission</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_restart.html">/clusters/{clusterName}/services/{serviceName}/commands/restart</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_rollingRestart.html">/clusters/{clusterName}/services/{serviceName}/commands/rollingRestart</a></li>
+        <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_sqoopUpgradeDb.html">/clusters/{clusterName}/services/{serviceName}/commands/sqoopUpgradeDb</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_start.html">/clusters/{clusterName}/services/{serviceName}/commands/start</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_stop.html">/clusters/{clusterName}/services/{serviceName}/commands/stop</a></li>
         <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_switchToMr2.html">/clusters/{clusterName}/services/{serviceName}/commands/switchToMr2</a></li>
@@ -327,11 +336,14 @@ called 'view' e.g. 'GET /users?view=full'.
         <li><a href="path__cm_config.html">/cm/config</a></li>
         <li><a href="path__cm_deployment.html">/cm/deployment</a></li>
         <li><a href="path__cm_license.html">/cm/license</a></li>
+        <li><a href="path__cm_licensedFeatureUsage.html">/cm/licensedFeatureUsage</a></li>
         <li><a href="path__cm_log.html">/cm/log</a></li>
         <li><a href="path__cm_peers.html">/cm/peers</a></li>
         <li><a href="path__cm_peers_-peerName-.html">/cm/peers/{peerName}</a></li>
         <li><a href="path__cm_peers_-peerName-_commands_test.html">/cm/peers/{peerName}/commands/test</a></li>
         <li><a href="path__cm_service.html">/cm/service</a></li>
+        <li><a href="path__cm_service_autoAssignRoles.html">/cm/service/autoAssignRoles</a></li>
+        <li><a href="path__cm_service_autoConfigure.html">/cm/service/autoConfigure</a></li>
         <li><a href="path__cm_service_commands.html">/cm/service/commands</a></li>
         <li><a href="path__cm_service_commands_restart.html">/cm/service/commands/restart</a></li>
         <li><a href="path__cm_service_commands_start.html">/cm/service/commands/start</a></li>
@@ -349,6 +361,8 @@ called 'view' e.g. 'GET /users?view=full'.
         <li><a href="path__cm_service_roles_-roleName-_commands.html">/cm/service/roles/{roleName}/commands</a></li>
         <li><a href="path__cm_service_roles_-roleName-_config.html">/cm/service/roles/{roleName}/config</a></li>
         <li><a href="path__cm_service_roleTypes.html">/cm/service/roleTypes</a></li>
+        <li><a href="path__cm_trial_begin.html">/cm/trial/begin</a></li>
+        <li><a href="path__cm_trial_end.html">/cm/trial/end</a></li>
         <li><a href="path__cm_version.html">/cm/version</a></li>
         <li><a href="path__commands_-commandId-.html">/commands/{commandId}</a></li>
         <li><a href="path__commands_-commandId-_abort.html">/commands/{commandId}/abort</a></li>
@@ -395,6 +409,7 @@ called 'view' e.g. 'GET /users?view=full'.
           <li><a href="el_ns0_batchResponse.html">batchResponse</a></li>
           <li><a href="el_ns0_batchResponseElement.html">batchResponseElement</a></li>
           <li><a href="el_ns0_bulkCommandList.html">bulkCommandList</a></li>
+          <li><a href="el_ns0_cdhUpgradeArgs.html">cdhUpgradeArgs</a></li>
           <li><a href="el_ns0_cluster.html">cluster</a></li>
           <li><a href="el_ns0_clusterList.html">clusterList</a></li>
           <li><a href="el_ns0_clusterRef.html">clusterRef</a></li>
@@ -456,6 +471,7 @@ called 'view' e.g. 'GET /users?view=full'.
           <li><a href="el_ns0_impalaUDF.html">impalaUDF</a></li>
           <li><a href="el_ns0_jnArgs.html">jnArgs</a></li>
           <li><a href="el_ns0_license.html">license</a></li>
+          <li><a href="el_ns0_licensedFeatureUsage.html">licensedFeatureUsage</a></li>
           <li><a href="el_ns0_metric.html">metric</a></li>
           <li><a href="el_ns0_metricData.html">metricData</a></li>
           <li><a href="el_ns0_metricList.html">metricList</a></li>
@@ -502,6 +518,8 @@ called 'view' e.g. 'GET /users?view=full'.
           <li><a href="el_ns0_snapshotPolicy.html">snapshotPolicy</a></li>
           <li><a href="el_ns0_snapshotPolicyList.html">snapshotPolicyList</a></li>
           <li><a href="el_ns0_timeSeries.html">timeSeries</a></li>
+          <li><a href="el_ns0_timeSeriesAggregateStatistics.html">timeSeriesAggregateStatistics</a></li>
+          <li><a href="el_ns0_timeSeriesCrossEntityMetadata.html">timeSeriesCrossEntityMetadata</a></li>
           <li><a href="el_ns0_timeSeriesData.html">timeSeriesData</a></li>
           <li><a href="el_ns0_timeSeriesMetaData.html">timeSeriesMetaData</a></li>
           <li><a href="el_ns0_timeSeriesResponse.html">timeSeriesResponse</a></li>
