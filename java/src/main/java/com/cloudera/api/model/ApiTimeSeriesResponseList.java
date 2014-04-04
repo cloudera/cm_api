@@ -50,7 +50,7 @@ public class ApiTimeSeriesResponseList extends ApiListBase<ApiTimeSeriesResponse
   }
 
   @CsvElementWrapper(rowtype = ApiTimeSeriesRow.class,
-                     dateTimeFormat = "yyyy-MM-dd HH:mm:ss.SSS")
+                     dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   @XmlTransient
   public List<ApiTimeSeriesRow> getTimeSeriesRows() {
     return timeSeriesRows;

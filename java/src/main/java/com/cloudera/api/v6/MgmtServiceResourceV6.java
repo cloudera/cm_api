@@ -20,6 +20,7 @@ import com.cloudera.api.v3.MgmtServiceResourceV3;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -38,4 +39,36 @@ public interface MgmtServiceResourceV6 extends MgmtServiceResourceV3 {
   @DELETE
   @Path("/")
   public ApiService deleteCMS();
+
+  /**
+   * Automatically assign roles to hosts and create the roles for the Cloudera Management Service.
+   * <p>
+   * Assignments are done based on number of hosts in the deployment and hardware specifications.
+   * If no hosts are part of the deployment, an exception will be thrown preventing any role assignments.
+   * Existing roles will be taken into account and their assignments will be not be modified.
+   * The deployment should not have any clusters when calling this endpoint. If it does,
+   * an exception will be thrown preventing any role assignments.
+   * <p>
+   * Available since API v6.
+   */
+  @PUT
+  @Path("/autoAssignRoles")
+  public void autoAssignRoles();
+
+  /**
+   * Automatically configures roles of the Cloudera Management Service.
+   * <p>
+   * Overwrites some existing configurations.
+   * Only default role config groups must exist before calling this endpoint.
+   * Other role config groups must not exist. If they do, an exception will be thrown
+   * preventing any configuration.
+   * Ignores any clusters (and their services and roles) colocated with the Cloudera
+   * Management Service. To avoid over-committing the heap on hosts, place the
+   * Cloudera Management Service roles on machines not used by any of the clusters.
+   * <p>
+   * Available since API v6.
+   */
+  @PUT
+  @Path("/autoConfigure")
+  public void autoConfigure();
 }

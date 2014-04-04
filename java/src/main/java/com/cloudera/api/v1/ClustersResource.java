@@ -123,7 +123,9 @@ public interface ClustersResource {
    *
    * @param clusterName The name of the cluster.
    * @return Information about the submitted command.
+   * @deprecated This endpoint is not recommended v6 onwards. Use upgradeCdh on the cluster instead.
    */
+  @Deprecated
   @POST
   @Consumes
   @Path("/{clusterName}/commands/upgradeServices")

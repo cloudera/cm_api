@@ -51,6 +51,7 @@ public class ApiService {
   private List<ApiHealthCheck> healthChecks;
   private Boolean configStale;
   private ApiConfigStalenessStatus configStalenessStatus;
+  private ApiConfigStalenessStatus clientConfigStalenessStatus;
   private Boolean maintenanceMode;
   private List<ApiEntityType> maintenanceOwners;
   private ApiServiceConfig config;
@@ -180,6 +181,21 @@ public class ApiService {
 
   public void setConfigStalenessStatus(ApiConfigStalenessStatus configStalenessStatus) {
     this.configStalenessStatus = configStalenessStatus;
+  }
+
+  /**
+   * Readonly. Expresses the service's client configuration staleness status
+   * which is marked as stale if any of the service's hosts have missing client
+   * configurations or if any of the deployed client configurations are stale.
+   * Available since API v6.
+   */
+  @XmlElement
+  public ApiConfigStalenessStatus getClientConfigStalenessStatus() {
+    return clientConfigStalenessStatus;
+  }
+
+  public void setClientConfigStalenessStatus(ApiConfigStalenessStatus clientConfigStalenessStatus) {
+    this.clientConfigStalenessStatus = clientConfigStalenessStatus;
   }
 
   /**
