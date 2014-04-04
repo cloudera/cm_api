@@ -284,8 +284,7 @@ public interface RolesResource {
   @Path("/{roleName}/logs/full")
   @Produces(MediaType.TEXT_PLAIN)
   public InputStream getFullLog(
-      @PathParam(ROLE_NAME) String roleName)
-      throws IOException;
+      @PathParam(ROLE_NAME) String roleName);
 
   /**
    * Retrieves the role's standard output.
@@ -302,8 +301,7 @@ public interface RolesResource {
   @Path("/{roleName}/logs/stdout")
   @Produces(MediaType.TEXT_PLAIN)
   public InputStream getStandardOutput(
-      @PathParam(ROLE_NAME) String roleName)
-      throws IOException;
+      @PathParam(ROLE_NAME) String roleName);
 
   /**
    * Retrieves the role's standard error output.
@@ -320,7 +318,6 @@ public interface RolesResource {
   @Path("/{roleName}/logs/stderr")
   @Produces(MediaType.TEXT_PLAIN)
   public InputStream getStandardError(
-      @PathParam(ROLE_NAME) String roleName)
-      throws IOException;
+      @PathParam(ROLE_NAME) String roleName);
 
 }

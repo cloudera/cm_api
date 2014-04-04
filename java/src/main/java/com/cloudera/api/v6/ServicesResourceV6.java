@@ -237,6 +237,90 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
       ApiDisableNnHaArguments args);
 
   /**
+   * Upgrade HDFS Metadata as part of a major version upgrade.
+   * <p/>
+   * When doing a major version upgrade for HDFS, it is necessary to start HDFS
+   * in a special mode where it will do any necessary upgrades of stored
+   * metadata. Trying to start HDFS normally will result in an error message and
+   * the NameNode(s) failing to start.
+   * <p/>
+   * The metadata upgrade must eventually be finalized, using the
+   * hdfsFinalizeMetadataUpgrade command on the NameNode.
+   * <p/>
+   * Available since API v6.
+   *
+   * @param serviceName The HDFS service name.
+   * @return Information about the submitted command.
+   */
+  @POST
+  @Path("/{serviceName}/commands/hdfsUpgradeMetadata")
+  public ApiCommand hdfsUpgradeMetadataCommand(
+      @PathParam(SERVICE_NAME) String serviceName);
+
+  /**
+   * Upgrade Hive Metastore as part of a major version upgrade.
+   * <p/>
+   * When doing a major version upgrade for Hive, it is necessary to upgrade
+   * data in the metastore database.
+   * <p/>
+   * Available since API v6.
+   *
+   * @param serviceName The Hive service name.
+   * @return Information about the submitted command.
+   */
+  @POST
+  @Path("/{serviceName}/commands/hiveUpgradeMetastore")
+  public ApiCommand hiveUpgradeMetastoreCommand(
+      @PathParam(SERVICE_NAME) String serviceName);
+
+  /**
+   * Upgrade Oozie Database schema as part of a major version upgrade.
+   * <p/>
+   * When doing a major version upgrade for Oozie, it is necessary to upgrade
+   * the schema of its database before Oozie can run successfully.
+   * <p/>
+   * Available since API v6.
+   *
+   * @param serviceName The Oozie service name.
+   * @return Information about the submitted command.
+   */
+  @POST
+  @Path("/{serviceName}/commands/oozieUpgradeDb")
+  public ApiCommand oozieUpgradeDbCommand(
+      @PathParam(SERVICE_NAME) String serviceName);
+
+  /**
+   * Upgrade HBase data in HDFS and ZooKeeper as part of upgrade from CDH4 to CDH5.
+   * <p/>
+   * This is required in order to run HBase after upgrade.
+   * <p/>
+   * Available since API v6.
+   *
+   * @param serviceName The HBase service name.
+   * @return Information about the submitted command.
+   */
+  @POST
+  @Path("/{serviceName}/commands/hbaseUpgrade")
+  public ApiCommand hbaseUpgradeCommand(
+      @PathParam(SERVICE_NAME) String serviceName);
+
+  /**
+   * Upgrade Sqoop Database schema as part of a major version upgrade.
+   * <p/>
+   * When doing a major version upgrade for Sqoop, it is necessary to upgrade
+   * the schema of its database before Sqoop can run successfully.
+   * <p/>
+   * Available since API v6.
+   *
+   * @param serviceName The Sqoop service name.
+   * @return Information about the submitted command.
+   */
+  @POST
+  @Path("/{serviceName}/commands/sqoopUpgradeDb")
+  public ApiCommand sqoopUpgradeDbCommand(
+      @PathParam(SERVICE_NAME) String serviceName);
+
+  /**
    * Create the Yarn job history directory
    * <p>
    * Available since API v6.
@@ -277,6 +361,8 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
       @PathParam(SERVICE_NAME) String serviceName);
 
   /**
+   * <strong>Not needed in CM 5.0.0 Release, since Impala Catalog Database
+   * is not yet available in CDH as of this release.</strong>
    * Create the Impala Catalog Database. Only works with embedded postgresql
    * database.
    * <p>
@@ -297,6 +383,8 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
       @PathParam(SERVICE_NAME) String serviceName);
 
   /**
+   * <strong>Not needed in CM 5.0.0 Release, since Impala Catalog Database
+   * is not yet available in CDH as of this release.</strong>
    * Create the Impala Catalog Database tables.
    * <p>
    * This command is to be run whenever a new database has been specified. Will

@@ -36,20 +36,18 @@ public interface ProcessResourceV4 {
 
   /**
    * @return The process associated with this resource.
-   * @throws IOException
    */
   @GET
   @Path("/")
   public ApiProcess getProcess();
-  
+
   /**
    * Returns the contents of the specified config file.
    * A multi-level file name (e.g. hadoop-conf/hdfs-site.xml) is
    * acceptable here.
-   * 
+   *
    * @param configFileName Name of the config file to get.
    * @return Contents of the specified config file
-   * @throws IOException
    */
   @GET
   @Path("/configFiles/{configFileName : .*}")

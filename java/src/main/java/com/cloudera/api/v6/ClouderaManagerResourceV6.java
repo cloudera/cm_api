@@ -17,8 +17,10 @@ package com.cloudera.api.v6;
 
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiHostInstallArguments;
+import com.cloudera.api.model.ApiLicensedFeatureUsage;
 import com.cloudera.api.v3.ClouderaManagerResourceV3;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -29,10 +31,43 @@ import javax.ws.rs.core.MediaType;
 public interface ClouderaManagerResourceV6 extends ClouderaManagerResourceV3 {
 
   /**
+   * Begin trial license.
+   */
+  @POST
+  @Consumes
+  @Path("/trial/begin")
+  public void beginTrial();
+
+  /**
+   * End trial license.
+   */
+  @POST
+  @Consumes
+  @Path("/trial/end")
+  public void endTrial();
+
+  /**
+   * Retrieve a summary of licensed feature usage.
+   * <p/>
+   * This command will return information about what Cloudera Enterprise
+   * licensed features are in use in the clusters being managed by this Cloudera
+   * Manager, as well as totals for usage across all clusters.
+   * <p/>
+   * The specific features described can vary between different versions of
+   * Cloudera Manager.
+   * <p/>
+   * Available since API v6.
+   */
+  @GET
+  @Path("/licensedFeatureUsage")
+  public ApiLicensedFeatureUsage getLicensedFeatureUsage();
+
+  /**
    * Perform installation on a set of hosts.
+   * <p/>
    * This command installs Cloudera Manager Agent on a
    * set of hosts.
-   * <p>
+   * <p/>
    * Available since API v6.
    *
    * @param hostInstall Hosts to perform installation on

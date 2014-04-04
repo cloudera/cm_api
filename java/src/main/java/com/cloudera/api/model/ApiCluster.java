@@ -31,13 +31,14 @@ import java.util.List;
  * (e.g. CDH4 or CDH5).
  */
 @XmlRootElement(name = "cluster")
-@XmlType(propOrder = {"name", "displayName", "version",
+@XmlType(propOrder = {"name", "displayName", "version", "fullVersion",
     "maintenanceMode", "maintenanceOwners", "services", "parcels"})
 public class ApiCluster {
 
   private String name;
   private String displayName;
   private ApiClusterVersion version;
+  private String fullVersion;
   private Boolean maintenanceMode;
   private List<ApiEntityType> maintenanceOwners;
   private List<ApiService> services;
@@ -51,6 +52,7 @@ public class ApiCluster {
     return Objects.toStringHelper(this)
                   .add("name", name)
                   .add("version", version)
+                  .add("fullVersion", fullVersion)
                   .toString();
   }
 
@@ -104,6 +106,22 @@ public class ApiCluster {
 
   public void setVersion(ApiClusterVersion version) {
     this.version = version;
+  }
+
+  /**
+   * The full CDH version of the cluster. The expected format is three dot
+   * separated version numbers, e.g. "4.2.1" or "5.0.0". The full version takes
+   * precedence over the version field during cluster creation.
+   * <p>
+   * Available since API v6.
+   */
+  @XmlElement
+  public String getFullVersion() {
+    return fullVersion;
+  }
+
+  public void setFullVersion(String fullVersion) {
+    this.fullVersion = fullVersion;
   }
 
   /**

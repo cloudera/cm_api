@@ -5,7 +5,7 @@
   <groupId>com.cloudera.api</groupId>
   <artifactId>cloudera-manager-api</artifactId>
   <name>Cloudera Manager API</name>
-  <version>5.0.0-beta-2</version>
+  <version>5.0.0</version>
 
   <properties>
     <cxf.version>2.7.4</cxf.version>
@@ -15,6 +15,7 @@
     <junit.version>4.8.2</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <test.redirectToFile>true</test.redirectToFile>
+    <privateClassPath>com.cloudera.api.shaded</privateClassPath>
   </properties>
 
   <distributionManagement>
@@ -112,6 +113,47 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>shaded</shadedClassifierName>
+              <artifactSet>
+                <includes>
+                  <include>com.fasterxml.jackson.*:*</include>
+                  <include>com.google.guava:guava</include>
+                  <include>joda-time:joda-time*</include>
+                </includes>
+              </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>com.</pattern>
+                  <shadedPattern>${privateClassPath}.com.</shadedPattern>
+                  <includes>
+                    <include>com.google.guava.**</include>
+                    <include>com.fasterxml.jackson.**</include>
+                  </includes>
+                </relocation>
+                <relocation>
+                  <pattern>org.</pattern>
+                  <shadedPattern>${privateClassPath}.org.</shadedPattern>
+                  <includes>
+                    <include>org.joda.time.**</include>
+                  </includes>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.3.1</version>
         <executions>
@@ -127,6 +169,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.12.4</version>
         <configuration>
+          <systemProperties>
+            <java.awt.headless>true</java.awt.headless>
+          </systemProperties>
           <redirectTestOutputToFile>${test.redirectToFile}</redirectTestOutputToFile>
           <useFile>${test.redirectToFile}</useFile>
         </configuration>
