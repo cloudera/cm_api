@@ -18,7 +18,6 @@ package com.cloudera.api.v2;
 
 import com.cloudera.api.DataView;
 import com.cloudera.api.model.ApiService;
-import com.cloudera.api.model.ApiServiceConfig;
 import com.cloudera.api.v1.MgmtServiceResource;
 
 import javax.ws.rs.Consumes;

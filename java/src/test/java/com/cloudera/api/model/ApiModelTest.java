@@ -18,6 +18,7 @@ package com.cloudera.api.model;
 
 import com.cloudera.api.ApiErrorMessage;
 import com.cloudera.api.ApiObjectMapper;
+import com.cloudera.api.ApiUtils;
 import com.cloudera.api.model.ApiRole.ZooKeeperServerMode;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
@@ -48,6 +49,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.joda.time.Duration;
+import org.joda.time.Instant;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -148,7 +150,6 @@ public class ApiModelTest {
    * one test for each API type (explicitly or implicitly through another
    * object's test), so that in the end everything is covered.
    */
-  @SuppressWarnings("unchecked")
   private static void compareObjects(Object expected, Object deserialized) {
     try {
       for (Method m : expected.getClass().getMethods()) {
@@ -274,6 +275,7 @@ public class ApiModelTest {
     service.setClusterRef(new ApiClusterRef("mycluster"));
     service.setConfigStale(false);
     service.setConfigStalenessStatus(ApiConfigStalenessStatus.FRESH);
+    service.setClientConfigStalenessStatus(ApiConfigStalenessStatus.FRESH);
     service.setDisplayName("mydisplayname");
     service.setHealthChecks(createHealthChecks());
     service.setHealthSummary(ApiHealthSummary.GOOD);
@@ -362,8 +364,7 @@ public class ApiModelTest {
 
       ApiObjectMapper mapper = new ApiObjectMapper();
       @SuppressWarnings("unchecked")
-      Map<String, Object> map = (Map<String, Object>)
-        mapper.readValue(json, Map.class);
+      Map<String, Object> map = mapper.readValue(json, Map.class);
       assertTrue("List " + lst.getClass().getName() + " has wrong 'items' property.",
           map.containsKey(ApiListBase.ITEMS_ATTR));
     }
@@ -755,6 +756,40 @@ public class ApiModelTest {
     checkJsonXML(new ApiErrorMessage(t));
   }
 
+  @Test
+  public void testApiTimeSeriesData() throws Exception {
+    ApiTimeSeriesData data = new ApiTimeSeriesData();
+    Date now = ApiUtils.newDateFromMillis(Instant.now().getMillis());
+    // Test no aggregate statistics.
+    data.setTimestamp(now);
+    data.setValue(3.14);
+    data.setType("something");
+    checkJsonXML(data);
+
+    // Test with aggregate statistics but no cross entity metadata.
+    ApiTimeSeriesAggregateStatistics aggStats =
+        new ApiTimeSeriesAggregateStatistics();
+    aggStats.setCount(42);
+    aggStats.setMax(3.14);
+    aggStats.setMaxTime(now);
+    aggStats.setMean(3.13);
+    aggStats.setMin(3.11);
+    aggStats.setMinTime(now);
+    aggStats.setSampleTime(now);
+    aggStats.setSampleValue(3.12);
+    aggStats.setStdDev(0.1);
+    data.setAggregateStatistics(aggStats);
+    checkJsonXML(data);
+
+    ApiTimeSeriesCrossEntityMetadata xEntityMetadata =
+        new ApiTimeSeriesCrossEntityMetadata();
+    xEntityMetadata.setMaxEntityDisplayName("maxDisplayName");
+    xEntityMetadata.setMinEntityDisplayName("minEntityDisplayName");
+    xEntityMetadata.setNumEntities(3.14);
+    aggStats.setCrossEntityMetadata(xEntityMetadata);
+    checkJsonXML(data);
+  }
+
   private List<ApiHealthCheck> createHealthChecks() {
     return ImmutableList.of(
         new ApiHealthCheck("TEST1", ApiHealthSummary.GOOD),
@@ -816,6 +851,7 @@ public class ApiModelTest {
     cluster.setName("mycluster");
     cluster.setDisplayName("mycluster-displayName");
     cluster.setVersion(ApiClusterVersion.CDH4);
+    cluster.setFullVersion("4.1.2");
     return cluster;
   }
 

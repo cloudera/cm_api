@@ -64,11 +64,12 @@ public interface ServicesResourceV3 extends ServicesResourceV2 {
 
   /**
    * Creates directory for Oozie user in HDFS and installs the ShareLib in it.
-   *
-   * <p>
+   * <p/>
+   * This command should be re-run after a major version upgrade to refresh the
+   * ShareLib to the latest version.
+   * <p/>
    * Available since API v3.
-   * </p>
-   *
+   * <p/>
    * @param serviceName Name of the Oozie service on which to run the command.
    * @return Information about the submitted command
    */

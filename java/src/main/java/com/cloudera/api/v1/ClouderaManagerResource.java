@@ -173,6 +173,6 @@ public interface ClouderaManagerResource {
   @GET
   @Path("/log")
   @Produces(MediaType.TEXT_PLAIN)
-  public InputStream getLog() throws IOException;
+  public InputStream getLog();
 
 }

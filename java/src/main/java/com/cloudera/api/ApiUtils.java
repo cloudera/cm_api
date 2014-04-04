@@ -69,6 +69,10 @@ public final class ApiUtils {
     return DATE_TIME_PRINTER.print(new Instant(date));
   }
 
+  public static String printDate(Instant instant) {
+    return DATE_TIME_PRINTER.print(instant);
+  }
+
   /**
    * Calculate the fromDate.
    * If the fromString is not provided, then the fromDate calculated
@@ -123,7 +127,6 @@ public final class ApiUtils {
    *
    * @param offset Value to use as offset of a list.
    * @param limit Value to use as limit of a list's size.
-   * @throws IllegalArgumentException If values are not ok.
    */
   public static void checkOffsetAndLimit(int offset, int limit) {
     Preconditions.checkArgument(offset >= 0,

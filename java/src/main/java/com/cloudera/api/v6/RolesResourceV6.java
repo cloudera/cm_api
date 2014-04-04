@@ -41,7 +41,7 @@ public interface RolesResourceV6 extends RolesResourceV4 {
    *
    * @param roleNames
    *          list of role names to be deleted
-   * @return list of role IDs deleted, index-aligned with roleNames
+   * @return list of roles deleted, index-aligned with roleNames. Export view.
    */
   @POST
   @Path("/bulkDelete")
