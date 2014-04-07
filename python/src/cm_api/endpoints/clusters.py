@@ -65,6 +65,7 @@ class ApiCluster(BaseApiResource):
     'name'              : None,
     'displayName'       : None,
     'version'           : None,
+    'fullVersion'       : None,
     'maintenanceMode'   : ROAttr(),
     'maintenanceOwners' : ROAttr(),
   }
