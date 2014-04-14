@@ -1420,6 +1420,24 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('oozieUpgradeDb', api_version=6)
 
+  def init_solr(self):
+    """
+    Initializes the Solr service in Zookeeper.
+
+    @return: Reference to the submitted command.
+    @since: API v4
+    """
+    return self._cmd('initSolr', api_version=4)
+
+  def create_solr_hdfs_home_dir(self):
+    """
+    Creates the home directory of a Solr service in HDFS.
+
+    @return: Reference to the submitted command.
+    @since: API v4
+    """
+    return self._cmd('createSolrHdfsHomeDir', api_version=4)
+
   def create_hive_metastore_tables(self):
     """
     Creates the Hive metastore tables in the configured database.
