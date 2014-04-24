@@ -33,6 +33,9 @@ if version_info[:2] < (2, 7):
 if platform == 'darwin':
     install_requires += ['readline']
 
+# Optional PySocks support
+extras_require = dict(Socks=['PySocks >= 1.5.0'])
+
 setup(
   name = 'cm_api',
   version = '10.0.0',    # Compatible with API v10 (CM 5.4)
@@ -43,6 +46,7 @@ setup(
   # Project uses simplejson, so ensure that it gets installed or upgraded
   # on the target machine
   install_requires = install_requires,
+  extras_require = extras_require,
 
   author = 'Cloudera, Inc.',
   author_email = 'scm-users@cloudera.org',

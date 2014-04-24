@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 try:
   import json
 except ImportError:
@@ -22,6 +23,15 @@ import logging
 import posixpath
 import time
 import socket
+try:
+  import socks
+  socks_server = os.environ.get("SOCKS_SERVER", None)
+  if socks_server:
+    host, port = socks_server.split(":")
+    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, host, int(port))
+    socket.socket = socks.socksocket
+except ImportError:
+  pass
 import urllib2
 
 LOG = logging.getLogger(__name__)

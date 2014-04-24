@@ -14,11 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import cookielib
 import logging
 import posixpath
 import types
 import urllib
+
+try:
+  import socks
+  import socket
+  socks_server = os.environ.get("SOCKS_SERVER", None)
+  if socks_server:
+    host, port = socks_server.split(":")
+    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, host, int(port))
+    socket.socket = socks.socksocket
+except ImportError:
+  pass
+
 import urllib2
 
 __docformat__ = "epytext"
