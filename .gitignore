@@ -4,6 +4,7 @@
 # Eclipse files
 .classpath
 .project
+.pydevproject
 
 # Emacs backup files
 *~
