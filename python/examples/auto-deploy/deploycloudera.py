@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2013-2014 Cloudera, Inc. All rights reserved.
 
-# Deploys a CDH cluster and confiugres CM management services.
+# Deploys a CDH cluster and configures CM management services.
 
 import socket, sys, time, ConfigParser, csv, pprint
 from subprocess import Popen, PIPE, STDOUT
@@ -896,7 +896,7 @@ def deploy_accumulo(cluster, service_name, service_config, master_hosts, master_
    return accumulo
 
 
-# Executes steps that need to be done after the final startup once everytning is deployed and running.
+# Executes steps that need to be done after the final startup once everything is deployed and running.
 def post_startup(cluster, hdfs_service, oozie_service):
    # Create HDFS temp dir
    hdfs_service.create_hdfs_tmp()
