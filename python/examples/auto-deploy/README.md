@@ -38,18 +38,20 @@ Tests to Validate the Installation:
 -----------------------------------
 
 ```
+#Run these on one of the datanodes in the cluster
+
 #Create hive table
 hive shell
-hive> CREATE EXTERNAL TABLE justin(id INT, name STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ' ' STORED AS TEXTFILE LOCATION '/tmp/justin';
+hive> CREATE TABLE justin(id INT, name STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ' ' STORED AS TEXTFILE;
 hive> exit;
 
 #Create HDFS file
 echo "1 justin" > /tmp/test
-hadoop fs -put /tmp/test /tmp/justin/
+sudo -u hdfs hadoop fs -put /tmp/test /user/hive/warehouse/justin/
 
 #Query hive table
 hive shell
-hive> select * from justin;
+hive> select * from justin where id=1;
 hive> exit;
 
 #Query same table but in impala
@@ -69,11 +71,13 @@ hbase> put 'test', 'row1', 'cf:a', 'value1'
 hbase> scan 'test'
 hbase> exit
 
-#Test spark
+#Test spark - replace $NAMENODE with the correct hostname that's running the NN
 echo "this is the end. the only end. my friend." > /tmp/sparkin
 hadoop fs -put /tmp/sparkin /tmp/
 spark-shell
 scala> val file = sc.textFile("hdfs://$NAMENODE:8020/tmp/sparkin")
 scala> val counts = file.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey(_ + _)
 scala> counts.saveAsTextFile("hdfs://$NAMENODE:8020/tmp/sparkout")
+scala> exit
+hadoop fs -cat /tmp/sparkout
 ```

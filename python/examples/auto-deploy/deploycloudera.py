@@ -77,14 +77,19 @@ CM_CONFIG = {
   #  'TRUSTSTORE_PATH': ''
   #  'TRUSTSTORE_PASSWORD': ''
 }
+# Replace default parcel repo urls with custom urls if necessary
+REMOTE_PARCEL_REPO_URLS_NAME = "remote.parcel.repo.urls"
+if CONFIG.has_option("CM", REMOTE_PARCEL_REPO_URLS_NAME):
+    CM_CONFIG['REMOTE_PARCEL_REPO_URLS'] = CONFIG.get("CM", REMOTE_PARCEL_REPO_URLS_NAME)
 
 #### Cluster Definition #####
-CLUSTER_NAME = "TestCluster"
+CLUSTER_NAME = CONFIG.get("CM", "cluster.name")
 CDH_VERSION = "CDH5"
 
 ### Parcels ###
 PARCELS = [
-   { 'name' : "CDH", 'version' : "5.0.0-1.cdh5.0.0.p0.47" },
+   { 'name' : "CDH", 'version' : CONFIG.get("CDH", "cdh.parcel.version") },
+   #{ 'name' : "CDH", 'version' : "5.0.1-1.cdh5.0.1.p0.47" },
    #{ 'name' : "ACCUMULO", 'version' : "1.4.3-cdh4.3.0-beta-3"}
 ]
 
