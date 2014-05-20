@@ -131,6 +131,21 @@ class ClouderaManager(BaseApiResource):
     """
     return self._cmd('generateCredentials')
 
+  def import_admin_credentials(self, username, password):
+    """
+    Imports the KDC Account Manager credentials needed by Cloudera
+    Manager to create kerberos principals needed by CDH services.
+
+    @param username Username of the Account Manager. Full name including the Kerberos
+           realm must be specified.
+    @param password Password for the Account Manager.
+
+    @return: Information about the submitted command.
+
+    @since API v7
+    """
+    return self._cmd('importAdminCredentials', params=dict(username=username, password=password))
+
   def inspect_hosts(self):
     """
     Runs the host inspector on the configured hosts.
