@@ -264,12 +264,26 @@ class ApiCluster(BaseApiResource):
 
   def deploy_client_config(self):
     """
-    Deploys client configuration to the hosts on the cluster.
+    Deploys Service client configuration to the hosts on the cluster.
 
     @return: Reference to the submitted command.
     @since: API v2
     """
     return self._cmd('deployClientConfig')
+
+  def deploy_cluster_client_config(self, hostIds=[]):
+    """
+    Deploys Cluster client configuration (Kerberos configuration) to the
+    hosts on the cluster. Any hosts that are decommissioned or have running
+    roles will be skipped.
+
+    @param hostIds: hostIds of hosts to deploy to. If empty, deploys to all
+                    hosts in the cluster.
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('deployClusterClientConfig', data=hostIds,
+      api_version=7)
 
   def upgrade_services(self):
     """
