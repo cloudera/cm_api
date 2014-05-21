@@ -132,7 +132,7 @@ def call(method, path, ret_type,
   @param api_version: minimum API version for the call.
   """
   check_api_version(method.im_self, api_version)
-  if data:
+  if data is not None:
     data = json.dumps(Attr(is_api_list=True).to_json(data, False))
     ret = method(path, data=data, params=params)
   else:
