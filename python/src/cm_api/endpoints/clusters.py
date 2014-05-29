@@ -435,6 +435,17 @@ class ApiCluster(BaseApiResource):
     """
     self._put("autoConfigure", None, api_version=6)
 
+  def first_run(self):
+    """
+    Prepare and start services in a cluster.
+    Perform all the steps needed to prepare each service in a
+    cluster and start the services in order.
+
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('firstRun', None, api_version=7)
+
   def upgrade_cdh(self, deploy_client_config=True, start_all_services=True, cdh_parcel_version=None):
     """
     Perform CDH upgrade to the next major version.

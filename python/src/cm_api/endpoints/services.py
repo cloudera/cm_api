@@ -1617,3 +1617,14 @@ class ApiServiceSetupInfo(ApiService):
         'type' : role_type,
         'hostRef' : { 'hostId' : host_id },
         'config' : api_config_list })
+
+  def first_run(self):
+    """
+    Prepare and start this service.
+    Perform all the steps needed to prepare and start this service.
+
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('firstRun', None, api_version=7)
+
