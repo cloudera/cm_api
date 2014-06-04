@@ -12,24 +12,24 @@ permalink: /docs/python-client/
 
 Installation
 ============
-To install the Python API client, simply:
+**To install the Python API client, simply:**
 
-    $ pip install cm_api
-
-Alternatively, you can also install from source:
-
-    $ git clone git://github.com/cloudera/cm_api.git
-    $ cd cm_api/python
-    $ python setup.py install
-    $ pip dist/cm_api-*.tar.gz
-    ## ... the distribution tarball is in ./dist/
-
+    $ sudo pip install cm-api
 
 If your system does not have `pip`, you can get it from your distro:
 
     $ sudo apt-get install python-pip
     ## ... or use `yum install' if you are on CentOS
 
+**Alternatively, you can also install from source:**
+
+    $ git clone git://github.com/cloudera/cm_api.git
+    $ cd cm_api/python
+    $ sudo python setup.py install
+    ## ... the distribution egg file is in ./dist/
+
+**Once you have run one of the above commands, you can check to see
+if the install succeeded by running** `pip show cm-api`.
 
 Epydoc
 ======
