@@ -404,3 +404,22 @@ class ClouderaManager(BaseApiResource):
     if gpg_key_custom_url:
      host_install_args['gpgKeyCustomUrl'] = gpg_key_custom_url
     return self._cmd('hostInstall', data=host_install_args)
+
+  def begin_trial(self):
+    """
+    Begin the trial license for this Cloudera Manager instance.
+
+    This allows the user to have enterprise-level features for a 60-day trial
+    period.
+
+    @since: API v6
+    """
+    self._post("trial/begin", None, api_version=6)
+
+  def end_trial(self):
+    """
+    End the trial license for this Cloudera Manager instance.
+
+    @since: API v6
+    """
+    self._post("trial/end", None, api_version=6)
