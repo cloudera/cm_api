@@ -1477,7 +1477,28 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('hiveCreateMetastoreDatabase', api_version=4)
 
-  def update_hive_metastore_namenodes(self):
+  def create_sentry_database(self):
+    """
+    Create the Sentry Server Database. Only works with embedded postgresql
+    database. This command should usually be followed by a call to
+    create_hive_metastore_tables.
+
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('sentryCreateDatabase', api_version=7)
+
+  def create_sentry_database_tables(self):
+    """
+    Creates the Sentry Server database tables in the configured database.
+    Will do nothing if tables already exist. Will not perform an upgrade.
+
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('sentryCreateDatabaseTables', api_version=7)
+
+  def update_metastore_namenodes(self):
     """
     Update Hive Metastore to point to a NameNode's Nameservice name instead of
     hostname. Only available when all Hive Metastore Servers are stopped and
@@ -1617,3 +1638,14 @@ class ApiServiceSetupInfo(ApiService):
         'type' : role_type,
         'hostRef' : { 'hostId' : host_id },
         'config' : api_config_list })
+
+  def first_run(self):
+    """
+    Prepare and start this service.
+    Perform all the steps needed to prepare and start this service.
+
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('firstRun', None, api_version=7)
+

@@ -264,12 +264,26 @@ class ApiCluster(BaseApiResource):
 
   def deploy_client_config(self):
     """
-    Deploys client configuration to the hosts on the cluster.
+    Deploys Service client configuration to the hosts on the cluster.
 
     @return: Reference to the submitted command.
     @since: API v2
     """
     return self._cmd('deployClientConfig')
+
+  def deploy_cluster_client_config(self, hostIds=[]):
+    """
+    Deploys Cluster client configuration (Kerberos configuration) to the
+    hosts on the cluster. Any hosts that are decommissioned or have running
+    roles will be skipped.
+
+    @param hostIds: hostIds of hosts to deploy to. If empty, deploys to all
+                    hosts in the cluster.
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('deployClusterClientConfig', data=hostIds,
+      api_version=7)
 
   def upgrade_services(self):
     """
@@ -420,6 +434,17 @@ class ApiCluster(BaseApiResource):
     @since: API v6
     """
     self._put("autoConfigure", None, api_version=6)
+
+  def first_run(self):
+    """
+    Prepare and start services in a cluster.
+    Perform all the steps needed to prepare each service in a
+    cluster and start the services in order.
+
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('firstRun', None, api_version=7)
 
   def upgrade_cdh(self, deploy_client_config=True, start_all_services=True, cdh_parcel_version=None):
     """

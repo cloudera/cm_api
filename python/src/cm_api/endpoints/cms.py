@@ -131,6 +131,21 @@ class ClouderaManager(BaseApiResource):
     """
     return self._cmd('generateCredentials')
 
+  def import_admin_credentials(self, username, password):
+    """
+    Imports the KDC Account Manager credentials needed by Cloudera
+    Manager to create kerberos principals needed by CDH services.
+
+    @param username Username of the Account Manager. Full name including the Kerberos
+           realm must be specified.
+    @param password Password for the Account Manager.
+
+    @return: Information about the submitted command.
+
+    @since API v7
+    """
+    return self._cmd('importAdminCredentials', params=dict(username=username, password=password))
+
   def inspect_hosts(self):
     """
     Runs the host inspector on the configured hosts.
@@ -389,3 +404,22 @@ class ClouderaManager(BaseApiResource):
     if gpg_key_custom_url:
      host_install_args['gpgKeyCustomUrl'] = gpg_key_custom_url
     return self._cmd('hostInstall', data=host_install_args)
+
+  def begin_trial(self):
+    """
+    Begin the trial license for this Cloudera Manager instance.
+
+    This allows the user to have enterprise-level features for a 60-day trial
+    period.
+
+    @since: API v6
+    """
+    self._post("trial/begin", None, api_version=6)
+
+  def end_trial(self):
+    """
+    End the trial license for this Cloudera Manager instance.
+
+    @since: API v6
+    """
+    self._post("trial/end", None, api_version=6)
