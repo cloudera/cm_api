@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2013-2014 Cloudera, Inc. All rights reserved.
 
-# Stops the cluster gracefully.
+# Restarts the cluster gracefully.
 
 import ConfigParser
 from cm_api.api_client import ApiResource
@@ -37,9 +37,9 @@ def main():
 
    CLUSTER = API.get_cluster(CLUSTER_NAME)
 
-   print "About to stop cluster."
-   CLUSTER.stop().wait()
-   print "Done stopping cluster."
+   print "About to restart cluster."
+   CLUSTER.restart().wait()
+   print "Done restarting cluster."
 
 
 if __name__ == "__main__":
