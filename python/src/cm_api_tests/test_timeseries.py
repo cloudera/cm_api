@@ -168,6 +168,8 @@ class TestTimeSeries(unittest.TestCase):
     METRICS = '''{
       "items" : [ {
         "name" : "event_drain_success_count_flume_sink_min_rate",
+        "displayName" : "Event Drain Successes Across Flume Sinks",
+        "description" : "Event Drain Successes aggregate computed across all Flume Sinks.",
         "isCounter" : false,
         "unitNumerator" : "events",
         "unitDenominator" : "seconds",
@@ -178,6 +180,8 @@ class TestTimeSeries(unittest.TestCase):
         }
       }, {
         "name" : "drop_receive",
+        "displayName" : "Dropped Packets (Receive)",
+        "description" : "The number of packets dropped by the network interface (receive)",
         "isCounter" : true,
         "unitNumerator" : "packets",
         "aliases" : [ "network_interface_drop_receive" ],
@@ -198,6 +202,10 @@ class TestTimeSeries(unittest.TestCase):
     self.assertIsInstance(metric, ApiMetricSchema)
     self.assertEqual("event_drain_success_count_flume_sink_min_rate",
                      metric.name)
+    self.assertEqual("Event Drain Successes Across Flume Sinks",
+                     metric.displayName)
+    self.assertEqual("Event Drain Successes aggregate computed across all Flume Sinks.",
+                     metric.description)
     self.assertFalse(metric.isCounter)
     self.assertEqual("events", metric.unitNumerator)
     self.assertEqual("seconds", metric.unitDenominator)
@@ -206,6 +214,10 @@ class TestTimeSeries(unittest.TestCase):
     metric = metrics[1]
     self.assertIsInstance(metric, ApiMetricSchema)
     self.assertEqual("drop_receive", metric.name)
+    self.assertEqual("Dropped Packets (Receive)",
+                     metric.displayName)
+    self.assertEqual("The number of packets dropped by the network interface (receive)",
+                     metric.description)
     self.assertTrue(metric.isCounter)
     self.assertEqual("packets", metric.unitNumerator)
     self.assertFalse( metric.unitDenominator)
