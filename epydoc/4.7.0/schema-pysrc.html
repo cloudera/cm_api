@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>schema</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >python-cm_api</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Module&nbsp;schema
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="schema-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="schema-module.html">Module schema</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/env python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># Licensed to Cloudera, Inc. under one</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># or more contributor license agreements.  See the NOTICE file</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># distributed with this work for additional information</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># regarding copyright ownership.  Cloudera, Inc. licenses this file</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># to you under the Apache License, Version 2.0 (the</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># "License"); you may not use this file except in compliance</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"># with the License.  You may obtain a copy of the License at</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">Given an alias_name, show all metrics schema that has the given</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">alias_name as an alias. If an alias_name is not provided, then</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">show all metrics schema.</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">Usage: %s [options]</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">Options:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">-a &lt;name&gt;    alias name. Show only metric schema</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">whose aliases include the specified alias name.</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">Aliases usually occur when a metric is renamed or</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">reorganized. Multiple metrics can have the same alias</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">because the metrics come from different sources.</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">If not specified, the program will show all</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">metrics schema.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">Example: </tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">The alias "-a drop_receive_network_interface_sum" </tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">returns</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">&lt;ApiMetricSchema&gt;</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">  name: drop_receive_network_interface_sum</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">  isCounter: True</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">  unitNumerator: packets</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">  aliases: [network_interface_drop_receive]</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">  sources:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">    CLUSTER: [enterprise]</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">    HOST: [enterprise]</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">&lt;ApiMetricSchema&gt;</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">  name: drop_receive</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">  isCounter: True</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">  unitNumerator: packets</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">  aliases: [network_interface_drop_receive]</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">  sources:</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">    NETWORK_INTERFACE: [enterprise]</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">getopt</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">inspect</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">textwrap</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package cm_api=cm_api-module.html"><a title="cm_api" class="py-name" href="#" onclick="return doclink('link-0', 'cm_api', 'link-0');">cm_api</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module cm_api.api_client=cm_api.api_client-module.html"><a title="cm_api.api_client" class="py-name" href="#" onclick="return doclink('link-1', 'api_client', 'link-1');">api_client</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class cm_api.api_client.ApiResource=cm_api.api_client.ApiResource-class.html"><a title="cm_api.api_client.ApiResource" class="py-name" href="#" onclick="return doclink('link-2', 'ApiResource', 'link-2');">ApiResource</a></tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-comment"># Customize these constants for your Cloudera Manager.</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable bulk_config_update.CM_HOST=bulk_config_update-module.html#CM_HOST,Variable schema.CM_HOST=schema-module.html#CM_HOST,Variable timeseries.CM_HOST=timeseries-module.html#CM_HOST"><a title="bulk_config_update.CM_HOST
+schema.CM_HOST
+timeseries.CM_HOST" class="py-name" href="#" onclick="return doclink('link-3', 'CM_HOST', 'link-3');">CM_HOST</a></tt>   <tt class="py-op">=</tt> <tt class="py-string">'localhost'</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable bulk_config_update.CM_USER=bulk_config_update-module.html#CM_USER,Variable schema.CM_USER=schema-module.html#CM_USER,Variable timeseries.CM_USER=timeseries-module.html#CM_USER"><a title="bulk_config_update.CM_USER
+schema.CM_USER
+timeseries.CM_USER" class="py-name" href="#" onclick="return doclink('link-4', 'CM_USER', 'link-4');">CM_USER</a></tt>   <tt class="py-op">=</tt> <tt class="py-string">'admin'</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt id="link-5" class="py-name" targets="Variable bulk_config_update.CM_PASSWD=bulk_config_update-module.html#CM_PASSWD,Variable schema.CM_PASSWD=schema-module.html#CM_PASSWD,Variable timeseries.CM_PASSWD=timeseries-module.html#CM_PASSWD"><a title="bulk_config_update.CM_PASSWD
+schema.CM_PASSWD
+timeseries.CM_PASSWD" class="py-name" href="#" onclick="return doclink('link-5', 'CM_PASSWD', 'link-5');">CM_PASSWD</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'admin'</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt id="link-6" class="py-name" targets="Variable bulk_config_update.LOG=bulk_config_update-module.html#LOG,Variable cm_api.api_client.LOG=cm_api.api_client-module.html#LOG,Variable cm_api.endpoints.events.LOG=cm_api.endpoints.events-module.html#LOG,Variable cm_api.endpoints.services.LOG=cm_api.endpoints.services-module.html#LOG,Variable cm_api.endpoints.timeseries.LOG=cm_api.endpoints.timeseries-module.html#LOG,Variable cm_api.http_client.LOG=cm_api.http_client-module.html#LOG,Variable cm_api.resource.LOG=cm_api.resource-module.html#LOG,Variable cm_api_tests.test_impala.LOG=cm_api_tests.test_impala-module.html#LOG,Variable cm_api_tests.test_services.LOG=cm_api_tests.test_services-module.html#LOG,Variable cm_api_tests.test_timeseries.LOG=cm_api_tests.test_timeseries-module.html#LOG,Variable schema.LOG=schema-module.html#LOG,Variable timeseries.LOG=timeseries-module.html#LOG"><a title="bulk_config_update.LOG
+cm_api.api_client.LOG
+cm_api.endpoints.events.LOG
+cm_api.endpoints.services.LOG
+cm_api.endpoints.timeseries.LOG
+cm_api.http_client.LOG
+cm_api.resource.LOG
+cm_api_tests.test_impala.LOG
+cm_api_tests.test_services.LOG
+cm_api_tests.test_timeseries.LOG
+schema.LOG
+timeseries.LOG" class="py-name" href="#" onclick="return doclink('link-6', 'LOG', 'link-6');">LOG</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-name">__name__</tt><tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"> </tt>
+<a name="MetricSchemas"></a><div id="MetricSchemas-def"><a name="L72"></a><tt class="py-lineno"> 72</tt> <a class="py-toggle" href="#" id="MetricSchemas-toggle" onclick="return toggle('MetricSchemas');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="schema.MetricSchemas-class.html">MetricSchemas</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MetricSchemas-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="MetricSchemas-expanded"><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="MetricSchemas.__init__"></a><div id="MetricSchemas.__init__-def"><a name="L75"></a><tt class="py-lineno"> 75</tt> <a class="py-toggle" href="#" id="MetricSchemas.__init__-toggle" onclick="return toggle('MetricSchemas.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="schema.MetricSchemas-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MetricSchemas.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="MetricSchemas.__init__-expanded"><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt id="link-7" class="py-name" targets="Variable cm_shell.cmps.api=cm_shell.cmps-module.html#api"><a title="cm_shell.cmps.api" class="py-name" href="#" onclick="return doclink('link-7', 'api', 'link-7');">api</a></tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="cm_api.api_client.ApiResource" class="py-name" href="#" onclick="return doclink('link-8', 'ApiResource', 'link-2');">ApiResource</a></tt><tt class="py-op">(</tt><tt id="link-9" class="py-name"><a title="bulk_config_update.CM_HOST
+schema.CM_HOST
+timeseries.CM_HOST" class="py-name" href="#" onclick="return doclink('link-9', 'CM_HOST', 'link-3');">CM_HOST</a></tt><tt class="py-op">,</tt> <tt class="py-name">username</tt><tt class="py-op">=</tt><tt id="link-10" class="py-name"><a title="bulk_config_update.CM_USER
+schema.CM_USER
+timeseries.CM_USER" class="py-name" href="#" onclick="return doclink('link-10', 'CM_USER', 'link-4');">CM_USER</a></tt><tt class="py-op">,</tt> <tt class="py-name">password</tt><tt class="py-op">=</tt><tt id="link-11" class="py-name"><a title="bulk_config_update.CM_PASSWD
+schema.CM_PASSWD
+timeseries.CM_PASSWD" class="py-name" href="#" onclick="return doclink('link-11', 'CM_PASSWD', 'link-5');">CM_PASSWD</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_schemas</tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name"><a title="cm_shell.cmps.api" class="py-name" href="#" onclick="return doclink('link-12', 'api', 'link-7');">api</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method cm_api.api_client.ApiResource.get_metric_schema()=cm_api.api_client.ApiResource-class.html#get_metric_schema,Function cm_api.endpoints.timeseries.get_metric_schema()=cm_api.endpoints.timeseries-module.html#get_metric_schema"><a title="cm_api.api_client.ApiResource.get_metric_schema
+cm_api.endpoints.timeseries.get_metric_schema" class="py-name" href="#" onclick="return doclink('link-13', 'get_metric_schema', 'link-13');">get_metric_schema</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="MetricSchemas.get_schemas"></a><div id="MetricSchemas.get_schemas-def"><a name="L79"></a><tt class="py-lineno"> 79</tt> <a class="py-toggle" href="#" id="MetricSchemas.get_schemas-toggle" onclick="return toggle('MetricSchemas.get_schemas');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="schema.MetricSchemas-class.html#get_schemas">get_schemas</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MetricSchemas.get_schemas-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="MetricSchemas.get_schemas-expanded"><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_schemas</tt> </tt>
+</div><a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"> </tt>
+<a name="MetricSchemas.get_aliases"></a><div id="MetricSchemas.get_aliases-def"><a name="L82"></a><tt class="py-lineno"> 82</tt> <a class="py-toggle" href="#" id="MetricSchemas.get_aliases-toggle" onclick="return toggle('MetricSchemas.get_aliases');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="schema.MetricSchemas-class.html#get_aliases">get_aliases</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MetricSchemas.get_aliases-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="MetricSchemas.get_aliases-expanded"><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-name">results</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">metric</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_schemas</tt><tt class="py-op">:</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">aliases</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">alias</tt> <tt class="py-keyword">in</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">aliases</tt><tt class="py-op">:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">          <tt class="py-keyword">if</tt> <tt class="py-name">alias</tt> <tt class="py-op">==</tt> <tt class="py-name">name</tt><tt class="py-op">:</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">            <tt class="py-name">results</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">)</tt>     </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">results</tt><tt class="py-op">;</tt> </tt>
+</div></div><a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="do_get_metrics"></a><div id="do_get_metrics-def"><a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="do_get_metrics-toggle" onclick="return toggle('do_get_metrics');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="schema-module.html#do_get_metrics">do_get_metrics</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="do_get_metrics-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="do_get_metrics-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring">  Get schema for all metrics</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">  <tt class="py-name">metric_schemas</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name" targets="Class schema.MetricSchemas=schema.MetricSchemas-class.html"><a title="schema.MetricSchemas" class="py-name" href="#" onclick="return doclink('link-14', 'MetricSchemas', 'link-14');">MetricSchemas</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">  <tt class="py-keyword">for</tt> <tt class="py-name">metric</tt> <tt class="py-keyword">in</tt> <tt class="py-name">metric_schemas</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method schema.MetricSchemas.get_schemas()=schema.MetricSchemas-class.html#get_schemas"><a title="schema.MetricSchemas.get_schemas" class="py-name" href="#" onclick="return doclink('link-15', 'get_schemas', 'link-15');">get_schemas</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt id="link-16" class="py-name" targets="Function schema.do_print()=schema-module.html#do_print,Function timeseries.do_print()=timeseries-module.html#do_print"><a title="schema.do_print
+timeseries.do_print" class="py-name" href="#" onclick="return doclink('link-16', 'do_print', 'link-16');">do_print</a></tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="do_get_aliases"></a><div id="do_get_aliases-def"><a name="L99"></a><tt class="py-lineno"> 99</tt> <a class="py-toggle" href="#" id="do_get_aliases-toggle" onclick="return toggle('do_get_aliases');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="schema-module.html#do_get_aliases">do_get_aliases</a><tt class="py-op">(</tt><tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="do_get_aliases-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="do_get_aliases-expanded"><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">  Get aliases for given metric name</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">  <tt class="py-name">metric_schemas</tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="schema.MetricSchemas" class="py-name" href="#" onclick="return doclink('link-17', 'MetricSchemas', 'link-14');">MetricSchemas</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">  <tt class="py-name">aliases</tt> <tt class="py-op">=</tt> <tt class="py-name">metric_schemas</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method schema.MetricSchemas.get_aliases()=schema.MetricSchemas-class.html#get_aliases"><a title="schema.MetricSchemas.get_aliases" class="py-name" href="#" onclick="return doclink('link-18', 'get_aliases', 'link-18');">get_aliases</a></tt><tt class="py-op">(</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">  <tt class="py-keyword">for</tt> <tt class="py-name">alias</tt> <tt class="py-keyword">in</tt> <tt class="py-name">aliases</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">    <tt id="link-19" class="py-name"><a title="schema.do_print
+timeseries.do_print" class="py-name" href="#" onclick="return doclink('link-19', 'do_print', 'link-16');">do_print</a></tt><tt class="py-op">(</tt><tt class="py-name">alias</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"> </tt>
+<a name="do_print"></a><div id="do_print-def"><a name="L108"></a><tt class="py-lineno">108</tt> <a class="py-toggle" href="#" id="do_print-toggle" onclick="return toggle('do_print');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="schema-module.html#do_print">do_print</a><tt class="py-op">(</tt><tt class="py-param">metric</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="do_print-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="do_print-expanded"><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-string">"&lt;ApiMetricSchema&gt;"</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-string">"  name: %s"</tt> <tt class="py-op">%</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">name</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-string">"  isCounter: %s"</tt> <tt class="py-op">%</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">isCounter</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">  <tt class="py-keyword">if</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">unitNumerator</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"  unitNumerator: %s"</tt> <tt class="py-op">%</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">unitNumerator</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">  <tt class="py-keyword">if</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">unitDenominator</tt><tt class="py-op">:</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"  unitDenominator: %s"</tt> <tt class="py-op">%</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">unitDenominator</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">  <tt class="py-keyword">if</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">aliases</tt><tt class="py-op">:</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"  aliases: %s"</tt> <tt class="py-op">%</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt id="link-20" class="py-name" targets="Class str=str-class.html"><a title="str" class="py-name" href="#" onclick="return doclink('link-20', 'str', 'link-20');">str</a></tt><tt class="py-op">,</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">aliases</tt><tt class="py-op">)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">  <tt class="py-keyword">if</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">sources</tt><tt class="py-op">:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"  sources:"</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-op">(</tt><tt class="py-name">k</tt><tt class="py-op">,</tt><tt class="py-name">v</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">sources</tt><tt class="py-op">.</tt><tt class="py-name">items</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">      <tt class="py-keyword">print</tt> <tt class="py-string">"    %s: %s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">k</tt><tt class="py-op">,</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="str" class="py-name" href="#" onclick="return doclink('link-21', 'str', 'link-20');">str</a></tt><tt class="py-op">,</tt> <tt class="py-name">v</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"> </tt>
+<a name="usage"></a><div id="usage-def"><a name="L123"></a><tt class="py-lineno">123</tt> <a class="py-toggle" href="#" id="usage-toggle" onclick="return toggle('usage');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="schema-module.html#usage">usage</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="usage-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="usage-expanded"><a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">  <tt class="py-name">doc</tt> <tt class="py-op">=</tt> <tt class="py-name">inspect</tt><tt class="py-op">.</tt><tt class="py-name">getmodule</tt><tt class="py-op">(</tt><tt id="link-22" class="py-name" targets="Function bulk_config_update.usage()=bulk_config_update-module.html#usage,Function schema.usage()=schema-module.html#usage,Function timeseries.usage()=timeseries-module.html#usage"><a title="bulk_config_update.usage
+schema.usage
+timeseries.usage" class="py-name" href="#" onclick="return doclink('link-22', 'usage', 'link-22');">usage</a></tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-op">&gt;&gt;</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">,</tt> <tt class="py-name">textwrap</tt><tt class="py-op">.</tt><tt class="py-name">dedent</tt><tt class="py-op">(</tt><tt class="py-name">doc</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="setup_logging"></a><div id="setup_logging-def"><a name="L127"></a><tt class="py-lineno">127</tt> <a class="py-toggle" href="#" id="setup_logging-toggle" onclick="return toggle('setup_logging');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="schema-module.html#setup_logging">setup_logging</a><tt class="py-op">(</tt><tt class="py-param">level</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="setup_logging-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="setup_logging-expanded"><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">  <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">basicConfig</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">  <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">setLevel</tt><tt class="py-op">(</tt><tt class="py-name">level</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="main"></a><div id="main-def"><a name="L132"></a><tt class="py-lineno">132</tt> <a class="py-toggle" href="#" id="main-toggle" onclick="return toggle('main');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="schema-module.html#main">main</a><tt class="py-op">(</tt><tt class="py-param">argv</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="main-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="main-expanded"><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">  <tt id="link-23" class="py-name" targets="Function bulk_config_update.setup_logging()=bulk_config_update-module.html#setup_logging,Function schema.setup_logging()=schema-module.html#setup_logging,Function timeseries.setup_logging()=timeseries-module.html#setup_logging"><a title="bulk_config_update.setup_logging
+schema.setup_logging
+timeseries.setup_logging" class="py-name" href="#" onclick="return doclink('link-23', 'setup_logging', 'link-23');">setup_logging</a></tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">INFO</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">  <tt class="py-comment"># Argument parsing</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">  <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-name">opts</tt><tt class="py-op">,</tt> <tt class="py-name">args</tt> <tt class="py-op">=</tt> <tt class="py-name">getopt</tt><tt class="py-op">.</tt><tt class="py-name">getopt</tt><tt class="py-op">(</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">"ha:"</tt><tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">  <tt class="py-keyword">except</tt> <tt class="py-name">getopt</tt><tt class="py-op">.</tt><tt class="py-name">GetoptError</tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-op">&gt;&gt;</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">,</tt> <tt class="py-name">err</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">    <tt id="link-24" class="py-name"><a title="bulk_config_update.usage
+schema.usage
+timeseries.usage" class="py-name" href="#" onclick="return doclink('link-24', 'usage', 'link-22');">usage</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">  <tt class="py-keyword">for</tt> <tt class="py-name">option</tt><tt class="py-op">,</tt> <tt class="py-name">val</tt> <tt class="py-keyword">in</tt> <tt class="py-name">opts</tt><tt class="py-op">:</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">option</tt> <tt class="py-op">==</tt> <tt class="py-string">'-h'</tt><tt class="py-op">:</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">      <tt id="link-25" class="py-name"><a title="bulk_config_update.usage
+schema.usage
+timeseries.usage" class="py-name" href="#" onclick="return doclink('link-25', 'usage', 'link-22');">usage</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">      <tt class="py-keyword">return</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">    <tt class="py-keyword">elif</tt> <tt class="py-name">option</tt> <tt class="py-op">==</tt> <tt class="py-string">'-a'</tt><tt class="py-op">:</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">      <tt id="link-26" class="py-name" targets="Function schema.do_get_aliases()=schema-module.html#do_get_aliases"><a title="schema.do_get_aliases" class="py-name" href="#" onclick="return doclink('link-26', 'do_get_aliases', 'link-26');">do_get_aliases</a></tt><tt class="py-op">(</tt><tt class="py-name">val</tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">      <tt class="py-keyword">return</tt> <tt class="py-number">0</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">      <tt class="py-keyword">print</tt> <tt class="py-op">&gt;&gt;</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">,</tt> <tt class="py-string">"Unknown flag:"</tt><tt class="py-op">,</tt> <tt class="py-name">option</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">      <tt id="link-27" class="py-name"><a title="bulk_config_update.usage
+schema.usage
+timeseries.usage" class="py-name" href="#" onclick="return doclink('link-27', 'usage', 'link-22');">usage</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">      <tt class="py-keyword">return</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">  <tt class="py-keyword">if</tt> <tt class="py-name">args</tt><tt class="py-op">:</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-op">&gt;&gt;</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">,</tt> <tt class="py-string">"Unknown trailing argument:"</tt><tt class="py-op">,</tt> <tt class="py-name">args</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">    <tt id="link-28" class="py-name"><a title="bulk_config_update.usage
+schema.usage
+timeseries.usage" class="py-name" href="#" onclick="return doclink('link-28', 'usage', 'link-22');">usage</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">  <tt class="py-comment"># Do work</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">  <tt id="link-29" class="py-name" targets="Function schema.do_get_metrics()=schema-module.html#do_get_metrics"><a title="schema.do_get_metrics" class="py-name" href="#" onclick="return doclink('link-29', 'do_get_metrics', 'link-29');">do_get_metrics</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt class="py-number">0</tt> </tt>
+</div><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-comment"># The "main" entry</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">  <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">exit</tt><tt class="py-op">(</tt><tt id="link-30" class="py-name" targets="Function bulk_config_update.main()=bulk_config_update-module.html#main,Function cm_shell.cmps.main()=cm_shell.cmps-module.html#main,Function cm_shell.prettytable.main()=cm_shell.prettytable-module.html#main,Function schema.main()=schema-module.html#main,Function timeseries.main()=timeseries-module.html#main"><a title="bulk_config_update.main
+cm_shell.cmps.main
+cm_shell.prettytable.main
+schema.main
+timeseries.main" class="py-name" href="#" onclick="return doclink('link-30', 'main', 'link-30');">main</a></tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >python-cm_api</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Jun 27 18:10:29 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
