@@ -35,3 +35,7 @@ clean:
 	rm -rf dist
 	rm -rf build
 	find . -name *.py[co] -exec rm -f {} \;
+
+.PHONY: clean
+clean:
+	epydoc -v --html  -o doc -n python-cm_api `find . -name "*.py"`
