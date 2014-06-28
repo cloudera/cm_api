@@ -6,6 +6,7 @@ google_analytics_id:    UA-2275969-20
 
 safe:                   true
 lsi:                    false
+markdown:               kramdown
 
 latest_api_version:     9
 latest_cm_version:      5.3.0
