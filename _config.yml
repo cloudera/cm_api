@@ -9,3 +9,5 @@ lsi:                    false
 
 latest_api_version:     6
 latest_cm_version:      5.0.0
+
+markdown:               kramdown
