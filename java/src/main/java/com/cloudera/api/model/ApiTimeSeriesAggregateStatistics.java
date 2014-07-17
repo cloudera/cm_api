@@ -44,7 +44,9 @@ public class ApiTimeSeriesAggregateStatistics {
   private ApiTimeSeriesCrossEntityMetadata crossEntityMetadata;
 
   /**
-   * The timestamp of the sample data point.
+   * The timestamp of the sample data point. Note that the timestamp
+   * reflects coordinated universal time (UTC) and not necessarily the server's
+   * time zone. The rest API formats the UTC timestamp as an ISO-8061 string.
    */
   @XmlElement
   public Date getSampleTime() {
@@ -98,7 +100,9 @@ public class ApiTimeSeriesAggregateStatistics {
   }
 
   /**
-   * The timestamp of the minimum data point.
+   * The timestamp of the minimum data point. Note that the timestamp
+   * reflects coordinated universal time (UTC) and not necessarily the server's
+   * time zone. The rest API formats the UTC timestamp as an ISO-8061 string.
    */
   @XmlElement
   public Date getMinTime() {
@@ -126,8 +130,11 @@ public class ApiTimeSeriesAggregateStatistics {
     this.max = max;
   }
 
+  
   /**
-   * The timestamp of the maximum data point.
+   * The timestamp of the maximum data point. Note that the timestamp
+   * reflects coordinated universal time (UTC) and not necessarily the server's
+   * time zone. The rest API formats the UTC timestamp as an ISO-8061 string.
    */
   @XmlElement
   public Date getMaxTime() {

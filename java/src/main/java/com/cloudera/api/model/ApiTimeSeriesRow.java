@@ -64,7 +64,11 @@ public class ApiTimeSeriesRow {
     this.metricName = metricName;
   }
 
-  /** The timestamp for this time series data point. */
+  /**
+   * The timestamp for this time series data point. Note that the timestamp
+   * reflects coordinated universal time (UTC) and not necessarily the server's
+   * time zone. The rest API formats the UTC timestamp as an ISO-8061 string.
+   */
   public Date getTimestamp() {
     return timestamp;
   }

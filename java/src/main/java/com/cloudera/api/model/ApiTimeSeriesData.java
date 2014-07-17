@@ -31,7 +31,11 @@ public class ApiTimeSeriesData {
   private String type;
   private ApiTimeSeriesAggregateStatistics aggregateStatistics;
 
-  /** The timestamp for the time series data. */
+  /**
+   * The timestamp for this time series data point. Note that the timestamp
+   * reflects coordinated universal time (UTC) and not necessarily the server's
+   * time zone. The rest API formats the UTC timestamp as an ISO-8061 string.
+   */
   @XmlElement
   public Date getTimestamp() {
     return timestamp;

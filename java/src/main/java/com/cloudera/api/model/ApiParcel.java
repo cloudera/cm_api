@@ -110,7 +110,9 @@ public class ApiParcel {
    *   <li><b>DISTRIBUTED</b>: Stable stage - the parcel is on all the hosts in
    *   the cluster. The parcel can now be activated, or removed from all the hosts.</li>
    *   <li><b>UNDISTRIBUTING</b>: Transient stage - the parcel is being removed
-   *   from all the hosts in the cluster>/li>
+   *   from all the hosts in the cluster></li>
+   *   <li><b>ACTIVATING</b>: Transient stage - the parcel is being activated on
+   *   the hosts in the cluster. <i>New in API v7</i></li>
    *   <li><b>ACTIVATED</b>: Steady stage - the parcel is set to active on every host
    *   in the cluster. If desired, a parcel can be deactivated from this stage.</li>
    * </ul>

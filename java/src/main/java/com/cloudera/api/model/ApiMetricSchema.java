@@ -27,6 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "metricSchema")
 public class ApiMetricSchema {
   private String name;
+  private String displayName;
+  private String description;
   private boolean isCounter;
   private String unitNumerator;
   private String unitDenominator;
@@ -37,13 +39,18 @@ public class ApiMetricSchema {
     // For JAX-B
   }
 
-  public ApiMetricSchema(String name,
+  public ApiMetricSchema(
+      String name,
+      String displayName,
+      String description,
       boolean isCounter,
       String unitNumerator, 
       String unitDenominator,
       List<String> aliases,
       Map<String, List<String>> sources) {
     this.name = name;
+    this.displayName = displayName;
+    this.description = description;
     this.isCounter = isCounter;
     this.unitNumerator = unitNumerator;
     this.unitDenominator = unitDenominator;
@@ -63,7 +70,31 @@ public class ApiMetricSchema {
   public void setName(String name) {
     this.name = name;
   }
-  
+
+  /** 
+   * Display name of the metric.
+   **/
+  @XmlElement
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
+  }
+
+  /** 
+   * Description of the metric.
+   **/
+  @XmlElement
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   /** 
    * Is the metric a counter.
    * A counter tracks the total count since a process / host started.

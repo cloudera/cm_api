@@ -106,8 +106,22 @@ public class ApiUser {
 
   /**
    * A list of roles this user belongs to.
-   * Current possible values are: "ROLE_ADMIN", "ROLE_LIMITED", "ROLE_USER"
-   * or empty (implies "ROLE_USER").
+   * <p>
+   * In Cloudera Express, possible values are:
+   * <ul>
+   * <li><b>ROLE_ADMIN</b></li>
+   * <li><b>ROLE_USER</b></li>
+   * </ul>
+   * In Cloudera Enterprise Datahub Edition, additional possible values are:
+   * <ul>
+   * <li><b>ROLE_LIMITED</b>: Added in Cloudera Manager 5.0</li>
+   * <li><b>ROLE_OPERATOR</b>: Added in Cloudera Manager 5.1</li>
+   * <li><b>ROLE_CONFIGURATOR</b>: Added in Cloudera Manager 5.1</li>
+   * </ul>
+   * An empty list implies ROLE_USER.
+   * <p>
+   * Note that although this interface provides a list of roles, a user should
+   * only be assigned a single role at a time.
    */
   @XmlElementWrapper(name = "roles")
   public Set<String> getRoles() {

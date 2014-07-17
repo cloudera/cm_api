@@ -90,7 +90,7 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
    * <li>Update all services that depend on MapReduce to instead depend on Yarn.
    * </li>
    * <li>Stop MapReduce</li>
-   * <li>Start Yarn (includes MR2)</li>
+   * <li>Start Yarn (MR2 Included)</li>
    * <li>Deploy Yarn (MR2) Client Configuration</li>
    * </ul>
    * <p>

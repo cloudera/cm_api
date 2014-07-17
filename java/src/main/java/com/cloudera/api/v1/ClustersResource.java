@@ -123,7 +123,8 @@ public interface ClustersResource {
    *
    * @param clusterName The name of the cluster.
    * @return Information about the submitted command.
-   * @deprecated This endpoint is not recommended v6 onwards. Use upgradeCdh on the cluster instead.
+   * @deprecated This endpoint should not used in Cloudera Manager 5 or later.
+   *             Use the upgradeCdh endpoint on the cluster instead.
    */
   @Deprecated
   @POST
