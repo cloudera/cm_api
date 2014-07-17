@@ -124,6 +124,8 @@ public class ApiRole {
 
   /**
    * The name of the role.
+   * Optional when creating a role since API v6. If not specified, a name will
+   * be automatically generated for the role.
    */
   @XmlElement
   public String getName() {

@@ -121,6 +121,16 @@ public interface RolesResource {
    *
    * </table>
    *
+   * When specifying roles to be created, the names provided for each role
+   * must not conflict with the names that CM auto-generates for roles.
+   * Specifically, names of the form
+   * "<service name>-<role type>-<arbitrary value>" cannot be used unless the
+   * <arbitrary value> is the same one CM would use. If CM detects such a
+   * conflict, the error message will indicate what <arbitrary value> is safe
+   * to use. Alternately, a differently formatted name should be used.
+   *
+   * Since API v6: The role name can be left blank to allow CM to generate the
+   *               name.
    *
    * @param roles Roles to create.
    * @return List of created roles.

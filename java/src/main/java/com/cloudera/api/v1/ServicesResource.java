@@ -438,8 +438,10 @@ public interface ServicesResource {
    * The client configuration is deployed to the hosts where the given roles
    * are running.
    * <p/>
-   * Added in v3: an empty role name list will deploy client configs to all
-   * known service roles.
+   * Added in v3: passing null for the role name list will deploy client configs
+   *              to all known service roles.
+   * Added in v6: passing an empty role name list will deploy client configs
+   *              to all known service roles.
    *
    * @param serviceName The service name.
    * @param roleNames List of role names.

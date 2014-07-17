@@ -5,10 +5,10 @@
   <groupId>com.cloudera.api</groupId>
   <artifactId>cloudera-manager-api</artifactId>
   <name>Cloudera Manager API</name>
-  <version>5.0.0</version>
+  <version>5.1.0</version>
 
   <properties>
-    <cxf.version>2.7.4</cxf.version>
+    <cxf.version>2.7.5</cxf.version>
     <guava.version>14.0</guava.version>
     <jackson2.version>2.1.0</jackson2.version>
     <joda.version>2.1</joda.version>
