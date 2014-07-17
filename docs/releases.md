@@ -18,6 +18,13 @@ Releases
     </thead>
     <tbody>
         <tr>
+            <td>v7</td>
+            <td>CM 5.1</td>
+            <td><a href="{{ site.url }}/apidocs/v7/index.html">API docs</a>,
+                <a href="{{ site.url }}/javadoc/5.1.0/index.html">Javadoc</a>
+            </td>
+        </tr>
+        <tr>
             <td>v6</td>
             <td>CM 5.0</td>
             <td><a href="{{ site.url }}/apidocs/v6/index.html">API docs</a>,
