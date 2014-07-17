@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>cm_api.resource</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="cm_api-module.html">Package&nbsp;cm_api</a> ::
+        Module&nbsp;resource
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="cm_api.resource-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="cm_api.resource-module.html">Module cm_api.resource</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Licensed to Cloudera, Inc. under one</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># or more contributor license agreements.  See the NOTICE file</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># distributed with this work for additional information</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># regarding copyright ownership.  Cloudera, Inc. licenses this file</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># to you under the Apache License, Version 2.0 (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># "License"); you may not use this file except in compliance</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># with the License.  You may obtain a copy of the License at</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">  <tt class="py-keyword">import</tt> <tt class="py-name">json</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">  <tt class="py-keyword">import</tt> <tt class="py-name">simplejson</tt> <tt class="py-keyword">as</tt> <tt class="py-name">json</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">posixpath</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">time</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">socket</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">urllib2</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable cm_api.api_client.LOG=cm_api.api_client-module.html#LOG,Variable cm_api.http_client.LOG=cm_api.http_client-module.html#LOG,Variable cm_api.resource.LOG=cm_api.resource-module.html#LOG"><a title="cm_api.api_client.LOG
+cm_api.http_client.LOG
+cm_api.resource.LOG" class="py-name" href="#" onclick="return doclink('link-0', 'LOG', 'link-0');">LOG</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-name">__name__</tt><tt class="py-op">)</tt> </tt>
+<a name="Resource"></a><div id="Resource-def"><a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="Resource-toggle" onclick="return toggle('Resource');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html">Resource</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Resource-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">  Encapsulates a resource, and provides actions to invoke on it.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="Resource.__init__"></a><div id="Resource.__init__-def"><a name="L34"></a><tt class="py-lineno"> 34</tt> <a class="py-toggle" href="#" id="Resource.__init__-toggle" onclick="return toggle('Resource.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">client</tt><tt class="py-op">,</tt> <tt class="py-param">relpath</tt><tt class="py-op">=</tt><tt class="py-string">""</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource.__init__-expanded"><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">    @param client: A Client object.</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">    @param relpath: The relative path of the resource.</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_client</tt> <tt class="py-op">=</tt> <tt class="py-name">client</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Method cm_api.endpoints.clusters.ApiCluster._path()=cm_api.endpoints.clusters.ApiCluster-class.html#_path,Method cm_api.endpoints.cms.ClouderaManager._path()=cm_api.endpoints.cms.ClouderaManager-class.html#_path,Method cm_api.endpoints.dashboards.ApiDashboard._path()=cm_api.endpoints.dashboards.ApiDashboard-class.html#_path,Method cm_api.endpoints.host_templates.ApiHostTemplate._path()=cm_api.endpoints.host_templates.ApiHostTemplate-class.html#_path,Method cm_api.endpoints.hosts.ApiHost._path()=cm_api.endpoints.hosts.ApiHost-class.html#_path,Method cm_api.endpoints.parcels.ApiParcel._path()=cm_api.endpoints.parcels.ApiParcel-class.html#_path,Method cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path()=cm_api.endpoints.role_config_groups.ApiRoleConfigGroup-class.html#_path,Method cm_api.endpoints.roles.ApiRole._path()=cm_api.endpoints.roles.ApiRole-class.html#_path,Method cm_api.endpoints.services.ApiService._path()=cm_api.endpoints.services.ApiService-class.html#_path,Method cm_api.endpoints.types.ApiCommand._path()=cm_api.endpoints.types.ApiCommand-class.html#_path,Method cm_api.endpoints.types.BaseApiResource._path()=cm_api.endpoints.types.BaseApiResource-class.html#_path,Method cm_api.endpoints.users.ApiUser._path()=cm_api.endpoints.users.ApiUser-class.html#_path"><a title="cm_api.endpoints.clusters.ApiCluster._path
+cm_api.endpoints.cms.ClouderaManager._path
+cm_api.endpoints.dashboards.ApiDashboard._path
+cm_api.endpoints.host_templates.ApiHostTemplate._path
+cm_api.endpoints.hosts.ApiHost._path
+cm_api.endpoints.parcels.ApiParcel._path
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path
+cm_api.endpoints.roles.ApiRole._path
+cm_api.endpoints.services.ApiService._path
+cm_api.endpoints.types.ApiCommand._path
+cm_api.endpoints.types.BaseApiResource._path
+cm_api.endpoints.users.ApiUser._path" class="py-name" href="#" onclick="return doclink('link-1', '_path', 'link-1');">_path</a></tt> <tt class="py-op">=</tt> <tt class="py-name">relpath</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">retries</tt> <tt class="py-op">=</tt> <tt class="py-number">3</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">retry_sleep</tt> <tt class="py-op">=</tt> <tt class="py-number">3</tt> </tt>
+</div><a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">  <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="Resource.base_url"></a><div id="Resource.base_url-def"><a name="L45"></a><tt class="py-lineno"> 45</tt> <a class="py-toggle" href="#" id="Resource.base_url-toggle" onclick="return toggle('Resource.base_url');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#base_url">base_url</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource.base_url-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource.base_url-expanded"><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_client</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Variable cm_api.http_client.HttpClient.base_url=cm_api.http_client.HttpClient-class.html#base_url,Variable cm_api.resource.Resource.base_url=cm_api.resource.Resource-class.html#base_url"><a title="cm_api.http_client.HttpClient.base_url
+cm_api.resource.Resource.base_url" class="py-name" href="#" onclick="return doclink('link-2', 'base_url', 'link-2');">base_url</a></tt> </tt>
+</div><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"> </tt>
+<a name="Resource._join_uri"></a><div id="Resource._join_uri-def"><a name="L48"></a><tt class="py-lineno"> 48</tt> <a class="py-toggle" href="#" id="Resource._join_uri-toggle" onclick="return toggle('Resource._join_uri');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#_join_uri">_join_uri</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">relpath</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource._join_uri-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource._join_uri-expanded"><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">relpath</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">      <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="cm_api.endpoints.clusters.ApiCluster._path
+cm_api.endpoints.cms.ClouderaManager._path
+cm_api.endpoints.dashboards.ApiDashboard._path
+cm_api.endpoints.host_templates.ApiHostTemplate._path
+cm_api.endpoints.hosts.ApiHost._path
+cm_api.endpoints.parcels.ApiParcel._path
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path
+cm_api.endpoints.roles.ApiRole._path
+cm_api.endpoints.services.ApiService._path
+cm_api.endpoints.types.ApiCommand._path
+cm_api.endpoints.types.BaseApiResource._path
+cm_api.endpoints.users.ApiUser._path" class="py-name" href="#" onclick="return doclink('link-3', '_path', 'link-1');">_path</a></tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="cm_api.endpoints.clusters.ApiCluster._path
+cm_api.endpoints.cms.ClouderaManager._path
+cm_api.endpoints.dashboards.ApiDashboard._path
+cm_api.endpoints.host_templates.ApiHostTemplate._path
+cm_api.endpoints.hosts.ApiHost._path
+cm_api.endpoints.parcels.ApiParcel._path
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path
+cm_api.endpoints.roles.ApiRole._path
+cm_api.endpoints.services.ApiService._path
+cm_api.endpoints.types.ApiCommand._path
+cm_api.endpoints.types.BaseApiResource._path
+cm_api.endpoints.users.ApiUser._path" class="py-name" href="#" onclick="return doclink('link-4', '_path', 'link-1');">_path</a></tt> <tt class="py-op">+</tt> <tt class="py-name">posixpath</tt><tt class="py-op">.</tt><tt class="py-name">normpath</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt> <tt class="py-op">+</tt> <tt class="py-name">relpath</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"> </tt>
+<a name="Resource.invoke"></a><div id="Resource.invoke-def"><a name="L53"></a><tt class="py-lineno"> 53</tt> <a class="py-toggle" href="#" id="Resource.invoke-toggle" onclick="return toggle('Resource.invoke');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#invoke">invoke</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">method</tt><tt class="py-op">,</tt> <tt class="py-param">relpath</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">params</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">data</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">headers</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource.invoke-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource.invoke-expanded"><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">    Invoke an API method.</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Raw body or JSON dictionary (if response content type is JSON).</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-name">path</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method cm_api.resource.Resource._join_uri()=cm_api.resource.Resource-class.html#_join_uri"><a title="cm_api.resource.Resource._join_uri" class="py-name" href="#" onclick="return doclink('link-5', '_join_uri', 'link-5');">_join_uri</a></tt><tt class="py-op">(</tt><tt class="py-name">relpath</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-name">resp</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_client</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method cm_api.http_client.HttpClient.execute()=cm_api.http_client.HttpClient-class.html#execute"><a title="cm_api.http_client.HttpClient.execute" class="py-name" href="#" onclick="return doclink('link-6', 'execute', 'link-6');">execute</a></tt><tt class="py-op">(</tt><tt class="py-name">method</tt><tt class="py-op">,</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                                <tt class="py-name">path</tt><tt class="py-op">,</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                                <tt class="py-name">params</tt><tt class="py-op">=</tt><tt class="py-name">params</tt><tt class="py-op">,</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                                <tt class="py-name">data</tt><tt class="py-op">=</tt><tt class="py-name">data</tt><tt class="py-op">,</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                                <tt class="py-name">headers</tt><tt class="py-op">=</tt><tt class="py-name">headers</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">      <tt class="py-name">body</tt> <tt class="py-op">=</tt> <tt class="py-name">resp</tt><tt class="py-op">.</tt><tt class="py-name">read</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">ex</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">"Command '%s %s' failed: %s"</tt> <tt class="py-op">%</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                      <tt class="py-op">(</tt><tt class="py-name">method</tt><tt class="py-op">,</tt> <tt class="py-name">path</tt><tt class="py-op">,</tt> <tt class="py-name">ex</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_client</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Variable cm_api.http_client.HttpClient.logger=cm_api.http_client.HttpClient-class.html#logger"><a title="cm_api.http_client.HttpClient.logger" class="py-name" href="#" onclick="return doclink('link-7', 'logger', 'link-7');">logger</a></tt><tt class="py-op">.</tt><tt class="py-name">debug</tt><tt class="py-op">(</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-string">"%s Got response: %s%s"</tt> <tt class="py-op">%</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-op">(</tt><tt class="py-name">method</tt><tt class="py-op">,</tt> <tt class="py-name">body</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">32</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">body</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">32</tt> <tt class="py-keyword">and</tt> <tt class="py-string">"..."</tt> <tt class="py-keyword">or</tt> <tt class="py-string">""</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt class="py-comment"># Is the response application/json?</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">body</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-number">0</tt> <tt class="py-keyword">and</tt> \ </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">          <tt class="py-name">resp</tt><tt class="py-op">.</tt><tt class="py-name">info</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">getmaintype</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">"application"</tt> <tt class="py-keyword">and</tt> \ </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">          <tt class="py-name">resp</tt><tt class="py-op">.</tt><tt class="py-name">info</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">getsubtype</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">"json"</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">      <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-name">json_dict</tt> <tt class="py-op">=</tt> <tt class="py-name">json</tt><tt class="py-op">.</tt><tt class="py-name">loads</tt><tt class="py-op">(</tt><tt class="py-name">body</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">json_dict</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">      <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">ex</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_client</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="cm_api.http_client.HttpClient.logger" class="py-name" href="#" onclick="return doclink('link-8', 'logger', 'link-7');">logger</a></tt><tt class="py-op">.</tt><tt class="py-name">exception</tt><tt class="py-op">(</tt><tt class="py-string">'JSON decode error: %s'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">body</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">ex</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">      <tt class="py-keyword">return</tt> <tt class="py-name">body</tt> </tt>
+</div><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"> </tt>
+<a name="Resource.get"></a><div id="Resource.get-def"><a name="L88"></a><tt class="py-lineno"> 88</tt> <a class="py-toggle" href="#" id="Resource.get-toggle" onclick="return toggle('Resource.get');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#get">get</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">relpath</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">params</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource.get-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource.get-expanded"><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">    Invoke the GET method on a resource.</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring">    @param relpath: Optional. A relative path to this resource's path.</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring">    @param params: Key-value data.</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">    @return: A dictionary of the JSON result.</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">retry</tt> <tt class="py-keyword">in</tt> <tt class="py-name">xrange</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">retries</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt class="py-name">retry</tt><tt class="py-op">:</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-name">time</tt><tt class="py-op">.</tt><tt class="py-name">sleep</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">retry_sleep</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">      <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method cm_api.resource.Resource.invoke()=cm_api.resource.Resource-class.html#invoke"><a title="cm_api.resource.Resource.invoke" class="py-name" href="#" onclick="return doclink('link-9', 'invoke', 'link-9');">invoke</a></tt><tt class="py-op">(</tt><tt class="py-string">"GET"</tt><tt class="py-op">,</tt> <tt class="py-name">relpath</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">      <tt class="py-keyword">except</tt> <tt class="py-op">(</tt><tt class="py-name">socket</tt><tt class="py-op">.</tt><tt class="py-name">error</tt><tt class="py-op">,</tt> <tt class="py-name">urllib2</tt><tt class="py-op">.</tt><tt class="py-name">URLError</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-string">"timed out"</tt> <tt class="py-keyword">in</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">e</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">          <tt class="py-name">log_message</tt> <tt class="py-op">=</tt> <tt class="py-string">"Timeout issuing GET request for %s."</tt> \ </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">              <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="cm_api.resource.Resource._join_uri" class="py-name" href="#" onclick="return doclink('link-10', '_join_uri', 'link-5');">_join_uri</a></tt><tt class="py-op">(</tt><tt class="py-name">relpath</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">          <tt class="py-keyword">if</tt> <tt class="py-name">retry</tt> <tt class="py-op">&lt;</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">retries</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">            <tt class="py-name">log_message</tt> <tt class="py-op">+=</tt> <tt class="py-string">" Will retry."</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">          <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">            <tt class="py-name">log_message</tt> <tt class="py-op">+=</tt> <tt class="py-string">" No retries left."</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">          <tt id="link-11" class="py-name"><a title="cm_api.api_client.LOG
+cm_api.http_client.LOG
+cm_api.resource.LOG" class="py-name" href="#" onclick="return doclink('link-11', 'LOG', 'link-0');">LOG</a></tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-name">log_message</tt><tt class="py-op">,</tt> <tt class="py-name">exc_info</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">          <tt class="py-keyword">raise</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt class="py-name">e</tt> </tt>
+</div><a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="Resource.delete"></a><div id="Resource.delete-def"><a name="L116"></a><tt class="py-lineno">116</tt> <a class="py-toggle" href="#" id="Resource.delete-toggle" onclick="return toggle('Resource.delete');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#delete">delete</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">relpath</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">params</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource.delete-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource.delete-expanded"><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-docstring">    Invoke the DELETE method on a resource.</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-docstring">    @param relpath: Optional. A relative path to this resource's path.</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">    @param params: Key-value data.</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">    @return: A dictionary of the JSON result.</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="cm_api.resource.Resource.invoke" class="py-name" href="#" onclick="return doclink('link-12', 'invoke', 'link-9');">invoke</a></tt><tt class="py-op">(</tt><tt class="py-string">"DELETE"</tt><tt class="py-op">,</tt> <tt class="py-name">relpath</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="Resource.post"></a><div id="Resource.post-def"><a name="L127"></a><tt class="py-lineno">127</tt> <a class="py-toggle" href="#" id="Resource.post-toggle" onclick="return toggle('Resource.post');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#post">post</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">relpath</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">params</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">data</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">contenttype</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource.post-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource.post-expanded"><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">    Invoke the POST method on a resource.</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring">    @param relpath: Optional. A relative path to this resource's path.</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">    @param params: Key-value data.</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">    @param data: Optional. Body of the request.</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring">    @param contenttype: Optional.</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">    @return: A dictionary of the JSON result.</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="cm_api.resource.Resource.invoke" class="py-name" href="#" onclick="return doclink('link-13', 'invoke', 'link-9');">invoke</a></tt><tt class="py-op">(</tt><tt class="py-string">"POST"</tt><tt class="py-op">,</tt> <tt class="py-name">relpath</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">,</tt> <tt class="py-name">data</tt><tt class="py-op">,</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                       <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method cm_api.resource.Resource._make_headers()=cm_api.resource.Resource-class.html#_make_headers"><a title="cm_api.resource.Resource._make_headers" class="py-name" href="#" onclick="return doclink('link-14', '_make_headers', 'link-14');">_make_headers</a></tt><tt class="py-op">(</tt><tt class="py-name">contenttype</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="Resource.put"></a><div id="Resource.put-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="Resource.put-toggle" onclick="return toggle('Resource.put');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#put">put</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">relpath</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">params</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">data</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">contenttype</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource.put-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource.put-expanded"><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring">    Invoke the PUT method on a resource.</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring">    @param relpath: Optional. A relative path to this resource's path.</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring">    @param params: Key-value data.</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">    @param data: Optional. Body of the request.</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">    @param contenttype: Optional.</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">    @return: A dictionary of the JSON result.</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="cm_api.resource.Resource.invoke" class="py-name" href="#" onclick="return doclink('link-15', 'invoke', 'link-9');">invoke</a></tt><tt class="py-op">(</tt><tt class="py-string">"PUT"</tt><tt class="py-op">,</tt> <tt class="py-name">relpath</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">,</tt> <tt class="py-name">data</tt><tt class="py-op">,</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">                       <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="cm_api.resource.Resource._make_headers" class="py-name" href="#" onclick="return doclink('link-16', '_make_headers', 'link-14');">_make_headers</a></tt><tt class="py-op">(</tt><tt class="py-name">contenttype</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="Resource._make_headers"></a><div id="Resource._make_headers-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="Resource._make_headers-toggle" onclick="return toggle('Resource._make_headers');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.resource.Resource-class.html#_make_headers">_make_headers</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">contenttype</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Resource._make_headers-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="Resource._make_headers-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">contenttype</tt><tt class="py-op">:</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">      <tt class="py-keyword">return</tt> <tt class="py-op">{</tt> <tt class="py-string">'Content-Type'</tt><tt class="py-op">:</tt> <tt class="py-name">contenttype</tt> <tt class="py-op">}</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div></div><a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 17 13:52:02 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
