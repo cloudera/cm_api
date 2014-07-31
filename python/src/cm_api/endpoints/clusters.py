@@ -21,22 +21,24 @@ __docformat__ = "epytext"
 
 CLUSTERS_PATH = "/clusters"
 
-def create_cluster(resource_root, name, version, fullVersion=None):
+def create_cluster(resource_root, name, version=None, fullVersion=None):
   """
   Create a cluster
   @param resource_root: The root Resource object.
   @param name: Cluster name
-  @param version: Cluster CDH major version (eg: "4")
+  @param version: Cluster CDH major version (eg: "CDH4")
                   - The CDH minor version will be assumed to be the
-                    latest released version, if 'fullVersion' is not
-                    specified.
-  @param fullVersion: Cluster's full CDH version. (eg: "4.6.0")
+                    latest released version for CDH4, or 5.0 for CDH5.
+  @param fullVersion: Cluster's full CDH version. (eg: "5.1.1")
                         - If specified, 'version' will be ignored.
                         - Since: v6
   @return: An ApiCluster object
   """
+  if version is None and fullVersion is None:
+    raise Exception("Either 'version' or 'fullVersion' must be specified")
   if fullVersion is not None:
     api_version = 6
+    version = None
   else:
     api_version = 1
 
