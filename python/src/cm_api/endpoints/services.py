@@ -1054,6 +1054,15 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('hbaseUpgrade', api_version=6)
 
+  def create_sqoop_user_dir(self):
+    """
+    Creates the user directory of a Sqoop service in HDFS.
+
+    @return: Reference to the submitted command.
+    @since: API v4
+    """
+    return self._cmd('createSqoopUserDir', api_version=4)
+
   def upgrade_sqoop_db(self):
     """
     Upgrade Sqoop Database schema as part of a major version upgrade.

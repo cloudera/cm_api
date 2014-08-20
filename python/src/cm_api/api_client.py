@@ -97,15 +97,18 @@ class ApiResource(Resource):
 
   # Cluster ops.
 
-  def create_cluster(self, name, version):
+  def create_cluster(self, name, version=None, fullVersion=None):
     """
     Create a new cluster.
 
     @param name: Cluster name.
-    @param version: Cluster CDH version.
+    @param version: Cluster major CDH version, e.g. 'CDH5'. Ignored if
+      fullVersion is specified.
+    @param fullVersion: Complete CDH version, e.g. '5.1.2'. Overrides major
+      version if both specified.
     @return: The created cluster.
     """
-    return clusters.create_cluster(self, name, version)
+    return clusters.create_cluster(self, name, version, fullVersion)
 
   def delete_cluster(self, name):
     """

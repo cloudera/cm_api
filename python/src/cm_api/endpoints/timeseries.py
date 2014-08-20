@@ -130,6 +130,8 @@ class ApiTimeSeriesResponse(BaseApiObject):
 class ApiMetricSchema(BaseApiObject):
   _ATTRIBUTES = {
     'name'            : ROAttr(),
+    'displayName'     : ROAttr(),
+    'description'     : ROAttr(),
     'isCounter'       : ROAttr(),
     'unitNumerator'   : ROAttr(),
     'unitDenominator' : ROAttr(),
