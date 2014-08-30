@@ -1122,6 +1122,50 @@ class ApiService(BaseApiResource):
     """
     return self._role_cmd('hueSyncDb', servers)
 
+  def lsof(self, *rolenames):
+    """
+    Run the lsof diagnostic command. This command runs the lsof utility to list
+    a role's open files.
+
+    @param rolenames: Name of the role instances
+    @return: List of submitted commands.
+    @since: API v8
+    """
+    return self._role_cmd('lsof', rolenames)
+
+  def jstack(self, *rolenames):
+    """
+    Run the jstack diagnostic command. The command runs the jstack utility to
+    capture a role's java thread stacks.
+
+    @param rolenames: Name of the role instances
+    @return: List of submitted commands.
+    @since: API v8
+    """
+    return self._role_cmd('jstack', rolenames)
+
+  def jmap_histo(self, *rolenames):
+    """
+    Run the jmapHisto diagnostic command. The command runs the jmap utility to
+    capture a histogram of the objects on the role's java heap.
+
+    @param rolenames: Name of the role instances
+    @return: List of submitted commands.
+    @since: API v8
+    """
+    return self._role_cmd('jmapHisto', rolenames)
+
+  def jmap_dump(self, *rolenames):
+    """
+    Run the jmapDump diagnostic command. The command runs the jmap utility to
+    capture a dump of the role's java heap.
+
+    @param rolenames: Name of the role instances
+    @return: List of submitted commands.
+    @since: API v8
+    """
+    return self._role_cmd('jmapDump', rolenames)
+
   def enter_maintenance_mode(self):
     """
     Put the service in maintenance mode.
