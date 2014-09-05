@@ -21,7 +21,7 @@ Assumptions:
 - Running on a RHEL 6.x machine
 - All yum repos are set up. This is for common things like MySQL, expect, etc. A Cloudera repo is downloaded for Cloudera specific packages.
 - The clouderaconfig.ini file must contain settings applicable to a given environment (eg the proper hostnames, the ntp server, etc). 
-- The cdh.parcel.version property in clouderaconfig.ini should match the current version that is available in http://archive.cloudera.com/cdh5/parcels/latest/. Note that the actual version number used in the property value should not contain the leading "CDH-" or the trailing "-el6.parcel" (or whatever the suffix matching your targeted operating system is) from the file name. So, for CDH5.1.0, the property value should be 5.1.0-1.cdh5.1.0.p0.53 and not CDH-5.1.0-1.cdh5.1.0.p0.53-el6.parcel. 
+- The cdh.parcel.version property in clouderaconfig.ini should match a version that is available in http://archive.cloudera.com/cdh5/parcels/latest/ or in a customer parcel repo that you set up via the remote.parcel.repo.urls property. You can use 'latest' for the cdh.parcel.version property to make it automatically determine the parcel version to use from the latest avaiable versions in the Cloudera parcel repo.
 
 
 Steps To Deploy a Cluster:
