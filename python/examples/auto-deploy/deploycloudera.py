@@ -4,7 +4,7 @@
 
 # Deploys a CDH cluster and configures CM management services.
 
-import socket, sys, time, ConfigParser, csv, pprint
+import socket, sys, time, ConfigParser, csv, pprint, urllib2
 from subprocess import Popen, PIPE, STDOUT
 from math import log as ln
 from cm_api.api_client import ApiResource
@@ -87,8 +87,20 @@ CLUSTER_NAME = CONFIG.get("CM", "cluster.name")
 CDH_VERSION = "CDH5"
 
 ### Parcels ###
+PARCEL_VERSION = CONFIG.get("CDH", "cdh.parcel.version")
+if PARCEL_VERSION.lower() == "latest":
+   # Get list of parcels from the cloudera repo to see what the latest version is. Then to parse:
+   # find first item that starts with CDH-
+   # strip off leading CDH-
+   # strip off everything after the last - in that item, including the -
+   LATEST_PARCEL_URL = 'http://archive.cloudera.com/cdh5/parcels/latest/'
+   PARCEL_PREFIX = 'CDH-'
+   dir_list = urllib2.urlopen(LATEST_PARCEL_URL).read()
+   dir_list = dir_list[dir_list.index(PARCEL_PREFIX)+len(PARCEL_PREFIX):]
+   dir_list = dir_list[:dir_list.index('"')]
+   PARCEL_VERSION = dir_list[:dir_list.rfind('-')]
 PARCELS = [
-   { 'name' : "CDH", 'version' : CONFIG.get("CDH", "cdh.parcel.version") },
+   { 'name' : "CDH", 'version' : PARCEL_VERSION },
    #{ 'name' : "CDH", 'version' : "5.0.1-1.cdh5.0.1.p0.47" },
    #{ 'name' : "ACCUMULO", 'version' : "1.4.3-cdh4.3.0-beta-3"}
 ]
