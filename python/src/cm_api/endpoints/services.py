@@ -1551,6 +1551,15 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('sentryCreateDatabaseTables', api_version=7)
 
+  def upgrade_sentry_database_tables(self):
+    """
+    Upgrades the Sentry Server database tables in the configured database.
+
+    @return: Reference to the submitted command.
+    @since: API v8
+    """
+    return self._cmd('sentryUpgradeDatabaseTables', api_version=8)
+
   def update_metastore_namenodes(self):
     """
     Update Hive Metastore to point to a NameNode's Nameservice name instead of
