@@ -45,11 +45,13 @@ class TestSnapshotTypes(unittest.TestCase):
     RAW = '''{
       "snapshotName" : "sn1",
       "tableName" : "table1",
-      "creationTime" : "2012-12-10T23:11:31.041Z" }'''
+      "creationTime" : "2012-12-10T23:11:31.041Z",
+      "storage" : "LOCAL" }'''
     args = utils.deserialize(RAW, ApiHBaseSnapshot)
     self.assertEquals('sn1', args.snapshotName)
     self.assertEquals('table1', args.tableName)
     self.assertEquals(self._parse_time("2012-12-10T23:11:31.041Z"), args.creationTime)
+    self.assertEquals('LOCAL', args.storage)
 
   def test_hdfs_snapshot(self):
     RAW = '''{
