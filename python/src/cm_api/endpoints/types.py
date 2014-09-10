@@ -791,6 +791,7 @@ class ApiHBaseSnapshot(BaseApiObject):
     'snapshotName'  : None,
     'tableName'     : None,
     'creationTime'  : ROAttr(datetime.datetime),
+    'storage'       : None,
   }
 
 class ApiHBaseSnapshotError(BaseApiObject):
