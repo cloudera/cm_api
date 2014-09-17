@@ -195,6 +195,24 @@ class ApiRole(BaseApiResource):
     """
     return self._get_log('stderr')
 
+  def get_stacks_log(self):
+    """
+    Retrieve the contents of the role's stacks log file.
+
+    @return: Contents of stacks log file.
+    @since: API v8
+    """
+    return self._get_log('stacks')
+
+  def get_stacks_logs_bundle(self):
+    """
+    Retrieve a zip file of the role's stacks log files.
+
+    @return: A zipfile of stacks log files.
+    @since: API v8
+    """
+    return self._get_log('stacksBundle')
+
   def get_metrics(self, from_time=None, to_time=None, metrics=None, view=None):
     """
     This endpoint is not supported as of v6. Use the timeseries API
