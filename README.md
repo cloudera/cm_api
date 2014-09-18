@@ -19,7 +19,7 @@ This client code allows you to interact with Cloudera Manager to:
 * Upgrade services running on your cluster
 * Access time-series data on resource utilitization for any activity in the system
 * Read logs for all processes in the system as well as stdout and stderr
-* Programmatically configuration all aspects of your deployment
+* Programmatically configure all aspects of your deployment
 * Collect diagnostic data to aid in debugging issues
 * Run distributed commands to manage auto-failover, host decommissioning and more
 * View all events and alerts that have occurred in the system
