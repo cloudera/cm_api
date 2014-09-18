@@ -92,7 +92,7 @@ class ApiHost(BaseApiResource):
   def _path(self):
     return HOSTS_PATH + '/' + self.hostId
 
-  def _put(self):
+  def put(self):
     """
     Update this resource.
     @return: The updated object.
@@ -184,4 +184,4 @@ class ApiHost(BaseApiResource):
     Update the rack ID of this host.
     """
     self.rackId = rackId
-    self._put()
+    self.put()
