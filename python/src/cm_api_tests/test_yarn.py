@@ -61,3 +61,13 @@ class TestYarn(unittest.TestCase):
     attr = resp[0]
     self.assertIsInstance(attr, ApiYarnApplicationAttribute)
     self.assertEquals('test', attr.name)
+
+  def test_collect_yarn_application_diagnostics(self):
+    resource = utils.MockResource(self)
+    service = ApiService(resource, name="bar")
+
+    resource.expect("POST", "/cm/service/commands/yarnApplicationDiagnosticsCollection",
+        retdata={ 'name' : 'YarnApplicationDiagnosticsCollection' })
+    resp = service.collect_yarn_application_diagnostics('randomId-1', 'randomId-2', 'randomId-3')
+
+    self.assertEquals('YarnApplicationDiagnosticsCollection', resp.name)

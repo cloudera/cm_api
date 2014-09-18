@@ -466,6 +466,18 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('yarnNodeManagerRemoteAppLogDirCommand', api_version=6)
 
+  def collect_yarn_application_diagnostics(self, *application_ids):
+    """
+    Collects the Diagnostics data for Yarn applications.
+
+    @param application_ids: An array of strings containing the id's of the
+                            yarn applications.
+    @return: Reference to the submitted command.
+    @since: API v8
+    """
+    args = dict(applicationIds = application_ids)
+    return self._cmd('yarnApplicationDiagnosticsCollection', api_version=8, data=args)
+
   def get_config(self, view = None):
     """
     Retrieve the service's configuration.
