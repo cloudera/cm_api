@@ -267,6 +267,127 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('impalaCreateUserDir', api_version=6)
 
+  def enable_llama_rm(self, llama1_host_id, llama1_role_name=None,
+                      llama2_host_id=None, llama2_role_name=None,
+                      zk_service_name=None, skip_restart=False):
+    """
+    Enable Llama-based resource management for Impala.
+
+    This command only applies to CDH 5.1+ Impala services.
+
+    This command configures YARN and Impala for Llama resource management,
+    and then creates one or two Llama roles, as specified by the parameters.
+    When two Llama roles are created, they are configured as an active-standby
+    pair. Auto-failover from active to standby Llama will be enabled using
+    ZooKeeper.
+
+    If optional role name(s) are specified, the new Llama role(s) will be
+    named accordingly; otherwise, role name(s) will be automatically generated.
+
+    By default, YARN, Impala, and any dependent services will be restarted,
+    and client configuration will be re-deployed across the cluster. These
+    default actions may be suppressed.
+
+    In order to enable Llama resource management, a YARN service must be
+    present in the cluster, and Cgroup-based resource management must be
+    enabled for all hosts with NodeManager roles. If these preconditions
+    are not met, the command will fail.
+
+    @param llama1_host_id: id of the host where the first Llama role will
+                           be created.
+    @param llama1_role_name: Name of the first Llama role. If omitted, a
+                             name will be generated automatically.
+    @param llama2_host_id: id of the host where the second Llama role will
+                           be created. If omitted, only one Llama role will
+                           be created (i.e., high availability will not be
+                           enabled).
+    @param llama2_role_name: Name of the second Llama role. If omitted, a
+                             name will be generated automatically.
+    @param zk_service_name: Name of the ZooKeeper service to use for
+                            auto-failover. Only relevant when enabling
+                            Llama RM in HA mode (i.e., when creating two
+                            Llama roles). If Impala's ZooKeeper dependency
+                            is already set, then that ZooKeeper service will
+                            be used for auto-failover, and this parameter
+                            may be omitted.
+    @param skip_restart: true to skip the restart of Yarn, Impala, and
+                         their dependent services, and to skip deployment
+                         of client configuration. Default is False (i.e.,
+                         by default dependent services are restarted and
+                         client configuration is deployed).
+    @return: Reference to the submitted command.
+    @since: API v8
+    """
+    args = dict(
+      llama1HostId = llama1_host_id,
+      llama1RoleName = llama1_role_name,
+      llama2HostId = llama2_host_id,
+      llama2RoleName = llama2_role_name,
+      zkServiceName = zk_service_name,
+      skipRestart = skip_restart
+    )
+    return self._cmd('impalaEnableLlamaRm', data=args, api_version=8)
+
+  def disable_llama_rm(self):
+    """
+    Disable Llama-based resource management for Impala.
+
+    This command only applies to CDH 5.1+ Impala services.
+
+    This command disables resource management for Impala by removing all
+    Llama roles present in the Impala service. Any services that depend
+    on the Impala service being modified are restarted by the command,
+    and client configuration is deployed for all services of the cluster.
+
+    @return: Reference to the submitted command.
+    @since: API v8
+    """
+    return self._cmd('impalaDisableLlamaRm', api_version=8)
+
+  def enable_llama_ha(self, new_llama_host_id, zk_service_name=None,
+                      new_llama_role_name=None):
+    """
+    Enable high availability for an Impala Llama ApplicationMaster.
+
+    This command only applies to CDH 5.1+ Impala services.
+
+    @param new_llama_host_id: id of the host where the second Llama role
+                              will be added.
+    @param zk_service_name: Name of the ZooKeeper service to use for
+                            auto-failover. If Impala's ZooKeeper dependency
+                            is already set, then that ZooKeeper service will
+                            be used for auto-failover, and this parameter
+                            may be omitted.
+    @param new_llama_role_name: Name of the new Llama role. If omitted, a
+                                name will be generated automatically.
+    @return: Reference to the submitted command.
+    @since: API v8
+    """
+    args = dict(
+      newLlamaHostId = new_llama_host_id,
+      zkServiceName = zk_service_name,
+      newLlamaRoleName = new_llama_role_name
+    )
+    return self._cmd('impalaEnableLlamaHa', data=args, api_version=8)
+
+  def disable_llama_ha(self, active_name):
+    """
+    Disable high availability for an Impala Llama active-standby pair.
+
+    This command only applies to CDH 5.1+ Impala services.
+
+    @param active_name: name of the Llama role that will be active after
+                        the disable operation. The other Llama role will
+                        be removed.
+
+    @return: Reference to the submitted command.
+    @since: API v8
+    """
+    args = dict(
+      activeName = active_name
+    )
+    return self._cmd('impalaDisableLlamaHa', data=args, api_version=8)
+
   def get_yarn_applications(self, start_time, end_time, filter_str="", limit=100,
       offset=0):
     """
