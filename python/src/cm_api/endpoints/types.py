@@ -779,6 +779,7 @@ class ApiReplicationSchedule(BaseApiObject):
 class ApiHBaseSnapshotPolicyArguments(BaseApiObject):
   _ATTRIBUTES = {
     'tableRegExps' : None,
+    'storage'      : None,
   }
 
 class ApiHdfsSnapshotPolicyArguments(BaseApiObject):
@@ -799,6 +800,7 @@ class ApiHBaseSnapshotError(BaseApiObject):
     'tableName'     : ROAttr(),
     'snapshotName'  : ROAttr(),
     'error'         : ROAttr(),
+    'storage'       : ROAttr(),
   }
 
 class ApiHdfsSnapshot(BaseApiObject):

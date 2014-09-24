@@ -37,9 +37,10 @@ class TestSnapshotTypes(unittest.TestCase):
     self.assertEquals('/user/oozie', args.pathPatterns)
 
   def test_hbase_arguments(self):
-    RAW = '''{"tableRegExps" : "table1"}'''
+    RAW = '''{"tableRegExps" : "table1", "storage" : "LOCAL"}'''
     args = utils.deserialize(RAW, ApiHBaseSnapshotPolicyArguments)
     self.assertEquals('table1', args.tableRegExps)
+    self.assertEquals('LOCAL', args.storage)
 
   def test_hbase_snapshot(self):
     RAW = '''{
@@ -69,11 +70,13 @@ class TestSnapshotTypes(unittest.TestCase):
     RAW = '''{
       "snapshotName" : "sn1",
       "tableName" : "table1",
-      "error" : "bad snapshot" }'''
+      "error" : "bad snapshot",
+      "storage" : "LOCAL" }'''
     args = utils.deserialize(RAW, ApiHBaseSnapshotError)
     self.assertEquals('sn1', args.snapshotName)
     self.assertEquals('table1', args.tableName)
     self.assertEquals('bad snapshot', args.error)
+    self.assertEquals('LOCAL', args.storage)
 
   def test_hdfs_snapshot_error(self):
     RAW = '''{
@@ -119,7 +122,8 @@ class TestSnapshotTypes(unittest.TestCase):
       "creationErrors" : [{
           "snapshotName" : "sn1",
           "tableName" : "table1",
-          "error" : "bad snapshot"}],
+          "error" : "bad snapshot",
+          "storage" : "LOCAL"}],
       "deletionErrorCount" : 0,
       "deletionErrors" : []
        }'''
@@ -135,6 +139,7 @@ class TestSnapshotTypes(unittest.TestCase):
     self.assertEquals('dn1', args.deletedSnapshots[0].snapshotName)
     self.assertEquals(1, args.creationErrorCount)
     self.assertEquals("bad snapshot", args.creationErrors[0].error)
+    self.assertEquals("LOCAL", args.creationErrors[0].storage)
     self.assertEquals(0, args.deletionErrorCount)
     self.assertEquals([], args.deletionErrors)
 
