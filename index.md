@@ -7,7 +7,7 @@ title: Cloudera Manager API Client
 <div class="jumbotron">
   <h1 class="text-right">
     API access to
-    <a href="http://www.cloudera.com/content/cloudera/en/products/cloudera-manager.html">Cloudera Manager</a>
+    <a href="http://www.cloudera.com/content/cloudera/en/products-and-services/cloudera-enterprise/cloudera-manager.html">Cloudera Manager</a>
   </h1>
   Cloudera Manager's REST API lets you work with existing tools, and programmatically manage your
   Hadoop clusters.
