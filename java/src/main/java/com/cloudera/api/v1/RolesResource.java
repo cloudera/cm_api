@@ -31,7 +31,6 @@ import static com.cloudera.api.Parameters.ROLE_NAME;
 import static com.cloudera.api.Parameters.TO;
 
 import java.io.InputStream;
-import java.io.IOException;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -70,12 +69,15 @@ public interface RolesResource {
    *           FAILOVERCONTROLLER, GATEWAY, JOURNALNODE</td>
    *     </tr>
    *     <tr>
-   *       <td>MAPREDUCE</td>
-   *       <td>JOBTRACKER, TASKTRACKER, GATEWAY</td>
+   *       <td>HDFS (CDH5)</td>
+   *       <td>NAMENODE, DATANODE, SECONDARYNAMENODE, BALANCER, HTTPFS,
+   *           FAILOVERCONTROLLER, GATEWAY, JOURNALNODE, NFSGATEWAY</td>
    *     </tr>
-   *     <tr>
+   *       <td>MAPREDUCE</td>
+   *       <td>JOBTRACKER, TASKTRACKER, GATEWAY, FAILOVERCONTROLLER,</td>
+   *     </tr>
    *       <td>HBASE</td>
-   *       <td>MASTER, REGIONSERVER, GATEWAY</td>
+   *       <td>MASTER, REGIONSERVER, GATEWAY, HBASETHRIFTSERVER, HBASERESTSERVER</td>
    *     </tr>
    *     <tr>
    *       <td>YARN</td>
@@ -98,12 +100,20 @@ public interface RolesResource {
    *       <td>HUE_SERVER, BEESWAX_SERVER, KT_RENEWER</td>
    *     </tr>
    *     <tr>
+   *       <td>HUE (CDH5)</td>
+   *       <td>HUE_SERVER, KT_RENEWER</td>
+   *     </tr>
+   *     <tr>
    *       <td>FLUME</td>
    *       <td>AGENT</td>
    *     </tr>
    *     <tr>
-   *       <td>IMPALA</td>
-   *       <td>IMPALAD, STATESTORE</td>
+   *       <td>IMPALA (CDH4)</td>
+   *       <td>IMPALAD, STATESTORE, CATALOGSERVER</td>
+   *     </tr>
+   *     <tr>
+   *       <td>IMPALA (CDH5)</td>
+   *       <td>IMPALAD, STATESTORE, CATALOGSERVER, LLAMA</td>
    *     </tr>
    *     <tr>
    *       <td>HIVE</td>
@@ -111,11 +121,36 @@ public interface RolesResource {
    *     </tr>
    *     <tr>
    *       <td>SOLR</td>
-   *       <td>SOLR_SERVER</td>
+   *       <td>SOLR_SERVER, GATEWAY</td>
    *     </tr>
    *     <tr>
    *       <td>SQOOP</td>
    *       <td>SQOOP_SERVER</td>
+   *     </tr>
+   *     <tr>
+   *       <td>SQOOP_CLIENT</td>
+   *       <td>GATEWAY</td>
+   *     </tr>
+   *     <tr>
+   *       <td>SENTRY</td>
+   *       <td>SENTRY_SERVER</td>
+   *     </tr>
+   *     <tr>
+   *       <td>ACCUMULO16</td>
+   *       <td>GARBAGE_COLLECTOR, GATEWAY, ACCUMULO16_MASTER, MONITOR,
+   *           ACCUMULO16_TSERVER, TRACER</td>
+   *     </tr>
+   *     <tr>
+   *       <td>KMS</td>
+   *       <td>KMS</td>
+   *     </tr>
+   *     <tr>
+   *       <td>KS_INDEXER</td>
+   *       <td>HBASE_INDEXER</td>
+   *     </tr>
+   *     <tr>
+   *       <td>SPARK_ON_YARN</td>
+   *       <td>GATEWAY, SPARK_YARN_HISTORY_SERVER</td>
    *     </tr>
    *   </tbody>
    *
@@ -287,7 +322,7 @@ public interface RolesResource {
    * <p>
    * Log files are returned as plain text (type "text/plain").
    *
-   * @param roleName The role to start.
+   * @param roleName The role to fetch logs from.
    * @return Contents of the role's log file.
    */
   @GET
@@ -304,7 +339,7 @@ public interface RolesResource {
    * <p>
    * Log files are returned as plain text (type "text/plain").
    *
-   * @param roleName The role to start.
+   * @param roleName The role to fetch stdout from.
    * @return Contents of the role's standard output.
    */
   @GET
@@ -321,7 +356,7 @@ public interface RolesResource {
    * <p>
    * Log files are returned as plain text (type "text/plain").
    *
-   * @param roleName The role to start.
+   * @param roleName The role to fetch stderr from.
    * @return Contents of the role's standard error output.
    */
   @GET

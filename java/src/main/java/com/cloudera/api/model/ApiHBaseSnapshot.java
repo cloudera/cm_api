@@ -31,6 +31,21 @@ public class ApiHBaseSnapshot {
   private String snapshotName;
   private String tableName;
   private Date creationTime;
+  private Storage storage;
+
+  /*
+   * The location where a snapshot is stored.
+   */
+  public enum Storage {
+    /**
+     * The snapshot is in storage managed by the HBase service.
+     */
+    LOCAL,
+    /**
+     * The snapshot is in Amazon S3.
+     */
+    REMOTE_S3
+  }
 
   // For JAX-B
   public ApiHBaseSnapshot() {
@@ -42,9 +57,15 @@ public class ApiHBaseSnapshot {
 
   public ApiHBaseSnapshot(String snapshotName, String tableName,
       Date creationTime) {
+    this(snapshotName, tableName, creationTime, null);
+  }
+
+  public ApiHBaseSnapshot(String snapshotName, String tableName,
+      Date creationTime, Storage storage) {
     this.snapshotName = snapshotName;
     this.tableName = tableName;
     this.creationTime = creationTime;
+    this.storage = storage;
   }
 
   /** Snapshot name. */
@@ -77,12 +98,23 @@ public class ApiHBaseSnapshot {
     this.creationTime = creationTime;
   }
 
+  /** The location where a snapshot is stored. */
+  @XmlElement
+  public Storage getStorage() {
+   return storage;
+  }
+
+  public void setStorage(Storage storage) {
+    this.storage = storage;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
         .add("snapshotName", snapshotName)
         .add("tableName", tableName)
         .add("creationTime", creationTime)
+        .add("storage", storage)
         .toString();
   }
 
@@ -92,11 +124,12 @@ public class ApiHBaseSnapshot {
     return (this == that) || (that != null &&
         Objects.equal(snapshotName, that.getSnapshotName()) &&
         Objects.equal(tableName, that.getTableName()) &&
-        Objects.equal(creationTime, that.getCreationTime()));
+        Objects.equal(creationTime, that.getCreationTime()) &&
+        Objects.equal(storage, that.storage));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(snapshotName, tableName, creationTime);
+    return Objects.hashCode(snapshotName, tableName, creationTime, storage);
   }
 }

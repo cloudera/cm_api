@@ -18,11 +18,16 @@ package com.cloudera.api.model;
 
 import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Maps;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Date;
 
 /**
  * Models audit events from both CM and CM managed services like HDFS, HBase
@@ -32,7 +37,8 @@ import java.util.Date;
 @XmlRootElement(name = "audit")
 @XmlType(
     propOrder = {"timestamp", "service", "username", "impersonator",
-        "ipAddress", "command", "resource", "operationText", "allowed"})
+        "ipAddress", "command", "resource", "operationText", "allowed",
+        "serviceValues"})
 public class ApiAudit {
   private String service;
   private String username;
@@ -43,15 +49,16 @@ public class ApiAudit {
   private boolean allowed;
   private Date timestamp;
   private String operationText;
+  private Map<String, String> serviceValues;
 
   public ApiAudit() {
     // For JAX-B
   }
 
   public ApiAudit(String service, String username,
-                  String impersonator, String command,
-                  String ipAddress, String resource, boolean allowed,
-                  Date timestamp, String operationText) {
+      String impersonator, String command,
+      String ipAddress, String resource, boolean allowed,
+      Date timestamp, String operationText, Map<String, String> serviceValues) {
     this.service = service;
     this.username = username;
     this.impersonator = impersonator;
@@ -61,11 +68,13 @@ public class ApiAudit {
     this.allowed = allowed;
     this.timestamp = timestamp;
     this.operationText = operationText;
+    this.serviceValues = serviceValues;
   }
 
   @Override
   public boolean equals(Object o) {
     ApiAudit that = ApiUtils.baseEquals(this, o);
+
     return this == that || (that != null &&
         allowed == that.allowed &&
         Objects.equal(timestamp, that.timestamp) &&
@@ -75,13 +84,15 @@ public class ApiAudit {
         Objects.equal(command, that.command) &&
         Objects.equal(ipAddress, that.ipAddress) &&
         Objects.equal(resource, that.resource) &&
-        Objects.equal(operationText, that.operationText));
+        Objects.equal(operationText, that.operationText) &&
+        Objects.equal(getServiceValues(), that.getServiceValues())
+    );
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(timestamp, username, impersonator, service,
-        command, ipAddress, resource, allowed, operationText);
+        command, ipAddress, resource, allowed, operationText, serviceValues);
   }
 
   @Override
@@ -96,6 +107,7 @@ public class ApiAudit {
       .add("allowed", allowed)
       .add("timestamp", timestamp)
       .add("operationText", operationText)
+      .add("serviceValues", serviceValues)
       .toString();
   }
 
@@ -210,4 +222,13 @@ public class ApiAudit {
   public void setOperationText(String operationText) {
     this.operationText = operationText;
   }
+
+  public Map<String, String> getServiceValues() {
+    return serviceValues;
+  }
+
+  private void setServiceValues(Map<String, String> serviceValues) {
+    this.serviceValues = serviceValues;
+  }
+
 }

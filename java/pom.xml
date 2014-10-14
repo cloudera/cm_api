@@ -5,7 +5,7 @@
   <groupId>com.cloudera.api</groupId>
   <artifactId>cloudera-manager-api</artifactId>
   <name>Cloudera Manager API</name>
-  <version>5.1.0</version>
+  <version>5.2.0</version>
 
   <properties>
     <cxf.version>2.7.5</cxf.version>
@@ -33,10 +33,24 @@
 
   <profiles>
     <profile>
+      <id>jdk8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+        <javadocOptions>-Xdoclint:none</javadocOptions>
+        <findbugsVersion>3.0.0</findbugsVersion>
+      </properties>
+      <!-- Enunciate doesn't work with Java 8. -->
+    </profile>
+    <profile>
       <id>jdk7</id>
       <activation>
         <jdk>1.7</jdk>
       </activation>
+      <properties>
+        <findbugsVersion>3.0.0</findbugsVersion>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -74,6 +88,9 @@
       <activation>
         <jdk>1.6</jdk>
       </activation>
+      <properties>
+        <findbugsVersion>2.5.2</findbugsVersion>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -189,7 +206,7 @@
           </execution>
         </executions>
         <configuration>
-          <additionalJOption>-Xwerror</additionalJOption>
+          <additionalparam>${javadocOptions}</additionalparam>
           <docfilessubdirs>true</docfilessubdirs>
           <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
           <stylesheetfile>${basedir}/src/javadoc/javadoc.css</stylesheetfile>
@@ -215,7 +232,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.5.2</version>
+        <version>${findbugsVersion}</version>
         <configuration>
           <excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
         </configuration>

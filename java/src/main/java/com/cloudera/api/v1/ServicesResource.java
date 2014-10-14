@@ -86,7 +86,14 @@ public interface ServicesResource {
    *     <tr>
    *       <td>CDH4</td>
    *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA, FLUME, HIVE, SOLR, SQOOP, KS_INDEXER</td>
-   *     </td>
+   *     </tr>
+   *     <tr>
+   *       <td>CDH5</td>
+   *       <td>HDFS, MAPREDUCE, HBASE, OOZIE, ZOOKEEPER, HUE, YARN, IMPALA,
+   *           FLUME, HIVE, SOLR, SQOOP, KS_INDEXER, SQOOP_CLIENT, SENTRY,
+   *           ACCUMULO16, KMS, SPARK_ON_YARN
+   *       </td>
+   *     </tr>
    *   </tbody>
    * </table>
    *

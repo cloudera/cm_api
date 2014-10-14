@@ -19,9 +19,11 @@ package com.cloudera.api.model;
 import com.cloudera.api.ApiErrorMessage;
 import com.cloudera.api.ApiObjectMapper;
 import com.cloudera.api.ApiUtils;
+import com.cloudera.api.model.ApiHBaseSnapshot.Storage;
 import com.cloudera.api.model.ApiRole.ZooKeeperServerMode;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -394,15 +396,119 @@ public class ApiModelTest {
   @Test
   public void testAudit() throws Exception {
     ApiAudit audit = new ApiAudit("service",
-                                  "myName",
-                                  "imp",
-                                  "command",
-                                  "1.2.3.4",
-                                  "resource",
-                                  true,
-                                  new Date(250912898047L),
-                                  "select foo from bar");
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(250912898047L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValue2"));
     checkJsonXML(audit);
+  }
+
+  @Test
+  public void testAuditsExtraValuesEqual() throws Exception {
+    ApiAudit audit1 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValue2"));
+
+    ApiAudit audit2 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey2", "extraValue2", "extraKey1", "extraValue1"));
+
+    assertTrue(audit1.equals(audit2));
+  }
+
+  @Test
+  public void testAuditsExtraValuesNotEqual() throws Exception {
+    ApiAudit audit1 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValue2"));
+
+    // different number of extra values
+    ApiAudit audit2 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1"));
+
+    assertFalse(audit1.equals(audit2));
+
+    // different keys
+    audit2 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKeyX", "extraValue2"));
+
+    assertFalse(audit1.equals(audit2));
+
+    // different values
+    audit2 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValueX"));
+
+    assertFalse(audit1.equals(audit2));
+  }
+
+  @Test
+  public void testExtraValuesMap() {
+    ApiAudit audit = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValue2"));
+
+    Map<String, String> expectedExtraValues = Maps.newHashMap();
+    expectedExtraValues.put("extraKey1", "extraValue1");
+    expectedExtraValues.put("extraKey2", "extraValue2");
+
+    assertEquals(expectedExtraValues, audit.getServiceValues());
   }
 
   @Test
@@ -605,7 +711,8 @@ public class ApiModelTest {
   public void testHBaseScheduledSnapshots() throws Exception {
     ApiSnapshotPolicy policy = createPolicy();
     ApiHBaseSnapshotPolicyArguments hbaseArgs =
-        new ApiHBaseSnapshotPolicyArguments(Arrays.asList("table1", "table2"));
+        new ApiHBaseSnapshotPolicyArguments(Arrays.asList("table1", "table2"),
+            Storage.LOCAL);
     policy.setHBaseArguments(hbaseArgs);
     checkJsonXML(policy);
 
@@ -616,17 +723,21 @@ public class ApiModelTest {
     result.setUnprocessedTables(Arrays.asList("t2", "t3"));
     result.setCreatedSnapshotCount(1);
     result.setCreatedSnapshots(
-        Arrays.asList(new ApiHBaseSnapshot("s1", "t1", new Date(0))));
+        Arrays.asList(
+            new ApiHBaseSnapshot("s1", "t1", new Date(0), Storage.LOCAL)));
     result.setDeletedSnapshotCount(2);
     result.setDeletedSnapshots(
-        Arrays.asList(new ApiHBaseSnapshot("s2", "t1", new Date(0)),
-            new ApiHBaseSnapshot("s3", "t2", new Date(0))));
+        Arrays.asList(
+            new ApiHBaseSnapshot("s2", "t1", new Date(0), Storage.LOCAL),
+            new ApiHBaseSnapshot("s3", "t2", new Date(0), Storage.LOCAL)));
     result.setCreationErrorCount(1);
     result.setCreationErrors(
-        Arrays.asList(new ApiHBaseSnapshotError("t1", "s1", "error 1")));
+        Arrays.asList(
+            new ApiHBaseSnapshotError("t1", "s1", Storage.LOCAL, "error 1")));
     result.setDeletedSnapshotCount(1);
     result.setDeletionErrors(
-        Arrays.asList(new ApiHBaseSnapshotError("t2", "s3", "error 2")));
+        Arrays.asList(
+            new ApiHBaseSnapshotError("t2", "s3", Storage.LOCAL, "error 2")));
     result.setDeletionErrorCount(1);
 
     ApiSnapshotCommand cmd = new ApiSnapshotCommand();

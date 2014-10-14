@@ -13,33 +13,33 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.cloudera.api.model;
+package com.cloudera.api.v8;
 
-import java.util.List;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import com.cloudera.api.v6.MgmtServiceResourceV6;
 
-/**
- * A list of {@link ApiParcel}.
- */
-@XmlRootElement(name = "parcelList")
-public class ApiParcelList extends ApiListBase<ApiParcel> {
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-  public ApiParcelList() {
-    // For JAX-B
-  }
+@Consumes({ MediaType.APPLICATION_JSON })
+@Produces({ MediaType.APPLICATION_JSON })
+public interface MgmtServiceResourceV8 extends MgmtServiceResourceV6 {
 
-  public ApiParcelList(List<ApiParcel> parcels) {
-    super(parcels);
-  }
+  /**
+   * Return the management roles resource handler.
+   *
+   * @return The roles resource handler.
+   */
+  @Path("/roles")
+  public MgmtRolesResourceV8 getRolesResource();
 
-  @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  public List<ApiParcel> getParcels() {
-    return values;
-  }
-
-  public void setParcels(List<ApiParcel> values) {
-    this.values = values;
-  }
+  /**
+   * Returns the management role commands resource handler.
+   *
+   * @return The roles command handler.
+   */
+  @Path("/roleCommands")
+  public MgmtRoleCommandsResourceV8 getMgmtRoleCommandsResource();
 
 }

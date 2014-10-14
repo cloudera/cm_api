@@ -70,8 +70,11 @@ public interface ClustersResourceV7 extends ClustersResourceV6 {
       ApiHostRefList hosts);
 
   /**
-   * Download a zip-compressed archive of the client configuration,
-   * of a specific cluster. This resource does not require any authentication.
+   * Download a zip-compressed archive of the client configuration, of a
+   * specific cluster. Currently, this only includes Kerberos Client
+   * Configuration (krb5.conf). For client configuration of services, use the
+   * clientConfig endpoint of the services resource. This resource does not
+   * require any authentication.
    *
    * @param clusterName The cluster name.
    * @return The archive data.

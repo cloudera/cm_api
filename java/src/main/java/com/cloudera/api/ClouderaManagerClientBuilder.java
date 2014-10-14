@@ -59,6 +59,7 @@ public class ClouderaManagerClientBuilder {
   private TimeUnit receiveTimeoutUnits = DEFAULT_RECEIVE_TIMEOUT_UNITS;
   private boolean validateCerts = true;
   private boolean validateCn = true;
+  private TrustManager[] trustManagers = null;
 
   public ClouderaManagerClientBuilder withBaseURL(URL baseUrl) {
     this.baseUrl = baseUrl;
@@ -149,6 +150,10 @@ public class ClouderaManagerClientBuilder {
     return urlString;
   }
 
+  public void setTrustManagers(TrustManager[] managers) {
+    trustManagers = managers;
+  }
+
   public ApiRootResource build() {
     return build(ApiRootResource.class);
   }
@@ -176,6 +181,9 @@ public class ClouderaManagerClientBuilder {
       TLSClientParameters tlsParams = new TLSClientParameters();
       if (!validateCerts) {
         tlsParams.setTrustManagers(new TrustManager[] { new AcceptAllTrustManager() });
+      }
+      else if (trustManagers != null) {
+        tlsParams.setTrustManagers(trustManagers);
       }
       tlsParams.setDisableCNCheck(!validateCn);
       conduit.setTlsClientParameters(tlsParams);

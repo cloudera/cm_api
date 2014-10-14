@@ -13,33 +13,33 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.cloudera.api.model;
+package com.cloudera.api.v8;
 
-import java.util.List;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import com.cloudera.api.v7.RootResourceV7;
 
-/**
- * A list of {@link ApiParcel}.
- */
-@XmlRootElement(name = "parcelList")
-public class ApiParcelList extends ApiListBase<ApiParcel> {
+import javax.ws.rs.Path;
 
-  public ApiParcelList() {
-    // For JAX-B
-  }
+@Path("")
+public interface RootResourceV8 extends RootResourceV7 {
 
-  public ApiParcelList(List<ApiParcel> parcels) {
-    super(parcels);
-  }
+  /**
+   * @return The clusters resource handler.
+   */
+  @Override
+  @Path("/clusters")
+  public ClustersResourceV8 getClustersResource();
 
-  @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  public List<ApiParcel> getParcels() {
-    return values;
-  }
+  /**
+   * @return The Cloudera Manager resource handler.
+   */
+  @Override
+  @Path("/cm")
+  public ClouderaManagerResourceV8 getClouderaManagerResource();
 
-  public void setParcels(List<ApiParcel> values) {
-    this.values = values;
-  }
-
+  /**
+   * @return The audits resource handler.
+   */
+  @Override
+  @Path("/audits")
+  public AuditsResourceV8 getAuditsResource();
 }

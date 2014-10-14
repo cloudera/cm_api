@@ -16,6 +16,7 @@
 package com.cloudera.api.model;
 
 import com.cloudera.api.ApiUtils;
+import com.cloudera.api.model.ApiHBaseSnapshot.Storage;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -28,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ApiHBaseSnapshotError {
   private String tableName;
   private String snapshotName;
+  private Storage storage;
   private String error;
 
   public ApiHBaseSnapshotError() {
@@ -36,8 +38,14 @@ public class ApiHBaseSnapshotError {
 
   public ApiHBaseSnapshotError(String tableName, String snapshotName,
       String error) {
+    this(tableName, snapshotName, null /* no storage specified */, error);
+  }
+
+  public ApiHBaseSnapshotError(String tableName, String snapshotName,
+      Storage storage, String error) {
     this.tableName = tableName;
     this.snapshotName = snapshotName;
+    this.storage = storage;
     this.error = error;
   }
 
@@ -61,6 +69,16 @@ public class ApiHBaseSnapshotError {
     this.snapshotName = snapshotName;
   }
 
+  /** The location of the snapshot. */
+  @XmlElement
+  public Storage getStorage() {
+    return storage;
+  }
+
+  public void setStorage(Storage storage) {
+    this.storage = storage;
+  }
+
   /** Description of the error. */
   @XmlElement
   public String getError() {
@@ -76,6 +94,7 @@ public class ApiHBaseSnapshotError {
     return Objects.toStringHelper(this)
         .add("tableName", tableName)
         .add("snapshotName", snapshotName)
+        .add("storage", storage)
         .add("error", error)
         .toString();
   }
@@ -86,11 +105,12 @@ public class ApiHBaseSnapshotError {
     return (this == that) || (that != null &&
         Objects.equal(tableName, that.getTableName()) &&
         Objects.equal(snapshotName, that.getSnapshotName()) &&
+        Objects.equal(storage, that.getStorage()) &&
         Objects.equal(error, that.getError()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(tableName, snapshotName, error);
+    return Objects.hashCode(tableName, snapshotName, storage, error);
   }
 }

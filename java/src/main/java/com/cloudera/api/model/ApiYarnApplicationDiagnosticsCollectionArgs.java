@@ -16,30 +16,26 @@
 package com.cloudera.api.model;
 
 import java.util.List;
-import javax.xml.bind.annotation.XmlElementWrapper;
+
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * A list of {@link ApiParcel}.
+ * Arguments used for collecting diagnostics data for Yarn applications
  */
-@XmlRootElement(name = "parcelList")
-public class ApiParcelList extends ApiListBase<ApiParcel> {
+@XmlRootElement(name = "yarnApplicationDiagnosticsCollectionArgs")
+public class ApiYarnApplicationDiagnosticsCollectionArgs {
+  private List<String> applicationIds;
 
-  public ApiParcelList() {
-    // For JAX-B
+  /**
+   * Id's of the applications whose diagnostics data has to be collected
+   */
+  @XmlElement
+  public List<String> getApplicationIds() {
+    return applicationIds;
   }
 
-  public ApiParcelList(List<ApiParcel> parcels) {
-    super(parcels);
+  public void setApplicationIds(List<String> applicationIds) {
+    this.applicationIds = applicationIds;
   }
-
-  @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  public List<ApiParcel> getParcels() {
-    return values;
-  }
-
-  public void setParcels(List<ApiParcel> values) {
-    this.values = values;
-  }
-
 }
