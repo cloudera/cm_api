@@ -105,10 +105,10 @@ public interface ClustersResource {
       @QueryParam(DATA_VIEW) @DefaultValue(DATA_VIEW_DEFAULT) DataView dataView);
 
   /**
-   * Upgrades the services in the cluster to the CDH4 version.
+   * Upgrades the services in the cluster to the CDH5 version.
    * <p>
    * This command requires that the CDH packages in the hosts used by the
-   * cluster be upgraded to CDH4 before this command is issued. Once issued,
+   * cluster be upgraded to CDH5 before this command is issued. Once issued,
    * this command will stop all running services before proceeding.
    * <p>
    * If parcels are used instead of CDH system packages then the following
@@ -119,11 +119,14 @@ public interface ClustersResource {
    *   <li>Run this upgrade command</li>
    * </ol>
    * The command will upgrade the services and their configuration to the
-   * version available in the CDH4 distribution.
+   * version available in the CDH5 distribution.
    *
    * @param clusterName The name of the cluster.
    * @return Information about the submitted command.
+   * @deprecated This endpoint should not used in Cloudera Manager 5 or later.
+   *             Use the upgradeCdh endpoint on the cluster instead.
    */
+  @Deprecated
   @POST
   @Consumes
   @Path("/{clusterName}/commands/upgradeServices")

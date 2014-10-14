@@ -72,7 +72,6 @@ public interface ParcelResource {
    * Since it is synchronous, the result is known immediately upon return.
    *
    * @return synchronous command result
-   * @throws IllegalArgumentException if parcel is not in the DOWNLOADING state
    */
   @POST
   @Path("/commands/cancelDownload")
@@ -112,7 +111,6 @@ public interface ParcelResource {
    * Since it is synchronous, the result is known immediately upon return.
    *
    * @return synchronous command result
-   * @throws IllegalArgumentException if parcel is not in the DISTRIBUTING state
    */
   @POST
   @Path("/commands/cancelDistribution")

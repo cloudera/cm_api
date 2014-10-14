@@ -17,7 +17,6 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiConfigList;
 import com.cloudera.api.model.ApiHost;
 import com.cloudera.api.model.ApiHostList;
@@ -195,7 +194,25 @@ public interface HostsResource {
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
+   * @deprecated This endpoint is not supported as of v6. Use the timeseries API
+   * instead. To get all metrics for a host with the timeseries API use
+   * the query:
+   * <br>
+   * <br>
+   * 'select * where hostId = $HOST_ID'.
+   * <br>
+   * <br>
+   * To get specific metrics for a host use a comma-separated list of
+   * the metric names as follows:
+   * <br>
+   * <br>
+   * 'select $METRIC_NAME1, $METRIC_NAME2 where hostId = $HOST_ID'.
+   * <br>
+   * <br>
+   * For more information see the <a href="http://tiny.cloudera.com/tsquery_doc">
+   * tsquery language documentation</a>.<p/>
    */
+  @Deprecated
   @GET
   @Path("/{hostId}/metrics")
   public ApiMetricList getMetrics(

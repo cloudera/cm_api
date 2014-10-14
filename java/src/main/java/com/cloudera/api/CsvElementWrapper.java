@@ -31,4 +31,9 @@ public @interface CsvElementWrapper {
    * @return The actual type of each individual CSV row.
    */
   Class<?> rowtype();
+
+  /**
+   * @return The date format to use. The default is the ISO8601 standard.
+   */
+  String dateTimeFormat() default "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 }

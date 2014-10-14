@@ -5,15 +5,17 @@
   <groupId>com.cloudera.api</groupId>
   <artifactId>cloudera-manager-api</artifactId>
   <name>Cloudera Manager API</name>
-  <version>4.7.0</version>
+  <version>5.2.0</version>
 
   <properties>
-    <cxf.version>2.5.5</cxf.version>
+    <cxf.version>2.7.5</cxf.version>
     <guava.version>14.0</guava.version>
-    <jackson2.version>2.0.4</jackson2.version>
+    <jackson2.version>2.1.0</jackson2.version>
     <joda.version>2.1</joda.version>
     <junit.version>4.8.2</junit.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <test.redirectToFile>true</test.redirectToFile>
+    <privateClassPath>com.cloudera.api.shaded</privateClassPath>
   </properties>
 
   <distributionManagement>
@@ -31,10 +33,24 @@
 
   <profiles>
     <profile>
+      <id>jdk8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+        <javadocOptions>-Xdoclint:none</javadocOptions>
+        <findbugsVersion>3.0.0</findbugsVersion>
+      </properties>
+      <!-- Enunciate doesn't work with Java 8. -->
+    </profile>
+    <profile>
       <id>jdk7</id>
       <activation>
         <jdk>1.7</jdk>
       </activation>
+      <properties>
+        <findbugsVersion>3.0.0</findbugsVersion>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -72,6 +88,9 @@
       <activation>
         <jdk>1.6</jdk>
       </activation>
+      <properties>
+        <findbugsVersion>2.5.2</findbugsVersion>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -111,6 +130,47 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>shaded</shadedClassifierName>
+              <artifactSet>
+                <includes>
+                  <include>com.fasterxml.jackson.*:*</include>
+                  <include>com.google.guava:guava</include>
+                  <include>joda-time:joda-time*</include>
+                </includes>
+              </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>com.</pattern>
+                  <shadedPattern>${privateClassPath}.com.</shadedPattern>
+                  <includes>
+                    <include>com.google.guava.**</include>
+                    <include>com.fasterxml.jackson.**</include>
+                  </includes>
+                </relocation>
+                <relocation>
+                  <pattern>org.</pattern>
+                  <shadedPattern>${privateClassPath}.org.</shadedPattern>
+                  <includes>
+                    <include>org.joda.time.**</include>
+                  </includes>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.3.1</version>
         <executions>
@@ -126,6 +186,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.12.4</version>
         <configuration>
+          <systemProperties>
+            <java.awt.headless>true</java.awt.headless>
+          </systemProperties>
           <redirectTestOutputToFile>${test.redirectToFile}</redirectTestOutputToFile>
           <useFile>${test.redirectToFile}</useFile>
         </configuration>
@@ -143,7 +206,7 @@
           </execution>
         </executions>
         <configuration>
-          <additionalJOption>-Xwerror</additionalJOption>
+          <additionalparam>${javadocOptions}</additionalparam>
           <docfilessubdirs>true</docfilessubdirs>
           <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
           <stylesheetfile>${basedir}/src/javadoc/javadoc.css</stylesheetfile>
@@ -156,6 +219,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -164,6 +228,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${findbugsVersion}</version>
+        <configuration>
+          <excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -195,11 +267,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-bundle-jaxrs</artifactId>
-      <version>${cxf.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
       <version>${cxf.version}</version>
     </dependency>
@@ -209,11 +276,30 @@
       <version>${guava.version}</version>
     </dependency>
     <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>jsr250-api</artifactId>
+      <version>1.0</version>
+      <!-- Provided since this dependency is only needed by the CM server,
+           which already provides it. We only use the security annotations,
+           which are never processed by the client code. -->
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>${joda.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

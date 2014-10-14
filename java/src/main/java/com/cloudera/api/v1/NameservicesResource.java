@@ -16,7 +16,6 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiMetricList;
 import com.cloudera.api.model.ApiNameservice;
 import com.cloudera.api.model.ApiNameserviceList;
@@ -89,7 +88,25 @@ public interface NameservicesResource {
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
    * @return List of readings from the monitors.
+   * @deprecated This endpoint is not supported as of v6. Use the timeseries API
+   * instead. To get all metrics for a nameservice with the timeseries API use
+   * the query:
+   * <br>
+   * <br>
+   * 'select * where nameserviceName = $NAMESERVICE_NAME'.
+   * <br>
+   * <br>
+   * To get specific metrics for a nameservice use a comma-separated list of
+   * the metric names as follows:
+   * <br>
+   * <br>
+   * 'select $METRIC_NAME1, $METRIC_NAME2 where nameserviceName = $NAMESERVICE_NAME'.
+   * <br>
+   * <br>
+   * For more information see the <a href="http://tiny.cloudera.com/tsquery_doc">
+   * tsquery language documentation</a>.<p/>
    */
+  @Deprecated
   @GET
   @Path("/{nameservice}/metrics")
   public ApiMetricList getMetrics(

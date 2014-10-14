@@ -53,9 +53,15 @@ public class ApiHostTemplate {
   @Override
   public boolean equals(Object o) {
     ApiHostTemplate that = ApiUtils.baseEquals(this, o);
+    // For purposes of equality of Host Templates, ordering of the elements
+    // in the RCG list does not matter. We'd use a set in retrospect, but the
+    // list is part of the public API interface now.
     return this == that || (that != null &&
         Objects.equal(name, that.name) &&
-        Objects.equal(clusterRef, that.clusterRef));
+        Objects.equal(clusterRef, that.clusterRef) &&
+        roleConfigGroupRefs.size() == that.roleConfigGroupRefs.size() &&
+        roleConfigGroupRefs.containsAll(that.roleConfigGroupRefs) &&
+        that.roleConfigGroupRefs.containsAll(roleConfigGroupRefs));
   }
 
   @Override

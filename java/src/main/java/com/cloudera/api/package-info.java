@@ -71,7 +71,7 @@
  *   </tbody>
  * </table>
  * <p>
- * Keep in mind that not all collections supports all operations.  For example,
+ * Keep in mind that not all collections support all operations.  For example,
  * events in the system are read-only; you cannot create new events with
  * the API.
  * </p>

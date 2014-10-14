@@ -34,7 +34,7 @@ public interface AuditsResource {
 
   /**
    * Fetch audit events from Cloudera Manager (CM) and CM managed services
-   * like HDFS, HBase and Hive.
+   * like HDFS, HBase, Impala and Hive.
    * <p>
    * By default, this call will fetch all audit events corresponding to a
    * 1 day window based on provided end time (which defaults to the current
@@ -76,6 +76,7 @@ public interface AuditsResource {
    *        <th> HDFS </th>
    *        <th> HBase </th>
    *        <th> Hive </th>
+   *        <th> Impala </th>
    *      </tr>
    *      <tr>
    *        <td> qualifier</td>
@@ -84,10 +85,12 @@ public interface AuditsResource {
    *        <td> </td>
    *        <td> x </td>
    *        <td> </td>
+   *        <td> </td>
    *      </tr>
    *      <tr>
    *        <td> source </td>
    *        <td> Source resource of the operation  </td>
+   *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
@@ -100,6 +103,7 @@ public interface AuditsResource {
    *        <td> </td>
    *        <td> </td>
    *        <td> </td>
+   *        <td> </td>
    *      </tr>
    *      <tr>
    *        <td> role </td>
@@ -108,10 +112,12 @@ public interface AuditsResource {
    *        <td> </td>
    *        <td> </td>
    *        <td> </td>
+   *        <td> </td>
    *      </tr>
    *      <tr>
    *        <td> service </td>
    *        <td> Cloudera Manager Service </td>
+   *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
@@ -124,10 +130,12 @@ public interface AuditsResource {
    *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
+   *        <td> x </td>
    *      </tr>
    *      <tr>
    *        <td> username</td>
    *        <td> User name </td>
+   *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
@@ -140,6 +148,7 @@ public interface AuditsResource {
    *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
+   *        <td> x </td>
    *      </tr>
    *      <tr>
    *        <td> family </td>
@@ -148,12 +157,14 @@ public interface AuditsResource {
    *        <td>  </td>
    *        <td> x </td>
    *        <td> </td>
+   *        <td> </td>
    *      </tr>
    *      <tr>
    *        <td> table </td>
    *        <td> Table name </td>
    *        <td> </td>
    *        <td> </td>
+   *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
    *      </tr>
@@ -164,6 +175,7 @@ public interface AuditsResource {
    *        <td> </td>
    *        <td> </td>
    *        <td> x </td>
+   *        <td> x </td>
    *      </tr>
    *      <tr>
    *        <td> ipAddress </td>
@@ -172,11 +184,13 @@ public interface AuditsResource {
    *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
+   *        <td> x </td>
    *      </tr>
    *      <tr>
    *        <td> destination </td>
    *        <td> Destination resource of the operation </td>
    *        <td> </td>
+   *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>
    *        <td> x </td>

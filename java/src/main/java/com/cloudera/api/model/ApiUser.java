@@ -19,8 +19,6 @@ import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -55,7 +53,7 @@ public class ApiUser {
     ApiUser other = ApiUtils.baseEquals(this, o);
     return this == other || (other != null &&
         Objects.equal(name, other.getName()) &&
-        Sets.difference(roles, other.getRoles()).isEmpty());
+        Objects.equal(roles, other.getRoles()));
   }
 
   public int hashCode() {
@@ -108,7 +106,26 @@ public class ApiUser {
 
   /**
    * A list of roles this user belongs to.
-   * Current possible values are: "ROLE_ADMIN" or empty.
+   * <p>
+   * In Cloudera Express, possible values are:
+   * <ul>
+   * <li><b>ROLE_ADMIN</b></li>
+   * <li><b>ROLE_USER</b></li>
+   * </ul>
+   * In Cloudera Enterprise Datahub Edition, additional possible values are:
+   * <ul>
+   * <li><b>ROLE_LIMITED</b>: Added in Cloudera Manager 5.0</li>
+   * <li><b>ROLE_OPERATOR</b>: Added in Cloudera Manager 5.1</li>
+   * <li><b>ROLE_CONFIGURATOR</b>: Added in Cloudera Manager 5.1</li>
+   * <li><b>ROLE_CLUSTER_ADMIN</b>: Added in Cloudera Manager 5.2</li>
+   * <li><b>ROLE_BDR_ADMIN</b>: Added in Cloudera Manager 5.2</li>
+   * <li><b>ROLE_NAVIGATOR_ADMIN</b>: Added in Cloudera Manager 5.2</li>
+   * <li><b>ROLE_USER_ADMIN</b>: Added in Cloudera Manager 5.2</li>
+   * </ul>
+   * An empty list implies ROLE_USER.
+   * <p>
+   * Note that although this interface provides a list of roles, a user should
+   * only be assigned a single role at a time.
    */
   @XmlElementWrapper(name = "roles")
   public Set<String> getRoles() {

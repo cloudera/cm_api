@@ -17,7 +17,6 @@ package com.cloudera.api.v3;
 
 import static com.cloudera.api.Parameters.SERVICE_NAME;
 
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiRollEditsArgs;
 import com.cloudera.api.model.ApiRollingRestartArgs;
@@ -37,10 +36,12 @@ import javax.ws.rs.core.MediaType;
 public interface ServicesResourceV3 extends ServicesResourceV2 {
 
   /**
-   * @return The replications resource handler.
+   * Returns the replications resource handler.
+   * <p>
+   * Available since API v3. Only available with Cloudera Manager Enterprise
+   * Edition.
    */
   @Path("/{serviceName}/replications")
-  @Enterprise
   public ReplicationsResource getReplicationsResource(
       @PathParam(SERVICE_NAME) String serviceName);
 
@@ -57,18 +58,18 @@ public interface ServicesResourceV3 extends ServicesResourceV2 {
    */
   @POST
   @Path("/{serviceName}/commands/rollingRestart")
-  @Enterprise
   public ApiCommand rollingRestart(
       @PathParam(SERVICE_NAME) String serviceName,
       ApiRollingRestartArgs args);
 
   /**
    * Creates directory for Oozie user in HDFS and installs the ShareLib in it.
-   *
-   * <p>
+   * <p/>
+   * This command should be re-run after a major version upgrade to refresh the
+   * ShareLib to the latest version.
+   * <p/>
    * Available since API v3.
-   * </p>
-   *
+   * <p/>
    * @param serviceName Name of the Oozie service on which to run the command.
    * @return Information about the submitted command
    */

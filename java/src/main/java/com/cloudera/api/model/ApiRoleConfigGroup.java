@@ -41,7 +41,7 @@ public class ApiRoleConfigGroup {
   private String name;
   private String displayName;
   private String roleType;
-  private Boolean base;
+  private boolean base;
   private ApiServiceRef serviceRef;
   private ApiConfigList config;
 
@@ -65,16 +65,14 @@ public class ApiRoleConfigGroup {
     ApiRoleConfigGroup that = ApiUtils.baseEquals(this, o);
     return this == that || (that != null &&
         Objects.equal(name, that.name) &&
-        Objects.equal(displayName, that.displayName) &&
         Objects.equal(roleType, that.roleType) &&
         Objects.equal(base, that.base) &&
-        Objects.equal(serviceRef, that.serviceRef) &&
-        Objects.equal(config, that.config));
+        Objects.equal(serviceRef, that.serviceRef));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(name);
+    return Objects.hashCode(name, roleType, base, serviceRef);
   }
 
   /**
@@ -105,11 +103,11 @@ public class ApiRoleConfigGroup {
    * Readonly. Indicates whether this is a base group.
    */
   @XmlElement
-  public Boolean isBase() {
+  public boolean isBase() {
     return base;
   }
 
-  public void setBase(Boolean base) {
+  public void setBase(boolean base) {
     this.base = base;
   }
 
@@ -126,7 +124,7 @@ public class ApiRoleConfigGroup {
   }
 
   /**
-   * The display name of this group. Read-only for base groups.
+   * The display name of this group.
    */
   @XmlElement
   public String getDisplayName() {

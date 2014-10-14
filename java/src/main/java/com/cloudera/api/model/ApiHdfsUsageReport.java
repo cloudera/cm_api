@@ -60,6 +60,9 @@ public class ApiHdfsUsageReport extends ApiListBase<ApiHdfsUsageReportRow> {
     return values;
   }
 
+  public void setReportRows(List<ApiHdfsUsageReportRow> rows) {
+    this.values = rows;
+  }
 
   @Override
   public boolean equals(Object o) {

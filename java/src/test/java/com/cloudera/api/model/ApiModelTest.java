@@ -16,39 +16,49 @@
 
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiErrorMessage;
 import com.cloudera.api.ApiObjectMapper;
+import com.cloudera.api.ApiUtils;
+import com.cloudera.api.model.ApiHBaseSnapshot.Storage;
+import com.cloudera.api.model.ApiRole.ZooKeeperServerMode;
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
-import org.joda.time.Duration;
-import org.junit.Test;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.lang.ArrayUtils;
+import org.joda.time.Duration;
+import org.joda.time.Instant;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class ApiModelTest {
   private final static String TEXT_ENCODING = "UTF-8";
 
-  public static String objectToXml(Object object)
+  static String objectToXml(Object object)
       throws JAXBException, UnsupportedEncodingException {
     JAXBContext jc = JAXBContext.newInstance(object.getClass());
     Marshaller m = jc.createMarshaller();
@@ -58,7 +68,7 @@ public class ApiModelTest {
     return baos.toString(TEXT_ENCODING);
   }
 
-  public static <T> T xmlToObject(String text, Class<T> type)
+  static <T> T xmlToObject(String text, Class<T> type)
       throws JAXBException, UnsupportedEncodingException,
       IllegalAccessException, InstantiationException {
     JAXBContext jc = JAXBContext.newInstance(type);
@@ -69,280 +79,230 @@ public class ApiModelTest {
     return type.cast(res);
   }
 
-  public static String objectToJson(Object object) throws IOException {
+  static String objectToJson(Object object) throws IOException {
     ApiObjectMapper objectMapper = new ApiObjectMapper();
     return objectMapper.writeValueAsString(object);
   }
 
-  public static <T> T jsonToObject(String text, Class<T> type)
+  static <T> T jsonToObject(String text, Class<T> type)
       throws IOException {
     ApiObjectMapper objectMapper = new ApiObjectMapper();
     return objectMapper.readValue(text, type);
   }
 
-  private static <T> void checkJson(Class<? extends T> type, T object,
-      boolean encodeOnly) throws IOException {
+
+  private static <T> void checkJson(Class<? extends T> type, T object)
+      throws IOException {
     String jsonText = objectToJson(object);
     System.out.println(jsonText);
-    if (!encodeOnly) {
-      T objectFromJson = jsonToObject(jsonText, type);
-      assertEquals("Object did not encode/decode JSON correctly",
-                   object, objectFromJson);
-    }
+
+    T objectFromJson = jsonToObject(jsonText, type);
+    compareObjects(object, objectFromJson);
   }
 
-  /**
-   * Checks that the encoded JSON for the object has all the expected
-   * properties.
-   * <p>
-   * Note that due to a Jackson bug (http://jira.codehaus.org/browse/JACKSON-791),
-   * only non-null properties are serialized, no matter what the object mapper's
-   * configuration says.
-   */
-  public static void checkJsonProperties(Object object, String... properties)
-      throws IOException {
-    ApiObjectMapper mapper = new ApiObjectMapper();
-
-    String jsonText = mapper.writeValueAsString(object);
-    System.out.println(jsonText);
-
-    HashMap decoded = mapper.readValue(jsonText, HashMap.class);
-
-    @SuppressWarnings("unchecked")
-    Set<String> jsonProps = new HashSet<String>(decoded.keySet());
-    for (String property : properties) {
-      assertTrue(property + " not found", jsonProps.remove(property));
-    }
-    assertTrue(jsonProps.isEmpty());
-  }
-
-  private static <T> void checkXML(Class<? extends T> type, T object,
-      boolean encodeOnly)
+  private static <T> void checkXML(Class<? extends T> type, T object)
           throws JAXBException, UnsupportedEncodingException,
           InstantiationException, IllegalAccessException {
     String xmlText = objectToXml(object);
     System.out.println(xmlText);
-    if (!encodeOnly) {
-      T objectFromXml = xmlToObject(xmlText, type);
-      assertEquals("Object did not encode/decode XML correctly",
-                   object, objectFromXml);
+
+    T objectFromXml = xmlToObject(xmlText, type);
+    compareObjects(object, objectFromXml);
+  }
+
+  private static boolean isApiType(Class<?> type) {
+    return type.getAnnotation(XmlRootElement.class) != null;
+  }
+
+  private static String getMethodName(Method m) {
+    return String.format("%s::%s()", m.getDeclaringClass().getName(), m.getName());
+  }
+
+  private static void compareChildObjects(Method getter, Class<?> type,
+      Object expected, Object deserialized) {
+    if (isApiType(type)) {
+      if (expected != null) {
+        assertNotNull("Missing deserialized value for getter " + getMethodName(getter),
+            deserialized);
+        compareObjects(expected, deserialized);
+      }
+    } else {
+      assertNotNull("Missing expected value for getter " + getMethodName(getter),
+          expected);
+      assertNotNull("Missing deserialized value for getter " + getMethodName(getter),
+          deserialized);
+      String errorMessage =
+          String.format("Values for getter '%s' don't match: '%s' != '%s'.",
+                        getMethodName(getter), expected, deserialized);
+      if (type.isArray()) {
+        assertTrue(errorMessage, ArrayUtils.isEquals(expected, deserialized));
+      } else {
+        assertEquals(errorMessage, expected, deserialized);
+      }
     }
   }
 
-  public static <T> void checkJsonXML(Class<? extends T> type, T object)
-      throws IOException, JAXBException, IllegalAccessException,
-      InstantiationException {
-    checkJson(type, object, false);
-    checkXML(type, object, false);
+  /**
+   * Compares two objects by recursively comparing all of the fields that have
+   * JAX-B annotations (@XmlElement and @XmlElementWrapper). This check assumes
+   * that all getters are annotated and public, as is our convention.
+   * <p/>
+   * The test requires that all non-API-object properties of the instances
+   * being compared are properly set. The assumption is that there is at least
+   * one test for each API type (explicitly or implicitly through another
+   * object's test), so that in the end everything is covered.
+   */
+  private static void compareObjects(Object expected, Object deserialized) {
+    try {
+      for (Method m : expected.getClass().getMethods()) {
+        String methodName = getMethodName(m);
+
+        XmlElement elem = m.getAnnotation(XmlElement.class);
+        if (elem != null) {
+          compareChildObjects(m, m.getReturnType(),
+              m.invoke(expected), m.invoke(deserialized));
+          continue;
+        }
+
+        XmlElementWrapper wrapper = m.getAnnotation(XmlElementWrapper.class);
+        if (wrapper != null) {
+          assertTrue(Collection.class.isAssignableFrom(m.getReturnType()));
+          assertTrue("Unexpected generic return in " + methodName,
+              m.getGenericReturnType() instanceof ParameterizedType);
+
+          Type memberType =
+            ((ParameterizedType) m.getGenericReturnType())
+                .getActualTypeArguments()[0];
+          assertTrue("Unexpected generic argument in " + methodName,
+              memberType instanceof Class);
+
+          Collection<?> expectedItems = (Collection<?>) m.invoke(expected);
+          Collection<?> deserializedItems = (Collection<?>) m.invoke(deserialized);
+          if (!isApiType((Class<?>) memberType)) {
+            assertNotNull("No expected items for getter " + m.getName(),
+                expectedItems);
+          }
+          if (expectedItems != null) {
+            assertNotNull("No deserialized items for getter " + methodName,
+                deserializedItems);
+            assertEquals("Mismatched item count in values for getter " + methodName,
+                expectedItems.size(), deserializedItems.size());
+
+            Iterator<?> ex = expectedItems.iterator();
+            Iterator<?> ds = deserializedItems.iterator();
+            while (ex.hasNext()) {
+              compareChildObjects(m, (Class<?>) memberType, ex.next(), ds.next());
+            }
+          }
+        }
+      }
+    } catch (Exception e) {
+      throw Throwables.propagate(e);
+    }
   }
 
-  private <T> void checkJsonXMLEncoding(Class<? extends T> type, T object)
+  public static <T> void checkJsonXML(T object)
       throws IOException, JAXBException, IllegalAccessException,
       InstantiationException {
-    checkJson(type, object, true);
-    checkXML(type, object, true);
+    checkXML(object.getClass(), object);
+    checkJson(object.getClass(), object);
   }
 
   @Test
   public void testApiCluster() throws Exception {
-    ApiCluster clusterV1 = new ApiCluster();
-    clusterV1.setName("mycluster");
-    clusterV1.setVersion(ApiClusterVersion.CDH4);
-    checkJsonXML(clusterV1.getClass(), clusterV1);
-    checkJsonProperties(clusterV1, "name", "version");
+    ApiClusterRef ref = new ApiClusterRef("cluster1");
+    checkJsonXML(ref);
 
-    ApiClusterRef ref = new ApiClusterRef(clusterV1.getName());
-    checkJsonXMLEncoding(ref.getClass(), ref);
-
-    ApiCluster clusterV2 = new ApiCluster();
-    clusterV2.setMaintenanceOwners(Arrays.asList(ApiEntityType.CLUSTER));
-    clusterV2.setMaintenanceMode(true);
-    clusterV2.setName("mycluster");
-    clusterV2.setVersion(ApiClusterVersion.CDH4);
-    assertTrue(clusterV2.getMaintenanceMode());
-    checkJsonProperties(clusterV2, "name", "version", "maintenanceMode",
-                        "maintenanceOwners");
+    ApiCluster cluster = newCluster();
+    checkJsonXML(cluster);
   }
 
   @Test
   public void testApiConfig() throws Exception {
-    ApiConfig cfg = new ApiConfig("name", "value");
-    checkJsonXML(cfg.getClass(), cfg);
-    ApiConfigList configList = new ApiConfigList(Arrays.asList(cfg));
-    checkJsonXML(configList.getClass(), configList);
+    ApiConfig cfg = new ApiConfig("name", "value", true, "default", "display",
+        "description", "relatedName", ApiConfig.ValidationState.OK,
+        "validationMessage");
+    checkJsonXML(cfg);
 
     ApiServiceConfig svcCfg = new ApiServiceConfig();
     svcCfg.add(cfg);
     ApiRoleTypeConfig rtCfg = new ApiRoleTypeConfig();
     rtCfg.add(cfg);
     svcCfg.setRoleTypeConfigs(Arrays.asList(rtCfg));
-    checkJsonXML(svcCfg.getClass(), svcCfg);
-
-    cfg = new ApiConfig("name", "value", true, "default", "display",
-        "description", "relatedName", ApiConfig.ValidationState.OK, "validationMessage");
-    checkJsonProperties(cfg, "name", "value", "required", "default",
-        "displayName", "description", "relatedName", "validationState",
-        "validationMessage");
+    checkJsonXML(svcCfg);
   }
 
   @Test
   public void testApiHost()
       throws JAXBException, IOException, IllegalAccessException,
       InstantiationException {
-    List<ApiRoleRef> roleRefs = Lists.newArrayList();
-    roleRefs.add(new ApiRoleRef("clusterName", "serviceName", "roleName"));
-    ApiHost host = new ApiHost();
-    host.setHostId("myHostId");
-    host.setHostname("myHostname");
-    host.setIpAddress("1.1.1.1");
-    host.setRackId("/default");
-    host.setLastHeartbeat(new Date());
-    host.setHealthSummary(ApiHealthSummary.GOOD);
-    host.setHealthChecks(null);
-    host.setRoleRefs(roleRefs);
-    host.setHostUrl("http://foo:7180");
-    checkJsonXMLEncoding(host.getClass(), host);
-    ApiHostList hostList = new ApiHostList(Arrays.asList(host));
-    checkJsonXMLEncoding(hostList.getClass(), hostList);
-
-    // check v2 attributes
-    host.setMaintenanceOwners(Arrays.asList(ApiEntityType.HOST));
-    host.setMaintenanceMode(true);
-    host.setCommissionState(ApiCommissionState.COMMISSIONED);
-    assertTrue(host.getMaintenanceMode());
-
-    // check v4 attributes
-    host.setNumCores(4L);
-    host.setTotalPhysMemBytes(1234L);
-    checkJsonProperties(host, "hostId", "ipAddress", "hostname", "rackId",
-                        "lastHeartbeat", "healthSummary", "roleRefs",
-                        "hostUrl", "maintenanceMode", "maintenanceOwners",
-                        "commissionState", "numCores", "totalPhysMemBytes");
+    checkJsonXML(newHost());
   }
 
   @Test
   public void testApiHealthCheck() throws Exception {
     ApiHealthCheck healthCheck = new ApiHealthCheck("checkName",
                                                     ApiHealthSummary.GOOD);
-    checkJsonXMLEncoding(healthCheck.getClass(), healthCheck);
-    checkJsonProperties(healthCheck, "name", "summary");
-  }
-
-  @Test
-  public void testHost() throws Exception {
-    ApiHost host = new ApiHost();
-    host.setHostId("hostId");
-    host.setIpAddress("1.1.1.1");
-    host.setHostname("hostname");
-    host.setRackId("/default");
-    host.setLastHeartbeat(new Date(0));
-    host.setHealthSummary(ApiHealthSummary.GOOD);
-    host.setHealthChecks(Lists.<ApiHealthCheck>newArrayList());
-    host.setRoleRefs(Lists.<ApiRoleRef>newArrayList());
-    host.setHostUrl("http://foo:7180");
-    checkJsonXMLEncoding(host.getClass(), host);
-    checkJsonProperties(host, "healthChecks", "healthSummary", "hostId",
-                        "hostname", "ipAddress", "lastHeartbeat",
-                        "rackId", "roleRefs", "hostUrl");
+    checkJsonXML(healthCheck);
   }
 
   @Test
   public void testApiRole()
       throws JAXBException, IOException, IllegalAccessException,
       InstantiationException {
-    List<ApiHealthCheck> healthChecks = Lists.newArrayList();
-    healthChecks.add(new ApiHealthCheck("TEST1",
-                                        ApiHealthSummary.GOOD));
-    healthChecks.add(new ApiHealthCheck("TEST2",
-                                        ApiHealthSummary.CONCERNING));
     ApiRole role = new ApiRole();
-    role.setName("myname");
-    role.setType("mytype");
-    role.setServiceRef(new ApiServiceRef("mycluster", "myservice"));
-    role.setHostRef(new ApiHostRef("myhost"));
-    role.setRoleState(ApiRoleState.STARTED);
-    role.setHealthSummary(ApiHealthSummary.GOOD);
-    role.setHealthChecks(healthChecks);
+    role.setCommissionState(ApiCommissionState.COMMISSIONED);
     role.setConfigStale(false);
+    role.setConfigStalenessStatus(ApiConfigStalenessStatus.FRESH);
     role.setHaStatus(ApiRole.HaStatus.ACTIVE);
+    role.setHealthChecks(createHealthChecks());
+    role.setHealthSummary(ApiHealthSummary.GOOD);
+    role.setHostRef(new ApiHostRef("myhost"));
+    role.setMaintenanceMode(true);
+    role.setMaintenanceOwners(createMaintenanceOwners());
+    role.setName("myname");
+    role.setRoleState(ApiRoleState.STARTED);
     role.setRoleUrl("http://localhost:7180");
-    checkJsonXMLEncoding(role.getClass(), role);
-    checkJsonProperties(role, "name", "type", "hostRef", "serviceRef",
-                        "roleState", "healthSummary", "configStale",
-                        "healthChecks", "haStatus", "roleUrl");
-
-    ApiRole roleV2 = new ApiRole();
-    roleV2.setName("myname");
-    roleV2.setType("mytype");
-    roleV2.setServiceRef(new ApiServiceRef("mycluster", "myservice"));
-    roleV2.setHostRef(new ApiHostRef("myhost"));
-    roleV2.setRoleState(ApiRoleState.STARTED);
-    roleV2.setHealthSummary(ApiHealthSummary.GOOD);
-    roleV2.setHealthChecks(healthChecks);
-    roleV2.setConfigStale(false);
-    roleV2.setHaStatus(ApiRole.HaStatus.ACTIVE);
-    roleV2.setRoleUrl("http://localhost:7180");
-    roleV2.setMaintenanceOwners(Arrays.asList(ApiEntityType.CLUSTER));
-    roleV2.setMaintenanceMode(true);
-    roleV2.setCommissionState(ApiCommissionState.COMMISSIONED);
-    checkJsonXMLEncoding(roleV2.getClass(), role);
-    checkJsonProperties(roleV2, "name", "type", "hostRef", "serviceRef",
-                        "roleState", "healthSummary", "configStale",
-                        "healthChecks", "haStatus", "roleUrl",
-                        "maintenanceMode", "maintenanceOwners", "commissionState");
+    role.setServiceRef(new ApiServiceRef("peer", "mycluster", "myservice"));
+    role.setType("mytype");
+    role.setZooKeeperServerMode(ZooKeeperServerMode.REPLICATED_LEADER);
+    checkJsonXML(role);
   }
 
   @Test
   public void testApiService()
       throws JAXBException, IOException, IllegalAccessException,
       InstantiationException {
-    List<ApiHealthCheck> healthChecks = Lists.newArrayList();
-    healthChecks.add(new ApiHealthCheck("TEST1",
-                                        ApiHealthSummary.GOOD));
-    healthChecks.add(new ApiHealthCheck("TEST2",
-                                        ApiHealthSummary.CONCERNING));
     ApiService service = new ApiService();
-    service.setName("myname");
-    service.setType("mytype");
     service.setClusterRef(new ApiClusterRef("mycluster"));
-    service.setServiceState(ApiServiceState.STARTED);
-    service.setHealthSummary(ApiHealthSummary.GOOD);
-    service.setHealthChecks(healthChecks);
     service.setConfigStale(false);
+    service.setConfigStalenessStatus(ApiConfigStalenessStatus.FRESH);
+    service.setClientConfigStalenessStatus(ApiConfigStalenessStatus.FRESH);
+    service.setDisplayName("mydisplayname");
+    service.setHealthChecks(createHealthChecks());
+    service.setHealthSummary(ApiHealthSummary.GOOD);
+    service.setMaintenanceMode(true);
+    service.setMaintenanceOwners(createMaintenanceOwners());
+    service.setName("myname");
+    service.setServiceState(ApiServiceState.STARTED);
     service.setServiceUrl("http://foo:7180");
-    checkJsonXMLEncoding(service.getClass(), service);
-    checkJsonProperties(service, "name", "type", "clusterRef",
-                        "serviceState", "healthSummary", "configStale",
-                        "healthChecks", "serviceUrl");
+    service.setType("mytype");
 
-    ApiService serviceV2 = new ApiService();
-    serviceV2.setName("myname");
-    serviceV2.setType("mytype");
-    serviceV2.setClusterRef(new ApiClusterRef("mycluster"));
-    serviceV2.setServiceState(ApiServiceState.STARTED);
-    serviceV2.setHealthSummary(ApiHealthSummary.GOOD);
-    serviceV2.setHealthChecks(healthChecks);
-    serviceV2.setConfigStale(false);
-    serviceV2.setServiceUrl("http://foo:7180");
-    serviceV2.setMaintenanceOwners(Arrays.asList(ApiEntityType.CLUSTER,
-        ApiEntityType.SERVICE));
-    serviceV2.setMaintenanceMode(true);
-    assertTrue(serviceV2.getMaintenanceMode());
-    serviceV2.setDisplayName("mydisplayname");
-    checkJsonProperties(serviceV2, "name", "type", "clusterRef", "serviceState",
-                        "healthSummary", "configStale", "healthChecks",
-                        "serviceUrl", "maintenanceMode", "maintenanceOwners",
-                        "displayName");
+    ApiRoleConfigGroup rcg = new ApiRoleConfigGroup();
+    rcg.setName("rcg");
+    rcg.setDisplayName("display");
+    rcg.setRoleType("role");
+    rcg.setBase(true);
+    rcg.setServiceRef(new ApiServiceRef("p1", "c1", "s1"));
+    rcg.setConfig(new ApiConfigList());
+    service.setRoleConfigGroups(Arrays.asList(rcg));
+
+    checkJsonXML(service);
   }
 
   @Test
   public void testApiUser() throws Exception {
-    ApiUser user = new ApiUser();
-    user.setName("myuser");
-    user.addRole("myrole");
-    checkJsonXML(user.getClass(), user);
-    ApiUserList userList = new ApiUserList(Arrays.asList(user));
-    checkJsonXML(userList.getClass(), userList);
+    checkJsonXML(newUser());
   }
 
   private ApiEvent newEvent() {
@@ -361,10 +321,7 @@ public class ApiModelTest {
   @Test
   public void testApiEvent() throws Exception {
     ApiEvent event = newEvent();
-    checkJsonXMLEncoding(event.getClass(), event);
-    checkJsonProperties(event, "id", "content", "timeOccurred",
-                        "timeReceived", "category", "severity",
-                        "alert", "attributes");
+    checkJsonXML(event);
   }
 
   @Test
@@ -372,32 +329,46 @@ public class ApiModelTest {
     List<ApiEvent> events = Arrays.asList(newEvent(), newEvent());
     ApiEventQueryResult result = new ApiEventQueryResult(
         events.size(), events);
-    checkJsonXMLEncoding(result.getClass(), result);
-    checkJsonProperties(result, "items", "totalResults");
+    checkJsonXML(result);
   }
 
-  @SuppressWarnings("unchecked")
   @Test
   public void testLists() throws Exception {
-    for (Object o : Arrays.asList(
+    for (ApiListBase<?> lst : Arrays.<ApiListBase<?>>asList(
         new ApiActivityList(Lists.<ApiActivity>newArrayList()),
+        new ApiAuditList(Lists.<ApiAudit>newArrayList()),
         new ApiClusterList(Lists.<ApiCluster>newArrayList()),
+        new ApiCommandList(Lists.<ApiCommand>newArrayList()),
         new ApiConfigList(Lists.<ApiConfig>newArrayList()),
-        new ApiCommandList(),
         new ApiHostList(Lists.<ApiHost>newArrayList()),
+        new ApiHostRefList(Lists.<ApiHostRef>newArrayList()),
         new ApiMetricList(Lists.<ApiMetric>newArrayList()),
         new ApiNameserviceList(Lists.<ApiNameservice>newArrayList()),
+        new ApiParcelList(Lists.<ApiParcel>newArrayList()),
+        new ApiReplicationCommandList(Lists.<ApiReplicationCommand>newArrayList()),
+        new ApiReplicationScheduleList(Lists.<ApiReplicationSchedule>newArrayList()),
         new ApiRoleList(Lists.<ApiRole>newArrayList()),
         new ApiRoleNameList(Lists.<String>newArrayList()),
         new ApiRoleTypeList(Lists.<String>newArrayList()),
         new ApiServiceList(Lists.<ApiService>newArrayList()),
+        new ApiSnapshotCommandList(Lists.<ApiSnapshotCommand>newArrayList()),
+        new ApiSnapshotPolicyList(Lists.<ApiSnapshotPolicy>newArrayList()),
         new ApiUserList(Lists.<ApiUser>newArrayList()),
-        new ApiHostRefList(Lists.<ApiHostRef>newArrayList()),
-        new ApiAuditList(Lists.<ApiAudit>newArrayList()),
-        new ApiReplicationCommandList(Lists.<ApiReplicationCommand>newArrayList())
+        new ApiDashboardList(Lists.<ApiDashboard>newArrayList()),
+        new ApiImpalaQueryAttributeList(Lists.<ApiImpalaQueryAttribute>newArrayList()),
+        new ApiYarnApplicationAttributeList(
+            Lists.<ApiYarnApplicationAttribute>newArrayList())
     )) {
-      checkJsonXMLEncoding(o.getClass(), o);
-      checkJsonProperties(o, "items");
+      checkJsonXML(lst);
+
+      // Check that the encoded property matches the convention for our lists.
+      String json = objectToJson(lst);
+
+      ApiObjectMapper mapper = new ApiObjectMapper();
+      @SuppressWarnings("unchecked")
+      Map<String, Object> map = mapper.readValue(json, Map.class);
+      assertTrue("List " + lst.getClass().getName() + " has wrong 'items' property.",
+          map.containsKey(ApiListBase.ITEMS_ATTR));
     }
   }
 
@@ -419,30 +390,125 @@ public class ApiModelTest {
                                            "com.my.reducer",
                                            "schedulerQueueName",
                                            "mypriority");
-    checkJsonXMLEncoding(activity.getClass(), activity);
-    checkJsonProperties(activity,
-                        "name", "parent", "id", "type", "startTime", "user",
-                        "status", "group", "finishTime", "inputDir",
-                        "outputDir", "mapper", "reducer", "combiner",
-                        "queueName", "schedulerPriority");
+    checkJsonXML(activity);
   }
 
   @Test
   public void testAudit() throws Exception {
     ApiAudit audit = new ApiAudit("service",
-                                  "myName",
-                                  "imp",
-                                  "command",
-                                  "1.2.3.4",
-                                  "resource",
-                                  true,
-                                  250912898047L,
-                                  "select foo from bar");
-    checkJsonXMLEncoding(audit.getClass(), audit);
-    checkJsonProperties(audit,
-                        "timestamp", "service", "username", "impersonator",
-                        "ipAddress", "command", "resource", "allowed",
-                        "operationText");
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(250912898047L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValue2"));
+    checkJsonXML(audit);
+  }
+
+  @Test
+  public void testAuditsExtraValuesEqual() throws Exception {
+    ApiAudit audit1 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValue2"));
+
+    ApiAudit audit2 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey2", "extraValue2", "extraKey1", "extraValue1"));
+
+    assertTrue(audit1.equals(audit2));
+  }
+
+  @Test
+  public void testAuditsExtraValuesNotEqual() throws Exception {
+    ApiAudit audit1 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValue2"));
+
+    // different number of extra values
+    ApiAudit audit2 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1"));
+
+    assertFalse(audit1.equals(audit2));
+
+    // different keys
+    audit2 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKeyX", "extraValue2"));
+
+    assertFalse(audit1.equals(audit2));
+
+    // different values
+    audit2 = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValueX"));
+
+    assertFalse(audit1.equals(audit2));
+  }
+
+  @Test
+  public void testExtraValuesMap() {
+    ApiAudit audit = new ApiAudit("service",
+        "myName",
+        "imp",
+        "command",
+        "1.2.3.4",
+        "resource",
+        true,
+        new Date(1L),
+        "select foo from bar",
+        ImmutableMap.of("extraKey1", "extraValue1", "extraKey2", "extraValue2"));
+
+    Map<String, String> expectedExtraValues = Maps.newHashMap();
+    expectedExtraValues.put("extraKey1", "extraValue1");
+    expectedExtraValues.put("extraKey2", "extraValue2");
+
+    assertEquals(expectedExtraValues, audit.getServiceValues());
   }
 
   @Test
@@ -452,17 +518,13 @@ public class ApiModelTest {
                                      "relatedName",
                                      ApiConfig.ValidationState.OK,
                                      "validationMessage");
-    checkJsonXMLEncoding(config.getClass(), config);
-    checkJsonProperties(config, "name", "value", "required", "displayName",
-                        "description", "relatedName", "validationState",
-                        "validationMessage", "default");
+    checkJsonXML(config);
   }
 
   @Test
   public void testEcho() throws Exception {
     ApiEcho echo = new ApiEcho("Hello... Hello... Hello...");
-    checkJsonXMLEncoding(echo.getClass(), echo);
-    checkJsonProperties(echo, "message");
+    checkJsonXML(echo);
   }
 
   @Test
@@ -470,13 +532,12 @@ public class ApiModelTest {
     ApiMetric metric = new ApiMetric("name", "context", "unit",
                                      Lists.<ApiMetricData>newArrayList(),
                                      "displayName", "description");
-    checkJsonXMLEncoding(metric.getClass(), metric);
-    checkJsonProperties(metric, "context", "description", "displayName",
-                        "name", "unit", "data");
+    metric.setData(Arrays.asList(new ApiMetricData(new Date(0), 123.45)));
+    checkJsonXML(metric);
   }
 
   @Test
-  public void testNameService() throws Exception {
+  public void testNameservice() throws Exception {
     ApiNameservice ns = new ApiNameservice(
         "foo-ns",
         new ApiRoleRef("foo", "bar", "baz"),
@@ -485,10 +546,8 @@ public class ApiModelTest {
         new ApiRoleRef("foo2FC", "bar2FC", "baz2FC"),
         new ApiRoleRef("foo3", "bar3", "baz3"),
         Arrays.asList("mount1", "mount2"));
-    checkJsonXMLEncoding(ns.getClass(), ns);
-
-    checkJsonProperties(ns, "name", "active", "activeFailoverController",
-        "standBy", "standByFailoverController", "secondary", "mountPoints");
+    ns.setHealthSummary(ApiHealthSummary.GOOD);
+    checkJsonXML(ns);
   }
 
   @Test
@@ -502,21 +561,21 @@ public class ApiModelTest {
     haArgs.setStartDependentServices(false);
     haArgs.setDeployClientConfigs(true);
     haArgs.setEnableQuorumStorage(true);
-    checkJsonXML(haArgs.getClass(), haArgs);
+    checkJsonXML(haArgs);
 
     ApiHdfsDisableHaArguments dhaArgs = new ApiHdfsDisableHaArguments();
     dhaArgs.setActiveName("ann");
     dhaArgs.setSecondaryName("snn");
     dhaArgs.setStartDependentServices(false);
     dhaArgs.setDeployClientConfigs(true);
-    checkJsonXML(dhaArgs.getClass(), dhaArgs);
+    checkJsonXML(dhaArgs);
 
     ApiHdfsFailoverArguments afoArgs = new ApiHdfsFailoverArguments();
     afoArgs.setNameservice("ns1");
-    afoArgs.setZooKeeperService(new ApiServiceRef("c1", "s1"));
+    afoArgs.setZooKeeperService(new ApiServiceRef("p1", "c1", "s1"));
     afoArgs.setActiveFCName("fc1");
     afoArgs.setStandByFCName("fc2");
-    checkJsonXML(afoArgs.getClass(), afoArgs);
+    checkJsonXML(afoArgs);
   }
 
   @Test
@@ -526,46 +585,333 @@ public class ApiModelTest {
     peer.setUrl("url1");
     peer.setUsername("user1");
     peer.setPassword("password1");
-    checkJsonXML(peer.getClass(), peer);
+    checkJsonXML(peer);
   }
 
   @Test
   public void testDeployment() throws Exception {
     ApiDeployment deployment = new ApiDeployment();
-    ApiUser user = new ApiUser();
-    user.setName("foo");
-    user.setPassword("secret");
-    user.setRoles(Sets.<String>newHashSet());
-    deployment.setUsers(Arrays.asList(user));
-    ApiCluster cluster = new ApiCluster();
-    cluster.setName("mycluster");
-    cluster.setVersion(ApiClusterVersion.CDH3);
-    deployment.setClusters(Arrays.asList(cluster));
+    deployment.setUsers(Arrays.asList(newUser()));
+    deployment.setClusters(Arrays.asList(newCluster()));
     deployment.setTimestamp(new Date(62239));
-    ApiHost host = new ApiHost();
-    host.setHostId("myHostid");
-    deployment.setHosts(Arrays.asList(host));
+    deployment.setHosts(Arrays.asList(newHost()));
+
     ApiVersionInfo versionInfo = new ApiVersionInfo();
+    versionInfo.setVersion("alpha 1");
+    versionInfo.setSnapshot(true);
+    versionInfo.setBuildUser("alice");
+    versionInfo.setBuildTimestamp("today");
+    versionInfo.setGitHash("hash");
     deployment.setVersionInfo(versionInfo);
-    ApiService mgmtService = new ApiService();
-    mgmtService.setType("MGMT");
-    mgmtService.setName("myMgmtService");
-    deployment.setManagementService(mgmtService);
-    deployment.setAllHostsConfig(new ApiConfigList(Arrays.asList(
-        new ApiConfig("foo", "bar"))));
-
-    ApiCmPeer peer = new ApiCmPeer();
-    peer.setName("peer1");
-    peer.setUrl("url1");
-    peer.setUsername("user1");
-    peer.setPassword("password1");
-    deployment.setPeers(Arrays.asList(peer));
-
-    checkJsonXML(deployment.getClass(), deployment);
+    checkJsonXML(deployment);
   }
 
   @Test
   public void testHdfsReplication() throws Exception {
+    ApiHdfsReplicationArguments hdfsArgs = newHdfsReplicationArguments();
+    ApiReplicationSchedule hdfsInfo =
+      new ApiReplicationSchedule(20L, new Date(1234), new Date(5678), 10,
+          ApiScheduleInterval.MONTH, true);
+    hdfsInfo.setHdfsArguments(hdfsArgs);
+    hdfsInfo.setNextRun(new Date(12345));
+
+    ApiReplicationCommand cmd = new ApiReplicationCommand();
+    fillInCommand(cmd);
+
+    ApiHdfsReplicationResult result = newHdfsReplicationResult();
+    cmd.setHdfsResult(result);
+
+    hdfsInfo.setHistory(Arrays.asList(cmd));
+    checkJsonXML(hdfsInfo);
+  }
+
+  @Test
+  public void testApiParcel() throws Exception {
+    ApiParcel parcel = new ApiParcel();
+    parcel.setProduct("productName");
+    parcel.setVersion("version");
+    parcel.setStage("DOWNLOADING");
+    parcel.setClusterRef(new ApiClusterRef("cluster1"));
+
+    ApiParcelState state = new ApiParcelState();
+    state.setProgress(1L);
+    state.setTotalProgress(2L);
+    state.setCount(3L);
+    state.setTotalCount(4L);
+    state.setWarnings(Arrays.asList("warning"));
+    state.setErrors(Arrays.asList("error"));
+    parcel.setState(state);
+
+    checkJsonXML(parcel);
+  }
+
+  @Test
+  public void testHiveReplication() throws Exception {
+    ApiHiveReplicationArguments args = new ApiHiveReplicationArguments();
+    args.setSourceService(new ApiServiceRef("p1", "c1", "s1"));
+    args.setTableFilters(Arrays.asList(new ApiHiveTable("db1", "table1")));
+    args.setExportDir("foo");
+    args.setForce(true);
+    args.setReplicateData(true);
+
+    ApiHdfsReplicationArguments hdfsArgs = newHdfsReplicationArguments();
+    args.setHdfsArguments(hdfsArgs);
+
+    checkJsonXML(args);
+
+    ApiReplicationSchedule sch = new ApiReplicationSchedule(20L,
+        new Date(1234), new Date(5678), 10, ApiScheduleInterval.MONTH, true);
+    sch.setHiveArguments(args);
+    checkJsonXML(sch);
+
+    ApiHiveReplicationResult res = new ApiHiveReplicationResult();
+    res.setTables(Arrays.asList(new ApiHiveTable("db1", "table1")));
+    res.setTableCount(1);
+    res.setImpalaUDFs(Arrays.asList(new ApiImpalaUDF("db1", "func1")));
+    res.setImpalaUDFCount(1);
+    res.setErrors(Arrays.asList(new ApiHiveReplicationError("db1", "table1",
+        "func1(STRING)", "error1")));
+    res.setErrorCount(1);
+    res.setDryRun(true);
+    res.setPhase("foo");
+
+    ApiHdfsReplicationResult hdfsRes = newHdfsReplicationResult();
+    res.setDataReplicationResult(hdfsRes);
+
+    checkJsonXML(res);
+
+    ApiReplicationCommand cmd = new ApiReplicationCommand();
+    fillInCommand(cmd);
+    cmd.setHiveResult(res);
+    checkJsonXML(cmd);
+  }
+
+  @Test
+  public void testImpalaQuery() throws Exception {
+    ApiImpalaQuery query = new ApiImpalaQuery(
+        "queryId", "statement", "QUERY", "FINISHED", new Date(), new Date(),
+        1L, Maps.<String, String>newHashMap(), "user", "hostId", true, "db",
+        Duration.standardDays(1));
+    checkJsonXML(query);
+
+    ApiImpalaQueryResponse response = new ApiImpalaQueryResponse(
+        ImmutableList.<ApiImpalaQuery>of(), ImmutableList.<String>of());
+    checkJsonXML(response);
+
+    ApiImpalaCancelResponse cancelResponse =
+        new ApiImpalaCancelResponse("warning");
+    checkJsonXML(cancelResponse);
+
+    ApiImpalaQueryDetailsResponse detailsResponse =
+        new ApiImpalaQueryDetailsResponse("details");
+    checkJsonXML(detailsResponse);
+  }
+
+  @Test
+  public void testHBaseScheduledSnapshots() throws Exception {
+    ApiSnapshotPolicy policy = createPolicy();
+    ApiHBaseSnapshotPolicyArguments hbaseArgs =
+        new ApiHBaseSnapshotPolicyArguments(Arrays.asList("table1", "table2"),
+            Storage.LOCAL);
+    policy.setHBaseArguments(hbaseArgs);
+    checkJsonXML(policy);
+
+    ApiHBaseSnapshotResult result = new ApiHBaseSnapshotResult();
+    result.setProcessedTableCount(1);
+    result.setProcessedTables(Arrays.asList("t1"));
+    result.setUnprocessedTableCount(2);
+    result.setUnprocessedTables(Arrays.asList("t2", "t3"));
+    result.setCreatedSnapshotCount(1);
+    result.setCreatedSnapshots(
+        Arrays.asList(
+            new ApiHBaseSnapshot("s1", "t1", new Date(0), Storage.LOCAL)));
+    result.setDeletedSnapshotCount(2);
+    result.setDeletedSnapshots(
+        Arrays.asList(
+            new ApiHBaseSnapshot("s2", "t1", new Date(0), Storage.LOCAL),
+            new ApiHBaseSnapshot("s3", "t2", new Date(0), Storage.LOCAL)));
+    result.setCreationErrorCount(1);
+    result.setCreationErrors(
+        Arrays.asList(
+            new ApiHBaseSnapshotError("t1", "s1", Storage.LOCAL, "error 1")));
+    result.setDeletedSnapshotCount(1);
+    result.setDeletionErrors(
+        Arrays.asList(
+            new ApiHBaseSnapshotError("t2", "s3", Storage.LOCAL, "error 2")));
+    result.setDeletionErrorCount(1);
+
+    ApiSnapshotCommand cmd = new ApiSnapshotCommand();
+    fillInCommand(cmd);
+    cmd.setHBaseResult(result);
+
+    checkJsonXML(cmd);
+  }
+
+  @Test
+  public void testHdfsScheduledSnapshots() throws Exception {
+    ApiSnapshotPolicy policy = createPolicy();
+
+    ApiHdfsSnapshotPolicyArguments hdfsArgs =
+        new ApiHdfsSnapshotPolicyArguments(Arrays.asList("/a", "/b"));
+    policy.setHdfsArguments(hdfsArgs);
+
+    checkJsonXML(policy);
+
+    ApiHdfsSnapshotResult result = new ApiHdfsSnapshotResult();
+    result.setProcessedPathCount(1);
+    result.setProcessedPaths(Arrays.asList("/a"));
+    result.setUnprocessedPathCount(2);
+    result.setUnprocessedPaths(Arrays.asList("/b", "/c"));
+    result.setCreatedSnapshotCount(1);
+    result.setCreatedSnapshots(
+        Arrays.asList(new ApiHdfsSnapshot("/a", "s1", "/a/.snapshot/s1", new Date(0))));
+    result.setDeletedSnapshotCount(2);
+    result.setDeletedSnapshots(
+        Arrays.asList(new ApiHdfsSnapshot("/a", "s2", "/a/.snapshot/s2", new Date(0)),
+            new ApiHdfsSnapshot("/b", "s3", "/b/.snapshot/s3", new Date(0))));
+    result.setCreationErrorCount(1);
+    result.setCreationErrors(
+        Arrays.asList(new ApiHdfsSnapshotError(
+            "/a", "s3", "error 1")));
+    result.setDeletedSnapshotCount(1);
+    result.setDeletionErrors(
+        Arrays.asList(new ApiHdfsSnapshotError(
+            "/b", "s4", "error 2")));
+    result.setDeletionErrorCount(1);
+
+    ApiSnapshotCommand cmd = new ApiSnapshotCommand();
+    fillInCommand(cmd);
+    cmd.setHdfsResult(result);
+
+    checkJsonXML(cmd);
+  }
+
+  @Test
+  public void testApiDashboards() throws Exception {
+    ApiDashboard view = new ApiDashboard("name", "json");
+    checkJsonXML(view);
+    ApiDashboardList viewResponse = new ApiDashboardList(ImmutableList.of(view));
+    checkJsonXML(viewResponse);
+  }
+
+  @Test
+  public void testImpalaQueryAttributes() throws Exception {
+    ApiImpalaQueryAttribute attribute = new ApiImpalaQueryAttribute();
+    attribute.setName("name");
+    attribute.setType("STRING");
+    attribute.setDisplayName("displayName");
+    attribute.setSupportsHistograms(true);
+    attribute.setDescription("description");
+    checkJsonXML(attribute);
+    ApiImpalaQueryAttributeList list = new ApiImpalaQueryAttributeList(
+        ImmutableList.of(attribute));
+    checkJsonXML(list);
+  }
+
+  @Test
+  public void testYarnApplicationAttributes() throws Exception {
+    ApiYarnApplicationAttribute attribute = new ApiYarnApplicationAttribute();
+    attribute.setName("name");
+    attribute.setType("STRING");
+    attribute.setDisplayName("displayName");
+    attribute.setSupportsHistograms(true);
+    attribute.setDescription("description");
+    checkJsonXML(attribute);
+    ApiYarnApplicationAttributeList list = new ApiYarnApplicationAttributeList(
+        ImmutableList.of(attribute));
+    checkJsonXML(list);
+  }
+
+  private ApiSnapshotPolicy createPolicy() {
+    ApiSnapshotPolicy policy = new ApiSnapshotPolicy("policy1",
+        "some description", 10, 20, 30, 40, 50);
+    policy.setMinuteOfHour((byte) 15);
+    policy.setHourOfDay((byte) 12);
+    policy.setDayOfWeek((byte) 3);
+    policy.setDayOfMonth((byte) 31);
+    policy.setMonthOfYear((byte) 6);
+    policy.setHoursForHourlySnapshots(Arrays.asList((byte) 4, (byte) 8));
+
+    return policy;
+  }
+
+  @Test
+  public void testYarnApplication() throws Exception {
+    ApiMr2AppInformation mr2Information = new ApiMr2AppInformation("jobState");
+    ApiYarnApplication application = new ApiYarnApplication(
+        "appId", "appName", new Date(), new Date(), "user", "pool",
+        "FINISHED", 80.0, mr2Information, Maps.<String, String>newHashMap());
+    checkJsonXML(application);
+
+    ApiYarnApplicationResponse response = new ApiYarnApplicationResponse(
+        ImmutableList.<ApiYarnApplication>of(), ImmutableList.<String>of());
+    checkJsonXML(response);
+
+    ApiYarnKillResponse cancelResponse =
+        new ApiYarnKillResponse("warning");
+    checkJsonXML(cancelResponse);
+  }
+
+  @Test
+  public void testClusterVersion() {
+    assertEquals(ApiClusterVersion.CDH4,
+        ApiClusterVersion.fromString("CDH4"));
+    assertEquals(ApiClusterVersion.UNKNOWN,
+        ApiClusterVersion.fromString("invalidVersion"));
+  }
+
+  @Test
+  public void testApiErrorMessage() throws Exception {
+    Throwable cause = new Throwable("'cause.");
+    Throwable t = new Throwable("To err is human...", cause);
+    checkJsonXML(new ApiErrorMessage(t));
+  }
+
+  @Test
+  public void testApiTimeSeriesData() throws Exception {
+    ApiTimeSeriesData data = new ApiTimeSeriesData();
+    Date now = ApiUtils.newDateFromMillis(Instant.now().getMillis());
+    // Test no aggregate statistics.
+    data.setTimestamp(now);
+    data.setValue(3.14);
+    data.setType("something");
+    checkJsonXML(data);
+
+    // Test with aggregate statistics but no cross entity metadata.
+    ApiTimeSeriesAggregateStatistics aggStats =
+        new ApiTimeSeriesAggregateStatistics();
+    aggStats.setCount(42);
+    aggStats.setMax(3.14);
+    aggStats.setMaxTime(now);
+    aggStats.setMean(3.13);
+    aggStats.setMin(3.11);
+    aggStats.setMinTime(now);
+    aggStats.setSampleTime(now);
+    aggStats.setSampleValue(3.12);
+    aggStats.setStdDev(0.1);
+    data.setAggregateStatistics(aggStats);
+    checkJsonXML(data);
+
+    ApiTimeSeriesCrossEntityMetadata xEntityMetadata =
+        new ApiTimeSeriesCrossEntityMetadata();
+    xEntityMetadata.setMaxEntityDisplayName("maxDisplayName");
+    xEntityMetadata.setMinEntityDisplayName("minEntityDisplayName");
+    xEntityMetadata.setNumEntities(3.14);
+    aggStats.setCrossEntityMetadata(xEntityMetadata);
+    checkJsonXML(data);
+  }
+
+  private List<ApiHealthCheck> createHealthChecks() {
+    return ImmutableList.of(
+        new ApiHealthCheck("TEST1", ApiHealthSummary.GOOD),
+        new ApiHealthCheck("TEST2", ApiHealthSummary.CONCERNING));
+  }
+
+  private List<ApiEntityType> createMaintenanceOwners() {
+    return ImmutableList.of(ApiEntityType.CLUSTER, ApiEntityType.SERVICE);
+  }
+
+  private ApiHdfsReplicationArguments newHdfsReplicationArguments() {
     ApiHdfsReplicationArguments hdfsArgs = new ApiHdfsReplicationArguments(
         new ApiServiceRef("p1", "c1", "s1"), "a", "b", "mr1", 5, "admin");
     hdfsArgs.setSchedulerPoolName("pool");
@@ -577,22 +923,10 @@ public class ApiModelTest {
     hdfsArgs.setPreservePermissions(true);
     hdfsArgs.setLogPath("log1");
     hdfsArgs.setSkipChecksumChecks(true);
+    return hdfsArgs;
+  }
 
-    ApiReplicationSchedule hdfsInfo =
-      new ApiReplicationSchedule(20L, new Date(1234), new Date(5678), 10,
-          ApiScheduleInterval.MONTH, true);
-    hdfsInfo.setHdfsArguments(hdfsArgs);
-    hdfsInfo.setNextRun(new Date(12345));
-
-    ApiReplicationCommand cmd = new ApiReplicationCommand();
-    cmd.setId(42L);
-    cmd.setName("foo");
-    cmd.setStartTime(new Date(4321));
-    cmd.setEndTime(new Date(8765));
-    cmd.setActive(false);
-    cmd.setSuccess(true);
-    cmd.setResultMessage("done");
-
+  private ApiHdfsReplicationResult newHdfsReplicationResult() {
     ApiHdfsReplicationResult result = new ApiHdfsReplicationResult();
     result.setProgress(42);
     result.setCounters(Arrays.asList(
@@ -606,93 +940,63 @@ public class ApiModelTest {
     result.setNumFilesCopyFailed(40);
     result.setNumBytesCopyFailed(400);
     result.setSetupError("error");
-    cmd.setHdfsResult(result);
-
-    hdfsInfo.setHistory(Arrays.asList(cmd));
-
-    checkJsonXML(hdfsInfo.getClass(), hdfsInfo);
+    result.setSnapshottedDirs(Arrays.asList("/user/a"));
+    return result;
   }
 
-  @Test
-  public void testApiParcel() throws Exception {
-    ApiClusterRef ref = new ApiClusterRef("clusterName");
-    checkJsonXMLEncoding(ref.getClass(), ref);
-
-    ApiParcel parcel = new ApiParcel();
-    parcel.setProduct("productName");
-    parcel.setVersion("version");
-    parcel.setStage("DOWNLOADING");
-    parcel.setClusterRef(ref);
-    checkJsonXML(parcel.getClass(), parcel);
-    checkJsonProperties(parcel, "product", "version", "stage", "clusterRef");
-
-    ApiParcelList list = new ApiParcelList();
-    list.setParcels(Arrays.asList(parcel));
-    checkJsonXML(list.getClass(), list);
-    checkJsonProperties(list, "items");
+  private void fillInCommand(ApiCommand cmd) {
+    cmd.setId(1L);
+    cmd.setName("command");
+    cmd.setStartTime(new Date(0));
+    cmd.setEndTime(new Date(0));
+    cmd.setActive(true);
+    cmd.setSuccess(false);
+    cmd.setResultMessage("message");
+    cmd.setResultDataUrl("url");
   }
 
-  @Test
-  public void testHiveReplication() throws Exception {
-    ApiHiveReplicationArguments args = new ApiHiveReplicationArguments();
-    args.setSourceService(new ApiServiceRef("c1", "s1"));
-    args.setTableFilters(Arrays.asList(new ApiHiveTable("db1", "table1")));
-    args.setExportDir("foo");
-    args.setForce(true);
-    args.setReplicateData(true);
-    ApiHdfsReplicationArguments hdfsArgs = new ApiHdfsReplicationArguments(
-        new ApiServiceRef("p1", "c1", "s1"), "a", "b", "mr1", 5, "admin");
-    args.setHdfsArguments(hdfsArgs);
-
-    checkJsonXML(args.getClass(), args);
-
-    ApiReplicationSchedule sch = new ApiReplicationSchedule();
-    sch.setHiveArguments(args);
-    checkJsonXML(sch.getClass(), sch);
-
-    ApiHiveReplicationResult res = new ApiHiveReplicationResult();
-    res.setTables(Arrays.asList(new ApiHiveTable("db1", "table1")));
-    res.setErrors(Arrays.asList(new ApiHiveReplicationError("db1", "table1", "error1")));
-    res.setDryRun(true);
-    res.setPhase("foo");
-
-    ApiHdfsReplicationResult hdfsRes = new ApiHdfsReplicationResult();
-    hdfsRes.setProgress(42);
-    res.setDataReplicationResult(hdfsRes);
-
-    checkJsonXML(res.getClass(), res);
-
-    ApiReplicationCommand cmd = new ApiReplicationCommand();
-    cmd.setHiveResult(res);
-    checkJsonXML(cmd.getClass(), cmd);
+  private ApiCluster newCluster() {
+    ApiCluster cluster = new ApiCluster();
+    cluster.setMaintenanceOwners(Arrays.asList(ApiEntityType.CLUSTER));
+    cluster.setMaintenanceMode(true);
+    cluster.setName("mycluster");
+    cluster.setDisplayName("mycluster-displayName");
+    cluster.setVersion(ApiClusterVersion.CDH4);
+    cluster.setFullVersion("4.1.2");
+    return cluster;
   }
 
-  @Test
-  public void testImpalaQuery() throws Exception {
-    ApiImpalaQuery query = new ApiImpalaQuery(
-        "queryId", "statement", "QUERY", "FINISHED", new Date(), new Date(),
-        1L, Maps.<String, String>newHashMap(), "user", "hostId", true, "db",
-        Duration.standardDays(1));
-    checkJsonXMLEncoding(query.getClass(), query);
-    checkJsonProperties(query, "queryId", "statement", "queryType", "queryState",
-                        "startTime", "endTime", "rowsProduced", "attributes",
-                        "user", "coordinator", "detailsAvailable", "database",
-                        "durationMillis");
+  private ApiHost newHost() {
+    List<ApiRoleRef> roleRefs = Arrays.asList(
+        new ApiRoleRef("clusterName", "serviceName", "roleName"));
 
-    ApiImpalaQueryResponse response = new ApiImpalaQueryResponse(
-        ImmutableList.<ApiImpalaQuery>of(), ImmutableList.<String>of());
-    checkJsonXMLEncoding(response.getClass(), response);
-    checkJsonProperties(response, "queries", "warnings");
+    ApiHost host = new ApiHost();
+    host.setCommissionState(ApiCommissionState.COMMISSIONED);
+    host.setHealthChecks(createHealthChecks());
+    host.setHealthSummary(ApiHealthSummary.GOOD);
+    host.setHostId("myHostId");
+    host.setHostUrl("http://foo:7180");
+    host.setHostname("myHostname");
+    host.setIpAddress("1.1.1.1");
+    host.setLastHeartbeat(new Date(0));
+    host.setMaintenanceMode(true);
+    host.setMaintenanceOwners(Arrays.asList(ApiEntityType.HOST));
+    host.setNumCores(4L);
+    host.setRackId("/default");
+    host.setRoleRefs(roleRefs);
+    host.setTotalPhysMemBytes(1234L);
+    return host;
+  }
 
-    ApiImpalaCancelResponse cancelResponse =
-        new ApiImpalaCancelResponse("warning");
-    checkJsonXMLEncoding(cancelResponse.getClass(), cancelResponse);
-    checkJsonProperties(cancelResponse, "warning");
-
-    ApiImpalaQueryDetailsResponse detailsResponse =
-        new ApiImpalaQueryDetailsResponse("details");
-    checkJsonXMLEncoding(detailsResponse.getClass(), detailsResponse);
-    checkJsonProperties(detailsResponse, "details");
+  private ApiUser newUser() {
+    ApiUser user = new ApiUser();
+    user.setName("myuser");
+    user.setPassword("correct horse battery staple");
+    user.addRole("myrole");
+    user.setPwHash("hash");
+    user.setPwSalt(1L);
+    user.setPwLogin(true);
+    return user;
   }
 
 }

@@ -19,11 +19,13 @@ package com.cloudera.api.model;
 import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
-import java.util.List;
 
 /**
  * This objects represents a deployment including all clusters, hosts,
@@ -41,6 +43,7 @@ public class ApiDeployment {
   private ApiConfigList managerSettings;
   private ApiConfigList allHostsConfig;
   private List<ApiCmPeer> peers;
+  private ApiHostTemplateList hostTemplates;
 
   public ApiDeployment() {
     // For JAX-B
@@ -56,6 +59,7 @@ public class ApiDeployment {
         .add("managerSettings", managerSettings)
         .add("allHostsConfig", allHostsConfig)
         .add("peers", peers)
+        .add("hostTemplates", hostTemplates)
         .toString();
   }
 
@@ -70,14 +74,15 @@ public class ApiDeployment {
         Objects.equal(managementService, that.getManagementService()) &&
         Objects.equal(managerSettings, that.getManagerSettings()) &&
         Objects.equal(allHostsConfig, that.getAllHostsConfig()) &&
-        Objects.equal(peers, that.getPeers()));
+        Objects.equal(peers, that.getPeers()) &&
+        Objects.equal(hostTemplates, that.getHostTemplates()));
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(timestamp, clusters, hosts,
                             versionInfo, managementService,
-                            allHostsConfig, peers);
+                            allHostsConfig, peers, hostTemplates);
   }
 
   /**
@@ -186,7 +191,7 @@ public class ApiDeployment {
    * The list of peers configured in Cloudera Manager.
    * Available since API v3.
    */
-  @XmlElement
+  @XmlElementWrapper
   public List<ApiCmPeer> getPeers() {
     return peers;
   }
@@ -195,4 +200,15 @@ public class ApiDeployment {
     this.peers = peers;
   }
 
+  /**
+   * The list of all host templates in Cloudera Manager.
+   */
+  @XmlElement
+  public ApiHostTemplateList getHostTemplates() {
+    return hostTemplates;
+  }
+
+  public void setHostTemplates(ApiHostTemplateList hostTemplates) {
+    this.hostTemplates = hostTemplates;
+  }
 }

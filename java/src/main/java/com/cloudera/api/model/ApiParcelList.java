@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * A list of {@link ApiParcel}.
  */
-@XmlRootElement(name = "serviceList")
+@XmlRootElement(name = "parcelList")
 public class ApiParcelList extends ApiListBase<ApiParcel> {
 
   public ApiParcelList() {

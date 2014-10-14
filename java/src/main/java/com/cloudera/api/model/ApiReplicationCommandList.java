@@ -39,4 +39,8 @@ public class ApiReplicationCommandList extends
     return values;
   }
 
+  public void setCommands(List<ApiReplicationCommand> commands) {
+    this.values = commands;
+  }
+
 }

@@ -16,7 +16,6 @@
 package com.cloudera.api.v1;
 
 import com.cloudera.api.DataView;
-import com.cloudera.api.Enterprise;
 import com.cloudera.api.model.ApiCollectDiagnosticDataArguments;
 import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiCommandList;
@@ -154,7 +153,6 @@ public interface ClouderaManagerResource {
    * @param args The command arguments.
    * @return Detailed command information.
    */
-  @Enterprise
   @POST
   @Path("/commands/collectDiagnosticData")
   public ApiCommand collectDiagnosticDataCommand(
@@ -175,6 +173,6 @@ public interface ClouderaManagerResource {
   @GET
   @Path("/log")
   @Produces(MediaType.TEXT_PLAIN)
-  public InputStream getLog() throws IOException;
+  public InputStream getLog();
 
 }

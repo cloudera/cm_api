@@ -223,7 +223,7 @@
       <p>
         The Cloudera Manager API uses <a href="http://tools.ietf.org/html/rfc2617">HTTP
         basic access authentication</a>. It accepts the same user credentials
-        as the web interface. Different users may have different level of access,
+        as the web interface. Different users may have different levels of access,
         as defined by their roles. (See the user management API calls for more.)
         With every authenticated request, the server returns a session cookie,
         which can be subsequently used for authentication.
@@ -1506,7 +1506,7 @@
 
     <h3>Metrics</h3>
 
-    <p>You can get metrics related to hosts,
+    <p>In the Enterprise Edition, you can get metrics related to hosts,
     services, roles and activities. The call by default fetches data points from
     the last 5 minutes.
     <code>

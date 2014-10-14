@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ApiEnableJtHaArguments {
 
   private String newJtHostId;
+  private String logicalName;
   private boolean forceInitZNode = true;
   private String zkServiceName;
   private String newJtRoleName;
@@ -108,6 +109,7 @@ public class ApiEnableJtHaArguments {
   public String toString() {
     return Objects.toStringHelper(this)
                   .add("newJtHostId", newJtHostId)
+                  .add("logicalName", logicalName)
                   .add("forceInitZnode", forceInitZNode)
                   .add("zkServiceName", zkServiceName)
                   .add("newJtRoleName", newJtRoleName)
@@ -121,6 +123,7 @@ public class ApiEnableJtHaArguments {
     ApiEnableJtHaArguments other = ApiUtils.baseEquals(this, o);
     return this == other || (other != null &&
         Objects.equal(newJtHostId, other.getNewJtHostId()) &&
+        Objects.equal(this.logicalName, other.getLogicalName()) &&
         Objects.equal(zkServiceName, other.getZkServiceName()) &&
         (forceInitZNode == other.getForceInitZNode()) &&
         Objects.equal(newJtRoleName, other.getNewJtRoleName()) &&
@@ -130,8 +133,23 @@ public class ApiEnableJtHaArguments {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(newJtHostId, forceInitZNode, zkServiceName,
+    return Objects.hashCode(newJtHostId, logicalName, forceInitZNode, zkServiceName,
         newJtRoleName, fc1RoleName, fc2RoleName);
   }
 
+  /**
+   * Logical name of the JobTracker pair. If value is not provided,
+   * "logicaljt" is used as the default. The name can contain
+   * only alphanumeric characters and "-".
+   * <p>
+   * Available since API v8.
+   */
+  @XmlElement
+  public String getLogicalName() {
+    return logicalName;
+  }
+
+  public void setLogicalName(String logicalName) {
+    this.logicalName = logicalName;
+  }
 }

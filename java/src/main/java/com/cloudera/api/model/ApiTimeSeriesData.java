@@ -29,18 +29,13 @@ public class ApiTimeSeriesData {
   private Date timestamp;
   private double value;
   private String type;
+  private ApiTimeSeriesAggregateStatistics aggregateStatistics;
 
-  public ApiTimeSeriesData() {
-    // For JAX-B
-  }
-
-  public ApiTimeSeriesData(Date timestamp, double value, String type) {
-    this.timestamp = timestamp;
-    this.value = value;
-    this.type = type;
-  }
-
-  /** The timestamp for the time series data. */
+  /**
+   * The timestamp for this time series data point. Note that the timestamp
+   * reflects coordinated universal time (UTC) and not necessarily the server's
+   * time zone. The rest API formats the UTC timestamp as an ISO-8061 string.
+   */
   @XmlElement
   public Date getTimestamp() {
     return timestamp;
@@ -59,7 +54,7 @@ public class ApiTimeSeriesData {
   public void setValue(double value) {
     this.value = value;
   }
-  
+
   /** The type of the time series data. */
   @XmlElement
   public String getType() {
@@ -68,5 +63,23 @@ public class ApiTimeSeriesData {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  /**
+   * Available from v6 for data points containing aggregate data. It includes
+   * further statistics about the data point. An aggregate can be across
+   * entities (e.g., fd_open_across_datanodes), over time (e.g., a daily point
+   * for the fd_open metric for a specific DataNode), or both (e.g., a daily
+   * point for the fd_open_across_datanodes metric). If the data point is for
+   * non-aggregate date this will return null.
+   */
+  @XmlElement
+  public ApiTimeSeriesAggregateStatistics getAggregateStatistics() {
+    return aggregateStatistics;
+  }
+
+  public void setAggregateStatistics(
+      ApiTimeSeriesAggregateStatistics aggregateStatistics) {
+    this.aggregateStatistics = aggregateStatistics;
   }
 }
