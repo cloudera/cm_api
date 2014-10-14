@@ -18,6 +18,14 @@ Releases
     </thead>
     <tbody>
         <tr>
+            <td>v8</td>
+            <td>Cloudera Manager 5.2</td>
+            <td><a href="{{ site.url }}/apidocs/v8/index.html">API docs</a>,
+                <a href="{{ site.url }}/javadoc/5.2.0/index.html">Javadoc</a>
+            </td>
+        </tr>
+        <tr>
+        <tr>
             <td>v7</td>
             <td>Cloudera Manager 5.1</td>
             <td><a href="{{ site.url }}/apidocs/v7/index.html">API docs</a>,
