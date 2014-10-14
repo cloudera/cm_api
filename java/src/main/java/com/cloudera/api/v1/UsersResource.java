@@ -23,7 +23,6 @@ import static com.cloudera.api.Parameters.DATA_VIEW;
 import static com.cloudera.api.Parameters.DATA_VIEW_DEFAULT;
 import static com.cloudera.api.Parameters.USER_NAME;
 
-import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -64,7 +63,6 @@ public interface UsersResource {
    */
   @DELETE
   @Path("/{userName}")
-  @PermitAll
   public ApiUser deleteUser(@PathParam(USER_NAME) String userName);
 
   /**
@@ -96,7 +94,6 @@ public interface UsersResource {
    */
   @PUT
   @Path("/{userName}")
-  @PermitAll
   public ApiUser updateUser(@PathParam(USER_NAME) String userName,
       ApiUser user);
 

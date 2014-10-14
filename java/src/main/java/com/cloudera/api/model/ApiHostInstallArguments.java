@@ -37,6 +37,8 @@ public class ApiHostInstallArguments {
   private Integer parallelInstallCount;
   private String cmRepoUrl;
   private String gpgKeyCustomUrl;
+  private String javaInstallStrategy = "AUTO";
+  private boolean unlimitedJCE = false;
 
   public ApiHostInstallArguments() {
     // For JAX-B
@@ -53,6 +55,7 @@ public class ApiHostInstallArguments {
         .add("parallelInstallCount", parallelInstallCount)
         .add("cmRepoUrl", cmRepoUrl)
         .add("gpgKeyCustomUrl", gpgKeyCustomUrl)
+        .add("javaInstallStrategy", javaInstallStrategy)
         .toString();
   }
 
@@ -68,7 +71,8 @@ public class ApiHostInstallArguments {
         Objects.equal(passphrase, that.getPassphrase()) &&
         Objects.equal(parallelInstallCount, that.getParallelInstallCount()) &&
         Objects.equal(cmRepoUrl, that.getCmRepoUrl()) &&
-        Objects.equal(gpgKeyCustomUrl, that.getGpgKeyCustomUrl()));
+        Objects.equal(gpgKeyCustomUrl, that.getGpgKeyCustomUrl()) &&
+        Objects.equal(javaInstallStrategy, that.getJavaInstallStrategy()));
   }
 
   @Override
@@ -179,9 +183,9 @@ public class ApiHostInstallArguments {
   /**
    * The Cloudera Manager repository URL to use (optional).
    * Example for SLES, Redhat or other RPM based distributions:
-   * http://archive.cloudera.com/cdh4/redhat/5/x86_64/cdh/4/
+   * http://archive.cloudera.com/cm5/redhat/5/x86_64/cm/5/
    * Example for Ubuntu or other Debian based distributions:
-   * "deb http://archive.cloudera.com/cdh4/ubuntu/lucid/amd64/cdh/ lucid-cdh4 contrib"
+   * "deb http://archive.cloudera.com/cm5/ubuntu/lucid/amd64/cm lucid-cm5 contrib"
    */
   @XmlElement
   public String getCmRepoUrl() {
@@ -195,9 +199,9 @@ public class ApiHostInstallArguments {
   /**
    * The Cloudera Manager public GPG key (optional).
    * Example for SLES, Redhat or other RPM based distributions:
-   * http://archive.cloudera.com/redhat/cdh/RPM-GPG-KEY-cloudera
+   * http://archive.cloudera.com/cm5/redhat/5/x86_64/cm/RPM-GPG-KEY-cloudera
    * Example for Ubuntu or other Debian based distributions:
-   * http://archive.cloudera.com/debian/archive.key
+   * http://archive.cloudera.com/cm5/ubuntu/lucid/amd64/cm/archive.key
    */
   @XmlElement
   public String getGpgKeyCustomUrl() {
@@ -206,5 +210,35 @@ public class ApiHostInstallArguments {
 
   public void setGpgKeyCustomUrl(String gpgKeyCustomUrl) {
     this.gpgKeyCustomUrl = gpgKeyCustomUrl;
+  }
+
+  /**
+   * Added in v8: Strategy to use for JDK installation. Valid values are
+   * 1. AUTO (default): Cloudera Manager will install the JDK versions that are
+   *          required when the "AUTO" option is selected.
+   *          Cloudera Manager may overwrite any of the existing JDK installations.
+   * 2. NONE: Cloudera Manager will not install any JDK when "NONE" option is selected.
+   *          It should be used if an existing JDK installation has to be used.
+   */
+  @XmlElement
+  public String getJavaInstallStrategy() {
+    return javaInstallStrategy;
+  }
+
+  public void setJavaInstallStrategy(String javaInstallStrategy) {
+    this.javaInstallStrategy = javaInstallStrategy;
+  }
+
+  /**
+   * Added in v8: Flag for unlimited strength JCE policy files installation
+   * If unset, defaults to false
+   */
+  @XmlElement
+  public boolean isUnlimitedJCE() {
+    return unlimitedJCE;
+  }
+
+  public void setUnlimitedJCE(boolean unlimitedJCE) {
+    this.unlimitedJCE = unlimitedJCE;
   }
 }

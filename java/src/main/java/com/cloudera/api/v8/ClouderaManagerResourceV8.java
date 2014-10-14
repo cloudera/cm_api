@@ -13,33 +13,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.cloudera.api.model;
+package com.cloudera.api.v8;
 
-import java.util.List;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import com.cloudera.api.v7.ClouderaManagerResourceV7;
 
-/**
- * A list of {@link ApiParcel}.
- */
-@XmlRootElement(name = "parcelList")
-public class ApiParcelList extends ApiListBase<ApiParcel> {
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-  public ApiParcelList() {
-    // For JAX-B
-  }
+@Consumes({MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_JSON})
+public interface ClouderaManagerResourceV8 extends ClouderaManagerResourceV7 {
 
-  public ApiParcelList(List<ApiParcel> parcels) {
-    super(parcels);
-  }
-
-  @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  public List<ApiParcel> getParcels() {
-    return values;
-  }
-
-  public void setParcels(List<ApiParcel> values) {
-    this.values = values;
-  }
+  /**
+   * Return the Cloudera Management Services resource.
+   *
+   * @return The Cloudera Management Services resource.
+   */
+  @Path("/service")
+  public MgmtServiceResourceV8 getMgmtServiceResource();
 
 }

@@ -117,6 +117,10 @@ public class ApiUser {
    * <li><b>ROLE_LIMITED</b>: Added in Cloudera Manager 5.0</li>
    * <li><b>ROLE_OPERATOR</b>: Added in Cloudera Manager 5.1</li>
    * <li><b>ROLE_CONFIGURATOR</b>: Added in Cloudera Manager 5.1</li>
+   * <li><b>ROLE_CLUSTER_ADMIN</b>: Added in Cloudera Manager 5.2</li>
+   * <li><b>ROLE_BDR_ADMIN</b>: Added in Cloudera Manager 5.2</li>
+   * <li><b>ROLE_NAVIGATOR_ADMIN</b>: Added in Cloudera Manager 5.2</li>
+   * <li><b>ROLE_USER_ADMIN</b>: Added in Cloudera Manager 5.2</li>
    * </ul>
    * An empty list implies ROLE_USER.
    * <p>

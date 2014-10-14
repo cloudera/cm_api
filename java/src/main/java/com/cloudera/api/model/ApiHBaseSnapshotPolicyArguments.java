@@ -16,10 +16,12 @@
 package com.cloudera.api.model;
 
 import com.cloudera.api.ApiUtils;
+import com.cloudera.api.model.ApiHBaseSnapshot.Storage;
 import com.google.common.base.Objects;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -27,13 +29,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "hbaseSnapshotPolicyArguments")
 public class ApiHBaseSnapshotPolicyArguments {
   private List<String> tableRegExps;
+  private Storage storage;
 
   public ApiHBaseSnapshotPolicyArguments() {
     // For JAX-B
   }
 
   public ApiHBaseSnapshotPolicyArguments(List<String> tableRegExps) {
+    this(tableRegExps, null /* no storage specified */);
+  }
+
+  public ApiHBaseSnapshotPolicyArguments(List<String> tableRegExps,
+      Storage storage) {
     this.tableRegExps = tableRegExps;
+    this.storage = storage;
   }
 
   /**
@@ -49,10 +58,21 @@ public class ApiHBaseSnapshotPolicyArguments {
     this.tableRegExps = tableRegExps;
   }
 
+  /** The location where the snapshots should be stored. */
+  @XmlElement
+  public Storage getStorage() {
+    return storage;
+  }
+
+  public void setStorage(Storage storage) {
+    this.storage = storage;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
         .add("tableRegExps", tableRegExps)
+        .add("storage", storage)
         .toString();
   }
 
@@ -60,11 +80,12 @@ public class ApiHBaseSnapshotPolicyArguments {
   public boolean equals(Object o) {
     ApiHBaseSnapshotPolicyArguments other = ApiUtils.baseEquals(this, o);
     return this == other || (other != null &&
-        Objects.equal(tableRegExps, other.getTableRegExps()));
+        Objects.equal(tableRegExps, other.getTableRegExps()) &&
+        Objects.equal(storage, other.getStorage()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(tableRegExps);
+    return Objects.hashCode(tableRegExps, storage);
   }
 }

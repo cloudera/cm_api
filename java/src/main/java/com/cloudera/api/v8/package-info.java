@@ -13,33 +13,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.cloudera.api.model;
-
-import java.util.List;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * A list of {@link ApiParcel}.
+ * API version 8, introduced in Cloudera Manager 5.2.0.
  */
-@XmlRootElement(name = "parcelList")
-public class ApiParcelList extends ApiListBase<ApiParcel> {
 
-  public ApiParcelList() {
-    // For JAX-B
-  }
-
-  public ApiParcelList(List<ApiParcel> parcels) {
-    super(parcels);
-  }
-
-  @XmlElementWrapper(name = ApiListBase.ITEMS_ATTR)
-  public List<ApiParcel> getParcels() {
-    return values;
-  }
-
-  public void setParcels(List<ApiParcel> values) {
-    this.values = values;
-  }
-
-}
+package com.cloudera.api.v8;

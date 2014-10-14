@@ -124,7 +124,7 @@ public class ApiRoleConfigGroup {
   }
 
   /**
-   * The display name of this group. Read-only for base groups.
+   * The display name of this group.
    */
   @XmlElement
   public String getDisplayName() {
