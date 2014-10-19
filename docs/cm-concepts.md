@@ -1,6 +1,6 @@
 ---
 layout: default
-title: CM Concepts
+title: Cloudera Manager Concepts
 id: cm-concepts
 permalink: /docs/cm-concepts/
 ---
@@ -10,29 +10,29 @@ permalink: /docs/cm-concepts/
 * toc
 {:toc}
 
-To effectively use the API, you need to understand the basic CM concepts, as
-well as how CM models a Hadoop cluster.
+To effectively use the API, you need to understand the basic Cloudera Manager concepts, as
+well as how Cloudera Manager models a Hadoop cluster.
 
 Cloudera Manager Concepts
 =========================
 
 Deployment
 ----------
-A configuration of CM and all the services and hosts it manages.
+A configuration of Cloudera Manager and all the services and hosts it manages.
 Deployment information is available under the `/cm/deployment` resource.
 
 
 Cluster
 -------
 A cluster is a set of hosts running inter-dependent services. All hosts in a
-cluster have the same CDH version. A CM installation may have
+cluster have the same CDH version. A Cloudera Manager installation may have
 multiple clusters, which are uniquely identified by different names.
 
 You can issue commands against a cluster.
 
 Host
 ----
-A logical or physical machine that runs a CM agent.
+A logical or physical machine that runs a Cloudera Manager agent.
 You can assign role instances to hosts.
 A host may belong to only one cluster. A host may also not be part of any
 cluster, in which case it will not run any service roles.
@@ -48,7 +48,7 @@ service has nameservices, and a MapReduce service has activities.
 
 All services belong to a cluster (except for the Cloudera Management Service),
 and is uniquely identified by its name, which is different from the mutable
-"display name", within a CM installation.
+"display name", within a Cloudera Manager installation.
 The types of services available depends on the CDH version of the cluster.
 
 Role
@@ -105,4 +105,4 @@ Architecture Overview
 =====================
 Also see the [Cloudera Manager
 Primer](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CM4Ent/latest/Cloudera-Manager-Introduction/cmi_primer.html)
-for an overview on CM's architecture.
+for an overview on Cloudera Manager's architecture.
