@@ -45,7 +45,8 @@ class TestReplicationTypes(unittest.TestCase):
       "removeMissingFiles" : false,
       "preserveReplicationCount" : true,
       "preserveBlockSize" : true,
-      "preservePermissions" : false
+      "preservePermissions" : false,
+      "skipTrash" : false
     }'''
     args = utils.deserialize(RAW, ApiHdfsReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
@@ -62,6 +63,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertTrue(args.preserveBlockSize)
     self.assertFalse(args.preservePermissions)
     self.assertTrue(args.preserveReplicationCount)
+    self.assertFalse(args.skipTrash)
 
   def test_hive_arguments(self):
     RAW = '''{
@@ -79,7 +81,8 @@ class TestReplicationTypes(unittest.TestCase):
         "removeMissingFiles" : false,
         "preserveReplicationCount" : false,
         "preserveBlockSize" : false,
-        "preservePermissions" : false
+        "preservePermissions" : false,
+        "skipTrash" : false
       },
       "tableFilters" : [
         { "database" : "db1", "tableName" : "table1" }
@@ -206,7 +209,8 @@ class TestReplicationTypes(unittest.TestCase):
           "removeMissingFiles" : false,
           "preserveReplicationCount" : false,
           "preserveBlockSize" : false,
-          "preservePermissions" : false
+          "preservePermissions" : false,
+          "skipTrash" : false
         },
         "dryRun" : false
       }
