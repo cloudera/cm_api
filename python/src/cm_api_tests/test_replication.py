@@ -46,7 +46,8 @@ class TestReplicationTypes(unittest.TestCase):
       "preserveReplicationCount" : true,
       "preserveBlockSize" : true,
       "preservePermissions" : false,
-      "skipTrash" : false
+      "skipTrash" : false,
+      "replicationStrategy" : "DYNAMIC"
     }'''
     args = utils.deserialize(RAW, ApiHdfsReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
@@ -64,6 +65,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertFalse(args.preservePermissions)
     self.assertTrue(args.preserveReplicationCount)
     self.assertFalse(args.skipTrash)
+    self.assertEquals('DYNAMIC', args.replicationStrategy)
 
   def test_hive_arguments(self):
     RAW = '''{
