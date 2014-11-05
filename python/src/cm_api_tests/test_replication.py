@@ -89,7 +89,8 @@ class TestReplicationTypes(unittest.TestCase):
       "tableFilters" : [
         { "database" : "db1", "tableName" : "table1" }
       ],
-      "dryRun" : false
+      "dryRun" : false,
+      "replicateImpalaMetadata" : true
     }'''
     args = utils.deserialize(RAW, ApiHiveReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
@@ -103,6 +104,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertIsInstance(args.tableFilters[0], ApiHiveTable)
     self.assertEquals("db1", args.tableFilters[0].database)
     self.assertEquals("table1", args.tableFilters[0].tableName)
+    self.assertTrue(args.replicateImpalaMetadata)
 
   def test_hive_results(self):
     RAW = '''{

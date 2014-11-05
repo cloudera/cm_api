@@ -733,6 +733,7 @@ class ApiHiveReplicationArguments(BaseApiObject):
     'replicateData' : None,
     'hdfsArguments' : Attr(ApiHdfsReplicationArguments),
     'dryRun'        : None,
+    'replicateImpalaMetadata' : None,
   }
 
 class ApiHiveReplicationResult(BaseApiObject):
