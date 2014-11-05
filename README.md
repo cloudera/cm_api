@@ -1,7 +1,7 @@
 Cloudera Manager RESTful API Clients
 ====================================
 
-> [Cloudera Manager]((http://www.cloudera.com/products-services/tools/) is the market-leading management platform 
+> [Cloudera Manager](http://www.cloudera.com/products-services/tools/) is the market-leading management platform 
 > for [CDH](http://www.cloudera.com/hadoop/). As the industry’s first end-to-end 
 > management application for Apache Hadoop, Cloudera Manager sets the standard for enterprise deployment by 
 > delivering granular visibility into and control over every part of CDH – empowering operators to improve 
