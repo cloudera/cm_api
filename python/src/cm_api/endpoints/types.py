@@ -681,6 +681,7 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'removeMissingFiles'        : None,
     'skipChecksumChecks'        : None,
     'skipTrash'                 : None,
+    'replicationStrategy'       : None,
   }
 
 class ApiHdfsReplicationResult(BaseApiObject):
