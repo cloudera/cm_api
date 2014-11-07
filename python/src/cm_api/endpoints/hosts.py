@@ -79,6 +79,7 @@ class ApiHost(BaseApiResource):
     'maintenanceMode'   : ROAttr(),
     'maintenanceOwners' : ROAttr(),
     'numCores'          : ROAttr(),
+    'numPhysicalCores'  : ROAttr(),
     'totalPhysMemBytes' : ROAttr(),
   }
 
