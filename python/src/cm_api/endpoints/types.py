@@ -664,6 +664,12 @@ class ApiCmPeer(BaseApiObject):
   def __str__(self):
     return "<ApiPeer>: %s (%s)" % (self.name, self.url)
 
+class ApiLicensedFeatureUsage(BaseApiObject):
+  _ATTRIBUTES = {
+    'totals'     : ROAttr(),
+    'clusters'  : ROAttr(),
+  }
+
 class ApiHdfsReplicationArguments(BaseApiObject):
   _ATTRIBUTES = {
     'sourceService'             : Attr(ApiServiceRef),

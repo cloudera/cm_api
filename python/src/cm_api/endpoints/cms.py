@@ -146,6 +146,24 @@ class ClouderaManager(BaseApiResource):
     """
     return self._cmd('importAdminCredentials', params=dict(username=username, password=password))
 
+  def get_licensed_feature_usage(self):
+    """
+    Retrieve a summary of licensed feature usage.
+
+    This command will return information about what Cloudera Enterprise
+    licensed features are in use in the clusters being managed by this Cloudera
+    Manager, as well as totals for usage across all clusters.
+
+    The specific features described can vary between different versions of
+    Cloudera Manager.
+
+    Available since API v6.
+    """
+    return self._get('getLicensedFeatureUsage',
+                     ret_type=ApiLicensedFeatureUsage,
+                     ret_is_list=False,
+                     api_version=6)
+
   def inspect_hosts(self):
     """
     Runs the host inspector on the configured hosts.
