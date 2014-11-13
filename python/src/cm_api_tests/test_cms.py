@@ -92,3 +92,40 @@ class TestCMS(unittest.TestCase):
         data=[ "host1", "host2" ],
         retdata={})
     cms.hosts_recommission([ "host1", "host2" ])
+
+  def test_get_licensed_feature_usage(self):
+    resource = utils.MockResource(self)
+    cms = ClouderaManager(resource)
+    json_string = {
+      "totals" : {
+        "Core" : 8,
+        "HBase" : 8,
+        "Impala" : 8,
+        "Search" : 2,
+        "Spark" : 5,
+        "Accumulo" : 0,
+        "Navigator" : 8
+      },
+      "clusters" : {
+        "Cluster 1" : {
+          "Core" : 4,
+          "HBase" : 4,
+          "Impala" : 4,
+          "Search" : 1,
+          "Spark" : 1,
+          "Accumulo" : 0,
+          "Navigator" : 4
+        },
+        "Cluster 2" : {
+          "Core" : 4,
+          "HBase" : 4,
+          "Impala" : 4,
+          "Search" : 1,
+          "Spark" : 4,
+          "Accumulo" : 0,
+          "Navigator" : 4
+        }
+      }
+    }
+    resource.expect("GET", "/cm/getLicensedFeatureUsage", retdata=json_string)
+    cms.get_licensed_feature_usage()
