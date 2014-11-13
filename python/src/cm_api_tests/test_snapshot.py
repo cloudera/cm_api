@@ -34,13 +34,13 @@ class TestSnapshotTypes(unittest.TestCase):
   def test_hdfs_arguments(self):
     RAW = '''{"pathPatterns" : "/user/oozie"}'''
     args = utils.deserialize(RAW, ApiHdfsSnapshotPolicyArguments)
-    self.assertEquals('/user/oozie', args.pathPatterns)
+    self.assertEqual('/user/oozie', args.pathPatterns)
 
   def test_hbase_arguments(self):
     RAW = '''{"tableRegExps" : "table1", "storage" : "LOCAL"}'''
     args = utils.deserialize(RAW, ApiHBaseSnapshotPolicyArguments)
-    self.assertEquals('table1', args.tableRegExps)
-    self.assertEquals('LOCAL', args.storage)
+    self.assertEqual('table1', args.tableRegExps)
+    self.assertEqual('LOCAL', args.storage)
 
   def test_hbase_snapshot(self):
     RAW = '''{
@@ -49,10 +49,10 @@ class TestSnapshotTypes(unittest.TestCase):
       "creationTime" : "2012-12-10T23:11:31.041Z",
       "storage" : "LOCAL" }'''
     args = utils.deserialize(RAW, ApiHBaseSnapshot)
-    self.assertEquals('sn1', args.snapshotName)
-    self.assertEquals('table1', args.tableName)
-    self.assertEquals(self._parse_time("2012-12-10T23:11:31.041Z"), args.creationTime)
-    self.assertEquals('LOCAL', args.storage)
+    self.assertEqual('sn1', args.snapshotName)
+    self.assertEqual('table1', args.tableName)
+    self.assertEqual(self._parse_time("2012-12-10T23:11:31.041Z"), args.creationTime)
+    self.assertEqual('LOCAL', args.storage)
 
   def test_hdfs_snapshot(self):
     RAW = '''{
@@ -61,10 +61,10 @@ class TestSnapshotTypes(unittest.TestCase):
       "snapshotPath" : "/abc/.snapshot/sn1",
       "creationTime" : "2012-12-10T23:11:31.041Z" }'''
     args = utils.deserialize(RAW, ApiHdfsSnapshot)
-    self.assertEquals('/abc', args.path)
-    self.assertEquals('sn1', args.snapshotName)
-    self.assertEquals('/abc/.snapshot/sn1', args.snapshotPath)
-    self.assertEquals(self._parse_time("2012-12-10T23:11:31.041Z"), args.creationTime)
+    self.assertEqual('/abc', args.path)
+    self.assertEqual('sn1', args.snapshotName)
+    self.assertEqual('/abc/.snapshot/sn1', args.snapshotPath)
+    self.assertEqual(self._parse_time("2012-12-10T23:11:31.041Z"), args.creationTime)
 
   def test_hbase_snapshot_error(self):
     RAW = '''{
@@ -73,10 +73,10 @@ class TestSnapshotTypes(unittest.TestCase):
       "error" : "bad snapshot",
       "storage" : "LOCAL" }'''
     args = utils.deserialize(RAW, ApiHBaseSnapshotError)
-    self.assertEquals('sn1', args.snapshotName)
-    self.assertEquals('table1', args.tableName)
-    self.assertEquals('bad snapshot', args.error)
-    self.assertEquals('LOCAL', args.storage)
+    self.assertEqual('sn1', args.snapshotName)
+    self.assertEqual('table1', args.tableName)
+    self.assertEqual('bad snapshot', args.error)
+    self.assertEqual('LOCAL', args.storage)
 
   def test_hdfs_snapshot_error(self):
     RAW = '''{
@@ -85,10 +85,10 @@ class TestSnapshotTypes(unittest.TestCase):
       "path" : "/abc",
       "error" : "bad snapshot" }'''
     args = utils.deserialize(RAW, ApiHdfsSnapshotError)
-    self.assertEquals('/abc/.snapshot/sn1', args.snapshotPath)
-    self.assertEquals('/abc', args.path)
-    self.assertEquals('sn1', args.snapshotName)
-    self.assertEquals('bad snapshot', args.error)
+    self.assertEqual('/abc/.snapshot/sn1', args.snapshotPath)
+    self.assertEqual('/abc', args.path)
+    self.assertEqual('sn1', args.snapshotName)
+    self.assertEqual('bad snapshot', args.error)
 
   def test_hbase_snapshot_result(self):
     RAW = '''{
@@ -129,19 +129,19 @@ class TestSnapshotTypes(unittest.TestCase):
        }'''
 
     args = utils.deserialize(RAW, ApiHBaseSnapshotResult)
-    self.assertEquals(5, args.processedTableCount)
-    self.assertEquals(["t1", "t2", "t3", "t4", "t5"], args.processedTables)
-    self.assertEquals('2', args.unprocessedTableCount)
-    self.assertEquals(['nt1', 'nt2'], args.unprocessedTables)
-    self.assertEquals(5, args.createdSnapshotCount)
-    self.assertEquals('t3', args.createdSnapshots[2].tableName)
-    self.assertEquals(1, args.deletedSnapshotCount)
-    self.assertEquals('dn1', args.deletedSnapshots[0].snapshotName)
-    self.assertEquals(1, args.creationErrorCount)
-    self.assertEquals("bad snapshot", args.creationErrors[0].error)
-    self.assertEquals("LOCAL", args.creationErrors[0].storage)
-    self.assertEquals(0, args.deletionErrorCount)
-    self.assertEquals([], args.deletionErrors)
+    self.assertEqual(5, args.processedTableCount)
+    self.assertEqual(["t1", "t2", "t3", "t4", "t5"], args.processedTables)
+    self.assertEqual('2', args.unprocessedTableCount)
+    self.assertEqual(['nt1', 'nt2'], args.unprocessedTables)
+    self.assertEqual(5, args.createdSnapshotCount)
+    self.assertEqual('t3', args.createdSnapshots[2].tableName)
+    self.assertEqual(1, args.deletedSnapshotCount)
+    self.assertEqual('dn1', args.deletedSnapshots[0].snapshotName)
+    self.assertEqual(1, args.creationErrorCount)
+    self.assertEqual("bad snapshot", args.creationErrors[0].error)
+    self.assertEqual("LOCAL", args.creationErrors[0].storage)
+    self.assertEqual(0, args.deletionErrorCount)
+    self.assertEqual([], args.deletionErrors)
 
   def test_hdfs_snapshot_result(self):
     RAW = '''{
@@ -188,18 +188,18 @@ class TestSnapshotTypes(unittest.TestCase):
        }'''
 
     args = utils.deserialize(RAW, ApiHdfsSnapshotResult)
-    self.assertEquals(5, args.processedPathCount)
-    self.assertEquals(["/t1", "/t2", "/t3", "/t4", "/t5"], args.processedPaths)
-    self.assertEquals('2', args.unprocessedPathCount)
-    self.assertEquals(['nt1', 'nt2'], args.unprocessedPaths)
-    self.assertEquals(5, args.createdSnapshotCount)
-    self.assertEquals('/t3', args.createdSnapshots[2].path)
-    self.assertEquals(1, args.deletedSnapshotCount)
-    self.assertEquals('dn1', args.deletedSnapshots[0].snapshotName)
-    self.assertEquals(1, args.creationErrorCount)
-    self.assertEquals("bad snapshot", args.creationErrors[0].error)
-    self.assertEquals(0, args.deletionErrorCount)
-    self.assertEquals([], args.deletionErrors)
+    self.assertEqual(5, args.processedPathCount)
+    self.assertEqual(["/t1", "/t2", "/t3", "/t4", "/t5"], args.processedPaths)
+    self.assertEqual('2', args.unprocessedPathCount)
+    self.assertEqual(['nt1', 'nt2'], args.unprocessedPaths)
+    self.assertEqual(5, args.createdSnapshotCount)
+    self.assertEqual('/t3', args.createdSnapshots[2].path)
+    self.assertEqual(1, args.deletedSnapshotCount)
+    self.assertEqual('dn1', args.deletedSnapshots[0].snapshotName)
+    self.assertEqual(1, args.creationErrorCount)
+    self.assertEqual("bad snapshot", args.creationErrors[0].error)
+    self.assertEqual(0, args.deletionErrorCount)
+    self.assertEqual([], args.deletionErrors)
 
 
   def _parse_time(self, tstr):

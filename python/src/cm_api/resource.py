@@ -22,7 +22,8 @@ import logging
 import posixpath
 import time
 import socket
-import urllib2
+import six
+from six.moves import urllib
 
 LOG = logging.getLogger(__name__)
 
@@ -63,7 +64,7 @@ class Resource(object):
                                 headers=headers)
     try:
       body = resp.read()
-    except Exception, ex:
+    except Exception as ex:
       raise Exception("Command '%s %s' failed: %s" %
                       (method, path, ex))
 
@@ -78,7 +79,7 @@ class Resource(object):
       try:
         json_dict = json.loads(body)
         return json_dict
-      except Exception, ex:
+      except Exception as ex:
         self._client.logger.exception('JSON decode error: %s' % (body,))
         raise ex
     else:
@@ -93,12 +94,12 @@ class Resource(object):
 
     @return: A dictionary of the JSON result.
     """
-    for retry in xrange(self.retries + 1):
+    for retry in six.moves.xrange(self.retries + 1):
       if retry:
         time.sleep(self.retry_sleep)
       try:
         return self.invoke("GET", relpath, params)
-      except (socket.error, urllib2.URLError) as e:
+      except (socket.error, urllib.error.URLError) as e:
         if "timed out" in str(e).lower():
           log_message = "Timeout issuing GET request for %s." \
               % (self._join_uri(relpath), )
