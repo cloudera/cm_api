@@ -39,7 +39,7 @@ class TestYarn(unittest.TestCase):
     params={ 'from':time.isoformat(), 'to':time.isoformat(), \
         'filter':'', 'limit':100, 'offset':0 })
     resp = service.get_yarn_applications(time, time)
-    self.assertEquals(0, len(resp.applications))
+    self.assertEqual(0, len(resp.applications))
 
   def test_kill_application(self):
     resource = utils.MockResource(self)
@@ -48,7 +48,7 @@ class TestYarn(unittest.TestCase):
     resource.expect("POST", "/cm/service/yarnApplications/randomId/kill",
         retdata={ 'warning' : 'test' })
     resp = service.kill_yarn_application('randomId')
-    self.assertEquals('test', resp.warning)
+    self.assertEqual('test', resp.warning)
 
   def test_attributes(self):
     resource = utils.MockResource(self)
@@ -61,10 +61,10 @@ class TestYarn(unittest.TestCase):
                   'supportsHistograms' : True,
                   'description' : 'testDescription' }])
     resp = service.get_yarn_application_attributes()
-    self.assertEquals(1, len(resp))
+    self.assertEqual(1, len(resp))
     attr = resp[0]
     self.assertIsInstance(attr, ApiYarnApplicationAttribute)
-    self.assertEquals('test', attr.name)
+    self.assertEqual('test', attr.name)
 
   def test_collect_yarn_application_diagnostics(self):
     resource = utils.MockResource(self)
@@ -74,7 +74,7 @@ class TestYarn(unittest.TestCase):
         retdata={ 'name' : 'YarnApplicationDiagnosticsCollection' })
     resp = service.collect_yarn_application_diagnostics('randomId-1', 'randomId-2', 'randomId-3')
 
-    self.assertEquals('YarnApplicationDiagnosticsCollection', resp.name)
+    self.assertEqual('YarnApplicationDiagnosticsCollection', resp.name)
 
   def test_create_yarn_application_diagnostics_bundle(self):
     resource = utils.MockResource(self)
@@ -84,4 +84,4 @@ class TestYarn(unittest.TestCase):
         retdata={ 'name' : 'YarnApplicationDiagnosticsCollection' })
     resp = service.create_yarn_application_diagnostics_bundle(['randomId-1', 'randomId-2', 'randomId-3'], 'test_ticket', 'test comment')
 
-    self.assertEquals('YarnApplicationDiagnosticsCollection', resp.name)
+    self.assertEqual('YarnApplicationDiagnosticsCollection', resp.name)

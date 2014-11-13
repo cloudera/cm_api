@@ -1472,14 +1472,14 @@ class ApiService(BaseApiResource):
 
     if self.type == 'HDFS':
       if not isinstance(arguments, ApiHdfsReplicationArguments):
-        raise TypeError, 'Unexpected type for HDFS replication argument.'
+        raise TypeError('Unexpected type for HDFS replication argument.')
       schedule.hdfsArguments = arguments
     elif self.type == 'HIVE':
       if not isinstance(arguments, ApiHiveReplicationArguments):
-        raise TypeError, 'Unexpected type for Hive replication argument.'
+        raise TypeError('Unexpected type for Hive replication argument.')
       schedule.hiveArguments = arguments
     else:
-      raise TypeError, 'Replication is not supported for service type ' + self.type
+      raise TypeError('Replication is not supported for service type ' + self.type)
 
     return self._post("replications", ApiReplicationSchedule, True, [schedule],
         api_version=3)[0]

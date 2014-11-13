@@ -47,17 +47,17 @@ class MockResource(Resource):
     self._next_expect = None
 
     if exp_method is not None:
-      self.test.assertEquals(exp_method, method)
+      self.test.assertEqual(exp_method, method)
     if exp_path is not None:
-      self.test.assertEquals(exp_path, relpath)
+      self.test.assertEqual(exp_path, relpath)
     if exp_params is not None:
-      self.test.assertEquals(exp_params, params)
+      self.test.assertEqual(exp_params, params)
     if exp_data is not None:
       if not isinstance(exp_data, str):
         exp_data = json.dumps(Attr(is_api_list=True).to_json(exp_data, False))
-      self.test.assertEquals(exp_data, data)
+      self.test.assertEqual(exp_data, data)
     if exp_headers is not None:
-      self.test.assertEquals(exp_headers, headers)
+      self.test.assertEqual(exp_headers, headers)
     return retdata
 
   def expect(self, method, reqpath, params=None, data=None, headers=None,
