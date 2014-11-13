@@ -89,7 +89,7 @@ class TestBaseApiObject(unittest.TestCase):
       }
     '''
     obj = utils.deserialize(JSON, Parent)
-    self.assertEquals([], obj.children)
+    self.assertEqual([], obj.children)
 
   def test_init(self):
     obj = Parent(None)
@@ -106,4 +106,4 @@ class TestBaseApiObject(unittest.TestCase):
     dummy.foo = 'foo'
     json = dummy.to_json_dict()
     self.assertEqual('foo', json['foo'])
-    self.assertFalse(json.has_key('bar'))
+    self.assertFalse('bar' in json)
