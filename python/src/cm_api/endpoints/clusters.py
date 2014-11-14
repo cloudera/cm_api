@@ -255,14 +255,20 @@ class ApiCluster(BaseApiResource):
     """
     return self._cmd('stop')
 
-  def restart(self):
+  def restart(self, args=None):
     """
     Restart all services in the cluster.
     Services are restarted in the appropriate order given their dependencies.
 
+    @param ApiRestartClusterArgs: arguments for the restart command
+    @since API v6
+
     @return: Reference to the submitted command.
     """
-    return self._cmd('restart')
+    if self._get_resource_root().version < 6:
+      return self._cmd('restart')
+    else:
+      return self._cmd('restart', data=args, api_version=6)
 
   def deploy_client_config(self):
     """
