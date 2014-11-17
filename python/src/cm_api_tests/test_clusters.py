@@ -60,7 +60,6 @@ class TestCluster(unittest.TestCase):
   def test_restart(self):
     resource = utils.MockResource(self, version=5)
     cluster = ApiCluster(resource, name="foo")
-    data = ApiCluster(resource, name='foo', fullVersion='4.2.1')
     resource.expect(
       method="POST",
       reqpath="/clusters/foo/commands/restart",
@@ -70,13 +69,12 @@ class TestCluster(unittest.TestCase):
 
     resource = utils.MockResource(self, version=7)
     newCluster = ApiCluster(resource, name="bar")
-    data = ApiCluster(resource, name='bar', fullVersion='5.2.1')
+    data = dict()
+    data['restartOnlyStaleServices'] = False
+    data['redeployClientConfiguration'] = True
     resource.expect(
       method="POST",
       reqpath="/clusters/bar/commands/restart",
-      data=None,
+      data=data,
       retdata={'name' : 'bar'})
-    args = dict()
-    args['restartOnlyStaleServices'] = False
-    args['redeployClientConfiguration'] = True
-    newCluster.restart(args);
+    newCluster.restart(False, True);
