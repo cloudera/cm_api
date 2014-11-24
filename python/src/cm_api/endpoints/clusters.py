@@ -463,31 +463,60 @@ class ApiCluster(BaseApiResource):
     """
     return self._cmd('firstRun', None, api_version=7)
 
-  def upgrade_cdh(self, deploy_client_config=True, start_all_services=True, cdh_parcel_version=None):
+  def upgrade_cdh(self, deploy_client_config=True, start_all_services=True,
+      cdh_parcel_version=None, cdh_package_version=None,
+      rolling_restart=False, slave_batch_size=None, sleep_seconds=None,
+      slave_fail_count_threshold=None):
     """
-    Perform CDH upgrade to the next major version.
+    Perform CDH upgrade to the next major version. In v9+, also supports
+    minor CDH 5 upgrades (5.a.b to 5.x.y where x > a) and supports maintenance
+    release changes (a.b.x to a.b.y).
 
     If using packages, CDH packages on all hosts of the cluster must be
     manually upgraded before this command is issued.
  
     The command will upgrade the services and their configuration to the
-    version available in the CDH5 distribution. All running services will
-    be stopped before proceeding.
+    requested version. All running services will be stopped before proceeding,
+    unless rolling restart is requested and is available.
 
     @param deploy_client_config: Whether to deploy client configurations
-           after the upgrade. Default is True.
+           after the upgrade. Default is True. Has no effect in v9+;
+           client configurations are always deployed.
     @param start_all_services: Whether to start all services after the upgrade.
-           Default is True.
-    @param cdh_parcel_version: If using parcels, the full version of an
-           already distributed parcel for the next major CDH version. Default
+           Default is True. Has no effect in v9+; services are always
+           restarted.
+    @param cdh_parcel_version: If upgrading to parcels, the full version of an
+           already distributed parcel for the next CDH version. Default
            is None. Example versions are: '5.0.0-1.cdh5.0.0.p0.11' or
-           '5.0.2-1.cdh5.0.2.p0.32'
+           '5.0.2-1.cdh5.0.2.p0.32'.
+    @param cdh_package_version: If upgrading to packages, the full version of an
+           already installed package for the next CDH version. Default
+           is None. Example versions are: '5.2.0' or '4.5.0'. Only available
+           since v9.
+    @param rolling_restart: If you'd like to do a rolling restart, set this to
+           True. Default is False. Only available since v9.
+    @param slave_batch_size: Controls the rolling restart slave batch size.
+           Only applicable when rolling_restart is True.
+    @param sleep_seconds: Controls how many seconds to sleep betweein rolling
+           restart batches. Only applicable when rolling_restart is True.
+    @param slave_fail_count_threshold: Controls how many slave restart failures
+           are tolerated in a rolling restart. Only applicable when
+           rolling_restart is True.
     @return: Reference to the submitted command.
-    @since: API v6
+    @since: API v6 for major upgrades only, v9 for maintenance and CDH 5 minor
+            releases.
     """
     args = dict()
     args['deployClientConfig'] = deploy_client_config
     args['startAllServices'] = start_all_services
     if cdh_parcel_version:
       args['cdhParcelVersion'] = cdh_parcel_version
+    if cdh_package_version:
+      args['cdhPackageVersion'] = cdh_package_version
+    if rolling_restart:
+      args['rollingRestartArgs'] = {
+          'slaveBatchSize' : slave_batch_size,
+          'sleepSeconds' : sleep_seconds,
+          'slaveFailCountThreshold' : slave_fail_count_threshold
+        }
     return self._cmd('upgradeCdh', data=args, api_version=6)
