@@ -42,7 +42,11 @@ public interface ClouderaManagerResourceV2 extends ClouderaManagerResource {
    * <p/>
    * This object can be used to reconstruct your entire deployment
    * <p/>
-   * Note: Only users with admin privileges are allowed to call this.
+   * Note: Only users with sufficient privileges are allowed to call this.
+   * <ul>
+   * <li>Full Administrators</li>
+   * <li>Cluster Administrators (but Navigator config will be redacted)</li>
+   * </ul>
    * <p/>
    * Note: starting with v3, the deployment information contais data about
    * Cloudera Manager peers configured for the instance. This data contains

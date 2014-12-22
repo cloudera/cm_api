@@ -175,6 +175,8 @@ public interface ClustersResourceV6 extends ClustersResourceV5 {
    * The command will upgrade the services and their configuration to the
    * version available in the CDH5 distribution. All running services will
    * be stopped before proceeding.
+   * <p>
+   * Available since v6.
    *
    * @param clusterName The name of the cluster.
    * @param args Arguments for the command. See {@link ApiCdhUpgradeArgs}.

@@ -20,6 +20,7 @@ import com.cloudera.api.ApiErrorMessage;
 import com.cloudera.api.ApiObjectMapper;
 import com.cloudera.api.ApiUtils;
 import com.cloudera.api.model.ApiHBaseSnapshot.Storage;
+import com.cloudera.api.model.ApiHdfsReplicationArguments.ReplicationStrategy;
 import com.cloudera.api.model.ApiRole.ZooKeeperServerMode;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
@@ -653,6 +654,7 @@ public class ApiModelTest {
     args.setExportDir("foo");
     args.setForce(true);
     args.setReplicateData(true);
+    args.setReplicateImpalaMetadata(true);
 
     ApiHdfsReplicationArguments hdfsArgs = newHdfsReplicationArguments();
     args.setHdfsArguments(hdfsArgs);
@@ -923,6 +925,8 @@ public class ApiModelTest {
     hdfsArgs.setPreservePermissions(true);
     hdfsArgs.setLogPath("log1");
     hdfsArgs.setSkipChecksumChecks(true);
+    hdfsArgs.setSkipTrash(true);
+    hdfsArgs.setReplicationStrategy(ReplicationStrategy.DYNAMIC);
     return hdfsArgs;
   }
 
@@ -982,6 +986,7 @@ public class ApiModelTest {
     host.setMaintenanceMode(true);
     host.setMaintenanceOwners(Arrays.asList(ApiEntityType.HOST));
     host.setNumCores(4L);
+    host.setNumPhysicalCores(4L);
     host.setRackId("/default");
     host.setRoleRefs(roleRefs);
     host.setTotalPhysMemBytes(1234L);

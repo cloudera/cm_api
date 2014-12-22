@@ -5,7 +5,7 @@
   <groupId>com.cloudera.api</groupId>
   <artifactId>cloudera-manager-api</artifactId>
   <name>Cloudera Manager API</name>
-  <version>5.2.0</version>
+  <version>5.3.0</version>
 
   <properties>
     <cxf.version>2.7.5</cxf.version>

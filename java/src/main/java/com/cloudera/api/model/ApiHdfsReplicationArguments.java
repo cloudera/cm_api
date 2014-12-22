@@ -42,6 +42,26 @@ public class ApiHdfsReplicationArguments {
   private boolean preservePermissions;
   private String logPath;
   private boolean skipChecksumChecks;
+  private Boolean skipTrash;
+  private ReplicationStrategy replicationStrategy;
+
+  /**
+   * The strategy for distributing the file replication tasks among the mappers
+   * of the MR job associated with a replication.
+   */
+  public enum ReplicationStrategy {
+    /**
+     * Distributes file replication tasks among the mappers up front, trying to
+     * achieve a uniform distribution based on the file sizes.
+     */
+    STATIC,
+    /**
+     * Distributes file replication tasks in small sets to the mappers, and
+     * as each mapper is done processing its set of tasks, it picks up and
+     * processes the next unallocated set of tasks.
+     */
+    DYNAMIC
+  };
 
   // For JAX-B
   public ApiHdfsReplicationArguments() {
@@ -237,6 +257,33 @@ public class ApiHdfsReplicationArguments {
     this.skipChecksumChecks = skipChecksumChecks;
   }
 
+  /**
+   * Whether to permanently delete destination files that are missing in source.
+   * Defaults to null.
+   */
+  @XmlElement
+  public Boolean getSkipTrash() {
+    return skipTrash;
+  }
+
+  public void setSkipTrash(Boolean skipTrash) {
+    this.skipTrash = skipTrash;
+  }
+
+  /**
+   * The strategy for distributing the file replication tasks among the mappers
+   * of the MR job associated with a replication. Default is
+   * {@link ReplicationStrategy.STATIC}.
+   */
+  @XmlElement
+  public ReplicationStrategy getReplicationStrategy() {
+    return replicationStrategy;
+  }
+
+  public void setReplicationStrategy(ReplicationStrategy replicationStrategy) {
+    this.replicationStrategy = replicationStrategy;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
@@ -255,6 +302,8 @@ public class ApiHdfsReplicationArguments {
                   .add("preservePermissions", preservePermissions)
                   .add("logPath", logPath)
                   .add("skipChecksumChecks", skipChecksumChecks)
+                  .add("skipTrash", skipTrash)
+                  .add("replicationStrategy", replicationStrategy)
                   .toString();
   }
 
@@ -276,7 +325,9 @@ public class ApiHdfsReplicationArguments {
         preserveBlockSize == other.getPreserveBlockSize() &&
         preservePermissions == other.getPreservePermissions() &&
         Objects.equal(logPath, other.getLogPath()) &&
-        skipChecksumChecks == other.getSkipChecksumChecks());
+        skipChecksumChecks == other.getSkipChecksumChecks() &&
+        Objects.equal(skipTrash, other.getSkipTrash()) &&
+        Objects.equal(replicationStrategy, other.getReplicationStrategy()));
   }
 
   @Override
@@ -285,6 +336,6 @@ public class ApiHdfsReplicationArguments {
         mapreduceServiceName, schedulerPoolName, numMaps, dryRun,
         bandwidthPerMap, abortOnError, removeMissingFiles,
         preserveReplicationCount, preserveBlockSize, preservePermissions,
-        logPath, skipChecksumChecks);
+        logPath, skipChecksumChecks, skipTrash, replicationStrategy);
   }
 }

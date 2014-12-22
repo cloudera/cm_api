@@ -47,6 +47,7 @@ public class ApiHost {
   private ApiCommissionState commissionState;
   private ApiConfigList config;
   private Long numCores;
+  private Long numPhysicalCores;
   private Long totalPhysMemBytes;
 
   public ApiHost() {
@@ -78,6 +79,7 @@ public class ApiHost {
     this.commissionState = host.getCommissionState();
     this.config = host.getConfig();
     this.numCores = host.getNumCores();
+    this.numPhysicalCores = host.getNumPhysicalCores();
     this.totalPhysMemBytes = host.getTotalPhysMemBytes();
   }
 
@@ -266,8 +268,8 @@ public class ApiHost {
   }
 
   /**
-   * Readonly. The number of CPU cores on this host. Only populated after the
-   * host has heartbeated to the server.
+   * Readonly. The number of logical CPU cores on this host. Only populated
+   * after the host has heartbeated to the server.
    * Available since API v4.
    */
   @XmlElement
@@ -277,6 +279,20 @@ public class ApiHost {
 
   public void setNumCores(Long numCores) {
     this.numCores = numCores;
+  }
+
+  /**
+   * Readonly. The number of physical CPU cores on this host. Only populated
+   * after the host has heartbeated to the server.
+   * Available since API v9.
+   */
+  @XmlElement
+  public Long getNumPhysicalCores() {
+    return numPhysicalCores;
+  }
+
+  public void setNumPhysicalCores(Long numCores) {
+    this.numPhysicalCores = numCores;
   }
 
   /**

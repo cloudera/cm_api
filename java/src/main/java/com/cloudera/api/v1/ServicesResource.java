@@ -449,7 +449,17 @@ public interface ServicesResource {
    *              to all known service roles.
    * Added in v6: passing an empty role name list will deploy client configs
    *              to all known service roles.
-   *
+   * <p/>
+   * In Cloudera Manager 5.3 and newer, client configurations are fully managed,
+   * meaning that the server maintains state about which client configurations
+   * should exist and be managed by alternatives, and the agents actively
+   * rectify their hosts with this state. Consequently, if this API call is made
+   * with a specific set of roles, Cloudera Manager will deactivate, from
+   * alternatives, any deployed client configs from any non-gateway roles that
+   * are <em>not</em> specified as arguments. Gateway roles are always preserved,
+   * and calling this API with an empty or null argument continues to deploy to
+   * all roles.
+   * <p/>
    * @param serviceName The service name.
    * @param roleNames List of role names.
    * @return Information about the submitted command.

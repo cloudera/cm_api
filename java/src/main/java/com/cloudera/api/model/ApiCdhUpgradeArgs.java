@@ -30,10 +30,13 @@ public class ApiCdhUpgradeArgs {
   private Boolean deployClientConfig = true;
   private Boolean startAllServices = true;
   private String cdhParcelVersion;
+  private String cdhPackageVersion;
+  private ApiRollingUpgradeClusterArgs rollingRestartArgs;
 
   /**
-   * If using parcels, the full version of an already distributed parcel for the
-   * next major CDH version. Default is None. Example versions are:
+   * If using parcels, the full version of an already distributed
+   * parcel for the next major CDH version. Default is null, which
+   * indicates this is a package upgrade. Example versions are:
    * '5.0.0-1.cdh5.0.0.p0.11' or '5.0.2-1.cdh5.0.2.p0.32'
    */
   @XmlElement
@@ -46,8 +49,48 @@ public class ApiCdhUpgradeArgs {
   }
 
   /**
-   * Whether to deploy client configurations after the upgrade. Default is True.
+   * If using packages, the full version of the CDH packages being upgraded to,
+   * such as "5.1.2". These packages must already be installed on the cluster
+   * before running the upgrade command. For backwards compatibility, if
+   * "5.0.0" is specified here, then the upgrade command will relax validation
+   * of installed packages to match v6 behavior, only checking major version.
+   * <p>
+   * Introduced in v9. Has no effect in older API versions, which assume
+   * "5.0.0"
    */
+  @XmlElement
+  public String getCdhPackageVersion() {
+    return cdhPackageVersion;
+  }
+
+  public void setCdhPackageVersion(String cdhPackageVersion) {
+    this.cdhPackageVersion = cdhPackageVersion;
+  }
+
+  /**
+   * If provided and rolling restart is available, will perform
+   * rolling restart with the requested arguments. If provided and
+   * rolling restart is not available, errors. If omitted, will do a
+   * regular restart.
+   * <p>
+   * Introduced in v9. Has no effect in older API versions, which must
+   * always do a hard restart.
+   */
+  @XmlElement
+  public ApiRollingUpgradeClusterArgs getRollingRestartArgs() {
+    return rollingRestartArgs;
+  }
+
+  public void setRollingRestartArgs(ApiRollingUpgradeClusterArgs rollingRestartArgs) {
+    this.rollingRestartArgs = rollingRestartArgs;
+  }
+
+  /**
+   * Not used starting in v9 - Client config is always deployed as part of
+   * upgrade. For older versions, determines whether client configuration
+   * should be deployed as part of upgrade. Default is true.
+   */
+  @Deprecated
   @XmlElement
   public Boolean getDeployClientConfig() {
     return deployClientConfig;
@@ -58,8 +101,11 @@ public class ApiCdhUpgradeArgs {
   }
 
   /**
-   * Whether to start all services after the upgrade. Default is True.
+   * Not used starting in v9 - All servies are always started as part of
+   * upgrade. For older versions, determines whether all services should be
+   * started should be deployed as part of upgrade. Default is true.
    */
+  @Deprecated
   @XmlElement
   public Boolean getStartAllServices() {
     return startAllServices;
@@ -74,7 +120,10 @@ public class ApiCdhUpgradeArgs {
     return Objects.toStringHelper(this)
         .add("deployClientConfig", deployClientConfig)
         .add("startAllServices", startAllServices)
-        .add("cdhParcelVersion", cdhParcelVersion).toString();
+        .add("cdhParcelVersion", cdhParcelVersion)
+        .add("cdhPackageVersion", cdhPackageVersion)
+        .add("rollingRestartArgs", rollingRestartArgs)
+        .toString();
   }
 
   @Override
@@ -83,8 +132,10 @@ public class ApiCdhUpgradeArgs {
     return this == other
         || (other != null
             && Objects.equal(deployClientConfig, other.deployClientConfig)
-            && Objects.equal(startAllServices, other.startAllServices) && Objects
-              .equal(cdhParcelVersion, other.cdhParcelVersion));
+            && Objects.equal(startAllServices, other.startAllServices)
+            && Objects.equal(cdhParcelVersion, other.cdhParcelVersion)
+            && Objects.equal(cdhPackageVersion, other.cdhPackageVersion)
+            && Objects.equal(rollingRestartArgs, other.rollingRestartArgs));
   }
 
   @Override
@@ -92,6 +143,8 @@ public class ApiCdhUpgradeArgs {
     return Objects.hashCode(
         deployClientConfig,
         startAllServices,
-        cdhParcelVersion);
+        cdhParcelVersion,
+        cdhPackageVersion,
+        rollingRestartArgs);
   }
 }

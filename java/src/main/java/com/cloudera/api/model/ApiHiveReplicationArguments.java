@@ -37,6 +37,8 @@ public class ApiHiveReplicationArguments {
   private boolean replicateData;
   private ApiHdfsReplicationArguments hdfsArguments;
 
+  private Boolean replicateImpalaMetadata;
+
   private boolean dryRun;
 
   public ApiHiveReplicationArguments() {
@@ -130,6 +132,19 @@ public class ApiHiveReplicationArguments {
     this.hdfsArguments = hdfsArguments;
   }
 
+  /**
+   * Whether to replicate the impala metadata. (i.e. the metadata for impala
+   * UDFs and their corresponding binaries in HDFS).
+   */
+  @XmlElement
+  public Boolean getReplicateImpalaMetadata() {
+    return replicateImpalaMetadata;
+  }
+
+  public void setReplicateImpalaMetadata(Boolean replicateImpalaMetadata) {
+    this.replicateImpalaMetadata = replicateImpalaMetadata;
+  }
+
   /** Whether to perform a dry run. Defaults to false. */
   @XmlElement
   public boolean isDryRun() {
@@ -149,6 +164,7 @@ public class ApiHiveReplicationArguments {
         .add("force", force)
         .add("replicateHdfs", replicateData)
         .add("hdfsArguments", hdfsArguments)
+        .add("replicateImpalaMetadata", replicateImpalaMetadata)
         .add("dryRun", dryRun)
         .toString();
   }
@@ -163,13 +179,15 @@ public class ApiHiveReplicationArguments {
         force == that.getForce() &&
         replicateData == that.getReplicateData() &&
         Objects.equal(hdfsArguments, that.getHdfsArguments()) &&
+        Objects.equal(replicateImpalaMetadata,
+            that.getReplicateImpalaMetadata()) &&
         dryRun == that.isDryRun());
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(sourceService, tableFilters, exportDir, force,
-        replicateData, hdfsArguments, dryRun);
+        replicateData, hdfsArguments, replicateImpalaMetadata, dryRun);
   }
 
 }
