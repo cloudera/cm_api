@@ -17,6 +17,13 @@ Releases
         </tr>
     </thead>
     <tbody>
+       <tr>
+            <td>v9</td>
+            <td>Cloudera Manager 5.3</td>
+            <td><a href="{{ site.url }}/apidocs/v9/index.html">API docs</a>,
+                <a href="{{ site.url }}/javadoc/5.3.0/index.html">Javadoc</a>
+            </td>
+        </tr>
         <tr>
             <td>v8</td>
             <td>Cloudera Manager 5.2</td>
@@ -24,7 +31,6 @@ Releases
                 <a href="{{ site.url }}/javadoc/5.2.0/index.html">Javadoc</a>
             </td>
         </tr>
-        <tr>
         <tr>
             <td>v7</td>
             <td>Cloudera Manager 5.1</td>
