@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>cm_api.endpoints.dashboards</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="cm_api-module.html">Package&nbsp;cm_api</a> ::
+        <a href="cm_api.endpoints-module.html">Package&nbsp;endpoints</a> ::
+        Module&nbsp;dashboards
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="cm_api.endpoints.dashboards-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="cm_api.endpoints.dashboards-module.html">Module cm_api.endpoints.dashboards</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment"># Licensed to Cloudera, Inc. under one</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># or more contributor license agreements.  See the NOTICE file</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment"># distributed with this work for additional information</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># regarding copyright ownership.  Cloudera, Inc. licenses this file</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-comment"># to you under the Apache License, Version 2.0 (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment"># "License"); you may not use this file except in compliance</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-comment"># with the License.  You may obtain a copy of the License at</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package cm_api=cm_api-module.html"><a title="cm_api" class="py-name" href="#" onclick="return doclink('link-0', 'cm_api', 'link-0');">cm_api</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package cm_api.endpoints=cm_api.endpoints-module.html"><a title="cm_api.endpoints" class="py-name" href="#" onclick="return doclink('link-1', 'endpoints', 'link-1');">endpoints</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module cm_api.endpoints.types=cm_api.endpoints.types-module.html"><a title="cm_api.endpoints.types" class="py-name" href="#" onclick="return doclink('link-2', 'types', 'link-2');">types</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"epytext"</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable cm_api.endpoints.dashboards.DASHBOARDS_PATH=cm_api.endpoints.dashboards-module.html#DASHBOARDS_PATH"><a title="cm_api.endpoints.dashboards.DASHBOARDS_PATH" class="py-name" href="#" onclick="return doclink('link-3', 'DASHBOARDS_PATH', 'link-3');">DASHBOARDS_PATH</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/timeseries/dashboards"</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"> </tt>
+<a name="_get_dashboard_path"></a><div id="_get_dashboard_path-def"><a name="L23"></a><tt class="py-lineno">23</tt> <a class="py-toggle" href="#" id="_get_dashboard_path-toggle" onclick="return toggle('_get_dashboard_path');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards-module.html#_get_dashboard_path">_get_dashboard_path</a><tt class="py-op">(</tt><tt class="py-param">dashboard_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_get_dashboard_path-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="_get_dashboard_path-expanded"><a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-4" class="py-name"><a title="cm_api.endpoints.dashboards.DASHBOARDS_PATH" class="py-name" href="#" onclick="return doclink('link-4', 'DASHBOARDS_PATH', 'link-3');">DASHBOARDS_PATH</a></tt> <tt class="py-op">+</tt> <tt class="py-string">"/%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">dashboard_name</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt>
+<a name="create_dashboards"></a><div id="create_dashboards-def"><a name="L26"></a><tt class="py-lineno">26</tt> <a class="py-toggle" href="#" id="create_dashboards-toggle" onclick="return toggle('create_dashboards');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards-module.html#create_dashboards">create_dashboards</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">dashboard_list</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_dashboards-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="create_dashboards-expanded"><a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"><tt class="py-docstring">  Creates the list of dashboards. If any of the dashboards already exist</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"><tt class="py-docstring">  this whole command will fail and no dashboards will be created.</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"><tt class="py-docstring">  @since: API v6</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line"><tt class="py-docstring">  @return: The list of dashboards created.</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-5" class="py-name" targets="Function cm_api.endpoints.types.call()=cm_api.endpoints.types-module.html#call"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-5', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method cm_api.resource.Resource.post()=cm_api.resource.Resource-class.html#post"><a title="cm_api.resource.Resource.post" class="py-name" href="#" onclick="return doclink('link-6', 'post', 'link-6');">post</a></tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name"><a title="cm_api.endpoints.dashboards.DASHBOARDS_PATH" class="py-name" href="#" onclick="return doclink('link-7', 'DASHBOARDS_PATH', 'link-3');">DASHBOARDS_PATH</a></tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name" targets="Class cm_api.endpoints.dashboards.ApiDashboard=cm_api.endpoints.dashboards.ApiDashboard-class.html"><a title="cm_api.endpoints.dashboards.ApiDashboard" class="py-name" href="#" onclick="return doclink('link-8', 'ApiDashboard', 'link-8');">ApiDashboard</a></tt><tt class="py-op">,</tt> \ </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">      <tt class="py-name">ret_is_list</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">data</tt><tt class="py-op">=</tt><tt class="py-name">dashboard_list</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt>
+<a name="get_dashboards"></a><div id="get_dashboards-def"><a name="L36"></a><tt class="py-lineno">36</tt> <a class="py-toggle" href="#" id="get_dashboards-toggle" onclick="return toggle('get_dashboards');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards-module.html#get_dashboards">get_dashboards</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_dashboards-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="get_dashboards-expanded"><a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"><tt class="py-docstring">  Returns the list of all dashboards.</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"><tt class="py-docstring">  @since: API v6</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line"><tt class="py-docstring">  @return: A list of API dashboard objects.</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-9" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-9', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method cm_api.resource.Resource.get()=cm_api.resource.Resource-class.html#get"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-10', 'get', 'link-10');">get</a></tt><tt class="py-op">,</tt> <tt id="link-11" class="py-name"><a title="cm_api.endpoints.dashboards.DASHBOARDS_PATH" class="py-name" href="#" onclick="return doclink('link-11', 'DASHBOARDS_PATH', 'link-3');">DASHBOARDS_PATH</a></tt><tt class="py-op">,</tt> <tt id="link-12" class="py-name"><a title="cm_api.endpoints.dashboards.ApiDashboard" class="py-name" href="#" onclick="return doclink('link-12', 'ApiDashboard', 'link-8');">ApiDashboard</a></tt><tt class="py-op">,</tt> \ </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">     <tt class="py-name">ret_is_list</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"> </tt>
+<a name="get_dashboard"></a><div id="get_dashboard-def"><a name="L45"></a><tt class="py-lineno">45</tt> <a class="py-toggle" href="#" id="get_dashboard-toggle" onclick="return toggle('get_dashboard');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards-module.html#get_dashboard">get_dashboard</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">dashboard_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_dashboard-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="get_dashboard-expanded"><a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line"><tt class="py-docstring">  Returns a dashboard definition for the specified name. This dashboard</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"><tt class="py-docstring">  can be imported with the createDashboards API.</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"><tt class="py-docstring">  @since: API v6</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An API dasbhboard object.</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-13" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-13', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-14', 'get', 'link-10');">get</a></tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Function cm_api.endpoints.dashboards._get_dashboard_path()=cm_api.endpoints.dashboards-module.html#_get_dashboard_path"><a title="cm_api.endpoints.dashboards._get_dashboard_path" class="py-name" href="#" onclick="return doclink('link-15', '_get_dashboard_path', 'link-15');">_get_dashboard_path</a></tt><tt class="py-op">(</tt><tt class="py-name">dashboard_name</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> \ </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">      <tt id="link-16" class="py-name"><a title="cm_api.endpoints.dashboards.ApiDashboard" class="py-name" href="#" onclick="return doclink('link-16', 'ApiDashboard', 'link-8');">ApiDashboard</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"> </tt>
+<a name="delete_dashboard"></a><div id="delete_dashboard-def"><a name="L55"></a><tt class="py-lineno">55</tt> <a class="py-toggle" href="#" id="delete_dashboard-toggle" onclick="return toggle('delete_dashboard');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards-module.html#delete_dashboard">delete_dashboard</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">dashboard_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="delete_dashboard-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="delete_dashboard-expanded"><a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"><tt class="py-docstring">  Deletes a dashboard.</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"><tt class="py-docstring">  @since: API v6</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"><tt class="py-docstring">  @return: The deleted dashboard.</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-17" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-17', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method cm_api.resource.Resource.delete()=cm_api.resource.Resource-class.html#delete"><a title="cm_api.resource.Resource.delete" class="py-name" href="#" onclick="return doclink('link-18', 'delete', 'link-18');">delete</a></tt><tt class="py-op">,</tt> <tt id="link-19" class="py-name"><a title="cm_api.endpoints.dashboards._get_dashboard_path" class="py-name" href="#" onclick="return doclink('link-19', '_get_dashboard_path', 'link-15');">_get_dashboard_path</a></tt><tt class="py-op">(</tt><tt class="py-name">dashboard_name</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> \ </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">      <tt id="link-20" class="py-name"><a title="cm_api.endpoints.dashboards.ApiDashboard" class="py-name" href="#" onclick="return doclink('link-20', 'ApiDashboard', 'link-8');">ApiDashboard</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line"> </tt>
+<a name="ApiDashboard"></a><div id="ApiDashboard-def"><a name="L64"></a><tt class="py-lineno">64</tt> <a class="py-toggle" href="#" id="ApiDashboard-toggle" onclick="return toggle('ApiDashboard');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards.ApiDashboard-class.html">ApiDashboard</a><tt class="py-op">(</tt><tt class="py-base-class">BaseApiResource</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiDashboard-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="ApiDashboard-expanded"><a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">  <tt id="link-21" class="py-name" targets="Variable cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES=cm_api.endpoints.clusters.ApiCluster-class.html#_ATTRIBUTES,Variable cm_api.endpoints.cms.ApiLicense._ATTRIBUTES=cm_api.endpoints.cms.ApiLicense-class.html#_ATTRIBUTES,Variable cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES=cm_api.endpoints.dashboards.ApiDashboard-class.html#_ATTRIBUTES,Variable cm_api.endpoints.events.ApiEvent._ATTRIBUTES=cm_api.endpoints.events.ApiEvent-class.html#_ATTRIBUTES,Variable cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES=cm_api.endpoints.events.ApiEventQueryResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES=cm_api.endpoints.host_templates.ApiHostTemplate-class.html#_ATTRIBUTES,Variable cm_api.endpoints.hosts.ApiHost._ATTRIBUTES=cm_api.endpoints.hosts.ApiHost-class.html#_ATTRIBUTES,Variable cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES=cm_api.endpoints.parcels.ApiParcel-class.html#_ATTRIBUTES,Variable cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES=cm_api.endpoints.parcels.ApiParcelState-class.html#_ATTRIBUTES,Variable cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES=cm_api.endpoints.role_config_groups.ApiRoleConfigGroup-class.html#_ATTRIBUTES,Variable cm_api.endpoints.roles.ApiRole._ATTRIBUTES=cm_api.endpoints.roles.ApiRole-class.html#_ATTRIBUTES,Variable cm_api.endpoints.services.ApiService._ATTRIBUTES=cm_api.endpoints.services.ApiService-class.html#_ATTRIBUTES,Variable cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES=cm_api.endpoints.services.ApiServiceSetupInfo-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES=cm_api.endpoints.timeseries.ApiMetricSchema-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeries-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesData-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiActivity._ATTRIBUTES=cm_api.endpoints.types.ApiActivity-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES=cm_api.endpoints.types.ApiBatchRequestElement-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES=cm_api.endpoints.types.ApiBatchResponseElement-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES=cm_api.endpoints.types.ApiBatchResponseList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES=cm_api.endpoints.types.ApiBulkCommandList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES=cm_api.endpoints.types.ApiClusterRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES=cm_api.endpoints.types.ApiCmPeer-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES=cm_api.endpoints.types.ApiCommandMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiConfig._ATTRIBUTES=cm_api.endpoints.types.ApiConfig-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshot-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotError-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsReplicationArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsReplicationResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshot-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotError-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHiveReplicationArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES=cm_api.endpoints.types.ApiHiveReplicationResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES=cm_api.endpoints.types.ApiHiveTable-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHostRef._ATTRIBUTES=cm_api.endpoints.types.ApiHostRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaCancelResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQuery-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryDetailsResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaUDF-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES=cm_api.endpoints.types.ApiLicensedFeatureUsage-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMetric._ATTRIBUTES=cm_api.endpoints.types.ApiMetric-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMetricData._ATTRIBUTES=cm_api.endpoints.types.ApiMetricData-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES=cm_api.endpoints.types.ApiMr2AppInformation-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES=cm_api.endpoints.types.ApiReplicationSchedule-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES=cm_api.endpoints.types.ApiRoleConfigGroupRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES=cm_api.endpoints.types.ApiRoleRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES=cm_api.endpoints.types.ApiServiceRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES=cm_api.endpoints.types.ApiSnapshotPolicy-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplication-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplicationAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplicationResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES=cm_api.endpoints.types.ApiYarnKillResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.BaseApiObject._ATTRIBUTES=cm_api.endpoints.types.BaseApiObject-class.html#_ATTRIBUTES,Variable cm_api.endpoints.users.ApiUser._ATTRIBUTES=cm_api.endpoints.users.ApiUser-class.html#_ATTRIBUTES"><a title="cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES
+cm_api.endpoints.cms.ApiLicense._ATTRIBUTES
+cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES
+cm_api.endpoints.events.ApiEvent._ATTRIBUTES
+cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES
+cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES
+cm_api.endpoints.hosts.ApiHost._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.roles.ApiRole._ATTRIBUTES
+cm_api.endpoints.services.ApiService._ATTRIBUTES
+cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiActivity._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES
+cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES
+cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES
+cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES
+cm_api.endpoints.types.ApiConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES
+cm_api.endpoints.types.ApiHostRef._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES
+cm_api.endpoints.types.ApiMetric._ATTRIBUTES
+cm_api.endpoints.types.ApiMetricData._ATTRIBUTES
+cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES
+cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES
+cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES
+cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES
+cm_api.endpoints.types.BaseApiObject._ATTRIBUTES
+cm_api.endpoints.users.ApiUser._ATTRIBUTES" class="py-name" href="#" onclick="return doclink('link-21', '_ATTRIBUTES', 'link-21');">_ATTRIBUTES</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">    <tt class="py-string">'name'</tt>  <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">    <tt class="py-string">'json'</tt>  <tt class="py-op">:</tt> <tt class="py-name">None</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">  <tt class="py-op">}</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line"> </tt>
+<a name="ApiDashboard.__init__"></a><div id="ApiDashboard.__init__-def"><a name="L70"></a><tt class="py-lineno">70</tt> <a class="py-toggle" href="#" id="ApiDashboard.__init__-toggle" onclick="return toggle('ApiDashboard.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards.ApiDashboard-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">json</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiDashboard.__init__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="ApiDashboard.__init__-expanded"><a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">    <tt id="link-22" class="py-name" targets="Class cm_api.endpoints.types.BaseApiObject=cm_api.endpoints.types.BaseApiObject-class.html"><a title="cm_api.endpoints.types.BaseApiObject" class="py-name" href="#" onclick="return doclink('link-22', 'BaseApiObject', 'link-22');">BaseApiObject</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Static Method cm_api.endpoints.types.BaseApiObject.init()=cm_api.endpoints.types.BaseApiObject-class.html#init"><a title="cm_api.endpoints.types.BaseApiObject.init" class="py-name" href="#" onclick="return doclink('link-23', 'init', 'link-23');">init</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">resource_root</tt><tt class="py-op">,</tt> <tt class="py-name">locals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line"> </tt>
+<a name="ApiDashboard.__str__"></a><div id="ApiDashboard.__str__-def"><a name="L73"></a><tt class="py-lineno">73</tt> <a class="py-toggle" href="#" id="ApiDashboard.__str__-toggle" onclick="return toggle('ApiDashboard.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards.ApiDashboard-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiDashboard.__str__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="ApiDashboard.__str__-expanded"><a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;ApiDashboard&gt;: %s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line"> </tt>
+<a name="ApiDashboard._path"></a><div id="ApiDashboard._path-def"><a name="L76"></a><tt class="py-lineno">76</tt> <a class="py-toggle" href="#" id="ApiDashboard._path-toggle" onclick="return toggle('ApiDashboard._path');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.dashboards.ApiDashboard-class.html#_path">_path</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiDashboard._path-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="ApiDashboard._path-expanded"><a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-24" class="py-name"><a title="cm_api.endpoints.dashboards._get_dashboard_path" class="py-name" href="#" onclick="return doclink('link-24', '_get_dashboard_path', 'link-15');">_get_dashboard_path</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Dec 22 12:52:58 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

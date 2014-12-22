@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>cm_api.endpoints.parcels</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="cm_api-module.html">Package&nbsp;cm_api</a> ::
+        <a href="cm_api.endpoints-module.html">Package&nbsp;endpoints</a> ::
+        Module&nbsp;parcels
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="cm_api.endpoints.parcels-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="cm_api.endpoints.parcels-module.html">Module cm_api.endpoints.parcels</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Licensed to Cloudera, Inc. under one</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># or more contributor license agreements.  See the NOTICE file</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># distributed with this work for additional information</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># regarding copyright ownership.  Cloudera, Inc. licenses this file</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># to you under the Apache License, Version 2.0 (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># "License"); you may not use this file except in compliance</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># with the License.  You may obtain a copy of the License at</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package cm_api=cm_api-module.html"><a title="cm_api" class="py-name" href="#" onclick="return doclink('link-0', 'cm_api', 'link-0');">cm_api</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package cm_api.endpoints=cm_api.endpoints-module.html"><a title="cm_api.endpoints" class="py-name" href="#" onclick="return doclink('link-1', 'endpoints', 'link-1');">endpoints</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module cm_api.endpoints.types=cm_api.endpoints.types-module.html"><a title="cm_api.endpoints.types" class="py-name" href="#" onclick="return doclink('link-2', 'types', 'link-2');">types</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"epytext"</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable cm_api.endpoints.parcels.PARCELS_PATH=cm_api.endpoints.parcels-module.html#PARCELS_PATH"><a title="cm_api.endpoints.parcels.PARCELS_PATH" class="py-name" href="#" onclick="return doclink('link-3', 'PARCELS_PATH', 'link-3');">PARCELS_PATH</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/clusters/%s/parcels"</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable cm_api.endpoints.parcels.PARCEL_PATH=cm_api.endpoints.parcels-module.html#PARCEL_PATH"><a title="cm_api.endpoints.parcels.PARCEL_PATH" class="py-name" href="#" onclick="return doclink('link-4', 'PARCEL_PATH', 'link-4');">PARCEL_PATH</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/clusters/%s/parcels/products/%s/versions/%s"</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="get_parcel"></a><div id="get_parcel-def"><a name="L24"></a><tt class="py-lineno"> 24</tt> <a class="py-toggle" href="#" id="get_parcel-toggle" onclick="return toggle('get_parcel');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels-module.html#get_parcel">get_parcel</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">product</tt><tt class="py-op">,</tt> <tt class="py-param">version</tt><tt class="py-op">,</tt> <tt class="py-param">cluster_name</tt><tt class="py-op">=</tt><tt class="py-string">"default"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_parcel-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_parcel-expanded"><a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">  Lookup a parcel by name</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">  @param product: Parcel product name</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">  @param version: Parcel version</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">  @param cluster_name: Cluster name</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiService object</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-5" class="py-name" targets="Function cm_api.endpoints.parcels._get_parcel()=cm_api.endpoints.parcels-module.html#_get_parcel"><a title="cm_api.endpoints.parcels._get_parcel" class="py-name" href="#" onclick="return doclink('link-5', '_get_parcel', 'link-5');">_get_parcel</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name"><a title="cm_api.endpoints.parcels.PARCEL_PATH" class="py-name" href="#" onclick="return doclink('link-6', 'PARCEL_PATH', 'link-4');">PARCEL_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-name">product</tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name" targets="Variable cm_api.api_client.ApiResource.version=cm_api.api_client.ApiResource-class.html#version"><a title="cm_api.api_client.ApiResource.version" class="py-name" href="#" onclick="return doclink('link-7', 'version', 'link-7');">version</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="_get_parcel"></a><div id="_get_parcel-def"><a name="L35"></a><tt class="py-lineno"> 35</tt> <a class="py-toggle" href="#" id="_get_parcel-toggle" onclick="return toggle('_get_parcel');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels-module.html#_get_parcel">_get_parcel</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_get_parcel-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_get_parcel-expanded"><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-8" class="py-name" targets="Function cm_api.endpoints.types.call()=cm_api.endpoints.types-module.html#call"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-8', 'call', 'link-8');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method cm_api.resource.Resource.get()=cm_api.resource.Resource-class.html#get"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-9', 'get', 'link-9');">get</a></tt><tt class="py-op">,</tt> <tt class="py-name">path</tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name" targets="Class cm_api.endpoints.parcels.ApiParcel=cm_api.endpoints.parcels.ApiParcel-class.html"><a title="cm_api.endpoints.parcels.ApiParcel" class="py-name" href="#" onclick="return doclink('link-10', 'ApiParcel', 'link-10');">ApiParcel</a></tt><tt class="py-op">,</tt> <tt class="py-name">api_version</tt><tt class="py-op">=</tt><tt class="py-number">3</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="get_all_parcels"></a><div id="get_all_parcels-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="get_all_parcels-toggle" onclick="return toggle('get_all_parcels');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels-module.html#get_all_parcels">get_all_parcels</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">cluster_name</tt><tt class="py-op">=</tt><tt class="py-string">"default"</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_all_parcels-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_all_parcels-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">  Get all parcels</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">  @param cluster_name: Cluster name</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">  @return: A list of ApiParcel objects.</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">  @since: API v3</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-11" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-11', 'call', 'link-8');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-12', 'get', 'link-9');">get</a></tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name"><a title="cm_api.endpoints.parcels.PARCELS_PATH" class="py-name" href="#" onclick="return doclink('link-13', 'PARCELS_PATH', 'link-3');">PARCELS_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">cluster_name</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">      <tt id="link-14" class="py-name"><a title="cm_api.endpoints.parcels.ApiParcel" class="py-name" href="#" onclick="return doclink('link-14', 'ApiParcel', 'link-10');">ApiParcel</a></tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">=</tt><tt class="py-name">view</tt> <tt class="py-keyword">and</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">view</tt><tt class="py-op">=</tt><tt class="py-name">view</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-name">api_version</tt><tt class="py-op">=</tt><tt class="py-number">3</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcelState"></a><div id="ApiParcelState-def"><a name="L49"></a><tt class="py-lineno"> 49</tt> <a class="py-toggle" href="#" id="ApiParcelState-toggle" onclick="return toggle('ApiParcelState');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcelState-class.html">ApiParcelState</a><tt class="py-op">(</tt><tt class="py-base-class">BaseApiObject</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcelState-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ApiParcelState-expanded"><a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">  An object that represents the state of a parcel.</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">  <tt id="link-15" class="py-name" targets="Variable cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES=cm_api.endpoints.clusters.ApiCluster-class.html#_ATTRIBUTES,Variable cm_api.endpoints.cms.ApiLicense._ATTRIBUTES=cm_api.endpoints.cms.ApiLicense-class.html#_ATTRIBUTES,Variable cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES=cm_api.endpoints.dashboards.ApiDashboard-class.html#_ATTRIBUTES,Variable cm_api.endpoints.events.ApiEvent._ATTRIBUTES=cm_api.endpoints.events.ApiEvent-class.html#_ATTRIBUTES,Variable cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES=cm_api.endpoints.events.ApiEventQueryResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES=cm_api.endpoints.host_templates.ApiHostTemplate-class.html#_ATTRIBUTES,Variable cm_api.endpoints.hosts.ApiHost._ATTRIBUTES=cm_api.endpoints.hosts.ApiHost-class.html#_ATTRIBUTES,Variable cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES=cm_api.endpoints.parcels.ApiParcel-class.html#_ATTRIBUTES,Variable cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES=cm_api.endpoints.parcels.ApiParcelState-class.html#_ATTRIBUTES,Variable cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES=cm_api.endpoints.role_config_groups.ApiRoleConfigGroup-class.html#_ATTRIBUTES,Variable cm_api.endpoints.roles.ApiRole._ATTRIBUTES=cm_api.endpoints.roles.ApiRole-class.html#_ATTRIBUTES,Variable cm_api.endpoints.services.ApiService._ATTRIBUTES=cm_api.endpoints.services.ApiService-class.html#_ATTRIBUTES,Variable cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES=cm_api.endpoints.services.ApiServiceSetupInfo-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES=cm_api.endpoints.timeseries.ApiMetricSchema-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeries-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesData-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiActivity._ATTRIBUTES=cm_api.endpoints.types.ApiActivity-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES=cm_api.endpoints.types.ApiBatchRequestElement-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES=cm_api.endpoints.types.ApiBatchResponseElement-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES=cm_api.endpoints.types.ApiBatchResponseList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES=cm_api.endpoints.types.ApiBulkCommandList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES=cm_api.endpoints.types.ApiClusterRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES=cm_api.endpoints.types.ApiCmPeer-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES=cm_api.endpoints.types.ApiCommandMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiConfig._ATTRIBUTES=cm_api.endpoints.types.ApiConfig-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshot-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotError-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsReplicationArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsReplicationResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshot-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotError-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHiveReplicationArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES=cm_api.endpoints.types.ApiHiveReplicationResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES=cm_api.endpoints.types.ApiHiveTable-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHostRef._ATTRIBUTES=cm_api.endpoints.types.ApiHostRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaCancelResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQuery-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryDetailsResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaUDF-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES=cm_api.endpoints.types.ApiLicensedFeatureUsage-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMetric._ATTRIBUTES=cm_api.endpoints.types.ApiMetric-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMetricData._ATTRIBUTES=cm_api.endpoints.types.ApiMetricData-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES=cm_api.endpoints.types.ApiMr2AppInformation-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES=cm_api.endpoints.types.ApiReplicationSchedule-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES=cm_api.endpoints.types.ApiRoleConfigGroupRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES=cm_api.endpoints.types.ApiRoleRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES=cm_api.endpoints.types.ApiServiceRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES=cm_api.endpoints.types.ApiSnapshotPolicy-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplication-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplicationAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplicationResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES=cm_api.endpoints.types.ApiYarnKillResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.BaseApiObject._ATTRIBUTES=cm_api.endpoints.types.BaseApiObject-class.html#_ATTRIBUTES,Variable cm_api.endpoints.users.ApiUser._ATTRIBUTES=cm_api.endpoints.users.ApiUser-class.html#_ATTRIBUTES"><a title="cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES
+cm_api.endpoints.cms.ApiLicense._ATTRIBUTES
+cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES
+cm_api.endpoints.events.ApiEvent._ATTRIBUTES
+cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES
+cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES
+cm_api.endpoints.hosts.ApiHost._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.roles.ApiRole._ATTRIBUTES
+cm_api.endpoints.services.ApiService._ATTRIBUTES
+cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiActivity._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES
+cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES
+cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES
+cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES
+cm_api.endpoints.types.ApiConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES
+cm_api.endpoints.types.ApiHostRef._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES
+cm_api.endpoints.types.ApiMetric._ATTRIBUTES
+cm_api.endpoints.types.ApiMetricData._ATTRIBUTES
+cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES
+cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES
+cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES
+cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES
+cm_api.endpoints.types.BaseApiObject._ATTRIBUTES
+cm_api.endpoints.users.ApiUser._ATTRIBUTES" class="py-name" href="#" onclick="return doclink('link-15', '_ATTRIBUTES', 'link-15');">_ATTRIBUTES</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">      <tt class="py-string">'progress'</tt>      <tt class="py-op">:</tt> <tt id="link-16" class="py-name" targets="Class cm_api.endpoints.types.ROAttr=cm_api.endpoints.types.ROAttr-class.html"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-16', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">      <tt class="py-string">'totalProgress'</tt> <tt class="py-op">:</tt> <tt id="link-17" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-17', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">      <tt class="py-string">'count'</tt>         <tt class="py-op">:</tt> <tt id="link-18" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-18', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">      <tt class="py-string">'totalCount'</tt>    <tt class="py-op">:</tt> <tt id="link-19" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-19', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">      <tt class="py-string">'warnings'</tt>      <tt class="py-op">:</tt> <tt id="link-20" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-20', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">      <tt class="py-string">'errors'</tt>        <tt class="py-op">:</tt> <tt id="link-21" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-21', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-op">}</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcelState.__init__"></a><div id="ApiParcelState.__init__-def"><a name="L62"></a><tt class="py-lineno"> 62</tt> <a class="py-toggle" href="#" id="ApiParcelState.__init__-toggle" onclick="return toggle('ApiParcelState.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcelState-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">resource_root</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcelState.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcelState.__init__-expanded"><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt id="link-22" class="py-name" targets="Class cm_api.endpoints.types.BaseApiObject=cm_api.endpoints.types.BaseApiObject-class.html"><a title="cm_api.endpoints.types.BaseApiObject" class="py-name" href="#" onclick="return doclink('link-22', 'BaseApiObject', 'link-22');">BaseApiObject</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Static Method cm_api.endpoints.types.BaseApiObject.init()=cm_api.endpoints.types.BaseApiObject-class.html#init"><a title="cm_api.endpoints.types.BaseApiObject.init" class="py-name" href="#" onclick="return doclink('link-23', 'init', 'link-23');">init</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">resource_root</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcelState.__str__"></a><div id="ApiParcelState.__str__-def"><a name="L65"></a><tt class="py-lineno"> 65</tt> <a class="py-toggle" href="#" id="ApiParcelState.__str__-toggle" onclick="return toggle('ApiParcelState.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcelState-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcelState.__str__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcelState.__str__-expanded"><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;ApiParcelState&gt;: (progress: %s) (totalProgress: %s) (count: %s) (totalCount: %s)"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">progress</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">totalProgress</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">count</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">totalCount</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel"></a><div id="ApiParcel-def"><a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="ApiParcel-toggle" onclick="return toggle('ApiParcel');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html">ApiParcel</a><tt class="py-op">(</tt><tt class="py-base-class">BaseApiResource</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ApiParcel-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">  An object that represents a parcel and allows administrative operations.</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">  @since: API v3</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">  <tt id="link-24" class="py-name"><a title="cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES
+cm_api.endpoints.cms.ApiLicense._ATTRIBUTES
+cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES
+cm_api.endpoints.events.ApiEvent._ATTRIBUTES
+cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES
+cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES
+cm_api.endpoints.hosts.ApiHost._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.roles.ApiRole._ATTRIBUTES
+cm_api.endpoints.services.ApiService._ATTRIBUTES
+cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiActivity._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES
+cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES
+cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES
+cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES
+cm_api.endpoints.types.ApiConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES
+cm_api.endpoints.types.ApiHostRef._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES
+cm_api.endpoints.types.ApiMetric._ATTRIBUTES
+cm_api.endpoints.types.ApiMetricData._ATTRIBUTES
+cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES
+cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES
+cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES
+cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES
+cm_api.endpoints.types.BaseApiObject._ATTRIBUTES
+cm_api.endpoints.users.ApiUser._ATTRIBUTES" class="py-name" href="#" onclick="return doclink('link-24', '_ATTRIBUTES', 'link-15');">_ATTRIBUTES</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-string">'product'</tt>     <tt class="py-op">:</tt> <tt id="link-25" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-25', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt class="py-string">'version'</tt>     <tt class="py-op">:</tt> <tt id="link-26" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-26', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">    <tt class="py-string">'stage'</tt>       <tt class="py-op">:</tt> <tt id="link-27" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-27', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-string">'state'</tt>       <tt class="py-op">:</tt> <tt id="link-28" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-28', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt id="link-29" class="py-name" targets="Class cm_api.endpoints.parcels.ApiParcelState=cm_api.endpoints.parcels.ApiParcelState-class.html"><a title="cm_api.endpoints.parcels.ApiParcelState" class="py-name" href="#" onclick="return doclink('link-29', 'ApiParcelState', 'link-29');">ApiParcelState</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-string">'clusterRef'</tt>  <tt class="py-op">:</tt> <tt id="link-30" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-30', 'ROAttr', 'link-16');">ROAttr</a></tt><tt class="py-op">(</tt><tt id="link-31" class="py-name" targets="Class cm_api.endpoints.types.ApiClusterRef=cm_api.endpoints.types.ApiClusterRef-class.html"><a title="cm_api.endpoints.types.ApiClusterRef" class="py-name" href="#" onclick="return doclink('link-31', 'ApiClusterRef', 'link-31');">ApiClusterRef</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">  <tt class="py-op">}</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.__init__"></a><div id="ApiParcel.__init__-def"><a name="L83"></a><tt class="py-lineno"> 83</tt> <a class="py-toggle" href="#" id="ApiParcel.__init__-toggle" onclick="return toggle('ApiParcel.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">resource_root</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.__init__-expanded"><a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt id="link-32" class="py-name"><a title="cm_api.endpoints.types.BaseApiObject" class="py-name" href="#" onclick="return doclink('link-32', 'BaseApiObject', 'link-22');">BaseApiObject</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="cm_api.endpoints.types.BaseApiObject.init" class="py-name" href="#" onclick="return doclink('link-33', 'init', 'link-23');">init</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">resource_root</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.__str__"></a><div id="ApiParcel.__str__-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="ApiParcel.__str__-toggle" onclick="return toggle('ApiParcel.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.__str__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.__str__-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;ApiParcel&gt;: %s-%s (stage: %s) (state: %s) (cluster: %s)"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">product</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="cm_api.api_client.ApiResource.version" class="py-name" href="#" onclick="return doclink('link-34', 'version', 'link-7');">version</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stage</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">state</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method cm_api.endpoints.parcels.ApiParcel._get_cluster_name()=cm_api.endpoints.parcels.ApiParcel-class.html#_get_cluster_name,Method cm_api.endpoints.services.ApiService._get_cluster_name()=cm_api.endpoints.services.ApiService-class.html#_get_cluster_name"><a title="cm_api.endpoints.parcels.ApiParcel._get_cluster_name
+cm_api.endpoints.services.ApiService._get_cluster_name" class="py-name" href="#" onclick="return doclink('link-35', '_get_cluster_name', 'link-35');">_get_cluster_name</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel._api_version"></a><div id="ApiParcel._api_version-def"><a name="L90"></a><tt class="py-lineno"> 90</tt> <a class="py-toggle" href="#" id="ApiParcel._api_version-toggle" onclick="return toggle('ApiParcel._api_version');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#_api_version">_api_version</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel._api_version-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel._api_version-expanded"><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-number">3</tt> </tt>
+</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel._path"></a><div id="ApiParcel._path-def"><a name="L93"></a><tt class="py-lineno"> 93</tt> <a class="py-toggle" href="#" id="ApiParcel._path-toggle" onclick="return toggle('ApiParcel._path');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#_path">_path</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel._path-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel._path-expanded"><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring">    Return the API path for this service.</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-36" class="py-name"><a title="cm_api.endpoints.parcels.PARCEL_PATH" class="py-name" href="#" onclick="return doclink('link-36', 'PARCEL_PATH', 'link-4');">PARCEL_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="cm_api.endpoints.parcels.ApiParcel._get_cluster_name
+cm_api.endpoints.services.ApiService._get_cluster_name" class="py-name" href="#" onclick="return doclink('link-37', '_get_cluster_name', 'link-35');">_get_cluster_name</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">product</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="cm_api.api_client.ApiResource.version" class="py-name" href="#" onclick="return doclink('link-38', 'version', 'link-7');">version</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel._get_cluster_name"></a><div id="ApiParcel._get_cluster_name-def"><a name="L99"></a><tt class="py-lineno"> 99</tt> <a class="py-toggle" href="#" id="ApiParcel._get_cluster_name-toggle" onclick="return toggle('ApiParcel._get_cluster_name');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#_get_cluster_name">_get_cluster_name</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel._get_cluster_name-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel._get_cluster_name-expanded"><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">clusterRef</tt><tt class="py-op">:</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">      <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">clusterRef</tt><tt class="py-op">.</tt><tt class="py-name">clusterName</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.start_download"></a><div id="ApiParcel.start_download-def"><a name="L104"></a><tt class="py-lineno">104</tt> <a class="py-toggle" href="#" id="ApiParcel.start_download-toggle" onclick="return toggle('ApiParcel.start_download');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#start_download">start_download</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.start_download-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.start_download-expanded"><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">    Start the download of the parcel</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Method cm_api.endpoints.types.BaseApiResource._cmd()=cm_api.endpoints.types.BaseApiResource-class.html#_cmd"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-39', '_cmd', 'link-39');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'startDownload'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.cancel_download"></a><div id="ApiParcel.cancel_download-def"><a name="L112"></a><tt class="py-lineno">112</tt> <a class="py-toggle" href="#" id="ApiParcel.cancel_download-toggle" onclick="return toggle('ApiParcel.cancel_download');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#cancel_download">cancel_download</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.cancel_download-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.cancel_download-expanded"><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-docstring">    Cancels the parcel download. If the parcel is not</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-docstring">    currently downloading an exception is raised.</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-40', '_cmd', 'link-39');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'cancelDownload'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.remove_download"></a><div id="ApiParcel.remove_download-def"><a name="L121"></a><tt class="py-lineno">121</tt> <a class="py-toggle" href="#" id="ApiParcel.remove_download-toggle" onclick="return toggle('ApiParcel.remove_download');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#remove_download">remove_download</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.remove_download-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.remove_download-expanded"><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">    Removes the downloaded parcel</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-41', '_cmd', 'link-39');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'removeDownload'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.start_distribution"></a><div id="ApiParcel.start_distribution-def"><a name="L129"></a><tt class="py-lineno">129</tt> <a class="py-toggle" href="#" id="ApiParcel.start_distribution-toggle" onclick="return toggle('ApiParcel.start_distribution');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#start_distribution">start_distribution</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.start_distribution-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.start_distribution-expanded"><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">    Start the distribution of the parcel to all hosts</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">    in the cluster.</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-42', '_cmd', 'link-39');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'startDistribution'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.cancel_distribution"></a><div id="ApiParcel.cancel_distribution-def"><a name="L138"></a><tt class="py-lineno">138</tt> <a class="py-toggle" href="#" id="ApiParcel.cancel_distribution-toggle" onclick="return toggle('ApiParcel.cancel_distribution');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#cancel_distribution">cancel_distribution</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.cancel_distribution-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.cancel_distribution-expanded"><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-docstring">    Cancels the parcel distrubution. If the parcel is not</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring">    currently distributing an exception is raised.</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-43', '_cmd', 'link-39');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'cancelDistribution'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.start_removal_of_distribution"></a><div id="ApiParcel.start_removal_of_distribution-def"><a name="L147"></a><tt class="py-lineno">147</tt> <a class="py-toggle" href="#" id="ApiParcel.start_removal_of_distribution-toggle" onclick="return toggle('ApiParcel.start_removal_of_distribution');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#start_removal_of_distribution">start_removal_of_distribution</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.start_removal_of_distribution-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.start_removal_of_distribution-expanded"><a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">    Start the removal of the distribution of the parcel</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">    from all the hosts in the cluster.</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-44', '_cmd', 'link-39');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'startRemovalOfDistribution'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.activate"></a><div id="ApiParcel.activate-def"><a name="L156"></a><tt class="py-lineno">156</tt> <a class="py-toggle" href="#" id="ApiParcel.activate-toggle" onclick="return toggle('ApiParcel.activate');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#activate">activate</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.activate-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.activate-expanded"><a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">    Activate the parcel on all the hosts in the cluster.</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-45', '_cmd', 'link-39');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'activate'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt>
+<a name="ApiParcel.deactivate"></a><div id="ApiParcel.deactivate-def"><a name="L164"></a><tt class="py-lineno">164</tt> <a class="py-toggle" href="#" id="ApiParcel.deactivate-toggle" onclick="return toggle('ApiParcel.deactivate');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.parcels.ApiParcel-class.html#deactivate">deactivate</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiParcel.deactivate-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiParcel.deactivate-expanded"><a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-docstring">    Deactivates the parcel on all the hosts in the cluster.</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-46', '_cmd', 'link-39');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'deactivate'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Dec 22 12:52:58 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
