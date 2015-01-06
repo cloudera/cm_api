@@ -731,6 +731,17 @@ class ApiService(BaseApiResource):
     """
     return self._role_cmd('hdfsBootstrapStandBy', role_names)
 
+  def finalize_metadata_upgrade(self, *role_names):
+    """
+    Finalize HDFS NameNode metadata upgrade. Should be done after doing
+    HDFS upgrade with full downtime (and not with rolling upgrade).
+
+    @param role_names: NameNodes for which to finalize the upgrade.
+    @return: List of submitted commands.
+    @since: API v3
+    """
+    return self._role_cmd('hdfsFinalizeMetadataUpgrade', role_names, api_version=3)
+
   def create_beeswax_warehouse(self):
     """
     DEPRECATED: use create_hive_warehouse on the Hive service. Deprecated since v3.
@@ -1739,6 +1750,17 @@ class ApiService(BaseApiResource):
     @since: API v6
     """
     return self._cmd('switchToMr2', api_version=6)
+
+  def finalize_rolling_upgrade(self):
+    """
+    Finalizes the rolling upgrade for HDFS by updating the NameNode
+    metadata permanently to the next version. Should be done after
+    doing a rolling upgrade to a CDH version >= 5.2.0.
+
+    @return: Reference to the submitted command.
+    @since: API v8
+    """
+    return self._cmd('hdfsFinalizeRollingUpgrade', api_version=8)
 
   def role_command_by_name(self, command_name, *role_names):
     """
