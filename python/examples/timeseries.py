@@ -17,7 +17,7 @@
 
 
 """
-Given a query amd an optional time range, show all timeseries
+Given a query and an optional time range, show all timeseries
 data that matches the given query in the given time range.
 
 Usage: %s [options] query
