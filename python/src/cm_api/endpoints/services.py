@@ -1599,9 +1599,22 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('installOozieShareLib', api_version=3)
 
+  def create_oozie_embedded_database(self):
+    """
+    Create the Oozie Server Database. Only works with embedded postgresql
+    database. This command should usually be followed by a call to
+    create_oozie_db.
+
+    @return: Reference to the submitted command.
+    @since: API v10
+    """
+    return self._cmd('oozieCreateEmbeddedDatabase', api_version=10)
+
   def create_oozie_db(self):
     """
     Creates the Oozie Database Schema in the configured database.
+    This command does not create database. This command creates only tables
+    required by Oozie. To create database, please refer to create_oozie_embedded_database.
 
     @return: Reference to the submitted command.
     @since: API v2
@@ -1678,7 +1691,7 @@ class ApiService(BaseApiResource):
     """
     Create the Sentry Server Database. Only works with embedded postgresql
     database. This command should usually be followed by a call to
-    create_hive_metastore_tables.
+    create_sentry_database_tables.
 
     @return: Reference to the submitted command.
     @since: API v7
