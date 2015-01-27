@@ -21,7 +21,7 @@ Releases
             <td>v9</td>
             <td>Cloudera Manager 5.3</td>
             <td><a href="{{ site.url }}/apidocs/v9/index.html">API docs</a>,
-                <a href="{{ site.url }}/javadoc/5.3.0/index.html">Javadoc</a>
+                <a href="{{ site.url }}/javadoc/5.3.0/index.html">Javadoc</a>,
                 <a href="{{ site.url }}/epydoc/5.3.0/index.html">Epydoc</a>
             </td>
         </tr>
@@ -29,7 +29,7 @@ Releases
             <td>v8</td>
             <td>Cloudera Manager 5.2</td>
             <td><a href="{{ site.url }}/apidocs/v8/index.html">API docs</a>,
-                <a href="{{ site.url }}/javadoc/5.2.0/index.html">Javadoc</a>
+                <a href="{{ site.url }}/javadoc/5.2.0/index.html">Javadoc</a>,
                 <a href="{{ site.url }}/epydoc/5.2.0/index.html">Epydoc</a>
             </td>
         </tr>
@@ -37,7 +37,7 @@ Releases
             <td>v7</td>
             <td>Cloudera Manager 5.1</td>
             <td><a href="{{ site.url }}/apidocs/v7/index.html">API docs</a>,
-                <a href="{{ site.url }}/javadoc/5.1.0/index.html">Javadoc</a>
+                <a href="{{ site.url }}/javadoc/5.1.0/index.html">Javadoc</a>,
                 <a href="{{ site.url }}/epydoc/5.1.0/index.html">Epydoc</a>
             </td>
         </tr>
@@ -45,7 +45,7 @@ Releases
             <td>v6</td>
             <td>Cloudera Manager 5.0</td>
             <td><a href="{{ site.url }}/apidocs/v6/index.html">API docs</a>,
-                <a href="{{ site.url }}/javadoc/5.0.0/index.html">Javadoc</a>
+                <a href="{{ site.url }}/javadoc/5.0.0/index.html">Javadoc</a>,
                 <a href="{{ site.url }}/epydoc/5.0.0/index.html">Epydoc</a>
             </td>
         </tr>
