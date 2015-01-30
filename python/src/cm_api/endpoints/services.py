@@ -1261,10 +1261,32 @@ class ApiService(BaseApiResource):
     """
     Synchronize the Hue server's database.
 
-    @param servers: Name of Hue Server roles to synchronize.
+    @param servers: Name of Hue Server roles to synchronize. Not required starting with API v10.
     @return: List of submitted commands.
     """
-    return self._role_cmd('hueSyncDb', servers)
+
+    actual_version = self._get_resource_root().version
+    if actual_version < 10:
+      return self._role_cmd('hueSyncDb', servers)
+
+    return self._cmd('hueSyncDb', api_version=10)
+
+
+  def dump_hue_db(self):
+    """
+    Dump the Hue server's database; it can be loaded later.
+
+    @return: List of submitted commands.
+    """
+    return self._cmd('hueDumpDb', api_version=10)
+
+  def load_hue_db(self):
+    """
+    Load data into Hue server's database from a previous data dump.
+
+    @return: List of submitted commands.
+    """
+    return self._cmd('hueLoadDb', api_version=10)
 
   def lsof(self, *rolenames):
     """
