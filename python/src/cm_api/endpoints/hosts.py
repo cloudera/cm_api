@@ -180,6 +180,52 @@ class ApiHost(BaseApiResource):
       self._update(get_host(self._get_resource_root(), self.hostId))
     return cmd
 
+  def migrate_roles(self, role_names_to_migrate, target_host_id,
+      clear_stale_role_data):
+    """
+    Migrate roles from this host to a different host.
+
+    Currently, this command applies only to HDFS NameNode, JournalNode,
+    and Failover Controller roles. In order to migrate these roles:
+
+      - HDFS High Availability must be enabled, using quorum-based storage.
+      - HDFS must not be configured to use a federated nameservice.
+
+    I{B{Migrating a NameNode role requires cluster downtime.}} HDFS, along
+    with all of its dependent services, will be stopped at the beginning
+    of the migration process, and restarted at its conclusion.
+
+    If the active NameNode is selected for migration, a manual failover
+    will be performed before the role is migrated. The role will remain in
+    standby mode after the migration is complete.
+
+    When migrating a NameNode role, the co-located Failover Controller
+    role must be migrated as well. The Failover Controller role name must
+    be included in the list of role names to migrate specified in the
+    arguments to this command (it will not be included implicitly). This
+    command does not allow a Failover Controller role to be moved by itself,
+    although it is possible to move a JournalNode independently.
+
+    @param role_names_to_migrate: list of role names to migrate.
+    @param target_host_id: the id of the host to which the roles
+                           should be migrated.
+    @param clear_stale_role_data: true to delete existing stale role data,
+                                  if any. For example, when migrating a
+                                  NameNode, if the target host has stale
+                                  data in the NameNode data directories
+                                  (possibly because a NameNode role was
+                                  previously located there), this stale
+                                  data will be deleted before migrating
+                                  the role.
+    @return: Reference to the submitted command.
+    @since: API v10
+    """
+    args = dict(
+      roleNamesToMigrate = role_names_to_migrate,
+      targetHostId = target_host_id,
+      clearStaleRoleData = clear_stale_role_data)
+    return self._cmd('migrateRoles', data=args, api_version=10)
+
   def set_rack_id(self, rackId):
     """
     Update the rack ID of this host.
