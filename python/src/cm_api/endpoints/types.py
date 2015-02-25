@@ -688,6 +688,7 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'skipChecksumChecks'        : None,
     'skipTrash'                 : None,
     'replicationStrategy'       : None,
+    'preserveXAttrs'            : None,
   }
 
 class ApiHdfsReplicationResult(BaseApiObject):

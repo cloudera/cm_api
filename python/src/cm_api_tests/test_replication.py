@@ -47,7 +47,8 @@ class TestReplicationTypes(unittest.TestCase):
       "preserveBlockSize" : true,
       "preservePermissions" : false,
       "skipTrash" : false,
-      "replicationStrategy" : "DYNAMIC"
+      "replicationStrategy" : "DYNAMIC",
+      "preserveXAttrs" : false
     }'''
     args = utils.deserialize(RAW, ApiHdfsReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
@@ -66,6 +67,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertTrue(args.preserveReplicationCount)
     self.assertFalse(args.skipTrash)
     self.assertEquals('DYNAMIC', args.replicationStrategy)
+    self.assertFalse(args.preserveXAttrs)
 
   def test_hive_arguments(self):
     RAW = '''{
@@ -84,7 +86,8 @@ class TestReplicationTypes(unittest.TestCase):
         "preserveReplicationCount" : false,
         "preserveBlockSize" : false,
         "preservePermissions" : false,
-        "skipTrash" : false
+        "skipTrash" : false,
+        "preserveXAttrs" : false
       },
       "tableFilters" : [
         { "database" : "db1", "tableName" : "table1" }
@@ -214,7 +217,8 @@ class TestReplicationTypes(unittest.TestCase):
           "preserveReplicationCount" : false,
           "preserveBlockSize" : false,
           "preservePermissions" : false,
-          "skipTrash" : false
+          "skipTrash" : false,
+          "preserveXAttrs" : false
         },
         "dryRun" : false
       }
