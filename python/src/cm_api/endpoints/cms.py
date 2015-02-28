@@ -365,7 +365,8 @@ class ClouderaManager(BaseApiResource):
 
   def host_install(self, user_name, host_names, ssh_port=None, password=None,
           private_key=None, passphrase=None, parallel_install_count=None,
-          cm_repo_url=None, gpg_key_custom_url=None):
+          cm_repo_url=None, gpg_key_custom_url=None,
+          java_install_strategy=None, unlimited_jce=None):
     """
     Install Cloudera Manager Agent on a set of hosts.
 
@@ -399,6 +400,14 @@ class ClouderaManager(BaseApiResource):
                                http://archive-primary.cloudera.com/cm5/redhat/6/x86_64/cm/RPM-GPG-KEY-cloudera
                                Example for Ubuntu or other Debian based distributions:
                                http://archive.cloudera.com/debian/archive.key
+    @param java_install_strategy: Added in v8: Strategy to use for JDK installation. Valid values are 1.
+                                  AUTO (default): Cloudera Manager will install the JDK versions that are
+                                  required when the "AUTO" option is selected. Cloudera Manager may
+                                  overwrite any of the existing JDK installations. 2. NONE: Cloudera
+                                  Manager will not install any JDK when "NONE" option is selected. It
+                                  should be used if an existing JDK installation has to be used.
+    @param unlimited_jce: Added in v8: Flag for unlimited strength JCE policy files installation If
+                          unset, defaults to false
     @return: Information about the submitted command.
     @since: API v6
     """
@@ -421,6 +430,10 @@ class ClouderaManager(BaseApiResource):
      host_install_args['cmRepoUrl'] = cm_repo_url
     if gpg_key_custom_url:
      host_install_args['gpgKeyCustomUrl'] = gpg_key_custom_url
+    if java_install_strategy is not None:
+     host_install_args['javaInstallStrategy'] = java_install_strategy
+    if unlimited_jce:
+     host_install_args['unlimitedJCE'] = unlimited_jce
     return self._cmd('hostInstall', data=host_install_args)
 
   def begin_trial(self):
