@@ -71,3 +71,13 @@ class TestYarn(unittest.TestCase):
     resp = service.collect_yarn_application_diagnostics('randomId-1', 'randomId-2', 'randomId-3')
 
     self.assertEquals('YarnApplicationDiagnosticsCollection', resp.name)
+
+  def test_create_yarn_application_diagnostics_bundle(self):
+    resource = utils.MockResource(self)
+    service = ApiService(resource, name="bar")
+
+    resource.expect("POST", "/cm/service/commands/yarnApplicationDiagnosticsCollection",
+        retdata={ 'name' : 'YarnApplicationDiagnosticsCollection' })
+    resp = service.create_yarn_application_diagnostics_bundle(['randomId-1', 'randomId-2', 'randomId-3'], 'test_ticket', 'test comment')
+
+    self.assertEquals('YarnApplicationDiagnosticsCollection', resp.name)
