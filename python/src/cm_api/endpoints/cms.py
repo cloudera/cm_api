@@ -189,18 +189,20 @@ class ClouderaManager(BaseApiResource):
     }
     return self._cmd('collectDiagnosticData', data=args)
 
-  def collect_diagnostic_data_45(self, end_datetime, bundle_size_bytes, cluster_name=None):
+  def collect_diagnostic_data_45(self, end_datetime, bundle_size_bytes, cluster_name=None, roles=None):
     """
     Issue the command to collect diagnostic data.
 
     @param end_datetime: The end of the collection period. Type datetime.
     @param bundle_size_bytes: The target size for the support bundle in bytes
     @param cluster_name: The cluster to collect or None for all clusters
+    @param roles: Role ids of roles to restrict log and metric collection to. Valid since v10.
     """
     args = {
         'endTime': end_datetime.isoformat(),
         'bundleSizeBytes': bundle_size_bytes,
-        'clusterName': cluster_name
+        'clusterName': cluster_name,
+        'roles': roles
     }
     return self._cmd('collectDiagnosticData', data=args)
 
