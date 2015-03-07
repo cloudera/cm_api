@@ -32,11 +32,12 @@ import java.util.List;
  */
 @XmlRootElement(name = "cluster")
 @XmlType(propOrder = {"name", "displayName", "version", "fullVersion",
-    "maintenanceMode", "maintenanceOwners", "services", "parcels"})
+    "maintenanceMode", "maintenanceOwners", "services", "parcels", "clusterUrl"})
 public class ApiCluster {
 
   private String name;
   private String displayName;
+  private String clusterUrl;
   private ApiClusterVersion version;
   private String fullVersion;
   private Boolean maintenanceMode;
@@ -48,6 +49,7 @@ public class ApiCluster {
     // For JAX-B
   }
 
+  @Override
   public String toString() {
     return Objects.toStringHelper(this)
                   .add("name", name)
@@ -96,6 +98,21 @@ public class ApiCluster {
 
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
+  }
+
+  /**
+   * Read only.
+   * Link into the Cloudera Manager web UI for this specific cluster.
+   * <p>
+   * Available since API v10.
+   */
+  @XmlElement
+  public String getClusterUrl() {
+    return clusterUrl;
+  }
+
+  public void setClusterUrl(String clusterUrl) {
+    this.clusterUrl = clusterUrl;
   }
 
   /** The CDH version of the cluster. */
