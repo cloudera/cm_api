@@ -77,6 +77,7 @@ class ApiCluster(BaseApiResource):
   _ATTRIBUTES = {
     'name'              : None,
     'displayName'       : None,
+    'clusterUrl'        : None,
     'version'           : None,
     'fullVersion'       : None,
     'maintenanceMode'   : ROAttr(),
