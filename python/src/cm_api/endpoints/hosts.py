@@ -180,7 +180,7 @@ class ApiHost(BaseApiResource):
       self._update(get_host(self._get_resource_root(), self.hostId))
     return cmd
 
-  def migrate_roles(self, role_names_to_migrate, target_host_id,
+  def migrate_roles(self, role_names_to_migrate, destination_host_id,
       clear_stale_role_data):
     """
     Migrate roles from this host to a different host.
@@ -207,22 +207,22 @@ class ApiHost(BaseApiResource):
     although it is possible to move a JournalNode independently.
 
     @param role_names_to_migrate: list of role names to migrate.
-    @param target_host_id: the id of the host to which the roles
-                           should be migrated.
+    @param destination_host_id: the id of the host to which the roles
+                                should be migrated.
     @param clear_stale_role_data: true to delete existing stale role data,
                                   if any. For example, when migrating a
-                                  NameNode, if the target host has stale
-                                  data in the NameNode data directories
-                                  (possibly because a NameNode role was
-                                  previously located there), this stale
-                                  data will be deleted before migrating
+                                  NameNode, if the destination host has
+                                  stale data in the NameNode data
+                                  directories (possibly because a NameNode
+                                  role was previously located there), this
+                                  stale data will be deleted before migrating
                                   the role.
     @return: Reference to the submitted command.
     @since: API v10
     """
     args = dict(
       roleNamesToMigrate = role_names_to_migrate,
-      targetHostId = target_host_id,
+      destinationHostId = destination_host_id,
       clearStaleRoleData = clear_stale_role_data)
     return self._cmd('migrateRoles', data=args, api_version=10)
 
