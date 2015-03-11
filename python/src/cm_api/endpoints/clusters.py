@@ -428,6 +428,58 @@ class ApiCluster(BaseApiResource):
 
     return self._cmd('rollingRestart', data=args, api_version=4)
 
+  def rolling_upgrade(self, upgrade_from_cdh_version,
+                      upgrade_to_cdh_version,
+                      upgrade_service_names,
+                      slave_batch_size=None,
+                      slave_fail_count_threshold=None,
+                      sleep_seconds=None):
+    """
+    Command to do a rolling upgrade of services in the given cluster
+
+    This command does not handle any services that don't support rolling
+    upgrades. The command will throw an error and not start if upgrade of
+    any such service is requested.
+
+    This command does not upgrade the full CDH Cluster. You should normally
+    use the upgradeCDH Command for upgrading the cluster. This is primarily
+    helpful if you need to need to recover from an upgrade failure or for
+    advanced users to script an alternative to the upgradeCdhCommand.
+
+    This command expects the binaries to be available on hosts and activated.
+    It does not change any binaries on the hosts.
+
+    @param upgrade_from_cdh_version: Current CDH Version of the services.
+           Example versions are: "5.1.0", "5.2.2" or "5.4.0"
+    @param upgrade_to_cdh_version: Target CDH Version for the services.
+           The CDH version should already be present and activated on the nodes.
+           Example versions are: "5.1.0", "5.2.2" or "5.4.0"
+    @param upgrade_service_names: List of specific services to be upgraded and restarted.
+    @param slave_batch_size: Number of hosts with slave roles to restart at a time
+           Must be greater than 0. Default is 1.
+    @param slave_fail_count_threshold: The threshold for number of slave host batches that
+           are allowed to fail to restart before the entire command is considered failed.
+           Must be >= 0. Default is 0.
+    @param sleep_seconds: Number of seconds to sleep between restarts of slave host batches.
+           Must be >=0. Default is 0.
+
+    @return: Reference to the submitted command.
+    @since: API v10
+    """
+    args = dict()
+    args['upgradeFromCdhVersion'] = upgrade_from_cdh_version
+    args['upgradeToCdhVersion'] = upgrade_to_cdh_version
+    args['upgradeServiceNames'] = upgrade_service_names
+
+    if slave_batch_size:
+      args['slaveBatchSize'] = slave_batch_size
+    if slave_fail_count_threshold:
+      args['slaveFailCountThreshold'] = slave_fail_count_threshold
+    if sleep_seconds:
+      args['sleepSeconds'] = sleep_seconds
+
+    return self._cmd('rollingUpgrade', data=args, api_version=10)
+
   def auto_assign_roles(self):
     """
     Automatically assign roles to hosts and create the roles for all the services in a cluster.
