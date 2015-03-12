@@ -1227,6 +1227,16 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('createSqoopUserDir', api_version=4)
 
+  def create_sqoop_database_tables(self):
+    """
+    Creates the Sqoop2 Server database tables in the configured database.
+    Will do nothing if tables already exist. Will not perform an upgrade.
+
+    @return: Reference to the submitted command.
+    @since: API v10
+    """
+    return self._cmd('sqoopCreateDatabaseTables', api_version=10)
+
   def upgrade_sqoop_db(self):
     """
     Upgrade Sqoop Database schema as part of a major version upgrade.
