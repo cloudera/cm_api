@@ -659,6 +659,7 @@ class ApiCmPeer(BaseApiObject):
       'url'       : None,
       'username'  : None,
       'password'  : None,
+      'type'      : None,
     }
 
   def __str__(self):
