@@ -53,7 +53,8 @@ Releases
             <td>v5</td>
             <td>Cloudera Manager 4.7</td>
             <td><a href="{{ site.url }}/apidocs/v5/index.html">API docs</a>,
-                <a href="{{ site.url }}/javadoc/4.7.0/index.html">Javadoc</a>
+                <a href="{{ site.url }}/javadoc/4.7.0/index.html">Javadoc</a>,
+                <a href="{{ site.url }}/epydoc/4.7.0/index.html">Epydoc</a>
             </td>
         </tr>
         <tr>
