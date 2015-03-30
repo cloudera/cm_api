@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>cm_api_tests.test_timeseries</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >python-cm_api</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="cm_api_tests-module.html">Package&nbsp;cm_api_tests</a> ::
+        Module&nbsp;test_timeseries
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="cm_api_tests.test_timeseries-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="cm_api_tests.test_timeseries-module.html">Module cm_api_tests.test_timeseries</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Licensed to Cloudera, Inc. under one</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># or more contributor license agreements.  See the NOTICE file</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># distributed with this work for additional information</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># regarding copyright ownership.  Cloudera, Inc. licenses this file</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># to you under the Apache License, Version 2.0 (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># "License"); you may not use this file except in compliance</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># with the License.  You may obtain a copy of the License at</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">unittest</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package cm_api=cm_api-module.html"><a title="cm_api" class="py-name" href="#" onclick="return doclink('link-0', 'cm_api', 'link-0');">cm_api</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package cm_api.endpoints=cm_api.endpoints-module.html"><a title="cm_api.endpoints" class="py-name" href="#" onclick="return doclink('link-1', 'endpoints', 'link-1');">endpoints</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module cm_api.endpoints.timeseries=cm_api.endpoints.timeseries-module.html"><a title="cm_api.endpoints.timeseries" class="py-name" href="#" onclick="return doclink('link-2', 'timeseries', 'link-2');">timeseries</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name"><a title="cm_api" class="py-name" href="#" onclick="return doclink('link-3', 'cm_api', 'link-0');">cm_api</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="cm_api.endpoints" class="py-name" href="#" onclick="return doclink('link-4', 'endpoints', 'link-1');">endpoints</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module cm_api.endpoints.types=cm_api.endpoints.types-module.html"><a title="cm_api.endpoints.types" class="py-name" href="#" onclick="return doclink('link-5', 'types', 'link-5');">types</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class cm_api.endpoints.types.ApiList=cm_api.endpoints.types.ApiList-class.html"><a title="cm_api.endpoints.types.ApiList" class="py-name" href="#" onclick="return doclink('link-6', 'ApiList', 'link-6');">ApiList</a></tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-7" class="py-name" targets="Package cm_api_tests=cm_api_tests-module.html"><a title="cm_api_tests" class="py-name" href="#" onclick="return doclink('link-7', 'cm_api_tests', 'link-7');">cm_api_tests</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Module cm_api_tests.utils=cm_api_tests.utils-module.html"><a title="cm_api_tests.utils" class="py-name" href="#" onclick="return doclink('link-8', 'utils', 'link-8');">utils</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">  <tt class="py-keyword">import</tt> <tt class="py-name">json</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">  <tt class="py-keyword">import</tt> <tt class="py-name">simplejson</tt> <tt class="py-keyword">as</tt> <tt class="py-name">json</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"> </tt>
+<a name="TestTimeSeries"></a><div id="TestTimeSeries-def"><a name="L28"></a><tt class="py-lineno"> 28</tt> <a class="py-toggle" href="#" id="TestTimeSeries-toggle" onclick="return toggle('TestTimeSeries');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api_tests.test_timeseries.TestTimeSeries-class.html">TestTimeSeries</a><tt class="py-op">(</tt><tt class="py-base-class">unittest</tt><tt class="py-op">.</tt><tt class="py-base-class">TestCase</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestTimeSeries-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="TestTimeSeries-expanded"><a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="TestTimeSeries.test_query_timeseries"></a><div id="TestTimeSeries.test_query_timeseries-def"><a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="TestTimeSeries.test_query_timeseries-toggle" onclick="return toggle('TestTimeSeries.test_query_timeseries');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api_tests.test_timeseries.TestTimeSeries-class.html#test_query_timeseries">test_query_timeseries</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestTimeSeries.test_query_timeseries-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="TestTimeSeries.test_query_timeseries-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-name">TIME_SERIES</tt> <tt class="py-op">=</tt> <tt class="py-string">'''{</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-string">      "items" : [ {</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-string">        "timeSeries" : [ {</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-string">          "metadata" : {</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-string">            "metricName" : "cpu_percent",</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-string">            "entityName" : "localhost",</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-string">            "startTime" : "2013-05-08T22:58:28.868Z",</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-string">            "endTime" : "2013-05-08T23:03:28.868Z",</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-string">            "attributes" : {</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-string">              "hostname" : "localhost",</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-string">              "hostId" : "localhost",</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-string">              "rackId" : "/default",</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-string">              "category" : "HOST",</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-string">              "entityName" : "localhost"</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-string">            },</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-string">            "unitNumerators" : [ "percent" ],</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-string">            "unitDenominators" : [ ]</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-string">          },</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-string">          "data" : [ {</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-string">            "timestamp" : "2013-05-08T22:59:06.000Z",</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-string">            "value" : 1.7,</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-string">            "type" : "SAMPLE"</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-string">          }, {</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-string">            "timestamp" : "2013-05-08T23:00:06.000Z",</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-string">            "value" : 3.5,</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-string">            "type" : "SAMPLE"</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-string">          }, {</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-string">            "timestamp" : "2013-05-08T23:01:06.000Z",</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-string">            "value" : 2.1,</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-string">            "type" : "SAMPLE"</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-string">          }, {</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-string">            "timestamp" : "2013-05-08T23:02:06.000Z",</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-string">            "value" : 1.5,</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-string">            "type" : "SAMPLE"</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-string">          }, {</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-string">            "timestamp" : "2013-05-08T23:03:06.000Z",</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-string">            "value" : 1.7,</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-string">            "type" : "SAMPLE"</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-string">          } ]</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-string">        } ],</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-string">        "warnings" : [ ],</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-string">        "timeSeriesQuery" : "select cpu_percent"</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-string">      } ]</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-string">    }'''</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-name">api_resource</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="cm_api_tests.utils" class="py-name" href="#" onclick="return doclink('link-9', 'utils', 'link-8');">utils</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Class cm_api_tests.utils.MockResource=cm_api_tests.utils.MockResource-class.html"><a title="cm_api_tests.utils.MockResource" class="py-name" href="#" onclick="return doclink('link-10', 'MockResource', 'link-10');">MockResource</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt class="py-name">api_resource</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method cm_api_tests.utils.MockResource.expect()=cm_api_tests.utils.MockResource-class.html#expect"><a title="cm_api_tests.utils.MockResource.expect" class="py-name" href="#" onclick="return doclink('link-11', 'expect', 'link-11');">expect</a></tt><tt class="py-op">(</tt><tt class="py-string">"GET"</tt><tt class="py-op">,</tt> <tt class="py-string">"/timeseries"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">                        <tt class="py-name">retdata</tt><tt class="py-op">=</tt><tt class="py-name">json</tt><tt class="py-op">.</tt><tt class="py-name">loads</tt><tt class="py-op">(</tt><tt class="py-name">TIME_SERIES</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-name">responses</tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name" targets="Method cm_api.api_client.ApiResource.query_timeseries()=cm_api.api_client.ApiResource-class.html#query_timeseries,Function cm_api.endpoints.timeseries.query_timeseries()=cm_api.endpoints.timeseries-module.html#query_timeseries"><a title="cm_api.api_client.ApiResource.query_timeseries
+cm_api.endpoints.timeseries.query_timeseries" class="py-name" href="#" onclick="return doclink('link-12', 'query_timeseries', 'link-12');">query_timeseries</a></tt><tt class="py-op">(</tt><tt class="py-name">api_resource</tt><tt class="py-op">,</tt>  </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                                 <tt class="py-string">"select cpu_percent"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                                 <tt class="py-name">None</tt><tt class="py-op">,</tt>  </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                                 <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">     </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">responses</tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name"><a title="cm_api.endpoints.types.ApiList" class="py-name" href="#" onclick="return doclink('link-13', 'ApiList', 'link-6');">ApiList</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">responses</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-name">response</tt> <tt class="py-op">=</tt> <tt class="py-name">responses</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">,</tt> <tt id="link-14" class="py-name" targets="Class cm_api.endpoints.timeseries.ApiTimeSeriesResponse=cm_api.endpoints.timeseries.ApiTimeSeriesResponse-class.html"><a title="cm_api.endpoints.timeseries.ApiTimeSeriesResponse" class="py-name" href="#" onclick="return doclink('link-14', 'ApiTimeSeriesResponse', 'link-14');">ApiTimeSeriesResponse</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"select cpu_percent"</tt><tt class="py-op">,</tt> <tt class="py-name">response</tt><tt class="py-op">.</tt><tt class="py-name">timeSeriesQuery</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertFalse</tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">.</tt><tt class="py-name">warnings</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertFalse</tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">.</tt><tt class="py-name">errors</tt><tt class="py-op">)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">.</tt><tt class="py-name">timeSeries</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt id="link-15" class="py-name"><a title="cm_api.endpoints.timeseries" class="py-name" href="#" onclick="return doclink('link-15', 'timeseries', 'link-2');">timeseries</a></tt> <tt class="py-op">=</tt> <tt class="py-name">response</tt><tt class="py-op">.</tt><tt class="py-name">timeSeries</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt id="link-16" class="py-name"><a title="cm_api.endpoints.timeseries" class="py-name" href="#" onclick="return doclink('link-16', 'timeseries', 'link-2');">timeseries</a></tt><tt class="py-op">,</tt> <tt id="link-17" class="py-name" targets="Class cm_api.endpoints.timeseries.ApiTimeSeries=cm_api.endpoints.timeseries.ApiTimeSeries-class.html"><a title="cm_api.endpoints.timeseries.ApiTimeSeries" class="py-name" href="#" onclick="return doclink('link-17', 'ApiTimeSeries', 'link-17');">ApiTimeSeries</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-name">metadata</tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name"><a title="cm_api.endpoints.timeseries" class="py-name" href="#" onclick="return doclink('link-18', 'timeseries', 'link-2');">timeseries</a></tt><tt class="py-op">.</tt><tt class="py-name">metadata</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">metadata</tt><tt class="py-op">,</tt> <tt id="link-19" class="py-name" targets="Class cm_api.endpoints.timeseries.ApiTimeSeriesMetadata=cm_api.endpoints.timeseries.ApiTimeSeriesMetadata-class.html"><a title="cm_api.endpoints.timeseries.ApiTimeSeriesMetadata" class="py-name" href="#" onclick="return doclink('link-19', 'ApiTimeSeriesMetadata', 'link-19');">ApiTimeSeriesMetadata</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"cpu_percent"</tt><tt class="py-op">,</tt> <tt class="py-name">metadata</tt><tt class="py-op">.</tt><tt class="py-name">metricName</tt><tt class="py-op">)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"localhost"</tt><tt class="py-op">,</tt> <tt class="py-name">metadata</tt><tt class="py-op">.</tt><tt class="py-name">entityName</tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">metadata</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Variable cm_shell.prettytable.PrettyTable.attributes=cm_shell.prettytable.PrettyTable-class.html#attributes"><a title="cm_shell.prettytable.PrettyTable.attributes" class="py-name" href="#" onclick="return doclink('link-20', 'attributes', 'link-20');">attributes</a></tt><tt class="py-op">,</tt> <tt class="py-name">dict</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"cpu_percent"</tt><tt class="py-op">,</tt> <tt class="py-name">metadata</tt><tt class="py-op">.</tt><tt class="py-name">metricName</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-number">5</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="cm_api.endpoints.timeseries" class="py-name" href="#" onclick="return doclink('link-21', 'timeseries', 'link-2');">timeseries</a></tt><tt class="py-op">.</tt><tt class="py-name">data</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">data</tt> <tt class="py-keyword">in</tt> <tt id="link-22" class="py-name"><a title="cm_api.endpoints.timeseries" class="py-name" href="#" onclick="return doclink('link-22', 'timeseries', 'link-2');">timeseries</a></tt><tt class="py-op">.</tt><tt class="py-name">data</tt><tt class="py-op">:</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">data</tt><tt class="py-op">,</tt> <tt id="link-23" class="py-name" targets="Class cm_api.endpoints.timeseries.ApiTimeSeriesData=cm_api.endpoints.timeseries.ApiTimeSeriesData-class.html"><a title="cm_api.endpoints.timeseries.ApiTimeSeriesData" class="py-name" href="#" onclick="return doclink('link-23', 'ApiTimeSeriesData', 'link-23');">ApiTimeSeriesData</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"SAMPLE"</tt><tt class="py-op">,</tt> <tt class="py-name">data</tt><tt class="py-op">.</tt><tt class="py-name">type</tt><tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">data</tt><tt class="py-op">.</tt><tt class="py-name">timestamp</tt><tt class="py-op">,</tt> <tt class="py-name">datetime</tt><tt class="py-op">.</tt><tt class="py-name">datetime</tt><tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertTrue</tt><tt class="py-op">(</tt><tt class="py-name">data</tt><tt class="py-op">.</tt><tt class="py-name">value</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"> </tt>
+<a name="TestTimeSeries.test_get_metric_schema"></a><div id="TestTimeSeries.test_get_metric_schema-def"><a name="L108"></a><tt class="py-lineno">108</tt> <a class="py-toggle" href="#" id="TestTimeSeries.test_get_metric_schema-toggle" onclick="return toggle('TestTimeSeries.test_get_metric_schema');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api_tests.test_timeseries.TestTimeSeries-class.html#test_get_metric_schema">test_get_metric_schema</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TestTimeSeries.test_get_metric_schema-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="TestTimeSeries.test_get_metric_schema-expanded"><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt class="py-name">METRICS</tt> <tt class="py-op">=</tt> <tt class="py-string">'''{</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-string">      "items" : [ {</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-string">        "name" : "event_drain_success_count_flume_sink_min_rate",</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-string">        "isCounter" : false,</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-string">        "unitNumerator" : "events",</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-string">        "unitDenominator" : "seconds",</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-string">        "aliases" : [ ],</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-string">        "sources" : {</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-string">          "CLUSTER" : [ "cdh3", "cdh4" ],</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-string">          "FLUME" : [ "cdh3", "cdh4" ]</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-string">        }</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-string">      }, {</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-string">        "name" : "drop_receive",</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-string">        "isCounter" : true,</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-string">        "unitNumerator" : "packets",</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-string">        "aliases" : [ "network_interface_drop_receive" ],</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-string">        "sources" : {</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-string">          "NETWORK_INTERFACE" : [ "enterprise" ]</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-string">        }</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-string">      } ]</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-string">    }'''</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">    <tt class="py-name">api_resource</tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name"><a title="cm_api_tests.utils" class="py-name" href="#" onclick="return doclink('link-24', 'utils', 'link-8');">utils</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="cm_api_tests.utils.MockResource" class="py-name" href="#" onclick="return doclink('link-25', 'MockResource', 'link-10');">MockResource</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-name">api_resource</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="cm_api_tests.utils.MockResource.expect" class="py-name" href="#" onclick="return doclink('link-26', 'expect', 'link-11');">expect</a></tt><tt class="py-op">(</tt><tt class="py-string">"GET"</tt><tt class="py-op">,</tt> <tt class="py-string">"/timeseries/schema"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">                        <tt class="py-name">retdata</tt><tt class="py-op">=</tt><tt class="py-name">json</tt><tt class="py-op">.</tt><tt class="py-name">loads</tt><tt class="py-op">(</tt><tt class="py-name">METRICS</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">    <tt class="py-name">metrics</tt> <tt class="py-op">=</tt> <tt id="link-27" class="py-name" targets="Method cm_api.api_client.ApiResource.get_metric_schema()=cm_api.api_client.ApiResource-class.html#get_metric_schema,Function cm_api.endpoints.timeseries.get_metric_schema()=cm_api.endpoints.timeseries-module.html#get_metric_schema"><a title="cm_api.api_client.ApiResource.get_metric_schema
+cm_api.endpoints.timeseries.get_metric_schema" class="py-name" href="#" onclick="return doclink('link-27', 'get_metric_schema', 'link-27');">get_metric_schema</a></tt><tt class="py-op">(</tt><tt class="py-name">api_resource</tt><tt class="py-op">)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">     </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">metrics</tt><tt class="py-op">,</tt> <tt id="link-28" class="py-name"><a title="cm_api.endpoints.types.ApiList" class="py-name" href="#" onclick="return doclink('link-28', 'ApiList', 'link-6');">ApiList</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-number">2</tt><tt class="py-op">,</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">metrics</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">    <tt class="py-name">metric</tt> <tt class="py-op">=</tt> <tt class="py-name">metrics</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">,</tt> <tt id="link-29" class="py-name" targets="Class cm_api.endpoints.timeseries.ApiMetricSchema=cm_api.endpoints.timeseries.ApiMetricSchema-class.html"><a title="cm_api.endpoints.timeseries.ApiMetricSchema" class="py-name" href="#" onclick="return doclink('link-29', 'ApiMetricSchema', 'link-29');">ApiMetricSchema</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"event_drain_success_count_flume_sink_min_rate"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">                     <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertFalse</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">isCounter</tt><tt class="py-op">)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"events"</tt><tt class="py-op">,</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">unitNumerator</tt><tt class="py-op">)</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"seconds"</tt><tt class="py-op">,</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">unitDenominator</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertFalse</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">aliases</tt><tt class="py-op">)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">sources</tt><tt class="py-op">,</tt> <tt class="py-name">dict</tt><tt class="py-op">)</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">    <tt class="py-name">metric</tt> <tt class="py-op">=</tt> <tt class="py-name">metrics</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name"><a title="cm_api.endpoints.timeseries.ApiMetricSchema" class="py-name" href="#" onclick="return doclink('link-30', 'ApiMetricSchema', 'link-29');">ApiMetricSchema</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"drop_receive"</tt><tt class="py-op">,</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertTrue</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">isCounter</tt><tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt class="py-string">"packets"</tt><tt class="py-op">,</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">unitNumerator</tt><tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertFalse</tt><tt class="py-op">(</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">unitDenominator</tt><tt class="py-op">)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">aliases</tt><tt class="py-op">,</tt> <tt class="py-name">list</tt><tt class="py-op">)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEquals</tt><tt class="py-op">(</tt><tt class="py-string">"network_interface_drop_receive"</tt><tt class="py-op">,</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">aliases</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertIsInstance</tt><tt class="py-op">(</tt><tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">sources</tt><tt class="py-op">,</tt> <tt class="py-name">dict</tt><tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEquals</tt><tt class="py-op">(</tt><tt class="py-string">"enterprise"</tt><tt class="py-op">,</tt> <tt class="py-name">metric</tt><tt class="py-op">.</tt><tt class="py-name">sources</tt><tt class="py-op">[</tt><tt class="py-string">"NETWORK_INTERFACE"</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >python-cm_api</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Mar 30 14:44:57 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
