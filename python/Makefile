@@ -14,10 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+DOCDIR ?= doc
+
 .PHONY: help
 help:
 	@echo 'The build targets are:'
 	@echo '  dist		: Create a source distribution tarball'
+	@echo '  test		: Run unit tests'
+	@echo '  doc		: Generate epydoc format documentation'
+	@echo '  clean		: Clean up all generated files'
 
 .PHONY: test
 test:
@@ -33,5 +38,10 @@ dist: test
 clean:
 	rm -rf *.egg-info
 	rm -rf dist
+	rm -rf doc
 	rm -rf build
 	find . -name *.py[co] -exec rm -f {} \;
+
+.PHONY: doc
+doc:
+	epydoc -v --html  -o $(DOCDIR) -n python-cm_api `find src -name "*.py"`

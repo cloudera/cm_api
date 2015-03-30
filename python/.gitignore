@@ -1,5 +1,6 @@
 build/
 dist/
+doc/
 *.egg-info/
 .git-hash
 
