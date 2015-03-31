@@ -16,13 +16,45 @@
 
 import unittest
 from cm_api.endpoints.cms import ClouderaManager
-from cm_api.endpoints.types import config_to_json, ApiConfig
+from cm_api.endpoints.types import config_to_json, ApiConfig, ApiCmPeer
 from cm_api_tests import utils
 
 try:
   import json
 except ImportError:
   import simplejson as json
+
+# CM v10 ApiCmPeer json format: no 'type' field
+def _make_cm_v10_format_peer(name, url):
+  peer_json = """
+    {
+      "name": "%s",
+      "url": "%s"
+    }
+    """
+  return peer_json % (name, url)
+
+# CM v11 ApiCmPeer json format: with 'type' field
+def _make_cm_v11_format_peer(name, url, peer_type):
+  peer_json = """
+    {
+      "name": "%s",
+      "type": "%s",
+      "url": "%s"
+    }
+    """
+  return peer_json % (name, peer_type, url)
+
+SAMPLE_COMMAND_JSON = """
+    {
+      "id": 498,
+      "name": "CM Peer Test",
+      "startTime": "2015-03-31T23:56:41.066Z",
+      "active": true,
+      "children": {
+        "items": []
+      }
+    }"""
 
 class TestCMS(unittest.TestCase):
 
@@ -129,3 +161,118 @@ class TestCMS(unittest.TestCase):
     }
     resource.expect("GET", "/cm/getLicensedFeatureUsage", retdata=json_string)
     cms.get_licensed_feature_usage()
+
+  def test_peer_v10(self):
+    json_peer = _make_cm_v10_format_peer("peer1", "url1")
+
+    resource = utils.MockResource(self, version=10)
+    cms = ClouderaManager(resource)
+    peer = ApiCmPeer(resource,
+        name="peer1",
+        url="url1",
+        username="username",
+        password="password")
+
+    # Create peer
+    resource.expect("POST", "/cm/peers",
+        data=peer,
+        retdata=json.loads(json_peer))
+    cms.create_peer("peer1", "url1", "username", "password")
+
+    # Delete peer
+    resource.expect("DELETE", "/cm/peers/peer1",
+        retdata=json.loads(json_peer))
+    cms.delete_peer("peer1")
+
+    # Update peer
+    resource.expect("PUT", "/cm/peers/peer1",
+        data=peer,
+        retdata=json.loads(json_peer))
+    cms.update_peer("peer1", "peer1", "url1", "username", "password")
+
+    # Read peer
+    resource.expect("GET", "/cm/peers/peer1",
+        retdata=json.loads(json_peer))
+    cms.get_peer("peer1")
+
+    # Test peer connectivity
+    resource.expect("POST", "/cm/peers/peer1/commands/test",
+        retdata=json.loads(SAMPLE_COMMAND_JSON))
+    cms.test_peer_connectivity("peer1")
+
+  def test_peer_v11(self):
+    resource = utils.MockResource(self, version=11)
+    cms = ClouderaManager(resource)
+
+    json_peer1 = _make_cm_v11_format_peer("peer1", "url1", "REPLICATION")
+    json_peer2 = _make_cm_v11_format_peer("peer2", "url2", "STATUS_AGGREGATION")
+
+    peer1 = ApiCmPeer(resource,
+        name="peer1",
+        url="url1",
+        username="username",
+        password="password",
+        type="REPLICATION")
+    peer2 = ApiCmPeer(resource,
+        name="peer2",
+        url="url2",
+        username="username",
+        password="password",
+        type="STATUS_AGGREGATION")
+
+    params_replication = {
+      'type':   "REPLICATION",
+    }
+    params_status_aggregation = {
+      'type':   "STATUS_AGGREGATION",
+    }
+
+    # Create peer
+    resource.expect("POST", "/cm/peers",
+        data=peer1,
+        retdata=json.loads(json_peer1))
+    cms.create_peer("peer1", "url1", "username", "password")
+
+    resource.expect("POST", "/cm/peers",
+        data=peer2,
+        retdata=json.loads(json_peer2))
+    cms.create_peer("peer2", "url2", "username", "password",
+        peer_type="STATUS_AGGREGATION")
+
+    # Delete peer
+    resource.expect("DELETE", "/cm/peers/peer1",
+        params=params_replication, retdata=json.loads(json_peer1))
+    cms.delete_peer("peer1")
+    resource.expect("DELETE", "/cm/peers/peer2",
+        params=params_status_aggregation, retdata=json.loads(json_peer2))
+    cms.delete_peer("peer2", peer_type="STATUS_AGGREGATION")
+
+    # Update peer
+    resource.expect("PUT", "/cm/peers/peer1",
+        data=peer1,
+        retdata=json.loads(json_peer1))
+    cms.update_peer("peer1", "peer1", "url1", "username", "password")
+
+    resource.expect("PUT", "/cm/peers/peer2",
+        data=peer2,
+        retdata=json.loads(json_peer2))
+    cms.update_peer("peer2", "peer2", "url2", "username", "password",
+        peer_type="STATUS_AGGREGATION")
+
+    # Read peer
+    resource.expect("GET", "/cm/peers/peer1", params=params_replication,
+        retdata=json.loads(json_peer1))
+    cms.get_peer("peer1")
+    resource.expect("GET", "/cm/peers/peer2",
+        params=params_status_aggregation, retdata=json.loads(json_peer2))
+    cms.get_peer("peer2", peer_type="STATUS_AGGREGATION")
+
+    # Test peer connectivity
+    resource.expect("POST", "/cm/peers/peer1/commands/test",
+        params=params_replication,
+        retdata=json.loads(SAMPLE_COMMAND_JSON))
+    cms.test_peer_connectivity("peer1")
+    resource.expect("POST", "/cm/peers/peer2/commands/test",
+        params=params_status_aggregation,
+        retdata=json.loads(SAMPLE_COMMAND_JSON))
+    cms.test_peer_connectivity("peer2", peer_type="STATUS_AGGREGATION")

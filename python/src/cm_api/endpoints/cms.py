@@ -238,7 +238,7 @@ class ClouderaManager(BaseApiResource):
     """
     return self._cmd('hostsStartRoles', data=host_names)
 
-  def create_peer(self, name, url, username, password):
+  def create_peer(self, name, url, username, password, peer_type="REPLICATION"):
     """
     Create a new peer for replication.
 
@@ -246,29 +246,46 @@ class ClouderaManager(BaseApiResource):
     @param url: The url of the peer.
     @param username: The admin username to use to setup the remote side of the peer connection.
     @param password: The password of the admin user.
+    @param peer_type: Added in v11. The type of the peer. Defaults to 'REPLICATION'.
     @return: The newly created peer.
     @since: API v3
     """
+    if self._get_resource_root().version < 11:
+      peer_type = None
     peer = ApiCmPeer(self._get_resource_root(),
         name=name,
         url=url,
         username=username,
-        password=password)
+        password=password,
+        type=peer_type)
     return self._post("peers", ApiCmPeer, data=peer, api_version=3)
 
-  def delete_peer(self, name):
+  def _get_peer_type_param(self, peer_type):
+    """
+    Checks if the resource_root's API version is >= 11 and construct type param.
+    """
+    params = None
+    if self._get_resource_root().version >= 11:
+      params = {
+        'type':   peer_type,
+      }
+    return params
+
+  def delete_peer(self, name, peer_type="REPLICATION"):
     """
     Delete a replication peer.
 
     @param name: The name of the peer.
+    @param peer_type: Added in v11. The type of the peer. Defaults to 'REPLICATION'.
     @return: The deleted peer.
     @since: API v3
     """
-    return self._delete("peers/" + name, ApiCmPeer, api_version=3)
+    params = self._get_peer_type_param(peer_type)
+    return self._delete("peers/" + name, ApiCmPeer, params=params, api_version=3)
 
   def update_peer(self,
       current_name,
-      new_name, new_url, username, password):
+      new_name, new_url, username, password, peer_type="REPLICATION"):
     """
     Update a replication peer.
 
@@ -277,15 +294,19 @@ class ClouderaManager(BaseApiResource):
     @param new_url: The new url for the peer.
     @param username: The admin username to use to setup the remote side of the peer connection.
     @param password: The password of the admin user.
+    @param peer_type: Added in v11. The type of the peer. Defaults to 'REPLICATION'.
     @return: The updated peer.
     @since: API v3
     """
+    if self._get_resource_root().version < 11:
+      peer_type = None
     peer = ApiCmPeer(self._get_resource_root(),
         name=new_name,
         url=new_url,
         username=username,
-        password=password)
-    return self._put("peers/" + current_name, data=peer, api_version=3)
+        password=password,
+        type=peer_type)
+    return self._put("peers/" + current_name, ApiCmPeer, data=peer, api_version=3)
 
   def get_peers(self):
     """
@@ -296,25 +317,29 @@ class ClouderaManager(BaseApiResource):
     """
     return self._get("peers", ApiCmPeer, True, api_version=3)
 
-  def get_peer(self, name):
+  def get_peer(self, name, peer_type="REPLICATION"):
     """
     Retrieve a replication peer by name.
 
     @param name: The name of the peer.
+    @param peer_type: Added in v11. The type of the peer. Defaults to 'REPLICATION'.
     @return: The peer.
     @since: API v3
     """
-    return self._get("peers/" + name, ApiCmPeer, api_version=3)
+    params = self._get_peer_type_param(peer_type)
+    return self._get("peers/" + name, ApiCmPeer, params=params, api_version=3)
 
-  def test_peer_connectivity(self, name):
+  def test_peer_connectivity(self, name, peer_type="REPLICATION"):
     """
     Test connectivity for a replication peer.
 
     @param name: The name of the peer to test.
+    @param peer_type: Added in v11. The type of the peer to test. Defaults to 'REPLICATION'.
     @return: The command representing the test.
     @since: API v3
     """
-    return self._post("peers/%s/commands/test" % (name, ), ApiCommand,
+    params = self._get_peer_type_param(peer_type)
+    return self._post("peers/%s/commands/test" % name, ApiCommand, params=params,
         api_version=3)
 
   def get_all_hosts_config(self, view=None):
