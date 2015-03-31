@@ -78,3 +78,16 @@ class TestCluster(unittest.TestCase):
       data=data,
       retdata={'name' : 'bar'})
     newCluster.restart(False, True);
+
+  def test_configure_for_kerberos(self):
+    resource = utils.MockResource(self)
+    cluster = ApiCluster(resource, name="foo")
+
+    data = dict()
+    data['datanodeTransceiverPort'] = 23456
+    data['datanodeWebPort'] = 12345
+
+    resource.expect("POST", "/clusters/foo/commands/configureForKerberos",
+        data=data,
+        retdata={ 'name' : 'foo'})
+    cluster.configure_for_kerberos(23456, 12345)

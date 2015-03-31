@@ -573,3 +573,28 @@ class ApiCluster(BaseApiResource):
           'slaveFailCountThreshold' : slave_fail_count_threshold
         }
     return self._cmd('upgradeCdh', data=args, api_version=6)
+
+  def configure_for_kerberos(self, datanode_transceiver_port=None,
+    datanode_web_port=None):
+    """
+    Command to configure the cluster to use Kerberos for authentication.
+
+    This command will configure all relevant services on a cluster for
+    Kerberos usage.  This command will trigger a GenerateCredentials command
+    to create Kerberos keytabs for all roles in the cluster.
+
+    @param datanode_transceiver_port: The HDFS DataNode transceiver port to use.
+           This will be applied to all DataNode role configuration groups. If
+           not specified, this will default to 1004.
+    @param datanode_web_port: The HDFS DataNode web port to use.  This will be
+           applied to all DataNode role configuration groups. If not specified,
+           this will default to 1006.
+    @return: Reference to the submitted command.
+    @since: API v11
+    """
+    args = dict()
+    if datanode_transceiver_port:
+        args['datanodeTransceiverPort'] = datanode_transceiver_port
+    if datanode_web_port:
+        args['datanodeWebPort'] = datanode_web_port
+    return self._cmd('configureForKerberos', data=args, api_version=11)
