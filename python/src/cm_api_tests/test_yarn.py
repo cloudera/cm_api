@@ -15,12 +15,16 @@
 # limitations under the License.
 
 import datetime
-import json
 import unittest
 from cm_api.endpoints.clusters import *
 from cm_api.endpoints.services import *
 from cm_api.endpoints.types import *
 from cm_api_tests import utils
+
+try:
+  import json
+except ImportError:
+  import simplejson as json
 
 class TestYarn(unittest.TestCase):
 
