@@ -62,7 +62,9 @@ class TestTimeSeries(unittest.TestCase):
               "stdDev": 6.110100926606199,
               "crossEntityMetadata": {
                 "maxEntityDisplayName": "DATANODE (host1.com)",
+                "maxEntityName": "e37d8344",
                 "minEntityDisplayName": "DATANODE (host2.com)",
+                "minEntityName": "0891ee5b",
                 "numEntities": 3
               }
             }
@@ -142,6 +144,9 @@ class TestTimeSeries(unittest.TestCase):
     self.assertIsNotNone(xEntityMetadata)
     self.assertIsInstance(xEntityMetadata, ApiTimeSeriesCrossEntityMetadata)
     self.assertEqual("DATANODE (host1.com)", xEntityMetadata.maxEntityDisplayName)
+    self.assertEqual("e37d8344", xEntityMetadata.maxEntityName)
+    self.assertEqual("DATANODE (host2.com)", xEntityMetadata.minEntityDisplayName)
+    self.assertEqual("0891ee5b", xEntityMetadata.minEntityName)
     data  = timeseries.data[1]
     self.assertIsNotNone(data.aggregateStatistics)
     self.assertIsInstance(data.aggregateStatistics, ApiTimeSeriesAggregateStatistics)

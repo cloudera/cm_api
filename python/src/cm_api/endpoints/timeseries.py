@@ -73,6 +73,8 @@ class ApiTimeSeriesCrossEntityMetadata(BaseApiObject):
   _ATTRIBUTES = {
     'maxEntityDisplayName' : ROAttr(),
     'minEntityDisplayName' : ROAttr(),
+    'maxEntityName'        : ROAttr(),
+    'minEntityName'        : ROAttr(),
     'numEntities'          : ROAttr()
     }
 
