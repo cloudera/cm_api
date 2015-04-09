@@ -20,9 +20,9 @@ from setuptools import setup, find_packages
 from sys import version_info, platform
 
 if version_info[:2] > (2, 5):
-    install_requires = ['six']
+    install_requires = []
 else:
-    install_requires = ['six', 'simplejson >= 2.0.0']
+    install_requires = ['simplejson >= 2.0.0']
 
 # Python 2.6 and below requires argparse
 if version_info[:2] < (2, 7):
@@ -60,7 +60,6 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.3",
   ],
   entry_points = { 'console_scripts': [ 'cmps = cm_shell.cmps:main', ]}
 )

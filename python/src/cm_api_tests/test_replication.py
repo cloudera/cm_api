@@ -66,7 +66,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertFalse(args.preservePermissions)
     self.assertTrue(args.preserveReplicationCount)
     self.assertFalse(args.skipTrash)
-    self.assertEqual('DYNAMIC', args.replicationStrategy)
+    self.assertEquals('DYNAMIC', args.replicationStrategy)
     self.assertFalse(args.preserveXAttrs)
 
   def test_hive_arguments(self):
