@@ -29,11 +29,6 @@ test:
 	@echo 'Running tests...'
 	PYTHONPATH=src python -m unittest discover src/cm_api_tests
 
-.PHONY: test_py3
-test_py3:
-	@echo 'Running tests...'
-	PYTHONPATH=src python3 -m unittest discover src/cm_api_tests
-
 .PHONY: dist
 dist: test
 	git rev-parse HEAD > .git-hash

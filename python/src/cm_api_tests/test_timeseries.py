@@ -227,6 +227,6 @@ class TestTimeSeries(unittest.TestCase):
     self.assertEqual("packets", metric.unitNumerator)
     self.assertFalse( metric.unitDenominator)
     self.assertIsInstance(metric.aliases, list)
-    self.assertEqual("network_interface_drop_receive", metric.aliases[0])
+    self.assertEquals("network_interface_drop_receive", metric.aliases[0])
     self.assertIsInstance(metric.sources, dict)
-    self.assertEqual("enterprise", metric.sources["NETWORK_INTERFACE"][0])
+    self.assertEquals("enterprise", metric.sources["NETWORK_INTERFACE"][0])

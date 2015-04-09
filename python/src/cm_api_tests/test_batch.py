@@ -38,4 +38,4 @@ class TestBatch(unittest.TestCase):
     self.assertIsInstance(ret, ApiBatchResponseList)
     self.assertIsInstance(ret.success, bool)
     self.assertFalse(ret.success)
-    self.assertEqual(0, len(ret))
+    self.assertEquals(0, len(ret))

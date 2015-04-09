@@ -57,7 +57,7 @@ class TestDashboards(unittest.TestCase):
       data=[dashboard])
 
     resp = create_dashboards(resource, [dashboard])
-    self.assertEqual(1, len(resp))
+    self.assertEquals(1, len(resp))
 
   def test_delete_dashboard(self):
     resource = utils.MockResource(self)

@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import logging
 import os
+import cookielib
+import logging
 import posixpath
 import types
-from six.moves import http_cookiejar
-from six.moves import urllib
+import urllib
 
 try:
   import socks
@@ -31,6 +31,8 @@ try:
     socket.socket = socks.socksocket
 except ImportError:
   pass
+
+import urllib2
 
 __docformat__ = "epytext"
 
@@ -45,7 +47,7 @@ class RestException(Exception):
     self._error = error
     self._code = None
     self._message = str(error)
-    # See if there is a code or a message. (For urllib.error.HTTPError.)
+    # See if there is a code or a message. (For urllib2.HTTPError.)
     try:
       self._code = error.code
       self._message = error.read()
@@ -89,15 +91,15 @@ class HttpClient(object):
     self._headers = { }
 
     # Make a basic auth handler that does nothing. Set credentials later.
-    self._passmgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-    authhandler = urllib.request.HTTPBasicAuthHandler(self._passmgr)
+    self._passmgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    authhandler = urllib2.HTTPBasicAuthHandler(self._passmgr)
 
     # Make a cookie processor
-    cookiejar = http_cookiejar.CookieJar()
+    cookiejar = cookielib.CookieJar()
 
-    self._opener = urllib.request.build_opener(
+    self._opener = urllib2.build_opener(
         HTTPErrorProcessor(),
-        urllib.request.HTTPCookieProcessor(cookiejar),
+        urllib2.HTTPCookieProcessor(cookiejar),
         authhandler)
 
 
@@ -145,7 +147,7 @@ class HttpClient(object):
     @param data: The data to attach to the body of the request.
     @param headers: The headers to set for this request.
 
-    @return: The result of urllib.request.urlopen()
+    @return: The result of urllib2.urlopen()
     """
     # Prepare URL and params
     url = self._make_url(path, params)
@@ -156,8 +158,8 @@ class HttpClient(object):
         data = None
 
     # Setup the request
-    request = urllib.request.Request(url, data)
-    # Hack/workaround because urllib only does GET and POST
+    request = urllib2.Request(url, data)
+    # Hack/workaround because urllib2 only does GET and POST
     request.get_method = lambda: http_method
 
     headers = self._get_headers(headers)
@@ -168,7 +170,7 @@ class HttpClient(object):
     self.logger.debug("%s %s" % (http_method, url))
     try:
       return self._opener.open(request)
-    except urllib.error.HTTPError as ex:
+    except urllib2.HTTPError, ex:
       raise self._exc_class(ex)
 
   def _make_url(self, path, params):
@@ -176,12 +178,12 @@ class HttpClient(object):
     if path:
       res += posixpath.normpath('/' + path.lstrip('/'))
     if params:
-      param_str = urllib.parse.urlencode(params, True)
+      param_str = urllib.urlencode(params, True)
       res += '?' + param_str
     return iri_to_uri(res)
 
 
-class HTTPErrorProcessor(urllib.request.HTTPErrorProcessor):
+class HTTPErrorProcessor(urllib2.HTTPErrorProcessor):
   """
   Python 2.4 only recognize 200 and 206 as success. It's broken. So we install
   the following processor to catch the bug.
@@ -189,7 +191,7 @@ class HTTPErrorProcessor(urllib.request.HTTPErrorProcessor):
   def http_response(self, request, response):
     if 200 <= response.code < 300:
       return response
-    return urllib.request.HTTPErrorProcessor.http_response(self, request, response)
+    return urllib2.HTTPErrorProcessor.http_response(self, request, response)
 
   https_response = http_response
 
@@ -214,14 +216,14 @@ def iri_to_uri(iri):
     #     sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
     #                   / "*" / "+" / "," / ";" / "="
     #     unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
-    # Of the unreserved characters, urllib.parse.quote already considers all but
+    # Of the unreserved characters, urllib.quote already considers all but
     # the ~ safe.
     # The % character is also added to the list of safe characters here, as the
     # end of section 3.1 of RFC 3987 specifically mentions that % must not be
     # converted.
     if iri is None:
         return iri
-    return urllib.parse.quote(smart_str(iri), safe="/#%[]=:;$&()+,!?*@'~")
+    return urllib.quote(smart_str(iri), safe="/#%[]=:;$&()+,!?*@'~")
 
 #
 # Method copied from Django
