@@ -201,9 +201,10 @@ class ClouderaManager(BaseApiResource):
     args = {
         'endTime': end_datetime.isoformat(),
         'bundleSizeBytes': bundle_size_bytes,
-        'clusterName': cluster_name,
-        'roles': roles
+        'clusterName': cluster_name
     }
+    if self._get_resource_root().version >= 10:
+      args['roles'] = roles
     return self._cmd('collectDiagnosticData', data=args)
 
   def hosts_decommission(self, host_names):
