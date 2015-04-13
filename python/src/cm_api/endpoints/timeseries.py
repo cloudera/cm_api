@@ -22,6 +22,8 @@ __docformat__ = "epytext"
 
 TIME_SERIES_PATH   = "/timeseries"
 METRIC_SCHEMA_PATH = "/timeseries/schema"
+METRIC_ENTITY_TYPE_PATH = "/timeseries/entityTypes"
+METRIC_ENTITY_ATTR_PATH = "/timeseries/entityTypeAttributes"
 
 def query_timeseries(resource_root, query, from_time=None, to_time=None,
     desired_rollup=None, must_use_desired_rollup=None):
@@ -68,6 +70,22 @@ def get_metric_schema(resource_root):
   """
   return call(resource_root.get, METRIC_SCHEMA_PATH,
       ApiMetricSchema, True)
+
+def get_entity_types(resource_root):
+  """
+  Get the time series entity types that CM monitors.
+  @return: List of time series entity type.
+  """
+  return call(resource_root.get, METRIC_ENTITY_TYPE_PATH,
+      ApiTimeSeriesEntityType, True)
+
+def get_entity_attributes(resource_root):
+  """
+  Get the time series entity attributes that CM monitors.
+  @return: List of time series entity attribute.
+  """
+  return call(resource_root.get, METRIC_ENTITY_ATTR_PATH,
+      ApiTimeSeriesEntityAttribute, True)
 
 class ApiTimeSeriesCrossEntityMetadata(BaseApiObject):
   _ATTRIBUTES = {
@@ -141,3 +159,24 @@ class ApiMetricSchema(BaseApiObject):
     'sources'         : ROAttr(),
     }
 
+class ApiTimeSeriesEntityAttribute(BaseApiObject):
+  _ATTRIBUTES = {
+    'name'                 : ROAttr(),
+    'displayName'          : ROAttr(),
+    'description'          : ROAttr(),
+    'isValueCaseSensitive' : ROAttr()
+    }
+
+class ApiTimeSeriesEntityType(BaseApiObject):
+  _ATTRIBUTES = {
+    'name'                        : ROAttr(),
+    'category'                    : ROAttr(),
+    'displayName'                 : ROAttr(),
+    'description'                 : ROAttr(),
+    'nameForCrossEntityAggregateMetrics' : ROAttr(),
+    'immutableAttributeNames'     : ROAttr(),
+    'mutableAttributeNames'       : ROAttr(),
+    'entityNameFormat'            : ROAttr(),
+    'entityDisplayNameForamt'     : ROAttr(),
+    'parentMetricEntityTypeNames' : ROAttr()
+    }

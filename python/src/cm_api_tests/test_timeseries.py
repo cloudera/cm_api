@@ -230,3 +230,121 @@ class TestTimeSeries(unittest.TestCase):
     self.assertEquals("network_interface_drop_receive", metric.aliases[0])
     self.assertIsInstance(metric.sources, dict)
     self.assertEquals("enterprise", metric.sources["NETWORK_INTERFACE"][0])
+
+  def test_get_entity_types(self):
+    ENTITY_TYPES = '''{
+      "items": [ {
+        "name": "CLUSTER",
+        "category": "CLUSTER",
+        "nameForCrossEntityAggregateMetrics": "clusters",
+        "displayName": "Cluster",
+        "description": "A Cloudera Manager cluster. Called 'CLUSTER' in queries.",
+        "immutableAttributeNames": [
+          "clusterName",
+          "clusterId"],
+        "mutableAttributeNames": [
+          "clusterDisplayName",
+          "version"],
+        "entityNameFormat": [ "clusterId" ],
+        "entityDisplayNameForamt": "$clusterDisplayName",
+        "parentMetricEntityTypeNames": []
+      }, {
+        "name": "RACK",
+        "category": "RACK",
+        "nameForCrossEntityAggregateMetrics": "racks",
+        "displayName": "Rack",
+        "description": "A rack. Called 'RACK' in queries.",
+        "immutableAttributeNames": [ "rackId" ],
+        "mutableAttributeNames": [],
+        "entityNameFormat": [ "rackId" ],
+        "parentMetricEntityTypeNames": []
+      } ]
+    }'''
+
+    api_resource = utils.MockResource(self)
+    api_resource.expect("GET", "/timeseries/entityTypes",
+                        retdata=json.loads(ENTITY_TYPES))
+    entity_types = get_entity_types(api_resource)
+
+    self.assertIsInstance(entity_types, ApiList)
+    self.assertEqual(2, len(entity_types))
+    cluster_entity = entity_types[0]
+    self.assertIsInstance(cluster_entity, ApiTimeSeriesEntityType)
+    self.assertEqual("CLUSTER",
+                     cluster_entity.name)
+    self.assertEqual("CLUSTER",
+                     cluster_entity.category)
+    self.assertEqual("clusters",
+                     cluster_entity.nameForCrossEntityAggregateMetrics)
+    self.assertEqual("Cluster",
+                     cluster_entity.displayName)
+    self.assertEqual("A Cloudera Manager cluster. Called 'CLUSTER' in queries.",
+                     cluster_entity.description)
+    self.assertEqual("$clusterDisplayName",
+                     cluster_entity.entityDisplayNameForamt)
+
+    self.assertIsInstance(cluster_entity.immutableAttributeNames, list)
+    self.assertEqual(2, len(cluster_entity.immutableAttributeNames))
+    self.assertEqual("clusterName",
+                     cluster_entity.immutableAttributeNames[0])
+    self.assertEqual("clusterId",
+                     cluster_entity.immutableAttributeNames[1])
+
+    self.assertIsInstance(cluster_entity.mutableAttributeNames, list)
+    self.assertEqual(2, len(cluster_entity.mutableAttributeNames))
+    self.assertEqual("clusterDisplayName",
+                     cluster_entity.mutableAttributeNames[0])
+    self.assertEqual("version",
+                     cluster_entity.mutableAttributeNames[1])
+
+    self.assertIsInstance(cluster_entity.entityNameFormat, list)
+    self.assertEqual(1, len(cluster_entity.entityNameFormat))
+    self.assertEqual("clusterId",
+                     cluster_entity.entityNameFormat[0])
+
+    self.assertIsInstance(cluster_entity.parentMetricEntityTypeNames, list)
+    self.assertEqual(0, len(cluster_entity.parentMetricEntityTypeNames))
+
+  def test_get_entity_attributes(self):
+    ENTITY_ATTRIBUTES = '''{
+      "items": [ {
+        "name": "entityName",
+        "displayName": "Entity Name",
+        "description": "The name of this entity.",
+        "isValueCaseSensitive": false
+      }, {
+        "name": "roleConfigGroup",
+        "displayName": "Role Config Group",
+        "description": "The name of the role config group.",
+        "isValueCaseSensitive": true
+      } ]
+    }'''
+
+    api_resource = utils.MockResource(self)
+    api_resource.expect("GET", "/timeseries/entityTypeAttributes",
+                        retdata=json.loads(ENTITY_ATTRIBUTES))
+    entity_attrs = get_entity_attributes(api_resource)
+
+    self.assertIsInstance(entity_attrs, ApiList)
+    self.assertEqual(2, len(entity_attrs))
+    attr_1 = entity_attrs[0]
+    self.assertIsInstance(attr_1, ApiTimeSeriesEntityAttribute)
+    self.assertEqual("entityName",
+                     attr_1.name)
+    self.assertEqual(False,
+                     attr_1.isValueCaseSensitive)
+    self.assertEqual("Entity Name",
+                     attr_1.displayName)
+    self.assertEqual("The name of this entity.",
+                     attr_1.description)
+
+    attr_2 = entity_attrs[1]
+    self.assertIsInstance(attr_2, ApiTimeSeriesEntityAttribute)
+    self.assertEqual("roleConfigGroup",
+                     attr_2.name)
+    self.assertEqual(True,
+                     attr_2.isValueCaseSensitive)
+    self.assertEqual("Role Config Group",
+                     attr_2.displayName)
+    self.assertEqual("The name of the role config group.",
+                     attr_2.description)
