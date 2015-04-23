@@ -38,10 +38,10 @@ public interface AuditsResourceV8 extends AuditsResource {
    * Fetch audit events from Cloudera Manager (CM) and CM managed services
    * like HDFS, HBase, Impala, Hive, and Sentry.
    * <p>
-   * By default, this call will fetch all audit events corresponding to a
-   * 1 day window based on provided end time (which defaults to the current
-   * CM server time). The <em>startTime</em> and <em>endTime</em> parameters
-   * can be used to control the window being queried.
+   * By default, this call will fetch the first 100 audit events (sorted from most
+   * recent to oldest) corresponding to a 1 day window based on provided end time
+   * (which defaults to the  current CM server time). The <em>startTime</em> and
+   * <em>endTime</em> parameters can be used to control the window being queried.
    * <p>
    * Audit events for CM managed services are only retrieved if Cloudera
    * Navigator server is running.

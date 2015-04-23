@@ -16,6 +16,9 @@
 
 package com.cloudera.api.model;
 
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,6 +34,7 @@ public class ApiCollectDiagnosticDataArguments {
   private String ticketNumber;
   private String comments;
   private String clusterName;
+  private List<String> roles;
 
   /**
    * The maximum approximate bundle size of the output file
@@ -114,5 +118,25 @@ public class ApiCollectDiagnosticDataArguments {
   
   public void setClusterName(String clusterName) {
     this.clusterName = clusterName;
+  }
+
+  /**
+   * List of roles for which to get logs and metrics.
+   *
+   * If set, this restricts the roles for log and metrics collection
+   * to the list specified.
+   *
+   * If empty, the default is to get logs for all roles (in the selected
+   * cluster, if one is selected).
+   *
+   * Introduced in API v10 of the API.
+   */
+  @XmlElement
+  public List<String> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(List<String> roles) {
+    this.roles = roles;
   }
 }

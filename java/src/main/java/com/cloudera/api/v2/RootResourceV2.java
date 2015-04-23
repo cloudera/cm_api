@@ -39,7 +39,7 @@ public interface RootResourceV2 extends RootResourceV1 {
   public ClouderaManagerResourceV2 getClouderaManagerResource();
 
   /**
-   * @return The clusters resource handler.
+   * @return The hosts resource handler.
    */
   @Override
   @Path("/hosts")

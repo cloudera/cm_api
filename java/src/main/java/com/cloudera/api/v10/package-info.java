@@ -14,24 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.cloudera.api.model;
-
-// Modeled after HealthTestResult.Summary.
-
 /**
- * Represents of the high-level health status of a subject in the cluster.
+ * API version 10, introduced in Cloudera Manager 5.4.0.
  */
-public enum ApiHealthSummary {
-  /** The health check for this subject has been disabled */
-  DISABLED,
-  /** The health status was not captured at this past instant */
-  HISTORY_NOT_AVAILABLE,
-  /** The health status cannot be determined */
-  NOT_AVAILABLE,
-  /** The subject is in good health */
-  GOOD,
-  /** The subject is in concerning health */
-  CONCERNING,
-  /** The subject is in bad health */
-  BAD;
-}
+
+package com.cloudera.api.v10;
