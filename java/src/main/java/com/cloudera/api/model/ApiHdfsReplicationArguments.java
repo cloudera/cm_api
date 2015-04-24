@@ -44,6 +44,7 @@ public class ApiHdfsReplicationArguments {
   private boolean skipChecksumChecks;
   private Boolean skipTrash;
   private ReplicationStrategy replicationStrategy;
+  private Boolean preserveXAttrs;
 
   /**
    * The strategy for distributing the file replication tasks among the mappers
@@ -224,6 +225,9 @@ public class ApiHdfsReplicationArguments {
   /**
    * Whether to preserve the HDFS owner, group and permissions. Defaults to
    * false.
+   * Starting from V10, it also preserves ACLs. Defaults to null (no preserve).
+   * ACLs is preserved if both clusters enable ACL support, and replication
+   * ignores any ACL related failures.
    */
   @XmlElement
   public boolean getPreservePermissions() {
@@ -284,6 +288,21 @@ public class ApiHdfsReplicationArguments {
     this.replicationStrategy = replicationStrategy;
   }
 
+  /**
+   * Whether to preserve XAttrs, default to false
+   * This is introduced in V10. To preserve XAttrs, both CDH versions
+   * should be >= 5.2. Replication fails if either cluster does not support
+   * XAttrs.
+   */
+  @XmlElement
+  public Boolean getPreserveXAttrs() {
+    return preserveXAttrs;
+  }
+
+  public void setPreserveXAttrs(Boolean preserveXAttrs) {
+    this.preserveXAttrs = preserveXAttrs;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
@@ -304,6 +323,7 @@ public class ApiHdfsReplicationArguments {
                   .add("skipChecksumChecks", skipChecksumChecks)
                   .add("skipTrash", skipTrash)
                   .add("replicationStrategy", replicationStrategy)
+                  .add("preserveXAttrs", preserveXAttrs)
                   .toString();
   }
 
@@ -327,7 +347,8 @@ public class ApiHdfsReplicationArguments {
         Objects.equal(logPath, other.getLogPath()) &&
         skipChecksumChecks == other.getSkipChecksumChecks() &&
         Objects.equal(skipTrash, other.getSkipTrash()) &&
-        Objects.equal(replicationStrategy, other.getReplicationStrategy()));
+        Objects.equal(replicationStrategy, other.getReplicationStrategy()) &&
+        Objects.equal(preserveXAttrs, other.getPreserveXAttrs()));
   }
 
   @Override
@@ -336,6 +357,7 @@ public class ApiHdfsReplicationArguments {
         mapreduceServiceName, schedulerPoolName, numMaps, dryRun,
         bandwidthPerMap, abortOnError, removeMissingFiles,
         preserveReplicationCount, preserveBlockSize, preservePermissions,
-        logPath, skipChecksumChecks, skipTrash, replicationStrategy);
+        logPath, skipChecksumChecks, skipTrash, replicationStrategy,
+        preserveXAttrs);
   }
 }

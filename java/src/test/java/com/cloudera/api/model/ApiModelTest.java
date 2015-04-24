@@ -926,6 +926,7 @@ public class ApiModelTest {
     hdfsArgs.setLogPath("log1");
     hdfsArgs.setSkipChecksumChecks(true);
     hdfsArgs.setSkipTrash(true);
+    hdfsArgs.setPreserveXAttrs(true);
     hdfsArgs.setReplicationStrategy(ReplicationStrategy.DYNAMIC);
     return hdfsArgs;
   }
@@ -965,6 +966,7 @@ public class ApiModelTest {
     cluster.setMaintenanceMode(true);
     cluster.setName("mycluster");
     cluster.setDisplayName("mycluster-displayName");
+    cluster.setClusterUrl("http://some-url:7180/cmf/clusterRedirect/mycluster");
     cluster.setVersion(ApiClusterVersion.CDH4);
     cluster.setFullVersion("4.1.2");
     return cluster;

@@ -80,6 +80,10 @@ public interface ClouderaManagerResourceV2 extends ClouderaManagerResource {
    * all changes will be rolled back leaving the system exactly as it was
    * before calling this method.  The system will never be left in a state
    * where part of the deployment is created and other parts are not.
+   * <p/>
+   * If the submitted deployment contains entities that require Cloudera
+   * Enterprise license, then the license should be provided to Cloudera Manager
+   * before making this API call.
    *
    * @param deployment              The deployment to create
    * @param deleteCurrentDeployment If true, the current deployment is deleted

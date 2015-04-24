@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 public class ClouderaManagerClientBuilderTest {
@@ -74,5 +75,25 @@ public class ClouderaManagerClientBuilderTest {
     } catch (IllegalArgumentException e) {
       // expected
     }
+  }
+
+  @Test
+  public void testResourceConfig() {
+    ClouderaManagerClientBuilder builder = new ClouderaManagerClientBuilder();
+    ApiRootResource a = newProxy(builder);
+    assertNotNull(a);
+    ApiRootResource b = newProxy(builder);
+    assertNotNull(b);
+
+    ClouderaManagerClientBuilder.clearCachedResources();
+    // test after clear
+    assertNotNull(newProxy(builder));
+  }
+
+  public ApiRootResource newProxy(ClouderaManagerClientBuilder builder) {
+    return builder.withHost("localhost")
+      .withPort(1)
+      .enableLogging()
+      .build();
   }
 }
