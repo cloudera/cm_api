@@ -129,6 +129,8 @@ public interface ServicesResourceV2 extends ServicesResource {
   
   /**
    * Creates the Oozie Database Schema in the configured database.
+   * This command does not create database. This command creates only tables
+   * required by Oozie. To create database, please refer to oozieCreateEmbeddedDatabase()
    * 
    * <p>
    * Available since API v2.

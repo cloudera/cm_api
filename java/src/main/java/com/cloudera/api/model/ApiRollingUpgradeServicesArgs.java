@@ -15,30 +15,57 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
-import com.cloudera.api.ApiUtils;
-import com.google.common.base.Objects;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.cloudera.api.ApiUtils;
+import com.google.common.base.Objects;
+
 /**
- * Rolling upgrade arguments used in the CDH Upgrade Command. Part of
- * ApiCdhUpgradeArgs.
+ * Arguments used for Rolling Upgrade command.
  */
-@XmlRootElement(name = "rollingUpgradeClusterArgs")
-public class ApiRollingUpgradeClusterArgs {
+@XmlRootElement(name="rollingUpgradeServicesArgs")
+public class ApiRollingUpgradeServicesArgs {
 
   private Integer slaveBatchSize;
   private Integer sleepSeconds;
   private Integer slaveFailCountThreshold;
+  private String upgradeFromCdhVersion;
+  private String upgradeToCdhVersion;
+  private List<String> upgradeServiceNames;
 
   /**
-   * Number of slave roles to restart at a time.
+   * Current CDH Version of the services. Example versions are:
+   * "5.1.0", "5.2.2" or "5.4.0"
+   */
+  @XmlElement
+  public String getUpgradeFromCdhVersion() {
+    return upgradeFromCdhVersion;
+  }
+
+  public void setUpgradeFromCdhVersion(String upgradeFromCdhVersion) {
+    this.upgradeFromCdhVersion = upgradeFromCdhVersion;
+  }
+
+  /**
+   * Target CDH Version for the services. The CDH version should already
+   * be present and activated on the nodes. Example versions are:
+   * "5.1.0", "5.2.2" or "5.4.0"
+   */
+  @XmlElement
+  public String getUpgradeToCdhVersion() {
+    return upgradeToCdhVersion;
+  }
+
+  public void setUpgradeToCdhVersion(String upgradeToCdhVersion) {
+    this.upgradeToCdhVersion = upgradeToCdhVersion;
+  }
+
+  /**
+   * Number of hosts with slave roles to upgrade at a time.
    * Must be greater than zero. Default is 1.
-   *
-   * Please note that for HDFS, this number should be less than
-   * the replication factor (default 3) to ensure data availability
-   * during rolling restart.
    */
   @XmlElement
   public Integer getSlaveBatchSize() {
@@ -50,7 +77,7 @@ public class ApiRollingUpgradeClusterArgs {
   }
 
   /**
-   * Number of seconds to sleep between restarts of slave role batches.
+   * Number of seconds to sleep between restarts of slave host batches.
    *
    * Must be greater than or equal to 0. Default is 0.
    */
@@ -64,10 +91,10 @@ public class ApiRollingUpgradeClusterArgs {
   }
 
   /**
-   * The threshold for number of slave batches that are allowed to fail
+   * The threshold for number of slave host batches that are allowed to fail
    * to restart before the entire command is considered failed.
    *
-   * Must be greather than or equal to 0. Default is 0.
+   * Must be greater than or equal to 0. Default is 0.
    * <p>
    * This argument is for ADVANCED users only.
    * </p>
@@ -81,26 +108,46 @@ public class ApiRollingUpgradeClusterArgs {
     this.slaveFailCountThreshold = slaveFailCountThreshold;
   }
 
+  /**
+   * List of services to upgrade.
+   * Only the services that support rolling upgrade should be included.
+   */
+  @XmlElement
+  public List<String> getUpgradeServiceNames() {
+    return upgradeServiceNames;
+  }
+
+  public void setUpgradeServiceNames(List<String> upgradeServiceNames) {
+    this.upgradeServiceNames = upgradeServiceNames;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
                   .add("slaveBatchSize", slaveBatchSize)
                   .add("slaveFailCountThreshold", slaveFailCountThreshold)
                   .add("sleepSeconds", sleepSeconds)
+                  .add("upgradeFromCdhVersion", upgradeFromCdhVersion)
+                  .add("upgradeToCdhVersion", upgradeToCdhVersion)
+                  .add("upgradeServiceNames", upgradeServiceNames)
                   .toString();
   }
 
   @Override
   public boolean equals(Object o) {
-    ApiRollingUpgradeClusterArgs other = ApiUtils.baseEquals(this, o);
+    ApiRollingUpgradeServicesArgs other = ApiUtils.baseEquals(this, o);
     return this == other || (other != null &&
         Objects.equal(slaveBatchSize, other.slaveBatchSize) &&
         Objects.equal(slaveFailCountThreshold, other.slaveFailCountThreshold) &&
-        Objects.equal(sleepSeconds, other.sleepSeconds));
+        Objects.equal(sleepSeconds, other.sleepSeconds) &&
+        Objects.equal(upgradeFromCdhVersion, other.upgradeFromCdhVersion) &&
+        Objects.equal(upgradeToCdhVersion, other.upgradeToCdhVersion) &&
+        Objects.equal(upgradeServiceNames, other.upgradeServiceNames));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(slaveBatchSize, slaveFailCountThreshold, sleepSeconds);
+    return Objects.hashCode(slaveBatchSize, slaveFailCountThreshold, sleepSeconds,
+        upgradeFromCdhVersion, upgradeToCdhVersion, upgradeServiceNames);
   }
 }

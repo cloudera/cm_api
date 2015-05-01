@@ -141,6 +141,15 @@ public class ApiHostInstallArguments {
   /**
    * The private key to authenticate with the hosts.
    * Specify either this or a password.
+   * <br>
+   * The private key, if specified, needs to be a
+   * standard PEM-encoded key as a single string, with all line breaks
+   * replaced with the line-feed control character '\n'.
+   * <br>
+   * A value will typically look like the following string:
+   * <br>
+   * -----BEGIN RSA PRIVATE KEY-----\n[base-64 encoded key]\n-----END RSA PRIVATE KEY-----
+   * <br>
    */
   @XmlElement
   public String getPrivateKey() {

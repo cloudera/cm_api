@@ -13,25 +13,34 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package com.cloudera.api.v10;
 
-package com.cloudera.api.model;
+import com.cloudera.api.v9.RootResourceV9;
 
-// Modeled after HealthTestResult.Summary.
+import javax.ws.rs.Path;
 
-/**
- * Represents of the high-level health status of a subject in the cluster.
- */
-public enum ApiHealthSummary {
-  /** The health check for this subject has been disabled */
-  DISABLED,
-  /** The health status was not captured at this past instant */
-  HISTORY_NOT_AVAILABLE,
-  /** The health status cannot be determined */
-  NOT_AVAILABLE,
-  /** The subject is in good health */
-  GOOD,
-  /** The subject is in concerning health */
-  CONCERNING,
-  /** The subject is in bad health */
-  BAD;
+@Path("")
+public interface RootResourceV10 extends RootResourceV9 {
+
+  /**
+   * @return The clusters resource handler.
+   */
+  @Override
+  @Path("/clusters")
+  public ClustersResourceV10 getClustersResource();
+
+  /**
+   * @return The hosts resource handler.
+   */
+  @Override
+  @Path("/hosts")
+  public HostsResourceV10 getHostsResource();
+
+  /**
+   * @return Audits resource handler.
+   */
+  @Override
+  @Path("/audits")
+  public AuditsResourceV10 getAuditsResource();
+
 }

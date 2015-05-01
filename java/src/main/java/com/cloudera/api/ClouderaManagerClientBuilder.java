@@ -18,6 +18,19 @@ package com.cloudera.api;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.feature.AbstractFeature;
@@ -27,15 +40,6 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.cert.X509Certificate;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public class ClouderaManagerClientBuilder {
   public static final int DEFAULT_TCP_PORT = 7180;
@@ -60,6 +64,38 @@ public class ClouderaManagerClientBuilder {
   private boolean validateCerts = true;
   private boolean validateCn = true;
   private TrustManager[] trustManagers = null;
+
+  /**
+   * Cache JAXRSClientFactoryBean per proxyType.
+   *
+   * We need a cache because CXF stores stubs
+   * ({@link org.apache.cxf.jaxrs.model.ClassResourceInfo} objects) as a reference
+   * inside JAXRSServiceFactoryBean, which is composed within instances of
+   * {@link JAXRSClientFactoryBean}.
+   *
+   * This avoids:
+   * - creating a lot of temporaries generated during the proxy creation for
+   * each client
+   *
+   * - ensures that different proxies of the same type actually share the same
+   * ClassResourceInfo, thus reducing aggregate usage
+   *
+   * Also, as a useful side effect, generates proxies with cached proxy types faster.
+   */
+  private static final LoadingCache<Class<?>, JAXRSClientFactoryBean>
+    clientStaticResources =
+      CacheBuilder.newBuilder()
+      .softValues()
+      .build(
+        new CacheLoader<Class<?>, JAXRSClientFactoryBean>(){
+          @Override
+          public JAXRSClientFactoryBean load(Class<?> proxyType) throws Exception {
+            JAXRSClientFactoryBean clientFactoryBean = new JAXRSClientFactoryBean();
+            clientFactoryBean.setResourceClass(proxyType);
+            clientFactoryBean.setProvider(new JacksonJsonProvider(new ApiObjectMapper()));
+            return clientFactoryBean;
+          }
+        });
 
   public ClouderaManagerClientBuilder withBaseURL(URL baseUrl) {
     this.baseUrl = baseUrl;
@@ -154,27 +190,40 @@ public class ClouderaManagerClientBuilder {
     trustManagers = managers;
   }
 
+  /**
+   * Build an ApiRootResource proxy object for communicating with the remote server.
+   * @return an ApiRootResource proxy object
+   */
   public ApiRootResource build() {
     return build(ApiRootResource.class);
   }
 
+  /**
+   * Build a client proxy, for a specific proxy type.
+   * @param proxyType proxy type class
+   * @return client proxy stub
+   */
   protected <T> T build(Class<T> proxyType) {
-    JAXRSClientFactoryBean bean = new JAXRSClientFactoryBean();
-
     String address = generateAddress();
-    boolean isTlsEnabled = address.startsWith("https://");
-    bean.setAddress(address);
-    if (username != null) {
-      bean.setUsername(username);
-      bean.setPassword(password);
-    }
-    if (enableLogging) {
-      bean.setFeatures(Arrays.<AbstractFeature>asList(new LoggingFeature()));
-    }
-    bean.setResourceClass(proxyType);
-    bean.setProvider(new JacksonJsonProvider(new ApiObjectMapper()));
+    T rootResource;
+    // Synchronized on the class to correlate with the scope of clientStaticResources
+    // We want to ensure that the shared bean isn't set concurrently in multiple callers
+    synchronized (ClouderaManagerClientBuilder.class) {
+      JAXRSClientFactoryBean bean =
+          cleanFactory(clientStaticResources.getUnchecked(proxyType));
+      bean.setAddress(address);
+      if (username != null) {
+        bean.setUsername(username);
+        bean.setPassword(password);
+      }
 
-    T rootResource = bean.create(proxyType);
+      if (enableLogging) {
+        bean.setFeatures(Arrays.<AbstractFeature>asList(new LoggingFeature()));
+      }
+      rootResource = bean.create(proxyType);
+    }
+
+    boolean isTlsEnabled = address.startsWith("https://");
     ClientConfiguration config = WebClient.getConfig(rootResource);
     HTTPConduit conduit = (HTTPConduit) config.getConduit();
     if (isTlsEnabled) {
@@ -197,6 +246,13 @@ public class ClouderaManagerClientBuilder {
     return rootResource;
   }
 
+  private static JAXRSClientFactoryBean cleanFactory(JAXRSClientFactoryBean bean) {
+    bean.setUsername(null);
+    bean.setPassword(null);
+    bean.setFeatures(Arrays.<AbstractFeature>asList());
+    return bean;
+  }
+
   /**
    * Closes the transport level conduit in the client. Reopening a new
    * connection, requires creating a new client object using the build()
@@ -215,6 +271,21 @@ public class ClouderaManagerClientBuilder {
     conduit.close();
   }
 
+  /**
+   * Clears any cached resources shared during build operations
+   * across instances of this class.
+   *
+   * This includes shared proxy/stub information, that will be automatically
+   * garbage collected when used heap memory in the JVM
+   * nears max heap memory in the JVM.
+   *
+   * In general, it is unnecessary to invoke this method, unless you are
+   * concerned with reducing used heap memory in the JVM.
+   */
+  public static void clearCachedResources() {
+    clientStaticResources.invalidateAll();
+  }
+
   /** A trust manager that will accept all certificates. */
   private static class AcceptAllTrustManager implements X509TrustManager {
 
@@ -229,7 +300,5 @@ public class ClouderaManagerClientBuilder {
     public X509Certificate[] getAcceptedIssuers() {
       return null;
     }
-
   }
-
 }

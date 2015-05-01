@@ -26,6 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "yarnApplicationDiagnosticsCollectionArgs")
 public class ApiYarnApplicationDiagnosticsCollectionArgs {
   private List<String> applicationIds;
+  private String ticketNumber;
+  private String comments;
 
   /**
    * Id's of the applications whose diagnostics data has to be collected
@@ -37,5 +39,29 @@ public class ApiYarnApplicationDiagnosticsCollectionArgs {
 
   public void setApplicationIds(List<String> applicationIds) {
     this.applicationIds = applicationIds;
+  }
+
+  /**
+   * Ticket Number of the Cloudera Support Ticket
+   */
+  @XmlElement
+  public String getTicketNumber() {
+    return ticketNumber;
+  }
+
+  public void setTicketNumber(String ticketNumber) {
+    this.ticketNumber = ticketNumber;
+  }
+
+  /**
+   * Comments to add to the support bundle
+   */
+  @XmlElement
+  public String getComments() {
+    return comments;
+  }
+
+  public void setComments(String comments) {
+    this.comments = comments;
   }
 }
