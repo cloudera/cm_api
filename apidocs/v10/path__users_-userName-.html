@@ -1,0 +1,452 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+       Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Cloudera Manager API v10</title>
+
+  <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS: implied media="all" -->
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/prettify.css">
+
+  <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+  <script src="js/libs/modernizr-1.7.min.js"></script>
+
+</head>
+
+<body class="home">
+
+  <div class="container">
+    <header>
+      <div id="header" class="column first last span-20">
+        <div id="site-name" class="column span-18 append-1 prepend-1 first last"><a href="index.html">Cloudera Manager API v10</a></div>
+        <div id="primary" class="column span-18 append-1 prepend-1 first last">
+          <ul class="navigation">
+            <li id="nav-rest"><a href="rest.html">REST</a></li>
+            <li id="nav-data"><a href="model.html">Data Model</a></li>
+            <li id="nav-downloads"><a href="downloads.html">Files and Libraries</a></li>
+          </ul>
+        </div>
+        <div>
+          <ul class="xbreadcrumbs" id="breadcrumbs">
+            <li>
+              <a href="index.html" class="home">Home</a> &gt;
+            </li>
+            <li>
+              <a href="rest.html">REST</a> &gt;
+              <ul>
+                <li><a href="model.html">Data Model</a></li>
+                <li><a href="rest.html">REST</a></li>
+                <li><a href="downloads.html">Files and Libraries</a></li>
+              </ul>
+            </li>
+            <li class="current">
+              <a href="path__users_-userName-.html">/users/{userName}</a>
+              <ul>
+                <li><a href="path__audits.html">/audits</a></li>
+                <li><a href="path__audits_stream.html">/audits/stream</a></li>
+                <li><a href="path__batch.html">/batch</a></li>
+                <li><a href="path__clusters.html">/clusters</a></li>
+                <li><a href="path__clusters_-clusterName-.html">/clusters/{clusterName}</a></li>
+                <li><a href="path__clusters_-clusterName-_autoAssignRoles.html">/clusters/{clusterName}/autoAssignRoles</a></li>
+                <li><a href="path__clusters_-clusterName-_autoConfigure.html">/clusters/{clusterName}/autoConfigure</a></li>
+                <li><a href="path__clusters_-clusterName-_clientConfig.html">/clusters/{clusterName}/clientConfig</a></li>
+                <li><a href="path__clusters_-clusterName-_commands.html">/clusters/{clusterName}/commands</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_deployClientConfig.html">/clusters/{clusterName}/commands/deployClientConfig</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_deployClusterClientConfig.html">/clusters/{clusterName}/commands/deployClusterClientConfig</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_enterMaintenanceMode.html">/clusters/{clusterName}/commands/enterMaintenanceMode</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_exitMaintenanceMode.html">/clusters/{clusterName}/commands/exitMaintenanceMode</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_firstRun.html">/clusters/{clusterName}/commands/firstRun</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_inspectHosts.html">/clusters/{clusterName}/commands/inspectHosts</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_poolsRefresh.html">/clusters/{clusterName}/commands/poolsRefresh</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_refresh.html">/clusters/{clusterName}/commands/refresh</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_restart.html">/clusters/{clusterName}/commands/restart</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_rollingRestart.html">/clusters/{clusterName}/commands/rollingRestart</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_rollingUpgrade.html">/clusters/{clusterName}/commands/rollingUpgrade</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_start.html">/clusters/{clusterName}/commands/start</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_stop.html">/clusters/{clusterName}/commands/stop</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_upgradeCdh.html">/clusters/{clusterName}/commands/upgradeCdh</a></li>
+                <li><a href="path__clusters_-clusterName-_commands_upgradeServices.html">/clusters/{clusterName}/commands/upgradeServices</a></li>
+                <li><a href="path__clusters_-clusterName-_hosts.html">/clusters/{clusterName}/hosts</a></li>
+                <li><a href="path__clusters_-clusterName-_hosts_-hostId-.html">/clusters/{clusterName}/hosts/{hostId}</a></li>
+                <li><a href="path__clusters_-clusterName-_hostTemplates.html">/clusters/{clusterName}/hostTemplates</a></li>
+                <li><a href="path__clusters_-clusterName-_hostTemplates_-hostTemplateName-.html">/clusters/{clusterName}/hostTemplates/{hostTemplateName}</a></li>
+                <li><a href="path__clusters_-clusterName-_hostTemplates_-hostTemplateName-_commands_applyHostTemplate.html">/clusters/{clusterName}/hostTemplates/{hostTemplateName}/commands/applyHostTemplate</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels.html">/clusters/{clusterName}/parcels</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-_commands_activate.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}/commands/activate</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-_commands_cancelDistribution.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}/commands/cancelDistribution</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-_commands_cancelDownload.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}/commands/cancelDownload</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-_commands_deactivate.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}/commands/deactivate</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-_commands_removeDownload.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}/commands/removeDownload</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-_commands_startDistribution.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}/commands/startDistribution</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-_commands_startDownload.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}/commands/startDownload</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_products_-product-_versions_-version-_commands_startRemovalOfDistribution.html">/clusters/{clusterName}/parcels/products/{product}/versions/{version}/commands/startRemovalOfDistribution</a></li>
+                <li><a href="path__clusters_-clusterName-_parcels_usage.html">/clusters/{clusterName}/parcels/usage</a></li>
+                <li><a href="path__clusters_-clusterName-_services.html">/clusters/{clusterName}/services</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-.html">/clusters/{clusterName}/services/{serviceName}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_activities.html">/clusters/{clusterName}/services/{serviceName}/activities</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_activities_-activityId-.html">/clusters/{clusterName}/services/{serviceName}/activities/{activityId}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_activities_-activityId-_children.html">/clusters/{clusterName}/services/{serviceName}/activities/{activityId}/children</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_activities_-activityId-_metrics.html">/clusters/{clusterName}/services/{serviceName}/activities/{activityId}/metrics</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_activities_-activityId-_similar.html">/clusters/{clusterName}/services/{serviceName}/activities/{activityId}/similar</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_clientConfig.html">/clusters/{clusterName}/services/{serviceName}/clientConfig</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands.html">/clusters/{clusterName}/services/{serviceName}/commands</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_-commandName-.html">/clusters/{clusterName}/services/{serviceName}/commands/{commandName}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_createOozieDb.html">/clusters/{clusterName}/services/{serviceName}/commands/createOozieDb</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_createSolrHdfsHomeDir.html">/clusters/{clusterName}/services/{serviceName}/commands/createSolrHdfsHomeDir</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_createSqoopUserDir.html">/clusters/{clusterName}/services/{serviceName}/commands/createSqoopUserDir</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_decommission.html">/clusters/{clusterName}/services/{serviceName}/commands/decommission</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_deployClientConfig.html">/clusters/{clusterName}/services/{serviceName}/commands/deployClientConfig</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_disableJtHa.html">/clusters/{clusterName}/services/{serviceName}/commands/disableJtHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_disableRmHa.html">/clusters/{clusterName}/services/{serviceName}/commands/disableRmHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_enableJtHa.html">/clusters/{clusterName}/services/{serviceName}/commands/enableJtHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_enableRmHa.html">/clusters/{clusterName}/services/{serviceName}/commands/enableRmHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_enterMaintenanceMode.html">/clusters/{clusterName}/services/{serviceName}/commands/enterMaintenanceMode</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_exitMaintenanceMode.html">/clusters/{clusterName}/services/{serviceName}/commands/exitMaintenanceMode</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_firstRun.html">/clusters/{clusterName}/services/{serviceName}/commands/firstRun</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hbaseCreateRoot.html">/clusters/{clusterName}/services/{serviceName}/commands/hbaseCreateRoot</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hbaseUpgrade.html">/clusters/{clusterName}/services/{serviceName}/commands/hbaseUpgrade</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsCreateTmpDir.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsCreateTmpDir</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsDisableAutoFailover.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsDisableAutoFailover</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsDisableHa.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsDisableHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsDisableNnHa.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsDisableNnHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsEnableAutoFailover.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsEnableAutoFailover</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsEnableHa.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsEnableHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsEnableNnHa.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsEnableNnHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsFailover.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsFailover</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsFinalizeRollingUpgrade.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsFinalizeRollingUpgrade</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsRollEdits.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsRollEdits</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hdfsUpgradeMetadata.html">/clusters/{clusterName}/services/{serviceName}/commands/hdfsUpgradeMetadata</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveCreateHiveUserDir.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateHiveUserDir</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveCreateHiveWarehouse.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateHiveWarehouse</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveCreateMetastoreDatabase.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateMetastoreDatabase</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveCreateMetastoreDatabaseTables.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveCreateMetastoreDatabaseTables</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveUpdateMetastoreNamenodes.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveUpdateMetastoreNamenodes</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hiveUpgradeMetastore.html">/clusters/{clusterName}/services/{serviceName}/commands/hiveUpgradeMetastore</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hueCreateHiveWarehouse.html">/clusters/{clusterName}/services/{serviceName}/commands/hueCreateHiveWarehouse</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hueDumpDb.html">/clusters/{clusterName}/services/{serviceName}/commands/hueDumpDb</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hueLoadDb.html">/clusters/{clusterName}/services/{serviceName}/commands/hueLoadDb</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_hueSyncDb.html">/clusters/{clusterName}/services/{serviceName}/commands/hueSyncDb</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaCreateCatalogDatabase.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaCreateCatalogDatabase</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaCreateCatalogDatabaseTables.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaCreateCatalogDatabaseTables</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaCreateUserDir.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaCreateUserDir</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaDisableLlamaHa.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaDisableLlamaHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaDisableLlamaRm.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaDisableLlamaRm</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaEnableLlamaHa.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaEnableLlamaHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_impalaEnableLlamaRm.html">/clusters/{clusterName}/services/{serviceName}/commands/impalaEnableLlamaRm</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_importMrConfigsIntoYarn.html">/clusters/{clusterName}/services/{serviceName}/commands/importMrConfigsIntoYarn</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_initSolr.html">/clusters/{clusterName}/services/{serviceName}/commands/initSolr</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_installOozieShareLib.html">/clusters/{clusterName}/services/{serviceName}/commands/installOozieShareLib</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_oozieCreateEmbeddedDatabase.html">/clusters/{clusterName}/services/{serviceName}/commands/oozieCreateEmbeddedDatabase</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_oozieDisableHa.html">/clusters/{clusterName}/services/{serviceName}/commands/oozieDisableHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_oozieEnableHa.html">/clusters/{clusterName}/services/{serviceName}/commands/oozieEnableHa</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_oozieUpgradeDb.html">/clusters/{clusterName}/services/{serviceName}/commands/oozieUpgradeDb</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_recommission.html">/clusters/{clusterName}/services/{serviceName}/commands/recommission</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_restart.html">/clusters/{clusterName}/services/{serviceName}/commands/restart</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_rollingRestart.html">/clusters/{clusterName}/services/{serviceName}/commands/rollingRestart</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_sentryCreateDatabase.html">/clusters/{clusterName}/services/{serviceName}/commands/sentryCreateDatabase</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_sentryCreateDatabaseTables.html">/clusters/{clusterName}/services/{serviceName}/commands/sentryCreateDatabaseTables</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_sentryUpgradeDatabaseTables.html">/clusters/{clusterName}/services/{serviceName}/commands/sentryUpgradeDatabaseTables</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_sqoopCreateDatabaseTables.html">/clusters/{clusterName}/services/{serviceName}/commands/sqoopCreateDatabaseTables</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_sqoopUpgradeDb.html">/clusters/{clusterName}/services/{serviceName}/commands/sqoopUpgradeDb</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_start.html">/clusters/{clusterName}/services/{serviceName}/commands/start</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_stop.html">/clusters/{clusterName}/services/{serviceName}/commands/stop</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_switchToMr2.html">/clusters/{clusterName}/services/{serviceName}/commands/switchToMr2</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_yarnApplicationDiagnosticsCollection.html">/clusters/{clusterName}/services/{serviceName}/commands/yarnApplicationDiagnosticsCollection</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_yarnCreateJobHistoryDirCommand.html">/clusters/{clusterName}/services/{serviceName}/commands/yarnCreateJobHistoryDirCommand</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_yarnFormatStateStore.html">/clusters/{clusterName}/services/{serviceName}/commands/yarnFormatStateStore</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_yarnNodeManagerRemoteAppLogDirCommand.html">/clusters/{clusterName}/services/{serviceName}/commands/yarnNodeManagerRemoteAppLogDirCommand</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_zooKeeperCleanup.html">/clusters/{clusterName}/services/{serviceName}/commands/zooKeeperCleanup</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commands_zooKeeperInit.html">/clusters/{clusterName}/services/{serviceName}/commands/zooKeeperInit</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_commandsByName.html">/clusters/{clusterName}/services/{serviceName}/commandsByName</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_config.html">/clusters/{clusterName}/services/{serviceName}/config</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_impalaQueries.html">/clusters/{clusterName}/services/{serviceName}/impalaQueries</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_impalaQueries_-queryId-.html">/clusters/{clusterName}/services/{serviceName}/impalaQueries/{queryId}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_impalaQueries_-queryId-_cancel.html">/clusters/{clusterName}/services/{serviceName}/impalaQueries/{queryId}/cancel</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_metrics.html">/clusters/{clusterName}/services/{serviceName}/metrics</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_nameservices.html">/clusters/{clusterName}/services/{serviceName}/nameservices</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_nameservices_-nameservice-.html">/clusters/{clusterName}/services/{serviceName}/nameservices/{nameservice}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_nameservices_-nameservice-_metrics.html">/clusters/{clusterName}/services/{serviceName}/nameservices/{nameservice}/metrics</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_replications.html">/clusters/{clusterName}/services/{serviceName}/replications</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_replications_-scheduleId-.html">/clusters/{clusterName}/services/{serviceName}/replications/{scheduleId}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_replications_-scheduleId-_history.html">/clusters/{clusterName}/services/{serviceName}/replications/{scheduleId}/history</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_replications_-scheduleId-_run.html">/clusters/{clusterName}/services/{serviceName}/replications/{scheduleId}/run</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_reports_hdfsUsageReport.html">/clusters/{clusterName}/services/{serviceName}/reports/hdfsUsageReport</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_reports_mrUsageReport.html">/clusters/{clusterName}/services/{serviceName}/reports/mrUsageReport</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_-commandName-.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/{commandName}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hdfsBootstrapStandBy.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsBootstrapStandBy</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hdfsEnterSafemode.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsEnterSafemode</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hdfsFinalizeMetadataUpgrade.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsFinalizeMetadataUpgrade</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hdfsFormat.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsFormat</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hdfsInitializeAutoFailover.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsInitializeAutoFailover</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hdfsInitializeSharedDir.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsInitializeSharedDir</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hdfsLeaveSafemode.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsLeaveSafemode</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hdfsSaveNamespace.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hdfsSaveNamespace</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_hueSyncDb.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/hueSyncDb</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_jmapDump.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/jmapDump</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_jmapHisto.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/jmapHisto</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_jstack.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/jstack</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_lsof.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/lsof</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_refresh.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/refresh</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_restart.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/restart</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_start.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/start</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_stop.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/stop</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_zooKeeperCleanup.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/zooKeeperCleanup</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleCommands_zooKeeperInit.html">/clusters/{clusterName}/services/{serviceName}/roleCommands/zooKeeperInit</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleConfigGroups.html">/clusters/{clusterName}/services/{serviceName}/roleConfigGroups</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleConfigGroups_-roleConfigGroupName-.html">/clusters/{clusterName}/services/{serviceName}/roleConfigGroups/{roleConfigGroupName}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleConfigGroups_-roleConfigGroupName-_config.html">/clusters/{clusterName}/services/{serviceName}/roleConfigGroups/{roleConfigGroupName}/config</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleConfigGroups_-roleConfigGroupName-_roles.html">/clusters/{clusterName}/services/{serviceName}/roleConfigGroups/{roleConfigGroupName}/roles</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleConfigGroups_roles.html">/clusters/{clusterName}/services/{serviceName}/roleConfigGroups/roles</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles.html">/clusters/{clusterName}/services/{serviceName}/roles</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_commands.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/commands</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_commands_enterMaintenanceMode.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/commands/enterMaintenanceMode</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_commands_exitMaintenanceMode.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/commands/exitMaintenanceMode</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_config.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/config</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_logs_full.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/logs/full</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_logs_stderr.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/logs/stderr</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_logs_stdout.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/logs/stdout</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_metrics.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/metrics</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_process.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/process</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roles_-roleName-_process_configFiles_-configFileName -.html">/clusters/{clusterName}/services/{serviceName}/roles/{roleName}/process/configFiles/{configFileName }</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_roleTypes.html">/clusters/{clusterName}/services/{serviceName}/roleTypes</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_snapshots_policies.html">/clusters/{clusterName}/services/{serviceName}/snapshots/policies</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_snapshots_policies_-policyName-.html">/clusters/{clusterName}/services/{serviceName}/snapshots/policies/{policyName}</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_snapshots_policies_-policyName-_history.html">/clusters/{clusterName}/services/{serviceName}/snapshots/policies/{policyName}/history</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_yarnApplications.html">/clusters/{clusterName}/services/{serviceName}/yarnApplications</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_yarnApplications_-applicationId-_kill.html">/clusters/{clusterName}/services/{serviceName}/yarnApplications/{applicationId}/kill</a></li>
+                <li><a href="path__clusters_-clusterName-_services_-serviceName-_yarnApplications_attributes.html">/clusters/{clusterName}/services/{serviceName}/yarnApplications/attributes</a></li>
+                <li><a href="path__clusters_-clusterName-_serviceTypes.html">/clusters/{clusterName}/serviceTypes</a></li>
+                <li><a href="path__cm_allHosts_config.html">/cm/allHosts/config</a></li>
+                <li><a href="path__cm_commands.html">/cm/commands</a></li>
+                <li><a href="path__cm_commands_collectDiagnosticData.html">/cm/commands/collectDiagnosticData</a></li>
+                <li><a href="path__cm_commands_generateCredentials.html">/cm/commands/generateCredentials</a></li>
+                <li><a href="path__cm_commands_hostInstall.html">/cm/commands/hostInstall</a></li>
+                <li><a href="path__cm_commands_hostsDecommission.html">/cm/commands/hostsDecommission</a></li>
+                <li><a href="path__cm_commands_hostsRecommission.html">/cm/commands/hostsRecommission</a></li>
+                <li><a href="path__cm_commands_hostsStartRoles.html">/cm/commands/hostsStartRoles</a></li>
+                <li><a href="path__cm_commands_importAdminCredentials.html">/cm/commands/importAdminCredentials</a></li>
+                <li><a href="path__cm_commands_importKerberosPrincipal.html">/cm/commands/importKerberosPrincipal</a></li>
+                <li><a href="path__cm_commands_inspectHosts.html">/cm/commands/inspectHosts</a></li>
+                <li><a href="path__cm_config.html">/cm/config</a></li>
+                <li><a href="path__cm_deployment.html">/cm/deployment</a></li>
+                <li><a href="path__cm_kerberosPrincipals.html">/cm/kerberosPrincipals</a></li>
+                <li><a href="path__cm_license.html">/cm/license</a></li>
+                <li><a href="path__cm_licensedFeatureUsage.html">/cm/licensedFeatureUsage</a></li>
+                <li><a href="path__cm_log.html">/cm/log</a></li>
+                <li><a href="path__cm_peers.html">/cm/peers</a></li>
+                <li><a href="path__cm_peers_-peerName-.html">/cm/peers/{peerName}</a></li>
+                <li><a href="path__cm_peers_-peerName-_commands_test.html">/cm/peers/{peerName}/commands/test</a></li>
+                <li><a href="path__cm_service.html">/cm/service</a></li>
+                <li><a href="path__cm_service_autoAssignRoles.html">/cm/service/autoAssignRoles</a></li>
+                <li><a href="path__cm_service_autoConfigure.html">/cm/service/autoConfigure</a></li>
+                <li><a href="path__cm_service_commands.html">/cm/service/commands</a></li>
+                <li><a href="path__cm_service_commands_restart.html">/cm/service/commands/restart</a></li>
+                <li><a href="path__cm_service_commands_start.html">/cm/service/commands/start</a></li>
+                <li><a href="path__cm_service_commands_stop.html">/cm/service/commands/stop</a></li>
+                <li><a href="path__cm_service_config.html">/cm/service/config</a></li>
+                <li><a href="path__cm_service_roleCommands_jmapDump.html">/cm/service/roleCommands/jmapDump</a></li>
+                <li><a href="path__cm_service_roleCommands_jmapHisto.html">/cm/service/roleCommands/jmapHisto</a></li>
+                <li><a href="path__cm_service_roleCommands_jstack.html">/cm/service/roleCommands/jstack</a></li>
+                <li><a href="path__cm_service_roleCommands_lsof.html">/cm/service/roleCommands/lsof</a></li>
+                <li><a href="path__cm_service_roleCommands_restart.html">/cm/service/roleCommands/restart</a></li>
+                <li><a href="path__cm_service_roleCommands_start.html">/cm/service/roleCommands/start</a></li>
+                <li><a href="path__cm_service_roleCommands_stop.html">/cm/service/roleCommands/stop</a></li>
+                <li><a href="path__cm_service_roleConfigGroups.html">/cm/service/roleConfigGroups</a></li>
+                <li><a href="path__cm_service_roleConfigGroups_-roleConfigGroupName-.html">/cm/service/roleConfigGroups/{roleConfigGroupName}</a></li>
+                <li><a href="path__cm_service_roleConfigGroups_-roleConfigGroupName-_config.html">/cm/service/roleConfigGroups/{roleConfigGroupName}/config</a></li>
+                <li><a href="path__cm_service_roleConfigGroups_-roleConfigGroupName-_roles.html">/cm/service/roleConfigGroups/{roleConfigGroupName}/roles</a></li>
+                <li><a href="path__cm_service_roles.html">/cm/service/roles</a></li>
+                <li><a href="path__cm_service_roles_-roleName-.html">/cm/service/roles/{roleName}</a></li>
+                <li><a href="path__cm_service_roles_-roleName-_commands.html">/cm/service/roles/{roleName}/commands</a></li>
+                <li><a href="path__cm_service_roles_-roleName-_config.html">/cm/service/roles/{roleName}/config</a></li>
+                <li><a href="path__cm_service_roles_-roleName-_logs_full.html">/cm/service/roles/{roleName}/logs/full</a></li>
+                <li><a href="path__cm_service_roles_-roleName-_logs_stacks.html">/cm/service/roles/{roleName}/logs/stacks</a></li>
+                <li><a href="path__cm_service_roles_-roleName-_logs_stacksBundle.html">/cm/service/roles/{roleName}/logs/stacksBundle</a></li>
+                <li><a href="path__cm_service_roles_-roleName-_logs_stderr.html">/cm/service/roles/{roleName}/logs/stderr</a></li>
+                <li><a href="path__cm_service_roles_-roleName-_logs_stdout.html">/cm/service/roles/{roleName}/logs/stdout</a></li>
+                <li><a href="path__cm_service_roleTypes.html">/cm/service/roleTypes</a></li>
+                <li><a href="path__cm_trial_begin.html">/cm/trial/begin</a></li>
+                <li><a href="path__cm_trial_end.html">/cm/trial/end</a></li>
+                <li><a href="path__cm_version.html">/cm/version</a></li>
+                <li><a href="path__commands_-commandId-.html">/commands/{commandId}</a></li>
+                <li><a href="path__commands_-commandId-_abort.html">/commands/{commandId}/abort</a></li>
+                <li><a href="path__events.html">/events</a></li>
+                <li><a href="path__events_-eventId-.html">/events/{eventId}</a></li>
+                <li><a href="path__hosts.html">/hosts</a></li>
+                <li><a href="path__hosts_-hostId-.html">/hosts/{hostId}</a></li>
+                <li><a href="path__hosts_-hostId-_commands_enterMaintenanceMode.html">/hosts/{hostId}/commands/enterMaintenanceMode</a></li>
+                <li><a href="path__hosts_-hostId-_commands_exitMaintenanceMode.html">/hosts/{hostId}/commands/exitMaintenanceMode</a></li>
+                <li><a href="path__hosts_-hostId-_commands_migrateRoles.html">/hosts/{hostId}/commands/migrateRoles</a></li>
+                <li><a href="path__hosts_-hostId-_config.html">/hosts/{hostId}/config</a></li>
+                <li><a href="path__hosts_-hostId-_metrics.html">/hosts/{hostId}/metrics</a></li>
+                <li><a href="path__timeseries.html">/timeseries</a></li>
+                <li><a href="path__timeseries_dashboards.html">/timeseries/dashboards</a></li>
+                <li><a href="path__timeseries_dashboards_-dashboardName-.html">/timeseries/dashboards/{dashboardName}</a></li>
+                <li><a href="path__timeseries_schema.html">/timeseries/schema</a></li>
+                <li><a href="path__tools_echo.html">/tools/echo</a></li>
+                <li><a href="path__tools_echoError.html">/tools/echoError</a></li>
+                <li><a href="path__users.html">/users</a></li>
+                <li><a href="path__users_-userName-.html">/users/{userName}</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div id="main" class="column first last span-20">
+      <h1>/users/{userName}</h1>
+      <p class="note">Mount Point: <a href="../../api/v10/users/{userName}">/api/v10/users/{userName}</a></p>
+      <p>
+        The following operations are supported on this resource:
+      </p>
+      <ul>
+        <li><a href="#DELETE">DELETE</a></li>
+        <li><a href="#GET">GET</a></li>
+        <li><a href="#PUT">PUT</a></li>
+      </ul>
+      <a name="DELETE"></a>
+      <h2>DELETE</h2>
+      <p>
+            Deletes a user from the system.
+<p/>
+          </p>
+      <h3>Parameters</h3>
+      <table>
+        <tr>
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default</th>
+        </tr>
+        <tr>
+          <td>userName</td>
+          <td>
+            The name of the user to delete.
+          </td>
+          <td>path</td>
+          <td></td>
+        </tr>
+      </table>
+      <h3>Response Body</h3>
+      <table>
+        <tr>
+          <td align="right">element:</td>
+          <td><a href="el_ns0_user.html">user</a></td>
+        </tr>
+      </table>
+      <p>The details of the deleted user.</p>
+      <a name="GET"></a>
+      <h2>GET</h2>
+      <p>
+            Returns detailed information about a user.
+          </p>
+      <h3>Parameters</h3>
+      <table>
+        <tr>
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default</th>
+        </tr>
+        <tr>
+          <td>userName</td>
+          <td>
+            The user to read.
+          </td>
+          <td>path</td>
+          <td></td>
+        </tr>
+      </table>
+      <h3>Response Body</h3>
+      <table>
+        <tr>
+          <td align="right">element:</td>
+          <td><a href="el_ns0_user.html">user</a></td>
+        </tr>
+      </table>
+      <p>The user's information.</p>
+      <a name="PUT"></a>
+      <h2>PUT</h2>
+      <p>
+            Updates the given user's information. Note that the user's name cannot
+be changed.
+          </p>
+      <h3>Parameters</h3>
+      <table>
+        <tr>
+          <th>name</th>
+          <th>description</th>
+          <th>type</th>
+          <th>default</th>
+        </tr>
+        <tr>
+          <td>userName</td>
+          <td>
+            User name being updated.
+          </td>
+          <td>path</td>
+          <td></td>
+        </tr>
+      </table>
+      <h3>Request Body</h3>
+      <table>
+        <tr>
+          <td align="right">element:</td>
+          <td><a href="el_ns0_user.html">user</a></td>
+        </tr>
+      </table>
+      <p>The user information.</p>
+      <h3>Response Body</h3>
+      <table>
+        <tr>
+          <td align="right">element:</td>
+          <td><a href="el_ns0_user.html">user</a></td>
+        </tr>
+      </table>
+      <p>(no documentation provided)</p>
+
+      <div class="clear"></div>
+    </div>
+    <footer>
+      <div id="footer">
+        Copyright &copy; <script type="text/javascript">d = new Date;document.write(d.getFullYear());</script> <span>Cloudera, Inc. All rights reserved.</span><br/>
+        Generated by <a href="http://enunciate.codehaus.org">Enunciate</a>.
+      </div>
+    </footer>
+  </div> <!--! end of #container -->
+
+  <!-- JavaScript at the bottom for fast page loading -->
+
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
+  <script>window.jQuery || document.write("<script src='js/libs/jquery-1.5.1.min.js'>\x3C/script>")</script>
+
+  <!--manage the navigation menu-->
+  <script src="js/libs/xbreadcrumbs.js"></script>
+  <script>
+    $(function() {
+      $('#breadcrumbs').xBreadcrumbs();
+    });
+  </script>
+
+  <!--[if lt IE 7 ]>
+    <script src="js/libs/dd_belatedpng.js"></script>
+    <script>DD_belatedPNG.fix("img, .png_bg"); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
+  <![endif]-->
+
+</body>
+</html>
