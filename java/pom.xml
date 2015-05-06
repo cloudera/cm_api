@@ -21,7 +21,7 @@
   <distributionManagement>
     <repository>
       <id>cdh.releases.repo</id>
-      <url>http://maven.jenkins.cloudera.com:8081/artifactory/cdh-staging-local</url>
+      <url>http://maven.jenkins.cloudera.com:8081/artifactory/libs-release-local</url>
       <name>CDH Releases Repository</name>
     </repository>
     <snapshotRepository>
