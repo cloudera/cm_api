@@ -95,6 +95,7 @@ class ApiService(BaseApiResource):
     'serviceUrl'                  : ROAttr(),
     'maintenanceMode'             : ROAttr(),
     'maintenanceOwners'           : ROAttr(),
+    'entityStatus'                : ROAttr(),
   }
 
   def __init__(self, resource_root, name=None, type=None):

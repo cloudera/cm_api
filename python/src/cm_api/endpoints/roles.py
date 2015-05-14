@@ -122,6 +122,7 @@ class ApiRole(BaseApiResource):
     'maintenanceOwners'     : ROAttr(),
     'roleConfigGroupRef'    : ROAttr(ApiRoleConfigGroupRef),
     'zooKeeperServerMode'   : ROAttr(),
+    'entityStatus'          : ROAttr(),
   }
 
   def __init__(self, resource_root, name=None, type=None, hostRef=None):
