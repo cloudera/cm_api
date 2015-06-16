@@ -82,6 +82,7 @@ class ApiCluster(BaseApiResource):
     'fullVersion'       : None,
     'maintenanceMode'   : ROAttr(),
     'maintenanceOwners' : ROAttr(),
+    'entityStatus'      : ROAttr(),
   }
 
   def __init__(self, resource_root, name=None, version=None, fullVersion=None):
