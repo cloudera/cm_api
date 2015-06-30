@@ -80,6 +80,7 @@ class ApiCluster(BaseApiResource):
     'clusterUrl'        : None,
     'version'           : None,
     'fullVersion'       : None,
+    'hostsUrl'          : ROAttr(),
     'maintenanceMode'   : ROAttr(),
     'maintenanceOwners' : ROAttr(),
     'entityStatus'      : ROAttr(),
@@ -528,7 +529,7 @@ class ApiCluster(BaseApiResource):
 
     If using packages, CDH packages on all hosts of the cluster must be
     manually upgraded before this command is issued.
- 
+
     The command will upgrade the services and their configuration to the
     requested version. All running services will be stopped before proceeding,
     unless rolling restart is requested and is available.

@@ -93,6 +93,7 @@ class ApiService(BaseApiResource):
     'configStalenessStatus'       : ROAttr(),
     'clientConfigStalenessStatus' : ROAttr(),
     'serviceUrl'                  : ROAttr(),
+    'roleInstancesUrl'            : ROAttr(),
     'maintenanceMode'             : ROAttr(),
     'maintenanceOwners'           : ROAttr(),
     'entityStatus'                : ROAttr(),
