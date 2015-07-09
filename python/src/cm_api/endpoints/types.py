@@ -977,15 +977,16 @@ class ApiBatchResponseList(ApiList):
 
 class ApiConfig(BaseApiObject):
   _ATTRIBUTES = {
-    'name'              : None,
-    'value'             : None,
-    'required'          : ROAttr(),
-    'default'           : ROAttr(),
-    'displayName'       : ROAttr(),
-    'description'       : ROAttr(),
-    'relatedName'       : ROAttr(),
-    'validationState'   : ROAttr(),
-    'validationMessage' : ROAttr(),
+    'name'                         : None,
+    'value'                        : None,
+    'required'                     : ROAttr(),
+    'default'                      : ROAttr(),
+    'displayName'                  : ROAttr(),
+    'description'                  : ROAttr(),
+    'relatedName'                  : ROAttr(),
+    'validationState'              : ROAttr(),
+    'validationMessage'            : ROAttr(),
+    'validationWarningsSuppressed' : ROAttr()
   }
 
   def __init__(self, resource_root, name=None, value=None):

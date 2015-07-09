@@ -83,7 +83,8 @@ class TestCMS(unittest.TestCase):
           "default" : "false",
           "displayName" : "Enable Resource Management",
           "description" : "Enables resource management for all roles on this host.",
-          "validationState" : "OK"
+          "validationState" : "OK",
+          "validationWarningsSuppressed" : false
         } ]
       }
       """
