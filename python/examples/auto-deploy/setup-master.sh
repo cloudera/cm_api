@@ -34,7 +34,7 @@ sudo mv cloudera-manager.repo /etc/yum.repos.d/
 sudo service iptables stop
 
 # Turn off SELINUX
-sudo echo 0 >/selinux/enforce
+echo 0 | sudo tee /selinux/enforce > /dev/null
 
 # Set up NTP
 sudo yum -y install ntp
@@ -53,8 +53,8 @@ tar zxf hive-0.12.0-cdh5.0.0.tar.gz
 sudo yum -y install mysql-server expect
 sudo service mysqld start
 sudo /sbin/chkconfig mysqld on
-sudo /bin/echo -e "\nY\n${hive_metastore_password}\n${hive_metastore_password}\nY\nn\nY\nY\n" > /tmp/answers
-sudo /usr/bin/mysql_secure_installation < /tmp/answers
+/bin/echo -e "\nY\n${hive_metastore_password}\n${hive_metastore_password}\nY\nn\nY\nY\n" | sudo tee /tmp/answers > /dev/null
+sudo cat /tmp/answers | sudo /usr/bin/mysql_secure_installation
 sudo rm /tmp/answers
 mysql -uroot -p"${hive_metastore_password}" --execute="CREATE DATABASE metastore; USE metastore; SOURCE ./hive-0.12.0-cdh5.0.0/scripts/metastore/upgrade/mysql/hive-schema-0.12.0.mysql.sql;"
 mysql -uroot -p"${hive_metastore_password}" --execute="CREATE USER 'hive'@'${hive_metastore_host}' IDENTIFIED BY '${hive_metastore_password}';"

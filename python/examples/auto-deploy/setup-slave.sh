@@ -32,7 +32,7 @@ sudo mv cloudera-manager.repo /etc/yum.repos.d/
 sudo service iptables stop
 
 # Turn off SELINUX
-sudo echo 0 >/selinux/enforce
+echo 0 | tee /selinux/enforce > /dev/null
 
 #Set up NTP
 sudo yum -y install ntp
