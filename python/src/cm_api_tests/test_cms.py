@@ -40,7 +40,8 @@ def _make_cm_v11_format_peer(name, url, peer_type):
     {
       "name": "%s",
       "type": "%s",
-      "url": "%s"
+      "url": "%s",
+      "clouderaManagerCreatedUser" : true
     }
     """
   return peer_json % (name, peer_type, url)

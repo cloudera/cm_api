@@ -660,6 +660,7 @@ class ApiCmPeer(BaseApiObject):
       'username'  : None,
       'password'  : None,
       'type'      : None,
+      'clouderaManagerCreatedUser' : None,
     }
 
   def __str__(self):
