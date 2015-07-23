@@ -501,6 +501,7 @@ class ApiCommand(BaseApiObject):
         'children'      : ROAttr(ApiCommand, is_api_list=True),
         'parent'        : ROAttr(ApiCommand),
         'resultDataUrl' : ROAttr(),
+        'canRetry'      : ROAttr(),
       }
     return cls._ATTRIBUTES
 
@@ -567,6 +568,17 @@ class ApiCommand(BaseApiObject):
       return self
 
     path = self._path() + '/abort'
+    resp = self._get_resource_root().post(path)
+    return ApiCommand.from_json_dict(resp, self._get_resource_root())
+
+  def retry(self):
+    """
+    Retry a failed or aborted command.
+    Note: The retry will only work for ClusterUpgrade command for now.
+
+    @return: A new ApiCommand object with the updated information.
+    """
+    path = self._path() + '/retry'
     resp = self._get_resource_root().post(path)
     return ApiCommand.from_json_dict(resp, self._get_resource_root())
 

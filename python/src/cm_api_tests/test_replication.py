@@ -163,6 +163,7 @@ class TestReplicationTypes(unittest.TestCase):
         "endTime" : "2013-01-15T18:30:49.446Z",
         "active" : false,
         "success" : true,
+        "canRetry" : false,
         "resultMessage" : "Hive Replication Finished Successfully.",
         "resultDataUrl" : "/cmf/command/738/download",
         "serviceRef" : {
