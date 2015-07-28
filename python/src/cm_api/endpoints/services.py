@@ -237,7 +237,7 @@ class ApiService(BaseApiResource):
     @since API v6
     """
     return self._get("impalaQueries/attributes", ApiImpalaQueryAttribute,
-        api_version=6)
+        ret_is_list=True, api_version=6)
 
   def create_impala_catalog_database(self):
     """
@@ -448,7 +448,7 @@ class ApiService(BaseApiResource):
     @since API v6
     """
     return self._get("yarnApplications/attributes", ApiYarnApplicationAttribute,
-        api_version=6)
+        ret_is_list=True, api_version=6)
 
   def create_yarn_job_history_dir(self):
     """

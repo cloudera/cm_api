@@ -56,17 +56,41 @@ class TestImpala(unittest.TestCase):
     self.assertEquals('test', resp.warning)
 
   def test_attributes(self):
+    IMPALA_QUERY_ATTRS = '''{
+      "items": [
+        {
+          "name": "query_type",
+          "type": "STRING",
+          "displayName": "Query Type",
+          "supportsHistograms": true,
+          "description": "The type of the query's SQL statement (DML, DDL, Query). Called 'query_type' in searches."
+        },
+        {
+          "name": "query_state",
+          "type": "STRING",
+          "displayName": "Query State",
+          "supportsHistograms": true,
+          "description": "The current state of the query (running, finished, and so on). Called 'query_state' in searches."
+        },
+        {
+          "name": "query_duration",
+          "type": "MILLISECONDS",
+          "displayName": "Duration",
+          "supportsHistograms": true,
+          "description": "The duration of the query in milliseconds. Called 'query_duration' in searches."
+        }]
+    }'''
+
     resource = utils.MockResource(self)
     service = ApiService(resource, name="bar")
 
     resource.expect("GET", "/cm/service/impalaQueries/attributes",
-        retdata=[{ 'name' : 'test',
-                  'type' : 'STRING',
-                  'displayName' : 'testDisplayName',
-                  'supportsHistograms' : True,
-                  'description' : 'testDescription' }])
+                    retdata=json.loads(IMPALA_QUERY_ATTRS))
     resp = service.get_impala_query_attributes()
-    self.assertEquals(1, len(resp))
+    self.assertEquals(3, len(resp))
     attr = resp[0]
     self.assertIsInstance(attr, ApiImpalaQueryAttribute)
-    self.assertEquals('test', attr.name)
+    self.assertEquals('query_type', attr.name)
+    self.assertEquals(True, attr.supportsHistograms)
+
+
