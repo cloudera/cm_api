@@ -156,6 +156,7 @@ class TestReplicationTypes(unittest.TestCase):
       "intervalUnit" : "DAY",
       "paused" : false,
       "nextRun" : "2013-01-15T23:11:31.041Z",
+      "active" : true,
       "history" : [ {
         "id" : 738,
         "name" : "HiveReplicationCommand",
