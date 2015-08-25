@@ -725,6 +725,7 @@ class ApiHdfsReplicationResult(BaseApiObject):
     'jobDetailsUri'       : ROAttr(),
     'dryRun'              : ROAttr(),
     'snapshottedDirs'     : ROAttr(),
+    'failedFiles'         : ROAttr(),
   }
 
 class ApiHiveTable(BaseApiObject):

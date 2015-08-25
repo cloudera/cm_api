@@ -194,7 +194,8 @@ class TestReplicationTypes(unittest.TestCase):
             "numFilesDeleted" : 0,
             "numFilesCopyFailed" : 0,
             "numBytesCopyFailed" : 0,
-            "dryRun" : false
+            "dryRun" : false,
+            "failedFiles": [ ]
           },
           "dryRun" : false
         }
