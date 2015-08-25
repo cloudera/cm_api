@@ -28,9 +28,13 @@ else:
 if version_info[:2] < (2, 7):
     install_requires += ['argparse']
 
-# Mac does not come default with readline, this is needed for autocomplete
-# in the cmps shell
+# Mac's system Python does not come default with readline, which is needed for
+# autocomplete in the cmps shell. Because many distributions of Python do, we
+# first check if it's importable
 if platform == 'darwin':
+  try:
+    import readline
+  except ImportError:
     install_requires += ['readline']
 
 # Optional PySocks support
