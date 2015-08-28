@@ -134,7 +134,8 @@ class TestReplicationTypes(unittest.TestCase):
       "dataReplicationResult" : {
         "progress" : 50
       },
-      "dryRun" : false
+      "dryRun" : false,
+      "runAsUser" : "systest"
     }'''
     res = utils.deserialize(RAW, ApiHiveReplicationResult)
     self.assertEquals('EXPORT', res.phase)
@@ -153,6 +154,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEquals('message', res.errors[0]['error'])
     self.assertEquals(50, res.dataReplicationResult.progress)
     self.assertFalse(res.dryRun)
+    self.assertEquals(res.runAsUser, 'systest')
 
   def test_schedule(self):
     RAW = '''{
@@ -203,7 +205,8 @@ class TestReplicationTypes(unittest.TestCase):
             "dryRun" : false,
             "failedFiles": [ ]
           },
-          "dryRun" : false
+          "dryRun" : false,
+          "runAsUser" : "systest"
         }
       } ],
       "alertOnStart" : false,

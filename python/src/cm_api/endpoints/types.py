@@ -729,6 +729,7 @@ class ApiHdfsReplicationResult(BaseApiObject):
     'dryRun'              : ROAttr(),
     'snapshottedDirs'     : ROAttr(),
     'failedFiles'         : ROAttr(),
+    'runAsUser'           : ROAttr(),
   }
 
 class ApiHiveTable(BaseApiObject):
@@ -771,6 +772,7 @@ class ApiHiveReplicationResult(BaseApiObject):
     'errors'                : ROAttr(),
     'dataReplicationResult' : ROAttr(ApiHdfsReplicationResult),
     'dryRun'                : ROAttr(),
+    'runAsUser'             : ROAttr(),
     'phase'                 : ROAttr(),
   }
 
