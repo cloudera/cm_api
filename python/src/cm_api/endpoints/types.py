@@ -693,6 +693,8 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'userName'                  : None,
     'numMaps'                   : None,
     'dryRun'                    : None,
+    'bandwidthPerMap'           : None,
+    'logPath'                   : None,
     'schedulerPoolName'         : None,
     'abortOnError'              : None,
     'preservePermissions'       : None,
@@ -703,6 +705,7 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'skipTrash'                 : None,
     'replicationStrategy'       : None,
     'preserveXAttrs'            : None,
+    'exclusionFilters'          : None,
   }
 
 class ApiHdfsReplicationResult(BaseApiObject):

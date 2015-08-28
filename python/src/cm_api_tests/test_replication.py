@@ -48,7 +48,10 @@ class TestReplicationTypes(unittest.TestCase):
       "preservePermissions" : false,
       "skipTrash" : false,
       "replicationStrategy" : "DYNAMIC",
-      "preserveXAttrs" : false
+      "logPath" : "/tmp",
+      "bandwidthPerMap" : "20",
+      "preserveXAttrs" : false,
+      "exclusionFilters" : ["ac"]
     }'''
     args = utils.deserialize(RAW, ApiHdfsReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
@@ -87,7 +90,10 @@ class TestReplicationTypes(unittest.TestCase):
         "preserveBlockSize" : false,
         "preservePermissions" : false,
         "skipTrash" : false,
-        "preserveXAttrs" : false
+        "logPath" : "/tmp",
+        "bandwidthPerMap" : "20",
+        "preserveXAttrs" : false,
+        "exclusionFilters" : ["ac"]
       },
       "tableFilters" : [
         { "database" : "db1", "tableName" : "table1" }
