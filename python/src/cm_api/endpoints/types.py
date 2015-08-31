@@ -934,6 +934,7 @@ class ApiSnapshotPolicy(BaseApiObject):
   @ivar alert_on_success: whether to generate alerts on successful completion of snapshot creation/deletion activity.
   @ivar alert_on_fail: whether to generate alerts on failure of snapshot creation/deletion activity.
   @ivar alert_on_abort: whether to generate alerts on abort of snapshot creation/deletion activity.
+  @ivar paused: whether to run the policy on schedule
   @type hbaseArguments: ApiHBaseSnapshotPolicyArguments
   @ivar hbaseArguments: HBase specific arguments for the replication job.
   @type hdfsArguments: ApiHdfsSnapshotPolicyArguments
@@ -957,6 +958,7 @@ class ApiSnapshotPolicy(BaseApiObject):
     'alertOnSuccess'          : None,
     'alertOnFail'             : None,
     'alertOnAbort'            : None,
+    'paused'                  : None,
     'hbaseArguments'          : Attr(ApiHBaseSnapshotPolicyArguments),
     'hdfsArguments'           : Attr(ApiHdfsSnapshotPolicyArguments),
     'lastCommand'             : ROAttr(ApiSnapshotCommand),

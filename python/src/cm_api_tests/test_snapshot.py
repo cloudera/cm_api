@@ -244,6 +244,7 @@ class TestSnapshotRequests(unittest.TestCase):
     self._test_policy(return_policy, service.get_snapshot_policy("sn1"))
 
     return_policy.dayOfWeek=5
+    return_policy.paused=True
     self.resource.expect("PUT",
         "/clusters/cluster1/services/hdfs1/snapshots/policies/sn1",
         data=return_policy,
@@ -264,4 +265,5 @@ class TestSnapshotRequests(unittest.TestCase):
     self.assertEqual(exp_policy.hdfsArguments.pathPatterns, policy.hdfsArguments.pathPatterns)
     self.assertEqual(exp_policy.weeklySnapshots, policy.weeklySnapshots)
     self.assertEqual(exp_policy.dayOfWeek, policy.dayOfWeek)
+    self.assertEqual(exp_policy.paused, policy.paused)
 
