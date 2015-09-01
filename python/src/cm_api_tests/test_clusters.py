@@ -79,6 +79,19 @@ class TestCluster(unittest.TestCase):
       retdata={'name' : 'bar'})
     newCluster.restart(False, True);
 
+    resource = utils.MockResource(self, version=11)
+    newCluster = ApiCluster(resource, name="bar")
+    data = dict()
+    data['restartOnlyStaleServices'] = False
+    data['redeployClientConfiguration'] = True
+    data['restartServiceNames'] = ["A", "B"]
+    resource.expect(
+      method="POST",
+      reqpath="/clusters/bar/commands/restart",
+      data=data,
+      retdata={'name' : 'bar'})
+    newCluster.restart(False, True, ["A", "B"]);
+
   def test_configure_for_kerberos(self):
     resource = utils.MockResource(self)
     cluster = ApiCluster(resource, name="foo")
