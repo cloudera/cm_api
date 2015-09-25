@@ -106,13 +106,53 @@ class TestTimeSeries(unittest.TestCase):
     time = datetime.datetime.now()
     api_resource.expect("GET", "/timeseries",
                         retdata=json.loads(TIME_SERIES),
-                        params={ 'from':time.isoformat(), 'to':time.isoformat(),
+                        params={ 'from':time.isoformat(),
+                                 'to':time.isoformat(),
                                  'query':'select cpu_percent'})
     responses = query_timeseries(api_resource,
                                  "select cpu_percent",
                                  time,
                                  time)
+    self._verify_timeseries_response(responses)
 
+    # Test the with-rollups call
+    api_resource.expect("GET", "/timeseries",
+                        retdata=json.loads(TIME_SERIES),
+                        params={ 'from':time.isoformat(),
+                                 'to':time.isoformat(),
+                                 'query':'select cpu_percent',
+                                 'desiredRollup':'RAW',
+                                 'mustUseDesiredRollup': True})
+    responses = query_timeseries(api_resource,
+                                 "select cpu_percent",
+                                 time,
+                                 time,
+                                 "RAW",
+                                 True)
+    self._verify_timeseries_response(responses)
+
+    # Test query_timeseries_with_long_query_string
+    api_resource.expect("POST", "/timeseries",
+                        retdata=json.loads(TIME_SERIES),
+                        data={ 'query':'select cpu_percent'},
+                        params={ 'from':time.isoformat(),
+                                 'to':time.isoformat()})
+    responses = query_timeseries(
+      api_resource, "select cpu_percent", time, time, by_post=True)
+    self._verify_timeseries_response(responses)
+
+    api_resource.expect("POST", "/timeseries",
+                        retdata=json.loads(TIME_SERIES),
+                        data={ 'query':'select cpu_percent'},
+                        params={ 'from':time.isoformat(),
+                                 'to':time.isoformat(),
+                                 'desiredRollup':'RAW',
+                                 'mustUseDesiredRollup': True})
+    responses = query_timeseries(api_resource, "select cpu_percent",
+      time, time, "RAW", True, by_post=True)
+    self._verify_timeseries_response(responses)
+
+  def _verify_timeseries_response(self, responses):
     self.assertIsInstance(responses, ApiList)
     self.assertEqual(1, len(responses))
     response = responses[0]
@@ -153,21 +193,6 @@ class TestTimeSeries(unittest.TestCase):
     self.assertEqual(319, data.aggregateStatistics.sampleValue)
     xEntityMetadata = data.aggregateStatistics.crossEntityMetadata
     self.assertIsNone(xEntityMetadata)
-
-    # Test the with-rollups call
-    api_resource.expect("GET", "/timeseries",
-                        retdata=json.loads(TIME_SERIES),
-                        params={ 'from':time.isoformat(), 'to':time.isoformat(),
-                                 'query':'select cpu_percent',
-                                 'desiredRollup':'RAW',
-                                 'mustUseDesiredRollup': True})
-    responses = query_timeseries(api_resource,
-                                 "select cpu_percent",
-                                 time,
-                                 time,
-                                 "RAW",
-                                 True)
-
 
   def test_get_metric_schema(self):
     METRICS = '''{
