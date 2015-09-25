@@ -1127,6 +1127,19 @@ class ApiYarnApplicationAttribute(BaseApiObject):
   def __str__(self):
     return "<ApiYarnApplicationAttribute> %s" % name
 
+class ApiTimeSeriesRequest(BaseApiObject):
+  _ATTRIBUTES = {
+      'query'                : None,
+      'from'                 : None,
+      'to'                   : None,
+      'contentType'          : None,
+      'desiredRollup'        : None,
+      'mustUseDesiredRollup' : None
+    }
+
+  def __str__(self):
+    return "<ApiTimeSeriesRequest>: %s" % (self.query)
+
 def config_to_api_list(dic):
   """
   Converts a python dictionary into a list containing the proper

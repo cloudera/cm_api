@@ -26,7 +26,7 @@ METRIC_ENTITY_TYPE_PATH = "/timeseries/entityTypes"
 METRIC_ENTITY_ATTR_PATH = "/timeseries/entityTypeAttributes"
 
 def query_timeseries(resource_root, query, from_time=None, to_time=None,
-    desired_rollup=None, must_use_desired_rollup=None):
+    desired_rollup=None, must_use_desired_rollup=None, by_post=False):
   """
   Query for time series data from the CM time series data store.
   @param query: Query string.
@@ -47,11 +47,22 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None,
                          must_use_desired_rollup is set to true.
   @param must_use_desired_rollup: Indicates that the monitoring server should
                                   return the data at the rollup desired.
+  @param by_post: If true, an HTTP POST request will be made to server. This
+                  allows longer query string to be accepted compared to HTTP
+                  GET request.
   @return: List of ApiTimeSeriesResponse
   """
+  data = None
   params = {}
-  if query:
+  request_method = resource_root.get
+  if by_post:
+    request = ApiTimeSeriesRequest(resource_root,
+                                   query=query)
+    data = request
+    request_method = resource_root.post
+  elif query:
     params['query'] = query
+
   if from_time:
     params['from'] = from_time.isoformat()
   if to_time:
@@ -60,8 +71,8 @@ def query_timeseries(resource_root, query, from_time=None, to_time=None,
     params['desiredRollup'] = desired_rollup
   if must_use_desired_rollup:
     params['mustUseDesiredRollup'] = must_use_desired_rollup
-  return call(resource_root.get, TIME_SERIES_PATH,
-      ApiTimeSeriesResponse, True, params=params)
+  return call(request_method, TIME_SERIES_PATH,
+      ApiTimeSeriesResponse, True, params=params, data=data)
 
 def get_metric_schema(resource_root):
   """
