@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>cm_api.endpoints.roles</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="cm_api-module.html">Package&nbsp;cm_api</a> ::
+        <a href="cm_api.endpoints-module.html">Package&nbsp;endpoints</a> ::
+        Module&nbsp;roles
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="cm_api.endpoints.roles-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="cm_api.endpoints.roles-module.html">Module cm_api.endpoints.roles</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Licensed to Cloudera, Inc. under one</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># or more contributor license agreements.  See the NOTICE file</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># distributed with this work for additional information</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># regarding copyright ownership.  Cloudera, Inc. licenses this file</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># to you under the Apache License, Version 2.0 (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># "License"); you may not use this file except in compliance</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># with the License.  You may obtain a copy of the License at</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package cm_api=cm_api-module.html"><a title="cm_api" class="py-name" href="#" onclick="return doclink('link-0', 'cm_api', 'link-0');">cm_api</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package cm_api.endpoints=cm_api.endpoints-module.html"><a title="cm_api.endpoints" class="py-name" href="#" onclick="return doclink('link-1', 'endpoints', 'link-1');">endpoints</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module cm_api.endpoints.types=cm_api.endpoints.types-module.html"><a title="cm_api.endpoints.types" class="py-name" href="#" onclick="return doclink('link-2', 'types', 'link-2');">types</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"epytext"</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable cm_api.endpoints.roles.ROLES_PATH=cm_api.endpoints.roles-module.html#ROLES_PATH"><a title="cm_api.endpoints.roles.ROLES_PATH" class="py-name" href="#" onclick="return doclink('link-3', 'ROLES_PATH', 'link-3');">ROLES_PATH</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/clusters/%s/services/%s/roles"</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable cm_api.endpoints.roles.CM_ROLES_PATH=cm_api.endpoints.roles-module.html#CM_ROLES_PATH"><a title="cm_api.endpoints.roles.CM_ROLES_PATH" class="py-name" href="#" onclick="return doclink('link-4', 'CM_ROLES_PATH', 'link-4');">CM_ROLES_PATH</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/cm/service/roles"</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="_get_roles_path"></a><div id="_get_roles_path-def"><a name="L24"></a><tt class="py-lineno"> 24</tt> <a class="py-toggle" href="#" id="_get_roles_path-toggle" onclick="return toggle('_get_roles_path');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles-module.html#_get_roles_path">_get_roles_path</a><tt class="py-op">(</tt><tt class="py-param">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-param">service_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_get_roles_path-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_get_roles_path-expanded"><a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">  <tt class="py-keyword">if</tt> <tt class="py-name">cluster_name</tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-5" class="py-name"><a title="cm_api.endpoints.roles.ROLES_PATH" class="py-name" href="#" onclick="return doclink('link-5', 'ROLES_PATH', 'link-3');">ROLES_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-name">service_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">  <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-6" class="py-name"><a title="cm_api.endpoints.roles.CM_ROLES_PATH" class="py-name" href="#" onclick="return doclink('link-6', 'CM_ROLES_PATH', 'link-4');">CM_ROLES_PATH</a></tt> </tt>
+</div><a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="_get_role_path"></a><div id="_get_role_path-def"><a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="_get_role_path-toggle" onclick="return toggle('_get_role_path');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles-module.html#_get_role_path">_get_role_path</a><tt class="py-op">(</tt><tt class="py-param">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-param">service_name</tt><tt class="py-op">,</tt> <tt class="py-param">role_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_get_role_path-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_get_role_path-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">  <tt class="py-name">path</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name" targets="Function cm_api.endpoints.roles._get_roles_path()=cm_api.endpoints.roles-module.html#_get_roles_path"><a title="cm_api.endpoints.roles._get_roles_path" class="py-name" href="#" onclick="return doclink('link-7', '_get_roles_path', 'link-7');">_get_roles_path</a></tt><tt class="py-op">(</tt><tt class="py-name">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-name">service_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt class="py-string">"%s/%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">path</tt><tt class="py-op">,</tt> <tt class="py-name">role_name</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="create_role"></a><div id="create_role-def"><a name="L34"></a><tt class="py-lineno"> 34</tt> <a class="py-toggle" href="#" id="create_role-toggle" onclick="return toggle('create_role');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles-module.html#create_role">create_role</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">                <tt class="py-param">service_name</tt><tt class="py-op">,</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">                <tt class="py-param">role_type</tt><tt class="py-op">,</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">                <tt class="py-param">role_name</tt><tt class="py-op">,</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">                <tt class="py-param">host_id</tt><tt class="py-op">,</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">                <tt class="py-param">cluster_name</tt><tt class="py-op">=</tt><tt class="py-string">"default"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_role-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="create_role-expanded"><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">  Create a role</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">  @param service_name: Service name</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">  @param role_type: Role type</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">  @param role_name: Role name</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">  @param cluster_name: Cluster name</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiRole object</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">  <tt class="py-name">apirole</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name" targets="Class cm_api.endpoints.roles.ApiRole=cm_api.endpoints.roles.ApiRole-class.html"><a title="cm_api.endpoints.roles.ApiRole" class="py-name" href="#" onclick="return doclink('link-8', 'ApiRole', 'link-8');">ApiRole</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">,</tt> <tt class="py-name">role_name</tt><tt class="py-op">,</tt> <tt class="py-name">role_type</tt><tt class="py-op">,</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                    <tt id="link-9" class="py-name" targets="Class cm_api.endpoints.types.ApiHostRef=cm_api.endpoints.types.ApiHostRef-class.html"><a title="cm_api.endpoints.types.ApiHostRef" class="py-name" href="#" onclick="return doclink('link-9', 'ApiHostRef', 'link-9');">ApiHostRef</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">,</tt> <tt class="py-name">host_id</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-10" class="py-name" targets="Function cm_api.endpoints.types.call()=cm_api.endpoints.types-module.html#call"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-10', 'call', 'link-10');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method cm_api.resource.Resource.post()=cm_api.resource.Resource-class.html#post"><a title="cm_api.resource.Resource.post" class="py-name" href="#" onclick="return doclink('link-11', 'post', 'link-11');">post</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">      <tt id="link-12" class="py-name"><a title="cm_api.endpoints.roles._get_roles_path" class="py-name" href="#" onclick="return doclink('link-12', '_get_roles_path', 'link-7');">_get_roles_path</a></tt><tt class="py-op">(</tt><tt class="py-name">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-name">service_name</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">      <tt id="link-13" class="py-name"><a title="cm_api.endpoints.roles.ApiRole" class="py-name" href="#" onclick="return doclink('link-13', 'ApiRole', 'link-8');">ApiRole</a></tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">data</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-name">apirole</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="get_role"></a><div id="get_role-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="get_role-toggle" onclick="return toggle('get_role');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles-module.html#get_role">get_role</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">service_name</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">cluster_name</tt><tt class="py-op">=</tt><tt class="py-string">"default"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_role-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_role-expanded"><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">  Lookup a role by name</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">  @param service_name: Service name</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">  @param name: Role name</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">  @param cluster_name: Cluster name</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiRole object</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-14" class="py-name" targets="Function cm_api.endpoints.roles._get_role()=cm_api.endpoints.roles-module.html#_get_role"><a title="cm_api.endpoints.roles._get_role" class="py-name" href="#" onclick="return doclink('link-14', '_get_role', 'link-14');">_get_role</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Function cm_api.endpoints.roles._get_role_path()=cm_api.endpoints.roles-module.html#_get_role_path"><a title="cm_api.endpoints.roles._get_role_path" class="py-name" href="#" onclick="return doclink('link-15', '_get_role_path', 'link-15');">_get_role_path</a></tt><tt class="py-op">(</tt><tt class="py-name">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-name">service_name</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="_get_role"></a><div id="_get_role-def"><a name="L66"></a><tt class="py-lineno"> 66</tt> <a class="py-toggle" href="#" id="_get_role-toggle" onclick="return toggle('_get_role');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles-module.html#_get_role">_get_role</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_get_role-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_get_role-expanded"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-16" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-16', 'call', 'link-10');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method cm_api.resource.Resource.get()=cm_api.resource.Resource-class.html#get"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-17', 'get', 'link-17');">get</a></tt><tt class="py-op">,</tt> <tt class="py-name">path</tt><tt class="py-op">,</tt> <tt id="link-18" class="py-name"><a title="cm_api.endpoints.roles.ApiRole" class="py-name" href="#" onclick="return doclink('link-18', 'ApiRole', 'link-8');">ApiRole</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="get_all_roles"></a><div id="get_all_roles-def"><a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="get_all_roles-toggle" onclick="return toggle('get_all_roles');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles-module.html#get_all_roles">get_all_roles</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">service_name</tt><tt class="py-op">,</tt> <tt class="py-param">cluster_name</tt><tt class="py-op">=</tt><tt class="py-string">"default"</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_all_roles-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_all_roles-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">  Get all roles</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">  @param service_name: Service name</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">  @param cluster_name: Cluster name</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring">  @return: A list of ApiRole objects.</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-19" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-19', 'call', 'link-10');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-20', 'get', 'link-17');">get</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">      <tt id="link-21" class="py-name"><a title="cm_api.endpoints.roles._get_roles_path" class="py-name" href="#" onclick="return doclink('link-21', '_get_roles_path', 'link-7');">_get_roles_path</a></tt><tt class="py-op">(</tt><tt class="py-name">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-name">service_name</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">      <tt id="link-22" class="py-name"><a title="cm_api.endpoints.roles.ApiRole" class="py-name" href="#" onclick="return doclink('link-22', 'ApiRole', 'link-8');">ApiRole</a></tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">=</tt><tt class="py-name">view</tt> <tt class="py-keyword">and</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">view</tt><tt class="py-op">=</tt><tt class="py-name">view</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"> </tt>
+<a name="get_roles_by_type"></a><div id="get_roles_by_type-def"><a name="L81"></a><tt class="py-lineno"> 81</tt> <a class="py-toggle" href="#" id="get_roles_by_type-toggle" onclick="return toggle('get_roles_by_type');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles-module.html#get_roles_by_type">get_roles_by_type</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">service_name</tt><tt class="py-op">,</tt> <tt class="py-param">role_type</tt><tt class="py-op">,</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                      <tt class="py-param">cluster_name</tt><tt class="py-op">=</tt><tt class="py-string">"default"</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_roles_by_type-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_roles_by_type-expanded"><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">  Get all roles of a certain type in a service</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">  @param service_name: Service name</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">  @param role_type: Role type</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">  @param cluster_name: Cluster name</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring">  @return: A list of ApiRole objects.</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">  <tt id="link-23" class="py-name" targets="Module cm_api.endpoints.roles=cm_api.endpoints.roles-module.html"><a title="cm_api.endpoints.roles" class="py-name" href="#" onclick="return doclink('link-23', 'roles', 'link-23');">roles</a></tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name" targets="Method cm_api.endpoints.role_config_groups.ApiRoleConfigGroup.get_all_roles()=cm_api.endpoints.role_config_groups.ApiRoleConfigGroup-class.html#get_all_roles,Function cm_api.endpoints.roles.get_all_roles()=cm_api.endpoints.roles-module.html#get_all_roles,Method cm_api.endpoints.services.ApiService.get_all_roles()=cm_api.endpoints.services.ApiService-class.html#get_all_roles"><a title="cm_api.endpoints.role_config_groups.ApiRoleConfigGroup.get_all_roles
+cm_api.endpoints.roles.get_all_roles
+cm_api.endpoints.services.ApiService.get_all_roles" class="py-name" href="#" onclick="return doclink('link-24', 'get_all_roles', 'link-24');">get_all_roles</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">,</tt> <tt class="py-name">service_name</tt><tt class="py-op">,</tt> <tt class="py-name">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-name">view</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt class="py-op">[</tt> <tt class="py-name">r</tt> <tt class="py-keyword">for</tt> <tt class="py-name">r</tt> <tt class="py-keyword">in</tt> <tt id="link-25" class="py-name"><a title="cm_api.endpoints.roles" class="py-name" href="#" onclick="return doclink('link-25', 'roles', 'link-23');">roles</a></tt> <tt class="py-keyword">if</tt> <tt class="py-name">r</tt><tt class="py-op">.</tt><tt class="py-name">type</tt> <tt class="py-op">==</tt> <tt class="py-name">role_type</tt> <tt class="py-op">]</tt> </tt>
+</div><a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
+<a name="delete_role"></a><div id="delete_role-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="delete_role-toggle" onclick="return toggle('delete_role');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles-module.html#delete_role">delete_role</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">service_name</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">cluster_name</tt><tt class="py-op">=</tt><tt class="py-string">"default"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="delete_role-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="delete_role-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">  Delete a role by name</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">  @param service_name: Service name</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">  @param name: Role name</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">  @param cluster_name: Cluster name</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">  @return: The deleted ApiRole object</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-26" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-26', 'call', 'link-10');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method cm_api.resource.Resource.delete()=cm_api.resource.Resource-class.html#delete"><a title="cm_api.resource.Resource.delete" class="py-name" href="#" onclick="return doclink('link-27', 'delete', 'link-27');">delete</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">      <tt id="link-28" class="py-name"><a title="cm_api.endpoints.roles._get_role_path" class="py-name" href="#" onclick="return doclink('link-28', '_get_role_path', 'link-15');">_get_role_path</a></tt><tt class="py-op">(</tt><tt class="py-name">cluster_name</tt><tt class="py-op">,</tt> <tt class="py-name">service_name</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-29" class="py-name"><a title="cm_api.endpoints.roles.ApiRole" class="py-name" href="#" onclick="return doclink('link-29', 'ApiRole', 'link-8');">ApiRole</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole"></a><div id="ApiRole-def"><a name="L107"></a><tt class="py-lineno">107</tt> <a class="py-toggle" href="#" id="ApiRole-toggle" onclick="return toggle('ApiRole');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html">ApiRole</a><tt class="py-op">(</tt><tt class="py-base-class">BaseApiResource</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ApiRole-expanded"><a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">  <tt id="link-30" class="py-name" targets="Variable cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES=cm_api.endpoints.clusters.ApiCluster-class.html#_ATTRIBUTES,Variable cm_api.endpoints.cms.ApiLicense._ATTRIBUTES=cm_api.endpoints.cms.ApiLicense-class.html#_ATTRIBUTES,Variable cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES=cm_api.endpoints.dashboards.ApiDashboard-class.html#_ATTRIBUTES,Variable cm_api.endpoints.events.ApiEvent._ATTRIBUTES=cm_api.endpoints.events.ApiEvent-class.html#_ATTRIBUTES,Variable cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES=cm_api.endpoints.events.ApiEventQueryResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES=cm_api.endpoints.host_templates.ApiHostTemplate-class.html#_ATTRIBUTES,Variable cm_api.endpoints.hosts.ApiHost._ATTRIBUTES=cm_api.endpoints.hosts.ApiHost-class.html#_ATTRIBUTES,Variable cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES=cm_api.endpoints.parcels.ApiParcel-class.html#_ATTRIBUTES,Variable cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES=cm_api.endpoints.parcels.ApiParcelState-class.html#_ATTRIBUTES,Variable cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES=cm_api.endpoints.role_config_groups.ApiRoleConfigGroup-class.html#_ATTRIBUTES,Variable cm_api.endpoints.roles.ApiRole._ATTRIBUTES=cm_api.endpoints.roles.ApiRole-class.html#_ATTRIBUTES,Variable cm_api.endpoints.services.ApiService._ATTRIBUTES=cm_api.endpoints.services.ApiService-class.html#_ATTRIBUTES,Variable cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES=cm_api.endpoints.services.ApiServiceSetupInfo-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES=cm_api.endpoints.timeseries.ApiMetricSchema-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeries-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesData-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesEntityAttribute._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesEntityAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesEntityType._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesEntityType-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiActivity._ATTRIBUTES=cm_api.endpoints.types.ApiActivity-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES=cm_api.endpoints.types.ApiBatchRequestElement-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES=cm_api.endpoints.types.ApiBatchResponseElement-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES=cm_api.endpoints.types.ApiBatchResponseList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES=cm_api.endpoints.types.ApiBulkCommandList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES=cm_api.endpoints.types.ApiClusterRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES=cm_api.endpoints.types.ApiCmPeer-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES=cm_api.endpoints.types.ApiCommandMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiConfig._ATTRIBUTES=cm_api.endpoints.types.ApiConfig-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshot-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotError-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsReplicationArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsReplicationResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshot-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotError-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHiveReplicationArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES=cm_api.endpoints.types.ApiHiveReplicationResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES=cm_api.endpoints.types.ApiHiveTable-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHostRef._ATTRIBUTES=cm_api.endpoints.types.ApiHostRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaCancelResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQuery-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryDetailsResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaUDF-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES=cm_api.endpoints.types.ApiLicensedFeatureUsage-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMetric._ATTRIBUTES=cm_api.endpoints.types.ApiMetric-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMetricData._ATTRIBUTES=cm_api.endpoints.types.ApiMetricData-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES=cm_api.endpoints.types.ApiMr2AppInformation-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES=cm_api.endpoints.types.ApiReplicationSchedule-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES=cm_api.endpoints.types.ApiRoleConfigGroupRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES=cm_api.endpoints.types.ApiRoleRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES=cm_api.endpoints.types.ApiServiceRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES=cm_api.endpoints.types.ApiSnapshotPolicy-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiTimeSeriesRequest._ATTRIBUTES=cm_api.endpoints.types.ApiTimeSeriesRequest-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplication-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplicationAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplicationResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES=cm_api.endpoints.types.ApiYarnKillResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.BaseApiObject._ATTRIBUTES=cm_api.endpoints.types.BaseApiObject-class.html#_ATTRIBUTES,Variable cm_api.endpoints.users.ApiUser._ATTRIBUTES=cm_api.endpoints.users.ApiUser-class.html#_ATTRIBUTES"><a title="cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES
+cm_api.endpoints.cms.ApiLicense._ATTRIBUTES
+cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES
+cm_api.endpoints.events.ApiEvent._ATTRIBUTES
+cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES
+cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES
+cm_api.endpoints.hosts.ApiHost._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.roles.ApiRole._ATTRIBUTES
+cm_api.endpoints.services.ApiService._ATTRIBUTES
+cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesEntityAttribute._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesEntityType._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiActivity._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES
+cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES
+cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES
+cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES
+cm_api.endpoints.types.ApiConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES
+cm_api.endpoints.types.ApiHostRef._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES
+cm_api.endpoints.types.ApiMetric._ATTRIBUTES
+cm_api.endpoints.types.ApiMetricData._ATTRIBUTES
+cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES
+cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES
+cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES
+cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES
+cm_api.endpoints.types.ApiTimeSeriesRequest._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES
+cm_api.endpoints.types.BaseApiObject._ATTRIBUTES
+cm_api.endpoints.users.ApiUser._ATTRIBUTES" class="py-name" href="#" onclick="return doclink('link-30', '_ATTRIBUTES', 'link-30');">_ATTRIBUTES</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt class="py-string">'name'</tt>                  <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">    <tt class="py-string">'type'</tt>                  <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">    <tt class="py-string">'hostRef'</tt>               <tt class="py-op">:</tt> <tt id="link-31" class="py-name" targets="Class cm_api.endpoints.types.Attr=cm_api.endpoints.types.Attr-class.html"><a title="cm_api.endpoints.types.Attr" class="py-name" href="#" onclick="return doclink('link-31', 'Attr', 'link-31');">Attr</a></tt><tt class="py-op">(</tt><tt id="link-32" class="py-name"><a title="cm_api.endpoints.types.ApiHostRef" class="py-name" href="#" onclick="return doclink('link-32', 'ApiHostRef', 'link-9');">ApiHostRef</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-string">'roleState'</tt>             <tt class="py-op">:</tt> <tt id="link-33" class="py-name" targets="Class cm_api.endpoints.types.ROAttr=cm_api.endpoints.types.ROAttr-class.html"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-33', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-string">'healthSummary'</tt>         <tt class="py-op">:</tt> <tt id="link-34" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-34', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-string">'healthChecks'</tt>          <tt class="py-op">:</tt> <tt id="link-35" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-35', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-string">'serviceRef'</tt>            <tt class="py-op">:</tt> <tt id="link-36" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-36', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt id="link-37" class="py-name" targets="Class cm_api.endpoints.types.ApiServiceRef=cm_api.endpoints.types.ApiServiceRef-class.html"><a title="cm_api.endpoints.types.ApiServiceRef" class="py-name" href="#" onclick="return doclink('link-37', 'ApiServiceRef', 'link-37');">ApiServiceRef</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt class="py-string">'configStale'</tt>           <tt class="py-op">:</tt> <tt id="link-38" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-38', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-string">'configStalenessStatus'</tt> <tt class="py-op">:</tt> <tt id="link-39" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-39', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt class="py-string">'haStatus'</tt>              <tt class="py-op">:</tt> <tt id="link-40" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-40', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">    <tt class="py-string">'roleUrl'</tt>               <tt class="py-op">:</tt> <tt id="link-41" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-41', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">    <tt class="py-string">'commissionState'</tt>       <tt class="py-op">:</tt> <tt id="link-42" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-42', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">    <tt class="py-string">'maintenanceMode'</tt>       <tt class="py-op">:</tt> <tt id="link-43" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-43', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">    <tt class="py-string">'maintenanceOwners'</tt>     <tt class="py-op">:</tt> <tt id="link-44" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-44', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">    <tt class="py-string">'roleConfigGroupRef'</tt>    <tt class="py-op">:</tt> <tt id="link-45" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-45', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt id="link-46" class="py-name" targets="Class cm_api.endpoints.types.ApiRoleConfigGroupRef=cm_api.endpoints.types.ApiRoleConfigGroupRef-class.html"><a title="cm_api.endpoints.types.ApiRoleConfigGroupRef" class="py-name" href="#" onclick="return doclink('link-46', 'ApiRoleConfigGroupRef', 'link-46');">ApiRoleConfigGroupRef</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">    <tt class="py-string">'zooKeeperServerMode'</tt>   <tt class="py-op">:</tt> <tt id="link-47" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-47', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">    <tt class="py-string">'entityStatus'</tt>          <tt class="py-op">:</tt> <tt id="link-48" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-48', 'ROAttr', 'link-33');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">  <tt class="py-op">}</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.__init__"></a><div id="ApiRole.__init__-def"><a name="L128"></a><tt class="py-lineno">128</tt> <a class="py-toggle" href="#" id="ApiRole.__init__-toggle" onclick="return toggle('ApiRole.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">type</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">hostRef</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.__init__-expanded"><a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt id="link-49" class="py-name" targets="Class cm_api.endpoints.types.BaseApiObject=cm_api.endpoints.types.BaseApiObject-class.html"><a title="cm_api.endpoints.types.BaseApiObject" class="py-name" href="#" onclick="return doclink('link-49', 'BaseApiObject', 'link-49');">BaseApiObject</a></tt><tt class="py-op">.</tt><tt id="link-50" class="py-name" targets="Static Method cm_api.endpoints.types.BaseApiObject.init()=cm_api.endpoints.types.BaseApiObject-class.html#init"><a title="cm_api.endpoints.types.BaseApiObject.init" class="py-name" href="#" onclick="return doclink('link-50', 'init', 'link-50');">init</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">resource_root</tt><tt class="py-op">,</tt> <tt class="py-name">locals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.__str__"></a><div id="ApiRole.__str__-def"><a name="L131"></a><tt class="py-lineno">131</tt> <a class="py-toggle" href="#" id="ApiRole.__str__-toggle" onclick="return toggle('ApiRole.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.__str__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.__str__-expanded"><a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;ApiRole&gt;: %s (cluster: %s; service: %s)"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">serviceRef</tt><tt class="py-op">.</tt><tt class="py-name">clusterName</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">serviceRef</tt><tt class="py-op">.</tt><tt class="py-name">serviceName</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole._path"></a><div id="ApiRole._path-def"><a name="L135"></a><tt class="py-lineno">135</tt> <a class="py-toggle" href="#" id="ApiRole._path-toggle" onclick="return toggle('ApiRole._path');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#_path">_path</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole._path-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole._path-expanded"><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-51" class="py-name"><a title="cm_api.endpoints.roles._get_role_path" class="py-name" href="#" onclick="return doclink('link-51', '_get_role_path', 'link-15');">_get_role_path</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">serviceRef</tt><tt class="py-op">.</tt><tt class="py-name">clusterName</tt><tt class="py-op">,</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">                          <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">serviceRef</tt><tt class="py-op">.</tt><tt class="py-name">serviceName</tt><tt class="py-op">,</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                          <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole._get_log"></a><div id="ApiRole._get_log-def"><a name="L140"></a><tt class="py-lineno">140</tt> <a class="py-toggle" href="#" id="ApiRole._get_log-toggle" onclick="return toggle('ApiRole._get_log');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#_get_log">_get_log</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">log</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole._get_log-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole._get_log-expanded"><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">    <tt class="py-name">path</tt> <tt class="py-op">=</tt> <tt class="py-string">"%s/logs/%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Method cm_api.endpoints.clusters.ApiCluster._path()=cm_api.endpoints.clusters.ApiCluster-class.html#_path,Method cm_api.endpoints.cms.ClouderaManager._path()=cm_api.endpoints.cms.ClouderaManager-class.html#_path,Method cm_api.endpoints.dashboards.ApiDashboard._path()=cm_api.endpoints.dashboards.ApiDashboard-class.html#_path,Method cm_api.endpoints.host_templates.ApiHostTemplate._path()=cm_api.endpoints.host_templates.ApiHostTemplate-class.html#_path,Method cm_api.endpoints.hosts.ApiHost._path()=cm_api.endpoints.hosts.ApiHost-class.html#_path,Method cm_api.endpoints.parcels.ApiParcel._path()=cm_api.endpoints.parcels.ApiParcel-class.html#_path,Method cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path()=cm_api.endpoints.role_config_groups.ApiRoleConfigGroup-class.html#_path,Method cm_api.endpoints.roles.ApiRole._path()=cm_api.endpoints.roles.ApiRole-class.html#_path,Method cm_api.endpoints.services.ApiService._path()=cm_api.endpoints.services.ApiService-class.html#_path,Method cm_api.endpoints.types.ApiCommand._path()=cm_api.endpoints.types.ApiCommand-class.html#_path,Method cm_api.endpoints.types.BaseApiResource._path()=cm_api.endpoints.types.BaseApiResource-class.html#_path,Method cm_api.endpoints.users.ApiUser._path()=cm_api.endpoints.users.ApiUser-class.html#_path"><a title="cm_api.endpoints.clusters.ApiCluster._path
+cm_api.endpoints.cms.ClouderaManager._path
+cm_api.endpoints.dashboards.ApiDashboard._path
+cm_api.endpoints.host_templates.ApiHostTemplate._path
+cm_api.endpoints.hosts.ApiHost._path
+cm_api.endpoints.parcels.ApiParcel._path
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path
+cm_api.endpoints.roles.ApiRole._path
+cm_api.endpoints.services.ApiService._path
+cm_api.endpoints.types.ApiCommand._path
+cm_api.endpoints.types.BaseApiResource._path
+cm_api.endpoints.users.ApiUser._path" class="py-name" href="#" onclick="return doclink('link-52', '_path', 'link-52');">_path</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">log</tt><tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Method cm_api.endpoints.types.BaseApiObject._get_resource_root()=cm_api.endpoints.types.BaseApiObject-class.html#_get_resource_root"><a title="cm_api.endpoints.types.BaseApiObject._get_resource_root" class="py-name" href="#" onclick="return doclink('link-53', '_get_resource_root', 'link-53');">_get_resource_root</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-54', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">path</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.get_commands"></a><div id="ApiRole.get_commands-def"><a name="L144"></a><tt class="py-lineno">144</tt> <a class="py-toggle" href="#" id="ApiRole.get_commands-toggle" onclick="return toggle('ApiRole.get_commands');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#get_commands">get_commands</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.get_commands-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.get_commands-expanded"><a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">    Retrieve a list of running commands for this role.</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">    @param view: View to materialize ('full' or 'summary')</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">    @return: A list of running commands.</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Method cm_api.endpoints.types.BaseApiResource._get()=cm_api.endpoints.types.BaseApiResource-class.html#_get"><a title="cm_api.endpoints.types.BaseApiResource._get" class="py-name" href="#" onclick="return doclink('link-55', '_get', 'link-55');">_get</a></tt><tt class="py-op">(</tt><tt class="py-string">"commands"</tt><tt class="py-op">,</tt> <tt id="link-56" class="py-name" targets="Class cm_api.endpoints.types.ApiCommand=cm_api.endpoints.types.ApiCommand-class.html"><a title="cm_api.endpoints.types.ApiCommand" class="py-name" href="#" onclick="return doclink('link-56', 'ApiCommand', 'link-56');">ApiCommand</a></tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt class="py-name">params</tt> <tt class="py-op">=</tt> <tt class="py-name">view</tt> <tt class="py-keyword">and</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">view</tt><tt class="py-op">=</tt><tt class="py-name">view</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.get_config"></a><div id="ApiRole.get_config-def"><a name="L154"></a><tt class="py-lineno">154</tt> <a class="py-toggle" href="#" id="ApiRole.get_config-toggle" onclick="return toggle('ApiRole.get_config');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#get_config">get_config</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.get_config-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.get_config-expanded"><a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-docstring">    Retrieve the role's configuration.</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">    The 'summary' view contains strings as the dictionary values. The full</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring">    view contains ApiConfig instances as the values.</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">    @param view: View to materialize ('full' or 'summary')</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Dictionary with configuration data.</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name" targets="Method cm_api.endpoints.types.BaseApiResource._get_config()=cm_api.endpoints.types.BaseApiResource-class.html#_get_config"><a title="cm_api.endpoints.types.BaseApiResource._get_config" class="py-name" href="#" onclick="return doclink('link-57', '_get_config', 'link-57');">_get_config</a></tt><tt class="py-op">(</tt><tt class="py-string">"config"</tt><tt class="py-op">,</tt> <tt class="py-name">view</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.update_config"></a><div id="ApiRole.update_config-def"><a name="L166"></a><tt class="py-lineno">166</tt> <a class="py-toggle" href="#" id="ApiRole.update_config-toggle" onclick="return toggle('ApiRole.update_config');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#update_config">update_config</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">config</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.update_config-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.update_config-expanded"><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">    Update the role's configuration.</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">    @param config: Dictionary with configuration to update.</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Dictionary with updated configuration.</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Method cm_api.endpoints.types.BaseApiResource._update_config()=cm_api.endpoints.types.BaseApiResource-class.html#_update_config"><a title="cm_api.endpoints.types.BaseApiResource._update_config" class="py-name" href="#" onclick="return doclink('link-58', '_update_config', 'link-58');">_update_config</a></tt><tt class="py-op">(</tt><tt class="py-string">"config"</tt><tt class="py-op">,</tt> <tt class="py-name">config</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.get_full_log"></a><div id="ApiRole.get_full_log-def"><a name="L175"></a><tt class="py-lineno">175</tt> <a class="py-toggle" href="#" id="ApiRole.get_full_log-toggle" onclick="return toggle('ApiRole.get_full_log');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#get_full_log">get_full_log</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.get_full_log-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.get_full_log-expanded"><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">    Retrieve the contents of the role's log file.</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Contents of log file.</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name" targets="Method cm_api.endpoints.roles.ApiRole._get_log()=cm_api.endpoints.roles.ApiRole-class.html#_get_log"><a title="cm_api.endpoints.roles.ApiRole._get_log" class="py-name" href="#" onclick="return doclink('link-59', '_get_log', 'link-59');">_get_log</a></tt><tt class="py-op">(</tt><tt class="py-string">'full'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.get_stdout"></a><div id="ApiRole.get_stdout-def"><a name="L183"></a><tt class="py-lineno">183</tt> <a class="py-toggle" href="#" id="ApiRole.get_stdout-toggle" onclick="return toggle('ApiRole.get_stdout');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#get_stdout">get_stdout</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.get_stdout-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.get_stdout-expanded"><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring">    Retrieve the contents of the role's standard output.</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Contents of stdout.</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="cm_api.endpoints.roles.ApiRole._get_log" class="py-name" href="#" onclick="return doclink('link-60', '_get_log', 'link-59');">_get_log</a></tt><tt class="py-op">(</tt><tt class="py-string">'stdout'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.get_stderr"></a><div id="ApiRole.get_stderr-def"><a name="L191"></a><tt class="py-lineno">191</tt> <a class="py-toggle" href="#" id="ApiRole.get_stderr-toggle" onclick="return toggle('ApiRole.get_stderr');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#get_stderr">get_stderr</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.get_stderr-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.get_stderr-expanded"><a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-docstring">    Retrieve the contents of the role's standard error.</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Contents of stderr.</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name"><a title="cm_api.endpoints.roles.ApiRole._get_log" class="py-name" href="#" onclick="return doclink('link-61', '_get_log', 'link-59');">_get_log</a></tt><tt class="py-op">(</tt><tt class="py-string">'stderr'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.get_stacks_log"></a><div id="ApiRole.get_stacks_log-def"><a name="L199"></a><tt class="py-lineno">199</tt> <a class="py-toggle" href="#" id="ApiRole.get_stacks_log-toggle" onclick="return toggle('ApiRole.get_stacks_log');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#get_stacks_log">get_stacks_log</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.get_stacks_log-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.get_stacks_log-expanded"><a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-docstring">    Retrieve the contents of the role's stacks log file.</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Contents of stacks log file.</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-docstring">    @since: API v8</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name"><a title="cm_api.endpoints.roles.ApiRole._get_log" class="py-name" href="#" onclick="return doclink('link-62', '_get_log', 'link-59');">_get_log</a></tt><tt class="py-op">(</tt><tt class="py-string">'stacks'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.get_stacks_logs_bundle"></a><div id="ApiRole.get_stacks_logs_bundle-def"><a name="L208"></a><tt class="py-lineno">208</tt> <a class="py-toggle" href="#" id="ApiRole.get_stacks_logs_bundle-toggle" onclick="return toggle('ApiRole.get_stacks_logs_bundle');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#get_stacks_logs_bundle">get_stacks_logs_bundle</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.get_stacks_logs_bundle-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.get_stacks_logs_bundle-expanded"><a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-docstring">    Retrieve a zip file of the role's stacks log files.</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"><tt class="py-docstring">    @return: A zipfile of stacks log files.</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"><tt class="py-docstring">    @since: API v8</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="cm_api.endpoints.roles.ApiRole._get_log" class="py-name" href="#" onclick="return doclink('link-63', '_get_log', 'link-59');">_get_log</a></tt><tt class="py-op">(</tt><tt class="py-string">'stacksBundle'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.get_metrics"></a><div id="ApiRole.get_metrics-def"><a name="L217"></a><tt class="py-lineno">217</tt> <a class="py-toggle" href="#" id="ApiRole.get_metrics-toggle" onclick="return toggle('ApiRole.get_metrics');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#get_metrics">get_metrics</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">from_time</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">to_time</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">metrics</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.get_metrics-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.get_metrics-expanded"><a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line"><tt class="py-docstring">    This endpoint is not supported as of v6. Use the timeseries API</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"><tt class="py-docstring">    instead. To get all metrics for a role with the timeseries API use</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"><tt class="py-docstring">    the query:</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"><tt class="py-docstring">    'select * where roleName = $ROLE_NAME'.</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line"><tt class="py-docstring">    To get specific metrics for a role use a comma-separated list of</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"><tt class="py-docstring">    the metric names as follows:</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"><tt class="py-docstring">    'select $METRIC_NAME1, $METRIC_NAME2 where roleName = $ROLE_NAME'.</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-docstring">    For more information see http://tiny.cloudera.com/tsquery_doc</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-docstring">    @param from_time: A datetime; start of the period to query (optional).</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-docstring">    @param to_time: A datetime; end of the period to query (default = now).</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">    @param metrics: List of metrics to query (default = all).</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring">    @param view: View to materialize ('full' or 'summary')</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"><tt class="py-docstring">    @return: List of metrics and their readings.</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="cm_api.endpoints.types.BaseApiObject._get_resource_root" class="py-name" href="#" onclick="return doclink('link-64', '_get_resource_root', 'link-53');">_get_resource_root</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name" targets="Method cm_api.api_client.ApiResource.get_metrics()=cm_api.api_client.ApiResource-class.html#get_metrics,Method cm_api.endpoints.hosts.ApiHost.get_metrics()=cm_api.endpoints.hosts.ApiHost-class.html#get_metrics,Method cm_api.endpoints.roles.ApiRole.get_metrics()=cm_api.endpoints.roles.ApiRole-class.html#get_metrics,Method cm_api.endpoints.services.ApiService.get_metrics()=cm_api.endpoints.services.ApiService-class.html#get_metrics"><a title="cm_api.api_client.ApiResource.get_metrics
+cm_api.endpoints.hosts.ApiHost.get_metrics
+cm_api.endpoints.roles.ApiRole.get_metrics
+cm_api.endpoints.services.ApiService.get_metrics" class="py-name" href="#" onclick="return doclink('link-65', 'get_metrics', 'link-65');">get_metrics</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="cm_api.endpoints.clusters.ApiCluster._path
+cm_api.endpoints.cms.ClouderaManager._path
+cm_api.endpoints.dashboards.ApiDashboard._path
+cm_api.endpoints.host_templates.ApiHostTemplate._path
+cm_api.endpoints.hosts.ApiHost._path
+cm_api.endpoints.parcels.ApiParcel._path
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path
+cm_api.endpoints.roles.ApiRole._path
+cm_api.endpoints.services.ApiService._path
+cm_api.endpoints.types.ApiCommand._path
+cm_api.endpoints.types.BaseApiResource._path
+cm_api.endpoints.users.ApiUser._path" class="py-name" href="#" onclick="return doclink('link-66', '_path', 'link-52');">_path</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">'/metrics'</tt><tt class="py-op">,</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">        <tt class="py-name">from_time</tt><tt class="py-op">,</tt> <tt class="py-name">to_time</tt><tt class="py-op">,</tt> <tt class="py-name">metrics</tt><tt class="py-op">,</tt> <tt class="py-name">view</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.enter_maintenance_mode"></a><div id="ApiRole.enter_maintenance_mode-def"><a name="L240"></a><tt class="py-lineno">240</tt> <a class="py-toggle" href="#" id="ApiRole.enter_maintenance_mode-toggle" onclick="return toggle('ApiRole.enter_maintenance_mode');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#enter_maintenance_mode">enter_maintenance_mode</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.enter_maintenance_mode-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.enter_maintenance_mode-expanded"><a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line"><tt class="py-docstring">    Put the role in maintenance mode.</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-docstring">    @since: API v2</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">    <tt class="py-name">cmd</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name" targets="Method cm_api.endpoints.types.BaseApiResource._cmd()=cm_api.endpoints.types.BaseApiResource-class.html#_cmd"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-67', '_cmd', 'link-67');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'enterMaintenanceMode'</tt><tt class="py-op">)</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">cmd</tt><tt class="py-op">.</tt><tt class="py-name">success</tt><tt class="py-op">:</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name" targets="Method cm_api.endpoints.types.BaseApiObject._update()=cm_api.endpoints.types.BaseApiObject-class.html#_update"><a title="cm_api.endpoints.types.BaseApiObject._update" class="py-name" href="#" onclick="return doclink('link-68', '_update', 'link-68');">_update</a></tt><tt class="py-op">(</tt><tt id="link-69" class="py-name"><a title="cm_api.endpoints.roles._get_role" class="py-name" href="#" onclick="return doclink('link-69', '_get_role', 'link-14');">_get_role</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-70" class="py-name"><a title="cm_api.endpoints.types.BaseApiObject._get_resource_root" class="py-name" href="#" onclick="return doclink('link-70', '_get_resource_root', 'link-53');">_get_resource_root</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name"><a title="cm_api.endpoints.clusters.ApiCluster._path
+cm_api.endpoints.cms.ClouderaManager._path
+cm_api.endpoints.dashboards.ApiDashboard._path
+cm_api.endpoints.host_templates.ApiHostTemplate._path
+cm_api.endpoints.hosts.ApiHost._path
+cm_api.endpoints.parcels.ApiParcel._path
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path
+cm_api.endpoints.roles.ApiRole._path
+cm_api.endpoints.services.ApiService._path
+cm_api.endpoints.types.ApiCommand._path
+cm_api.endpoints.types.BaseApiResource._path
+cm_api.endpoints.users.ApiUser._path" class="py-name" href="#" onclick="return doclink('link-71', '_path', 'link-52');">_path</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">cmd</tt> </tt>
+</div><a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.exit_maintenance_mode"></a><div id="ApiRole.exit_maintenance_mode-def"><a name="L252"></a><tt class="py-lineno">252</tt> <a class="py-toggle" href="#" id="ApiRole.exit_maintenance_mode-toggle" onclick="return toggle('ApiRole.exit_maintenance_mode');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#exit_maintenance_mode">exit_maintenance_mode</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.exit_maintenance_mode-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.exit_maintenance_mode-expanded"><a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"><tt class="py-docstring">    Take the role out of maintenance mode.</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"><tt class="py-docstring">    @return: Reference to the completed command.</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"><tt class="py-docstring">    @since: API v2</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">    <tt class="py-name">cmd</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._cmd" class="py-name" href="#" onclick="return doclink('link-72', '_cmd', 'link-67');">_cmd</a></tt><tt class="py-op">(</tt><tt class="py-string">'exitMaintenanceMode'</tt><tt class="py-op">)</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">cmd</tt><tt class="py-op">.</tt><tt class="py-name">success</tt><tt class="py-op">:</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="cm_api.endpoints.types.BaseApiObject._update" class="py-name" href="#" onclick="return doclink('link-73', '_update', 'link-68');">_update</a></tt><tt class="py-op">(</tt><tt id="link-74" class="py-name"><a title="cm_api.endpoints.roles._get_role" class="py-name" href="#" onclick="return doclink('link-74', '_get_role', 'link-14');">_get_role</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name"><a title="cm_api.endpoints.types.BaseApiObject._get_resource_root" class="py-name" href="#" onclick="return doclink('link-75', '_get_resource_root', 'link-53');">_get_resource_root</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="cm_api.endpoints.clusters.ApiCluster._path
+cm_api.endpoints.cms.ClouderaManager._path
+cm_api.endpoints.dashboards.ApiDashboard._path
+cm_api.endpoints.host_templates.ApiHostTemplate._path
+cm_api.endpoints.hosts.ApiHost._path
+cm_api.endpoints.parcels.ApiParcel._path
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._path
+cm_api.endpoints.roles.ApiRole._path
+cm_api.endpoints.services.ApiService._path
+cm_api.endpoints.types.ApiCommand._path
+cm_api.endpoints.types.BaseApiResource._path
+cm_api.endpoints.users.ApiUser._path" class="py-name" href="#" onclick="return doclink('link-76', '_path', 'link-52');">_path</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">cmd</tt> </tt>
+</div><a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"> </tt>
+<a name="ApiRole.list_commands_by_name"></a><div id="ApiRole.list_commands_by_name-def"><a name="L264"></a><tt class="py-lineno">264</tt> <a class="py-toggle" href="#" id="ApiRole.list_commands_by_name-toggle" onclick="return toggle('ApiRole.list_commands_by_name');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.roles.ApiRole-class.html#list_commands_by_name">list_commands_by_name</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiRole.list_commands_by_name-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiRole.list_commands_by_name-expanded"><a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line"><tt class="py-docstring">    Lists all the commands that can be executed by name</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"><tt class="py-docstring">    on the provided role.</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line"><tt class="py-docstring">    @return: A list of command metadata objects</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"><tt class="py-docstring">    @since: API v6</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="cm_api.endpoints.types.BaseApiResource._get" class="py-name" href="#" onclick="return doclink('link-77', '_get', 'link-55');">_get</a></tt><tt class="py-op">(</tt><tt class="py-string">"commandsByName"</tt><tt class="py-op">,</tt> <tt id="link-78" class="py-name" targets="Class cm_api.endpoints.types.ApiCommandMetadata=cm_api.endpoints.types.ApiCommandMetadata-class.html"><a title="cm_api.endpoints.types.ApiCommandMetadata" class="py-name" href="#" onclick="return doclink('link-78', 'ApiCommandMetadata', 'link-78');">ApiCommandMetadata</a></tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">api_version</tt><tt class="py-op">=</tt><tt class="py-number">6</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sun Nov 22 22:30:39 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
