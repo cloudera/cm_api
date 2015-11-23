@@ -48,9 +48,10 @@ public interface AuditsResourceV8 extends AuditsResource {
    *
    * @param maxResults Maximum number of audits to return
    * @param resultOffset Offset of audits to return
-   * @param startTime Start of the period to query (defaults to 1 day ago
-   * relative to endTime)
-   * @param endTime End of the period to query (defaults to current time)
+   * @param startTime Start of the period to query in ISO 8601 format (defaults
+   * to 1 day ago relative to endTime).
+   * @param endTime End of the period to query in ISO 8601 format (defaults to
+   * current time).
    * @param query
    *    The query to filter out audits in the system. It accepts
    *    querying the intersection of a list of constraints,
@@ -253,14 +254,12 @@ public interface AuditsResourceV8 extends AuditsResource {
    *    queries are converted to standard SQL LIKE syntax, so any % (%25)
    *    character in a value that also contains a wild card will be
    *    interpreted as a wild card.)
-   *    <p>
-   *    Values for time related query parameters (<em>startTime</em> and
-   *    <em>endTime</em>) should be ISO8601 timestamps.
    * <p/>
    * Available since API v8. A subset of these features is available since v4.
    *
    * @return List of audits in descending order of timestamp
    */
+  @Override
   @GET
   @Path("/")
   public ApiAuditList readAudits(

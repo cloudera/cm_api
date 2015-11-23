@@ -33,18 +33,21 @@ import java.util.List;
  */
 @XmlRootElement(name = "cluster")
 @XmlType(propOrder = {"name", "displayName", "version", "fullVersion",
-    "maintenanceMode", "maintenanceOwners", "services", "parcels", "clusterUrl"})
+    "maintenanceMode", "maintenanceOwners", "services", "parcels", "clusterUrl",
+    "hostsUrl", "entityStatus"})
 public class ApiCluster {
 
   private String name;
   private String displayName;
   private String clusterUrl;
+  private String hostsUrl;
   private ApiClusterVersion version;
   private String fullVersion;
   private Boolean maintenanceMode;
   private List<ApiEntityType> maintenanceOwners;
   private List<ApiService> services;
   private List<ApiParcel> parcels;
+  private ApiEntityStatus entityStatus;
 
   public ApiCluster() {
     // For JAX-B
@@ -102,8 +105,7 @@ public class ApiCluster {
   }
 
   /**
-   * Read only.
-   * Link into the Cloudera Manager web UI for this specific cluster.
+   * Readonly. Link into the Cloudera Manager web UI for this specific cluster.
    * <p>
    * Available since API v10.
    */
@@ -114,6 +116,20 @@ public class ApiCluster {
 
   public void setClusterUrl(String clusterUrl) {
     this.clusterUrl = clusterUrl;
+  }
+
+  /**
+   * Readonly. Link into the Cloudera Manager web UI for host table for this cluster.
+   * <p>
+   * Available since API v11.
+   */
+  @XmlElement
+  public String getHostsUrl() {
+    return hostsUrl;
+  }
+
+  public void setHostsUrl(String hostsUrl) {
+    this.hostsUrl = hostsUrl;
   }
 
   /** The CDH version of the cluster. */
@@ -192,5 +208,18 @@ public class ApiCluster {
 
   public void setParcels(List<ApiParcel> parcels) {
     this.parcels = parcels;
+  }
+
+  /**
+   * Readonly. The entity status for this cluster.
+   * Available since API v11.
+   */
+  @XmlElement
+  public ApiEntityStatus getEntityStatus() {
+    return entityStatus;
+  }
+
+  public void setEntityStatus(ApiEntityStatus entityStatus) {
+    this.entityStatus = entityStatus;
   }
 }

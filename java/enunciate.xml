@@ -2,18 +2,18 @@
            xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.27.xsd">
 
   <api-classes>
-    <include pattern="com.cloudera.api.v10.*"/>
+    <include pattern="com.cloudera.api.v11.*"/>
   </api-classes>
 
   <services>
-    <rest defaultRestSubcontext="/api/v10"/>
+    <rest defaultRestSubcontext="/api/v11"/>
   </services>
 
   <modules>
     <docs splashPackage="com.cloudera.api"
           copyright="Cloudera, Inc. All rights reserved."
           docsDir="apidocs"
-          title="Cloudera Manager API v10"
+          title="Cloudera Manager API v11"
           groupRestResources="byPath"
           freemarkerXMLProcessingTemplate="api-docs.fmt"
           css="static/cms/css/api-docs.css"

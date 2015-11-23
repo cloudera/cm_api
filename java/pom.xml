@@ -8,7 +8,7 @@
   <version>5.5.0</version>
 
   <properties>
-    <cxf.version>2.7.5</cxf.version>
+    <cxf.version>2.7.7</cxf.version>
     <guava.version>14.0</guava.version>
     <jackson2.version>2.1.0</jackson2.version>
     <joda.version>2.1</joda.version>
@@ -114,6 +114,36 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <!-- profile to use with Atlassian Clover for code coverage -->
+      <id>clover</id>
+      <properties>
+        <clover.version>4.0.3</clover.version>
+        <clover.generateHtml>true</clover.generateHtml>
+        <clover.generateXml>true</clover.generateXml>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>com.atlassian.clover</groupId>
+          <artifactId>clover</artifactId>
+          <version>${clover.version}</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <!-- Clover plugin to enable maven to create instantiated jars that will record code coverage -->
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <artifactId>maven-clover2-plugin</artifactId>
+            <version>${clover.version}</version>
+            <configuration>
+              <generateHtml>${clover.generateHtml}</generateHtml>
+              <generateXml>${clover.generateXml}</generateXml>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <build>
@@ -153,7 +183,7 @@
                   <pattern>com.</pattern>
                   <shadedPattern>${privateClassPath}.com.</shadedPattern>
                   <includes>
-                    <include>com.google.guava.**</include>
+                    <include>com.google.common.**</include>
                     <include>com.fasterxml.jackson.**</include>
                   </includes>
                 </relocation>

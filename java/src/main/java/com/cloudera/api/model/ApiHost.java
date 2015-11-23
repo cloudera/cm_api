@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class ApiHost {
   private Long numCores;
   private Long numPhysicalCores;
   private Long totalPhysMemBytes;
+  private ApiEntityStatus entityStatus;
+  private ApiClusterRef clusterRef;
 
   public ApiHost() {
     // for JAX-B
@@ -81,6 +84,7 @@ public class ApiHost {
     this.numCores = host.getNumCores();
     this.numPhysicalCores = host.getNumPhysicalCores();
     this.totalPhysMemBytes = host.getTotalPhysMemBytes();
+    this.clusterRef = host.clusterRef;
   }
 
   @Override
@@ -94,6 +98,7 @@ public class ApiHost {
                   .add("healthSummary", healthSummary)
                   .add("healthChecks", healthChecks)
                   .add("roleRefs", roleRefs)
+                  .add("clusterRef", clusterRef)
                   .toString();
   }
 
@@ -307,5 +312,32 @@ public class ApiHost {
 
   public void setTotalPhysMemBytes(Long totalPhysMemBytes) {
     this.totalPhysMemBytes = totalPhysMemBytes;
+  }
+
+  /**
+   * Readonly. The entity status for this host.
+   * Available since API v11.
+   */
+  @XmlElement
+  public ApiEntityStatus getEntityStatus() {
+    return entityStatus;
+  }
+
+  public void setEntityStatus(ApiEntityStatus entityStatus) {
+    this.entityStatus = entityStatus;
+  }
+
+  /**
+   * Readonly. A reference to the enclosing cluster. This might be null if the
+   * host is not yet assigned to a cluster.
+   * Available since API v11.
+   */
+  @XmlElement
+  public ApiClusterRef getClusterRef() {
+    return clusterRef;
+  }
+
+  public void setClusterRef(ApiClusterRef clusterRef) {
+    this.clusterRef = clusterRef;
   }
 }

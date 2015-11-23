@@ -223,6 +223,7 @@ public class ApiModelTest {
     ApiConfig cfg = new ApiConfig("name", "value", true, "default", "display",
         "description", "relatedName", ApiConfig.ValidationState.OK,
         "validationMessage");
+    cfg.setValidationWarningsSuppressed(true);
     checkJsonXML(cfg);
 
     ApiServiceConfig svcCfg = new ApiServiceConfig();
@@ -243,7 +244,9 @@ public class ApiModelTest {
   @Test
   public void testApiHealthCheck() throws Exception {
     ApiHealthCheck healthCheck = new ApiHealthCheck("checkName",
-                                                    ApiHealthSummary.GOOD);
+                                                    ApiHealthSummary.GOOD,
+                                                    "Dummy Health explanation.",
+                                                    false);
     checkJsonXML(healthCheck);
   }
 
@@ -258,6 +261,7 @@ public class ApiModelTest {
     role.setHaStatus(ApiRole.HaStatus.ACTIVE);
     role.setHealthChecks(createHealthChecks());
     role.setHealthSummary(ApiHealthSummary.GOOD);
+    role.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     role.setHostRef(new ApiHostRef("myhost"));
     role.setMaintenanceMode(true);
     role.setMaintenanceOwners(createMaintenanceOwners());
@@ -282,11 +286,13 @@ public class ApiModelTest {
     service.setDisplayName("mydisplayname");
     service.setHealthChecks(createHealthChecks());
     service.setHealthSummary(ApiHealthSummary.GOOD);
+    service.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     service.setMaintenanceMode(true);
     service.setMaintenanceOwners(createMaintenanceOwners());
     service.setName("myname");
     service.setServiceState(ApiServiceState.STARTED);
     service.setServiceUrl("http://foo:7180");
+    service.setRoleInstancesUrl("http://foo:7180/instances");
     service.setType("mytype");
 
     ApiRoleConfigGroup rcg = new ApiRoleConfigGroup();
@@ -519,6 +525,7 @@ public class ApiModelTest {
                                      "relatedName",
                                      ApiConfig.ValidationState.OK,
                                      "validationMessage");
+    config.setValidationWarningsSuppressed(false);
     checkJsonXML(config);
   }
 
@@ -586,6 +593,8 @@ public class ApiModelTest {
     peer.setUrl("url1");
     peer.setUsername("user1");
     peer.setPassword("password1");
+    peer.setType(ApiCmPeerType.REPLICATION);
+    peer.setClouderaManagerCreatedUser(true);
     checkJsonXML(peer);
   }
 
@@ -833,6 +842,7 @@ public class ApiModelTest {
     policy.setDayOfMonth((byte) 31);
     policy.setMonthOfYear((byte) 6);
     policy.setHoursForHourlySnapshots(Arrays.asList((byte) 4, (byte) 8));
+    policy.setPaused(false);
 
     return policy;
   }
@@ -896,8 +906,10 @@ public class ApiModelTest {
 
     ApiTimeSeriesCrossEntityMetadata xEntityMetadata =
         new ApiTimeSeriesCrossEntityMetadata();
-    xEntityMetadata.setMaxEntityDisplayName("maxDisplayName");
+    xEntityMetadata.setMaxEntityDisplayName("maxEntityDisplayName");
     xEntityMetadata.setMinEntityDisplayName("minEntityDisplayName");
+    xEntityMetadata.setMaxEntityName("maxEntityName");
+    xEntityMetadata.setMinEntityName("minEntityName");
     xEntityMetadata.setNumEntities(3.14);
     aggStats.setCrossEntityMetadata(xEntityMetadata);
     checkJsonXML(data);
@@ -905,8 +917,14 @@ public class ApiModelTest {
 
   private List<ApiHealthCheck> createHealthChecks() {
     return ImmutableList.of(
-        new ApiHealthCheck("TEST1", ApiHealthSummary.GOOD),
-        new ApiHealthCheck("TEST2", ApiHealthSummary.CONCERNING));
+        new ApiHealthCheck("TEST1",
+                           ApiHealthSummary.GOOD,
+                           "Dummy Health explanation.",
+                           false),
+        new ApiHealthCheck("TEST2",
+                           ApiHealthSummary.CONCERNING,
+                           "Dummy Health explanation.",
+                           false));
   }
 
   private List<ApiEntityType> createMaintenanceOwners() {
@@ -928,6 +946,7 @@ public class ApiModelTest {
     hdfsArgs.setSkipTrash(true);
     hdfsArgs.setPreserveXAttrs(true);
     hdfsArgs.setReplicationStrategy(ReplicationStrategy.DYNAMIC);
+    hdfsArgs.setExclusionFilters(Lists.newArrayList("/a/.*", "/b/.*"));
     return hdfsArgs;
   }
 
@@ -946,6 +965,8 @@ public class ApiModelTest {
     result.setNumBytesCopyFailed(400);
     result.setSetupError("error");
     result.setSnapshottedDirs(Arrays.asList("/user/a"));
+    result.setFailedFiles(Arrays.asList("path1"));
+    result.setRunAsUser("systest");
     return result;
   }
 
@@ -958,6 +979,7 @@ public class ApiModelTest {
     cmd.setSuccess(false);
     cmd.setResultMessage("message");
     cmd.setResultDataUrl("url");
+    cmd.setCanRetry(false);
   }
 
   private ApiCluster newCluster() {
@@ -967,8 +989,10 @@ public class ApiModelTest {
     cluster.setName("mycluster");
     cluster.setDisplayName("mycluster-displayName");
     cluster.setClusterUrl("http://some-url:7180/cmf/clusterRedirect/mycluster");
+    cluster.setHostsUrl("http://some-url:7180/cmf/clusterRedirect/mycluster/hosts");
     cluster.setVersion(ApiClusterVersion.CDH4);
     cluster.setFullVersion("4.1.2");
+    cluster.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     return cluster;
   }
 
@@ -980,6 +1004,7 @@ public class ApiModelTest {
     host.setCommissionState(ApiCommissionState.COMMISSIONED);
     host.setHealthChecks(createHealthChecks());
     host.setHealthSummary(ApiHealthSummary.GOOD);
+    host.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     host.setHostId("myHostId");
     host.setHostUrl("http://foo:7180");
     host.setHostname("myHostname");
@@ -992,6 +1017,7 @@ public class ApiModelTest {
     host.setRackId("/default");
     host.setRoleRefs(roleRefs);
     host.setTotalPhysMemBytes(1234L);
+    host.setClusterRef(new ApiClusterRef("clusterName"));
     return host;
   }
 

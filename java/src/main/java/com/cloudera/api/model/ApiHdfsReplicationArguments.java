@@ -15,11 +15,14 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
+import com.google.common.base.Objects;
+
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.cloudera.api.ApiUtils;
-import com.google.common.base.Objects;
 
 /**
  * Replication arguments for HDFS.
@@ -45,6 +48,7 @@ public class ApiHdfsReplicationArguments {
   private Boolean skipTrash;
   private ReplicationStrategy replicationStrategy;
   private Boolean preserveXAttrs;
+  private List<String> exclusionFilters;
 
   /**
    * The strategy for distributing the file replication tasks among the mappers
@@ -277,7 +281,7 @@ public class ApiHdfsReplicationArguments {
   /**
    * The strategy for distributing the file replication tasks among the mappers
    * of the MR job associated with a replication. Default is
-   * {@link ReplicationStrategy.STATIC}.
+   * {@link ReplicationStrategy#STATIC}.
    */
   @XmlElement
   public ReplicationStrategy getReplicationStrategy() {
@@ -303,6 +307,21 @@ public class ApiHdfsReplicationArguments {
     this.preserveXAttrs = preserveXAttrs;
   }
 
+  /**
+   * Specify regular expression strings to match full paths of files and directories
+   * matching source paths and exclude them from the replication. Optional.
+   * Available since V11.
+   * @return exclusion paths, if set; null if no exclusion paths are specified.
+   */
+  @XmlElement
+  public List<String> getExclusionFilters() {
+    return exclusionFilters;
+  }
+
+  public void setExclusionFilters(List<String> exclusionFilters) {
+    this.exclusionFilters = exclusionFilters;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
@@ -324,6 +343,7 @@ public class ApiHdfsReplicationArguments {
                   .add("skipTrash", skipTrash)
                   .add("replicationStrategy", replicationStrategy)
                   .add("preserveXAttrs", preserveXAttrs)
+                  .add("exclusionFilters", exclusionFilters)
                   .toString();
   }
 
@@ -348,7 +368,8 @@ public class ApiHdfsReplicationArguments {
         skipChecksumChecks == other.getSkipChecksumChecks() &&
         Objects.equal(skipTrash, other.getSkipTrash()) &&
         Objects.equal(replicationStrategy, other.getReplicationStrategy()) &&
-        Objects.equal(preserveXAttrs, other.getPreserveXAttrs()));
+        Objects.equal(preserveXAttrs, other.getPreserveXAttrs())) &&
+        Objects.equal(exclusionFilters, other.getExclusionFilters());
   }
 
   @Override
@@ -358,6 +379,6 @@ public class ApiHdfsReplicationArguments {
         bandwidthPerMap, abortOnError, removeMissingFiles,
         preserveReplicationCount, preserveBlockSize, preservePermissions,
         logPath, skipChecksumChecks, skipTrash, replicationStrategy,
-        preserveXAttrs);
+        preserveXAttrs, exclusionFilters);
   }
 }

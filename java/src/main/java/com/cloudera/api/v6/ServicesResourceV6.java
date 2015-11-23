@@ -52,7 +52,7 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
   @Path("/{serviceName}/snapshots")
   public SnapshotsResource getSnapshotsResource(
       @PathParam(SERVICE_NAME) String serviceName);
-  
+
   /**
    * @return The YARN applications resource handler.
    */
@@ -72,7 +72,7 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
    * with valid configuration.
    * <p>
    * Available since API v6.
-   * 
+   *
    * @param serviceName
    *          Name of the Yarn service on which to run the command.
    * @return Information about the submitted command
@@ -95,7 +95,7 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
    * </ul>
    * <p>
    * Available since API v6.
-   * 
+   *
    * @param serviceName
    *          Name of the Yarn service on which to run the command.
    * @return Information about the submitted command
@@ -104,7 +104,7 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
   @Path("/{serviceName}/commands/switchToMr2")
   public ApiCommand switchToMr2(
       @PathParam(SERVICE_NAME) String serviceName);
-  
+
   /**
    * Enable high availability (HA) for a YARN ResourceManager.
    * <p>
@@ -127,7 +127,7 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
   public ApiCommand enableRmHaCommand(
       @PathParam(SERVICE_NAME) String serviceName,
       ApiEnableRmHaArguments args);
-  
+
   /**
    * Disable high availability (HA) for ResourceManager.
    *
@@ -185,7 +185,7 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
   public ApiCommand disableOozieHaCommand(
       @PathParam(SERVICE_NAME) String serviceName,
       ApiDisableOozieHaArguments args);
-  
+
   /**
    * Enable High Availability (HA) with Automatic Failover for an HDFS NameNode.
    * <p>
@@ -225,7 +225,7 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
    * Then, HDFS service is restarted and all services that were stopped
    * are started again afterwards.
    * Finally, client configs for HDFS and its depedents will be re-deployed.
-   * 
+   *
    * @param serviceName The HDFS service name.
    * @param args Arguments for the command.
    * @return Information about the submitted command.
@@ -439,5 +439,13 @@ public interface ServicesResourceV6 extends ServicesResourceV4 {
   @GET
   @Path("/{serviceName}/commandsByName")
   public ApiCommandMetadataList listServiceCommands(
-          @PathParam(SERVICE_NAME) String serviceName);
+      @PathParam(SERVICE_NAME) String serviceName);
+
+  /**
+   * @return The Impala queries resource handler
+   */
+  @Override
+  @Path("/{serviceName}/impalaQueries")
+  public ImpalaQueriesResourceV6 getImpalaQueriesResource(
+      @PathParam(SERVICE_NAME) String serviceName);
 }
