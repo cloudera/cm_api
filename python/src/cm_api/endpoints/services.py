@@ -93,8 +93,10 @@ class ApiService(BaseApiResource):
     'configStalenessStatus'       : ROAttr(),
     'clientConfigStalenessStatus' : ROAttr(),
     'serviceUrl'                  : ROAttr(),
+    'roleInstancesUrl'            : ROAttr(),
     'maintenanceMode'             : ROAttr(),
     'maintenanceOwners'           : ROAttr(),
+    'entityStatus'                : ROAttr(),
   }
 
   def __init__(self, resource_root, name=None, type=None):
