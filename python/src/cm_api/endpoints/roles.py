@@ -116,6 +116,7 @@ class ApiRole(BaseApiResource):
     'configStale'           : ROAttr(),
     'configStalenessStatus' : ROAttr(),
     'haStatus'              : ROAttr(),
+    'entityStatus'          : ROAttr(),
     'roleUrl'               : ROAttr(),
     'commissionState'       : ROAttr(),
     'maintenanceMode'       : ROAttr(),
