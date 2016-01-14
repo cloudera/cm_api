@@ -23,7 +23,7 @@ def get_all_users(resource_root, view=None):
   Get all users.
 
   @param resource_root: The root Resource object
-  @param view: View to materialize ('full' or 'summary').
+  @param view: View to materialize (None or 'export').
   @return: A list of ApiUser objects.
   """
   return call(resource_root.get, USERS_PATH, ApiUser, True,
@@ -47,9 +47,21 @@ def create_user(resource_root, username, password, roles):
   @param resource_root: The root Resource object
   @param username: Username
   @param password: Password
-  @param roles: List of roles for the user. This should be [] or ['ROLE_USER']
-                for a regular user, ['ROLE_ADMIN'] for an admin, or
-                ['ROLE_LIMITED'] for a limited admin.
+  @param roles: A list of roles this user belongs to.
+                In Cloudera Express, possible values are:
+                 * ROLE_ADMIN
+                 * ROLE_USER
+                In Cloudera Enterprise Datahub Edition, additional possible values are:
+                 * ROLE_LIMITED: Added in Cloudera Manager 5.0
+                 * ROLE_OPERATOR: Added in Cloudera Manager 5.1
+                 * ROLE_CONFIGURATOR: Added in Cloudera Manager 5.1
+                 * ROLE_CLUSTER_ADMIN: Added in Cloudera Manager 5.2
+                 * ROLE_BDR_ADMIN: Added in Cloudera Manager 5.2
+                 * ROLE_NAVIGATOR_ADMIN: Added in Cloudera Manager 5.2
+                 * ROLE_USER_ADMIN: Added in Cloudera Manager 5.2
+                 #  for v11
+                 * ROLE_KEY_ADMIN: Added in Cloudera Manager 5.5
+                 An empty list implies ROLE_USER.
   @return: An ApiUser object
   """
   apiuser = ApiUser(resource_root, username, password=password, roles=roles)
@@ -85,6 +97,9 @@ class ApiUser(BaseApiResource):
     'name'      : None,
     'password'  : None,
     'roles'     : None,
+    'pwHash'    : None,
+    'pwSalt'    : None,
+    'pwLogin'   : None,
   }
 
   def __init__(self, resource_root, name=None, password=None, roles=None):
