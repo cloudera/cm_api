@@ -97,9 +97,9 @@ class ApiUser(BaseApiResource):
     'name'      : None,
     'password'  : None,
     'roles'     : None,
-    'pwHash'    : None,
-    'pwSalt'    : None,
-    'pwLogin'   : None,
+    'pwHash'    : ROAttr(),
+    'pwSalt'    : ROAttr(),
+    'pwLogin'   : ROAttr(),
   }
 
   def __init__(self, resource_root, name=None, password=None, roles=None):
