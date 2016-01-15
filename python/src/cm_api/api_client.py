@@ -218,6 +218,15 @@ class ApiResource(Resource):
     """
     return users.delete_user(self, username)
 
+  def update_user(self, user):
+    """
+    Update user by ApiUser object.
+
+    @param user: ApiUser object
+    @return: An ApiUser object
+    """
+    return users.update_user(self, user)
+
   # Events
 
   def query_events(self, query_str = None):
