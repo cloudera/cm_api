@@ -272,15 +272,34 @@ class ApiResource(Resource):
     resp = self.get(path, params=params)
     return types.ApiList.from_json_dict(resp, self, types.ApiMetric)
 
-  def query_timeseries(self, query, from_time=None, to_time=None):
+  def query_timeseries(self, query, from_time=None, to_time=None,
+    desired_rollup=None, must_use_desired_rollup=None, by_post=False):
     """
-    Query time series.
+    Query for time series data from the CM time series data store.
     @param query: Query string.
     @param from_time: Start of the period to query (optional).
+    @type from_time: datetime.datetime Note the that datetime must either be time
+                     zone aware or specified in the server time zone. See the
+                     python datetime documentation for more details about python's
+                     time zone handling.
     @param to_time: End of the period to query (default = now).
-    @return: A list of ApiTimeSeriesResponse.
+                    This may be an ISO format string, or a datetime object.
+    @type to_time: datetime.datetime Note the that datetime must either be time
+                   zone aware or specified in the server time zone. See the
+                   python datetime documentation for more details about python's
+                   time zone handling.
+    @param desired_rollup: The aggregate rollup to get data for. This can be
+                           RAW, TEN_MINUTELY, HOURLY, SIX_HOURLY, DAILY, or
+                           WEEKLY. Note that rollup desired is only a hint unless
+                           must_use_desired_rollup is set to true.
+    @param must_use_desired_rollup: Indicates that the monitoring server should
+                                    return the data at the rollup desired.
+    @param by_post: If true, an HTTP POST request will be made to server. This
+                    allows longer query string to be accepted compared to HTTP
+                    GET request.
+    @return: List of ApiTimeSeriesResponse
     """
-    return timeseries.query_timeseries(self, query, from_time, to_time)
+    return timeseries.query_timeseries(self, query, from_time, to_time, desired_rollup, must_use_desired_rollup, by_post)
 
   def get_metric_schema(self):
     """
