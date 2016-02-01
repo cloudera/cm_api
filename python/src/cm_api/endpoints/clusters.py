@@ -16,6 +16,7 @@
 
 from cm_api.endpoints.types import *
 from cm_api.endpoints import services, parcels, host_templates
+from sys import api_version
 
 __docformat__ = "epytext"
 
@@ -605,3 +606,17 @@ class ApiCluster(BaseApiResource):
     if datanode_web_port:
         args['datanodeWebPort'] = datanode_web_port
     return self._cmd('configureForKerberos', data=args, api_version=11)
+
+  def export(self, export_auto_config=False):
+    """
+    Export the cluster template for the given cluster. ccluster must have host
+    templates defined. It cluster does not have host templates defined it will
+    export host templates based on roles assignment.
+
+    @param export_auto_config: Also export auto configured configs
+    @return: Return cluster template
+    @since: API v12
+    """
+
+    return self._get("export", ApiClusterTemplate, False,
+                     params=dict(exportAutoConfig=export_auto_config), api_version=12)

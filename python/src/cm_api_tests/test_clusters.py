@@ -42,7 +42,7 @@ class TestCluster(unittest.TestCase):
         data=data,
         retdata={ 'name' : 'foo'})
     cluster.update_cdh_version('4.2.1')
- 
+
   def test_upgrade_cdh(self):
     resource = utils.MockResource(self)
     cluster = ApiCluster(resource, name="foo")
@@ -104,3 +104,13 @@ class TestCluster(unittest.TestCase):
         data=data,
         retdata={ 'name' : 'foo'})
     cluster.configure_for_kerberos(23456, 12345)
+
+  def test_export_cluster_template(self):
+    resource = utils.MockResource(self)
+    cluster = ApiCluster(resource, name="foo")
+    resource.expect(
+      method="GET",
+      reqpath="/clusters/foo/export",
+      params=dict(exportAutoConfig=True),
+      retdata=ApiClusterTemplate(resource).to_json_dict())
+    cluster.export(export_auto_config=True)

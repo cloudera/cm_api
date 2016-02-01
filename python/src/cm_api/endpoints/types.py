@@ -1140,6 +1140,93 @@ class ApiTimeSeriesRequest(BaseApiObject):
   def __str__(self):
     return "<ApiTimeSeriesRequest>: %s" % (self.query)
 
+class ApiProductVersion(BaseApiObject):
+  _ATTRIBUTES = {
+    'version'       : None,
+    'product'       : None,
+  }
+
+class ApiClusterTemplateConfig(BaseApiObject):
+  _ATTRIBUTES = {
+    'name'        : None,
+    'value'       : None,
+    'ref'         : None,
+    'variable'    : None,
+    'autoConfig'  : None,
+  }
+
+class ApiClusterTemplateRoleConfigGroup(BaseApiObject):
+  _ATTRIBUTES = {
+    'refName'        : None,
+    'roleType'       : None,
+    'base'           : None,
+    'displayName'    : None,
+    'configs'        : Attr(ApiClusterTemplateConfig),
+  }
+
+class ApiClusterTemplateRole(BaseApiObject):
+  _ATTRIBUTES = {
+    'refName'           : None,
+    'roleType'          : None,
+  }
+
+class ApiClusterTemplateHostTemplate(BaseApiObject):
+  _ATTRIBUTES = {
+    'refName'                   : None,
+    'roleConfigGroupsRefNames'  : None,
+  }
+
+class ApiClusterTemplateHostInfo(BaseApiObject):
+  _ATTRIBUTES = {
+    'hostName'                  : None,
+    'hostNameRange'             : None,
+    'rackId'                    : None,
+    'hostTemplateRefName'       : None,
+    'roleRefNames'              : None,
+  }
+
+class ApiClusterTemplateVariable(BaseApiObject):
+  _ATTRIBUTES = {
+    'name'         : None,
+    'value'        : None,
+  }
+
+class ApiClusterTemplateRoleConfigGroupInfo(BaseApiObject):
+  _ATTRIBUTES = {
+    'rcgRefName'  : None,
+    'name'        : None,
+  }
+
+class ApiClusterTemplateInstantiator(BaseApiObject):
+  _ATTRIBUTES = {
+    'clusterName'      : None,
+    'hosts'            : Attr(ApiClusterTemplateHostInfo),
+    'variables'        : Attr(ApiClusterTemplateVariable),
+    'roleConfigGroups' : Attr(ApiClusterTemplateRoleConfigGroupInfo),
+  }
+
+class ApiClusterTemplateService(BaseApiObject):
+  _ATTRIBUTES = {
+    'refName'           : None,
+    'serviceType'       : None,
+    'serviceConfigs'    : Attr(ApiClusterTemplateConfig),
+    'roleConfigGroups'  : Attr(ApiClusterTemplateRoleConfigGroup),
+    'displayName'       : None,
+    'roles'             : Attr(ApiClusterTemplateRole),
+  }
+
+class ApiClusterTemplate(BaseApiObject):
+  _ATTRIBUTES = {
+    'cdhVersion'    : None,
+    'displayName'   : None,
+    'cmVersion'     : None,
+    "repositories"  : None,
+    'products'      : Attr(ApiProductVersion),
+    'services'      : Attr(ApiClusterTemplateService),
+    'hostTemplates' : Attr(ApiClusterTemplateHostTemplate),
+    'instantiator'  : Attr(ApiClusterTemplateInstantiator),
+  }
+
 def config_to_api_list(dic):
   """
   Converts a python dictionary into a list containing the proper
