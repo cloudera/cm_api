@@ -16,7 +16,8 @@
 
 import unittest
 from cm_api.endpoints.cms import ClouderaManager
-from cm_api.endpoints.types import config_to_json, ApiConfig, ApiCmPeer
+from cm_api.endpoints.types import config_to_json, ApiConfig, ApiCmPeer,\
+  ApiCommand, ApiClusterTemplate
 from cm_api_tests import utils
 
 try:
@@ -278,3 +279,15 @@ class TestCMS(unittest.TestCase):
         params=params_status_aggregation,
         retdata=json.loads(SAMPLE_COMMAND_JSON))
     cms.test_peer_connectivity("peer2", peer_type="STATUS_AGGREGATION")
+
+  def test_import_cluster_v12(self):
+    resource = utils.MockResource(self, version=12)
+    cms = ClouderaManager(resource)
+    data = ApiClusterTemplate(resource).to_json_dict()
+    resource.expect(
+      method="POST",
+      reqpath="/cm/importClusterTemplate",
+      data = data,
+      retdata=ApiCommand(resource).to_json_dict())
+    cms.import_cluster_template(data)
+
