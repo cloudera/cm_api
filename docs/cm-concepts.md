@@ -104,5 +104,5 @@ except that the Management Service does not belong to a cluster.
 Architecture Overview
 =====================
 Also see the [Cloudera Manager
-Primer](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CM4Ent/latest/Cloudera-Manager-Introduction/cmi_primer.html)
+Primer](http://www.cloudera.com/documentation/enterprise/latest/topics/cm_intro_primer.html)
 for an overview on Cloudera Manager's architecture.
