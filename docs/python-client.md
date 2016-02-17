@@ -213,7 +213,7 @@ for ts in ts_list.timeSeries:
 {% endhighlight %}
 
 This example uses the new-style `/cm/timeseries` endpoint (which uses
-[tsquery](http://tiny.cloudera.com/tsquery_doc)) to get metric data points.
+[tsquery](http://tiny.cloudera.com/tsquery)) to get metric data points.
 Even though the example is querying HDFS metrics, the processing logic is the
 same for all queries.
 
