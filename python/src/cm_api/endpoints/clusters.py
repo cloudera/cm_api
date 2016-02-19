@@ -620,3 +620,15 @@ class ApiCluster(BaseApiResource):
 
     return self._get("export", ApiClusterTemplate, False,
                      params=dict(exportAutoConfig=export_auto_config), api_version=12)
+
+  def list_dfs_services(self, view=None):
+    """
+    List available DFS (distributed file system) services in a cluster.
+    @param view: View to materialize
+    @return: List of available distributed file system services in the cluster.
+    @since: API v12
+    """
+    if view:
+      return self._get_resource_root().get("%s/%s?view=%s" % (self._path(), 'dfsServices', view))
+    else:
+      return self._get_resource_root().get("%s/%s" % (self._path(), 'dfsServices'))

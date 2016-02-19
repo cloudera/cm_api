@@ -114,3 +114,18 @@ class TestCluster(unittest.TestCase):
       params=dict(exportAutoConfig=True),
       retdata=ApiClusterTemplate(resource).to_json_dict())
     cluster.export(export_auto_config=True)
+
+  def test_list_dfs_services(self):
+    resource = utils.MockResource(self)
+    cluster = ApiCluster(resource, name="foo")
+    data = None
+    resource.expect("GET", "/clusters/foo/dfsServices",
+        data=data,
+        retdata={ 'name' : 'foo'})
+    cluster.list_dfs_services()
+
+    data = None
+    resource.expect("GET", "/clusters/foo/dfsServices?view=EXPORT",
+        data=data,
+        retdata={ 'name' : 'foo'})
+    cluster.list_dfs_services(view="EXPORT")
