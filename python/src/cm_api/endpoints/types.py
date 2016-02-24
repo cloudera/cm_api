@@ -1173,6 +1173,7 @@ class ApiClusterTemplateRole(BaseApiObject):
 class ApiClusterTemplateHostTemplate(BaseApiObject):
   _ATTRIBUTES = {
     'refName'                   : None,
+    'cardinality'               : None,
     'roleConfigGroupsRefNames'  : None,
   }
 
