@@ -14,9 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import types
+
 from cm_api import api_client
 from cm_api.endpoints.types import Attr
 from cm_api.resource import Resource
+from cm_api.api_client import ApiResource
 
 try:
   import json
@@ -73,6 +76,15 @@ class MockResource(Resource):
     @param retdata: data to return from the invoke call.
     """
     self._next_expect = (method, reqpath, params, data, headers, retdata)
+
+
+class MockApiResource(MockResource):
+    """Mock class for ApiResource"""
+
+    # workaround to make this method available for testing
+    def update_user(self, *args, **kwargs):
+      return ApiResource.update_user.__get__(self, ApiResource)(*args, **kwargs)
+
 
 def deserialize(raw_data, cls):
   """

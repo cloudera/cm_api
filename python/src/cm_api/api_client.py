@@ -209,6 +209,20 @@ class ApiResource(Resource):
     """
     return users.create_user(self, username, password, roles)
 
+  def update_user(self, username, password, roles):
+    """
+    Update a user.
+
+    Replaces the user's details with those provided.
+
+    @param username: Username
+    @param password: Password
+    @param roles: List of roles for the user. This should be [] for a
+                  regular user, or ['ROLE_ADMIN'] for an admin.
+    @return: An ApiUser object
+    """
+    return users.update_user(self, users.ApiUser(self, username, password, roles))
+
   def delete_user(self, username):
     """
     Delete user by username.
