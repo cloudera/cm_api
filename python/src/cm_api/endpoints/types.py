@@ -1084,16 +1084,27 @@ class ApiMr2AppInformation(BaseApiObject):
 
 class ApiYarnApplication(BaseApiObject):
   _ATTRIBUTES = {
-    'applicationId'          : ROAttr(),
-    'name'                   : ROAttr(),
-    'user'                   : ROAttr(),
-    'startTime'              : ROAttr(datetime.datetime),
-    'endTime'                : ROAttr(datetime.datetime),
-    'pool'                   : ROAttr(),
-    'state'                  : ROAttr(),
-    'progress'               : ROAttr(),
-    'mr2AppInformation'      : ROAttr(ApiMr2AppInformation),
-    'attributes'             : ROAttr(),
+    'applicationId'                    : ROAttr(),
+    'name'                             : ROAttr(),
+    'user'                             : ROAttr(),
+    'startTime'                        : ROAttr(datetime.datetime),
+    'endTime'                          : ROAttr(datetime.datetime),
+    'pool'                             : ROAttr(),
+    'state'                            : ROAttr(),
+    'progress'                         : ROAttr(),
+    'mr2AppInformation'                : ROAttr(ApiMr2AppInformation),
+    'attributes'                       : ROAttr(),
+    'allocatedMB'                      : ROAttr(),
+    'allocatedVCores'                  : ROAttr(),
+    'runningContainers'                : ROAttr(),
+    'applicationTags'                  : ROAttr(),
+    'allocatedMemorySeconds'           : ROAttr(),
+    'allocatedVcoreSeconds'            : ROAttr(),
+    'containerUsedMemorySeconds'       : ROAttr(),
+    'containerUsedCpuSeconds'          : ROAttr(),
+    'containerUsedVcoreSeconds'        : ROAttr(),
+    'containerAllocatedMemorySeconds'  : ROAttr(),
+    'containerAllocatedVcoreSeconds'   : ROAttr(),
   }
 
   def __str__(self):
