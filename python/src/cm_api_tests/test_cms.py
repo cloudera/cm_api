@@ -287,7 +287,8 @@ class TestCMS(unittest.TestCase):
     resource.expect(
       method="POST",
       reqpath="/cm/importClusterTemplate",
+      params=dict(addRepositories=True),
       data = data,
       retdata=ApiCommand(resource).to_json_dict())
-    cms.import_cluster_template(data)
+    cms.import_cluster_template(data, True)
 
