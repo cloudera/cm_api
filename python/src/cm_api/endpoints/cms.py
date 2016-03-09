@@ -483,12 +483,13 @@ class ClouderaManager(BaseApiResource):
     """
     self._post("trial/end", None, api_version=6)
 
-  def import_cluster_template(self, api_cluster_template):
+  def import_cluster_template(self, api_cluster_template, add_repositories=False):
     """
     Create a cluster according to the provided template
 
     @param api_cluster_template: cluster template to import
+    @param add_repositories: if true the parcels repositories in the cluster template will be added.
     @return: Command handing cluster import
     @since: API v12
     """
-    return self._post("importClusterTemplate", ApiCommand, False, api_cluster_template, api_version=12)
+    return self._post("importClusterTemplate", ApiCommand, False, api_cluster_template, params=dict(addRepositories=add_repositories), api_version=12)
