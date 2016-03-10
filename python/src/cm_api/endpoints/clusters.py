@@ -621,6 +621,15 @@ class ApiCluster(BaseApiResource):
     return self._get("export", ApiClusterTemplate, False,
                      params=dict(exportAutoConfig=export_auto_config), api_version=12)
 
+  def pools_refresh(self):
+    """
+    Refresh Dynamic Pools configurations for relevant services..
+
+    @return: Reference to the submitted command.
+    @since: API v12
+    """
+    return self._cmd('poolsRefresh')
+
   def list_dfs_services(self, view=None):
     """
     List available DFS (distributed file system) services in a cluster.

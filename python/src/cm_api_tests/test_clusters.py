@@ -115,6 +115,15 @@ class TestCluster(unittest.TestCase):
       retdata=ApiClusterTemplate(resource).to_json_dict())
     cluster.export(export_auto_config=True)
 
+  def test_pools_refresh(self):
+    resource = utils.MockResource(self)
+    cluster = ApiCluster(resource, name="foo")
+
+    resource.expect("POST", "/clusters/foo/commands/poolsRefresh",
+        data=None,
+        retdata={ 'name' : 'foo'})
+    cluster.pools_refresh()
+
   def test_list_dfs_services(self):
     resource = utils.MockResource(self)
     cluster = ApiCluster(resource, name="foo")
