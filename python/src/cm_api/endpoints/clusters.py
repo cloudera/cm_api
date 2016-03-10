@@ -626,9 +626,9 @@ class ApiCluster(BaseApiResource):
     Refresh Dynamic Pools configurations for relevant services..
 
     @return: Reference to the submitted command.
-    @since: API v12
+    @since: API v6
     """
-    return self._cmd('poolsRefresh')
+    return self._cmd('poolsRefresh', api_version=6)
 
   def list_dfs_services(self, view=None):
     """
