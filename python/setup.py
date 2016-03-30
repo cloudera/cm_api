@@ -38,7 +38,7 @@ extras_require = dict(Socks=['PySocks >= 1.5.0'])
 
 setup(
   name = 'cm_api',
-  version = '12.0.0',    # Compatible with API v12 (CM 5.7)
+  version = '13.0.0',    # Compatible with API v13 (CM 5.8)
   packages = find_packages('src', exclude=['cm_api_tests']),
   package_dir = {'cm_api': 'src/cm_api',
                  'cm_shell': 'src/cm_shell'},
