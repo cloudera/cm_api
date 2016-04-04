@@ -40,8 +40,8 @@ setup(
   name = 'cm_api',
   version = '13.0.0',    # Compatible with API v13 (CM 5.8)
   packages = find_packages('src', exclude=['cm_api_tests']),
-  package_dir = {'cm_api': 'src/cm_api',
-                 'cm_shell': 'src/cm_shell'},
+  package_dir = {'': 'src' },
+
 
   # Project uses simplejson, so ensure that it gets installed or upgraded
   # on the target machine
