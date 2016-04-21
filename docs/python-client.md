@@ -413,10 +413,9 @@ Import following modules
 
 {% highlight python %}
 import json
-from cm_api.api_client import *
-from cm_api.endpoints.types import *
-from cm_api.endpoints.cms import *
-from cm_api.endpoints.clusters import *
+from cm_api.api_client import ApiResource
+from cm_api.endpoints.types import ApiClusterTemplate
+from cm_api.endpoints.cms import ClouderaManager
 {% endhighlight %}
 
 Export the cluster template as a json file
