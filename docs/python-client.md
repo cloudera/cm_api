@@ -240,7 +240,7 @@ print "Active: %s. Success: %s" % (cmd.active, cmd.success)
 
 You can also chain the `wait()` call:
 
-{% highlight python %}
+{% highlight python %}Managing Parcels
 cmd = hdfs.restart().wait()
 {% endhighlight %}
 
@@ -401,4 +401,71 @@ Restart your cluster to pick up the new parcel.
 cluster.stop().wait()
 cluster.start().wait()
 {% endhighlight %}
+
+Cluster Template
+------------------------------
+
+These examples cover how to export and import cluster template.
+
+These examples requires v12 of the CM API or higher.
+
+Import following modules
+
+{% highlight python %}
+import json
+from cm_api.api_client import *
+from cm_api.endpoints.types import *
+from cm_api.endpoints.cms import *
+from cm_api.endpoints.clusters import *
+{% endhighlight %}
+
+Export the cluster template as a json file
+
+{% highlight python %}
+resource = ApiResource("source-host", 7180, "admin", "admin", version=12)
+cluster = resource.get_cluster("Cluster 1")
+template = cluster.export()
+with open('/tmp/template.json', 'w') as outfile:
+json.dump(template.to_json_dict(), outfile, indent=4, sort_keys=True)
+{% endhighlight %}
+
+Make the required changes in the template file manually or using the python api's. User needs to map the hosts in the target cluster with right host templates and provide information about all the variables,like database information in the target cluster.
+
+{% highlight xml %}
+  "instantiator" : {
+    "clusterName" : "<changeme>",
+    "hosts" : [ {
+      "hostName" : "<changeme>",
+      "hostTemplateRefName" : "<changeme>",
+      "roleRefNames" : [ "HDFS-1-NAMENODE-18041ba96f26361b0735d72598476dc1" ]
+    }, {
+      "hostName" : "<changeme>",
+      "hostTemplateRefName" : "<changeme>"
+    }, {
+      "hostNameRange" : "<HOST[0001-0002]>",
+      "hostTemplateRefName" : "<changeme>"
+    } ],
+    "variables" : [ {
+      "name" : "FLUME-1-flume_truststore_password",
+      "value" : "<changeme>"
+    }, {
+      "name" : "HBASE-1-HBASERESTSERVER-BASE-hbase_restserver_keystore_keypassword",
+      "value" : "<changeme>"
+    }, {
+    .
+    .
+{% endhighlight %}    
+
+Invoking import cluster template on the target cluster
+
+{% highlight python %}
+resource = ApiResource("target_host", 7180, "admin", "admin", version=12)
+with open('/tmp/template.json') as data_file:
+  data = json.load(data_file)
+template = ApiClusterTemplate(resource).from_json_dict(data, resource)
+cms = ClouderaManager(resource)
+command = cms.import_cluster_template(template)
+{% endhighlight %}
+
+User can use this command to track the progress. The progress can be tracked by command details page in UI 
 
