@@ -37,15 +37,16 @@ if platform == 'darwin':
 # Optional PySocks support
 extras_require = dict(Socks=['PySocks >= 1.5.0'])
 
-base_dir = os.path.relpath(os.path.split(__file__)[0], os.getcwd())
-src_dir = os.path.join(base_dir, 'src')
+base_dir = os.path.relpath(os.path.normpath(os.path.split(__file__)[0]),
+                           os.getcwd())
+src_dir = os.path.normpath(os.path.join(base_dir, 'src'))
 
 setup(
   name = 'cm_api',
   version = '14.0.0',    # Compatible with API v14 (CM 5.9)
   packages = find_packages(src_dir, exclude=['cm_api_tests']),
   package_dir = {'': src_dir },
-
+  zip_safe = True,
 
   # Project uses simplejson, so ensure that it gets installed or upgraded
   # on the target machine
