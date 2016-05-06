@@ -708,6 +708,18 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'exclusionFilters'          : None,
   }
 
+class ApiHdfsCloudReplicationArguments(ApiHdfsReplicationArguments):
+  @classmethod
+  def _get_attributes(cls):
+    if not cls.__dict__.has_key('_ATTRIBUTES'):
+      attrs = {
+        'cloudAccount'  : None,
+        'cloudService'    : None,
+      }
+      attrs.update(ApiHdfsReplicationArguments._get_attributes())
+      cls._ATTRIBUTES = attrs
+    return cls._ATTRIBUTES
+
 class ApiHdfsReplicationResult(BaseApiObject):
   _ATTRIBUTES = {
     'progress'            : ROAttr(),
@@ -797,6 +809,7 @@ class ApiReplicationSchedule(BaseApiObject):
     'paused'          : None,
     'hdfsArguments'   : Attr(ApiHdfsReplicationArguments),
     'hiveArguments'   : Attr(ApiHiveReplicationArguments),
+    'hdfsCloudArguments'   : Attr(ApiHdfsCloudReplicationArguments),
     'alertOnStart'    : None,
     'alertOnSuccess'  : None,
     'alertOnFail'     : None,
