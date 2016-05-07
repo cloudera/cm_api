@@ -42,6 +42,7 @@ public class ApiReplicationSchedule extends ApiSchedule {
   private ApiHdfsReplicationArguments hdfsArguments;
   private ApiHiveReplicationArguments hiveArguments;
   private List<ApiReplicationCommand> history;
+  private Boolean active;
 
   public ApiReplicationSchedule() {
     // For JAX-B.
@@ -80,6 +81,19 @@ public class ApiReplicationSchedule extends ApiSchedule {
 
   public void setHistory(List<ApiReplicationCommand> history) {
     this.history = history;
+  }
+
+  /**
+   *  Read-only field that is true if this schedule is currently active, false if not.
+   *  Available since API v11.
+   */
+  @XmlElement
+  public Boolean isActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 
   @Override

@@ -26,7 +26,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ApiTimeSeriesCrossEntityMetadata {
 
   private String maxEntityDisplayName;
+  private String maxEntityName;
   private String minEntityDisplayName;
+  private String minEntityName;
   private Double numEntities;
 
   /**
@@ -43,6 +45,21 @@ public class ApiTimeSeriesCrossEntityMetadata {
   }
 
   /**
+   * The name of the entity that had the maximum value for the
+   * cross-entity aggregate metric.
+   * <p>
+   * Available since API v11.
+   */
+  @XmlElement
+  public String getMaxEntityName() {
+    return maxEntityName;
+  }
+
+  public void setMaxEntityName(String maxEntityName) {
+    this.maxEntityName = maxEntityName;
+  }
+
+  /**
    * The display name of the entity that had the minimum value for the
    * cross-entity aggregate metric.
    */
@@ -53,6 +70,21 @@ public class ApiTimeSeriesCrossEntityMetadata {
 
   public void setMinEntityDisplayName(String minEntityDisplayName) {
     this.minEntityDisplayName = minEntityDisplayName;
+  }
+
+  /**
+   * The name of the entity that had the minimum value for the
+   * cross-entity aggregate metric.
+   * <p>
+   * Available since API v11.
+   */
+  @XmlElement
+  public String getMinEntityName() {
+    return minEntityName;
+  }
+
+  public void setMinEntityName(String minEntityName) {
+    this.minEntityName = minEntityName;
   }
 
   /**

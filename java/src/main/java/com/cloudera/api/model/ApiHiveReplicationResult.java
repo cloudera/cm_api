@@ -38,6 +38,7 @@ public class ApiHiveReplicationResult {
   private List<ApiHiveReplicationError> errors;
   private ApiHdfsReplicationResult dataReplicationResult;
   private boolean dryRun;
+  private String runAsUser;
 
   public ApiHiveReplicationResult() {
     // For JAX-B
@@ -164,6 +165,19 @@ public class ApiHiveReplicationResult {
     this.dryRun = dryRun;
   }
 
+  /**
+   * Name of the of proxy user, if any.
+   * Available since API v11.
+   */
+  @XmlElement
+  public String getRunAsUser() {
+    return runAsUser;
+  }
+
+  public void setRunAsUser(String runAsUser) {
+    this.runAsUser = runAsUser;
+  }
+
   @Override
   public boolean equals(Object o) {
     ApiHiveReplicationResult that = ApiUtils.baseEquals(this, o);
@@ -172,12 +186,14 @@ public class ApiHiveReplicationResult {
         Objects.equal(tables, that.getTables()) &&
         Objects.equal(impalaUDFs, that.getImpalaUDFs()) &&
         Objects.equal(errors, that.getErrors()) &&
-        dryRun == that.isDryRun());
+        dryRun == that.isDryRun() &&
+        Objects.equal(runAsUser, that.getRunAsUser()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(phase, tables, impalaUDFs, errors, dryRun);
+    return Objects.hashCode(phase, tables, impalaUDFs, errors, dryRun,
+        runAsUser);
   }
 
   @Override
@@ -188,6 +204,7 @@ public class ApiHiveReplicationResult {
         .add("impalaUDFs", impalaUDFs)
         .add("errors", errors)
         .add("dryRun", dryRun)
+        .add("runAsUser", runAsUser)
         .toString();
   }
 

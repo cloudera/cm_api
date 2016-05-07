@@ -15,14 +15,15 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 
 /**
  * Represents a Yarn application
@@ -31,6 +32,8 @@ import com.google.common.base.Preconditions;
 public class ApiYarnApplication {
 
   private String applicationId;
+
+
   private String name;
   private Date startTime;
   private Date endTime;
@@ -40,6 +43,18 @@ public class ApiYarnApplication {
   private Double progress;
   private ApiMr2AppInformation mr2AppInfo;
   private Map<String, String> attributes;
+  private List<String> applicationTags;
+  private Long allocatedMemorySeconds;
+  private Long allocatedVcoreSeconds;
+  private Integer allocatedMB;
+  private Integer allocatedVCores;
+  private Integer runningContainers;
+
+  private Double containerUsedMemorySeconds;
+  private Double containerUsedCpuSeconds;
+  private Double containerUsedVcoreSeconds;
+  private Double containerAllocatedMemorySeconds;
+  private Double containerAllocatedVcoreSeconds;
 
   public ApiYarnApplication() {
     // For JAX-B
@@ -55,7 +70,18 @@ public class ApiYarnApplication {
       String state,
       Double progress,
       ApiMr2AppInformation mr2AppInfo,
-      Map<String, String> attributes) {
+      Map<String, String> attributes,
+      List<String> applicationTags,
+      Long allocatedMemorySeconds,
+      Long allocatedVcoreSeconds,
+      Integer allocatedMB,
+      Integer allocatedVCores,
+      Integer runningContainers,
+      Double containerUsedMemorySeconds,
+      Double containerUsedCpuSeconds,
+      Double containerUsedVcoreSeconds,
+      Double containerAllocatedMemorySeconds,
+      Double containerAllocatedVcoreSeconds) {
     Preconditions.checkNotNull(applicationId);
     Preconditions.checkNotNull(name);
     Preconditions.checkNotNull(startTime);
@@ -71,6 +97,89 @@ public class ApiYarnApplication {
     this.progress = progress;
     this.attributes = attributes;
     this.mr2AppInfo = mr2AppInfo;
+    this.applicationTags = applicationTags;
+    this.allocatedMemorySeconds = allocatedMemorySeconds;
+    this.allocatedVcoreSeconds = allocatedVcoreSeconds;
+    this.allocatedMB = allocatedMB;
+    this.allocatedVCores = allocatedVCores;
+    this.runningContainers = runningContainers;
+    this.containerUsedMemorySeconds = containerUsedMemorySeconds;
+    this.containerUsedCpuSeconds = containerUsedCpuSeconds;
+    this.containerUsedVcoreSeconds = containerUsedVcoreSeconds;
+    this.containerAllocatedMemorySeconds = containerAllocatedMemorySeconds;
+    this.containerAllocatedVcoreSeconds = containerAllocatedVcoreSeconds;
+  }
+
+  /**
+   The sum of memory in MB allocated to the application's running containers
+   Available since v12.
+   */
+  @XmlElement
+  public Integer getAllocatedMB() {
+    return allocatedMB;
+  }
+
+  public void setAllocatedMB(Integer allocatedMB) {
+    this.allocatedMB = allocatedMB;
+  }
+
+  /**
+   The sum of virtual cores allocated to the application's running containers
+   Available since v12.
+   */
+  @XmlElement
+  public Integer getAllocatedVCores() {
+    return allocatedVCores;
+  }
+
+  public void setAllocatedVCores(Integer allocatedVCores) {
+    this.allocatedVCores = allocatedVCores;
+  }
+
+  /**
+   The number of containers currently running for the application
+   Available since v12.
+   */
+  @XmlElement
+  public Integer getRunningContainers() {
+    return runningContainers;
+  }
+
+  public void setRunningContainers(Integer runningContainers) {
+    this.runningContainers = runningContainers;
+  }
+
+  /** List of YARN application tags. Available since v12. */
+  @XmlElement
+  public List<String> getApplicationTags() {
+    return applicationTags;
+  }
+
+  public void setApplicationTags(List<String> applicationTags) {
+    this.applicationTags = applicationTags;
+  }
+
+  /**
+   Allocated memory to the application in units of mb-secs.
+   Available since v12.
+   */
+  @XmlElement
+  public Long getAllocatedMemorySeconds() {
+    return allocatedMemorySeconds;
+  }
+
+  public void setAllocatedMemorySeconds(Long allocatedMemorySeconds) {
+    this.allocatedMemorySeconds = allocatedMemorySeconds;
+  }
+
+  /** Allocated vcore-secs to the application. Available since v12. */
+  @XmlElement
+  public Long getAllocatedVcoreSeconds() {
+    return allocatedVcoreSeconds;
+  }
+
+  public void setAllocatedVcoreSeconds(Long allocatedVcoreSeconds) {
+    this.allocatedVcoreSeconds = allocatedVcoreSeconds;
   }
 
   /** The application id. */
@@ -179,6 +288,83 @@ public class ApiYarnApplication {
     this.state = state;
   }
 
+  /**
+   * Actual memory (in MB-secs) used by containers launched by the YARN application.
+   * Computed by running a MapReduce job from Cloudera Service Monitor to
+   * aggregate YARN usage metrics.
+   * Available since v12.
+   */
+  @XmlElement
+  public Double getContainerUsedMemorySeconds() {
+    return containerUsedMemorySeconds;
+  }
+
+  public void setContainerUsedMemorySeconds(Double containerUsedMemorySeconds) {
+    this.containerUsedMemorySeconds = containerUsedMemorySeconds;
+  }
+
+  /**
+   * Actual CPU (in percent-secs) used by containers launched by the YARN application.
+   * Computed by running a MapReduce job from Cloudera Service Monitor to
+   * aggregate YARN usage metrics.
+   * Available since v12.
+   */
+  @XmlElement
+  public Double getContainerUsedCpuSeconds() {
+    return containerUsedCpuSeconds;
+  }
+
+  public void setContainerUsedCpuSeconds(Double containerUsedCpuSeconds) {
+    this.containerUsedCpuSeconds = containerUsedCpuSeconds;
+  }
+
+  /**
+   * Actual VCore-secs used by containers launched by the YARN application.
+   * Computed by running a MapReduce job from Cloudera Service Monitor to
+   * aggregate YARN usage metrics.
+   * Available since v12.
+   */
+  @XmlElement
+  public Double getContainerUsedVcoreSeconds() {
+    return containerUsedVcoreSeconds;
+  }
+
+  public void setContainerUsedVcoreSeconds(Double containerUsedVcoreSeconds) {
+    this.containerUsedVcoreSeconds = containerUsedVcoreSeconds;
+  }
+
+  /**
+   * Total memory (in mb-secs) allocated to containers launched by the YARN application.
+   * Computed by running a MapReduce job from Cloudera Service Monitor to
+   * aggregate YARN usage metrics.
+   * Available since v12.
+   */
+  @XmlElement
+  public Double getContainerAllocatedMemorySeconds() {
+    return containerAllocatedMemorySeconds;
+  }
+
+  public void setContainerAllocatedMemorySeconds(
+      Double containerAllocatedMemorySeconds) {
+    this.containerAllocatedMemorySeconds = containerAllocatedMemorySeconds;
+  }
+
+  /**
+   * Total vcore-secs allocated to containers launched by the YARN application.
+   * Computed by running a MapReduce job from Cloudera Service Monitor to
+   * aggregate YARN usage metrics.
+   * Available since v12.
+   */
+  @XmlElement
+  public Double getContainerAllocatedVcoreSeconds() {
+    return containerAllocatedVcoreSeconds;
+  }
+
+  public void setContainerAllocatedVcoreSeconds(
+      Double containerAllocatedVcoreSeconds) {
+    this.containerAllocatedVcoreSeconds = containerAllocatedVcoreSeconds;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
@@ -191,6 +377,17 @@ public class ApiYarnApplication {
         .add("progress", progress)
         .add("attributes", attributes)
         .add("mr2AppInfo", mr2AppInfo)
+        .add("applicationTags", applicationTags)
+        .add("allocatedMemorySeconds", allocatedMemorySeconds)
+        .add("allocatedVcoreSeconds", allocatedVcoreSeconds)
+        .add("allocatedMB", allocatedMB)
+        .add("allocatedVCores", allocatedVCores)
+        .add("runningContainers", runningContainers)
+        .add("containerUsedMemorySeconds", containerUsedMemorySeconds)
+        .add("containerUsedCpuSeconds", containerUsedCpuSeconds)
+        .add("containerUsedVcoreSeconds", containerUsedVcoreSeconds)
+        .add("containerAllocatedMemorySeconds", containerAllocatedMemorySeconds)
+        .add("containerAllocatedVcoreSeconds", containerAllocatedVcoreSeconds)
         .toString();
   }
 }

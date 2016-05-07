@@ -23,11 +23,23 @@ public class ApiMrUsageReportRow {
   private String timePeriod;
   private String user;
   private String group;
-  private long cpuSec;
-  private long memoryBytes;
-  private long jobCount;
-  private long taskCount;
-  private long durationSec;
+  private Long cpuSec;
+  private Long memoryBytes;
+  private Long jobCount;
+  private Long taskCount;
+  private Long durationSec;
+  private Long failedMaps;
+  private Long totalMaps;
+  private Long failedReduces;
+  private Long totalReduces;
+  private Long mapInputBytes;
+  private Long mapOutputBytes;
+  private Long hdfsBytesRead;
+  private Long hdfsBytesWritten;
+  private Long localBytesRead;
+  private Long localBytesWritten;
+  private Long dataLocalMaps;
+  private Long rackLocalMaps;
 
   public ApiMrUsageReportRow() {
   }
@@ -43,6 +55,28 @@ public class ApiMrUsageReportRow {
     this.jobCount = jobCount;
     this.taskCount = taskCount;
     this.durationSec = durationSec;
+  }
+
+  public ApiMrUsageReportRow(String timePeriod, String user, String group,
+      long cpuSec, long memoryBytes, long jobCount, long taskCount,
+      long durationSec, long failedMaps, long totalMaps, long failedReduces,
+      long totalReduces, long mapInputBytes, long mapOutputBytes,
+      long hdfsBytesRead, long hdfsBytesWritten, long localBytesRead,
+      long localBytesWritten, long dataLocalMaps, long rackLocalMaps) {
+    this(timePeriod, user, group, cpuSec, memoryBytes, jobCount, taskCount,
+        durationSec);
+    this.failedMaps = failedMaps;
+    this.totalMaps = totalMaps;
+    this.failedReduces = failedReduces;
+    this.totalReduces = totalReduces;
+    this.mapInputBytes = mapInputBytes;
+    this.mapOutputBytes = mapOutputBytes;
+    this.hdfsBytesRead = hdfsBytesRead;
+    this.hdfsBytesWritten = hdfsBytesWritten;
+    this.localBytesRead = localBytesRead;
+    this.localBytesWritten = localBytesWritten;
+    this.dataLocalMaps = dataLocalMaps;
+    this.rackLocalMaps = rackLocalMaps;
   }
 
   /**
@@ -86,7 +120,7 @@ public class ApiMrUsageReportRow {
    * jobs.
    */
   @XmlElement
-  public long getCpuSec() {
+  public Long getCpuSec() {
     return cpuSec;
   }
 
@@ -99,7 +133,7 @@ public class ApiMrUsageReportRow {
    * MapReduce jobs.
    */
   @XmlElement
-  public long getMemoryBytes() {
+  public Long getMemoryBytes() {
     return memoryBytes;
   }
 
@@ -111,7 +145,7 @@ public class ApiMrUsageReportRow {
    * Number of jobs.
    */
   @XmlElement
-  public long getJobCount() {
+  public Long getJobCount() {
     return jobCount;
   }
 
@@ -123,7 +157,7 @@ public class ApiMrUsageReportRow {
    * Number of tasks.
    */
   @XmlElement
-  public long getTaskCount() {
+  public Long getTaskCount() {
     return taskCount;
   }
 
@@ -135,11 +169,167 @@ public class ApiMrUsageReportRow {
    * Total duration of this user's MapReduce jobs.
    */
   @XmlElement
-  public long getDurationSec() {
+  public Long getDurationSec() {
     return durationSec;
   }
 
   public void setDurationSec(long durationSec) {
     this.durationSec = durationSec;
+  }
+
+  /**
+   * Failed maps of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getFailedMaps() {
+    return failedMaps;
+  }
+
+  public void setFailedMaps(long failedMaps) {
+    this.failedMaps = failedMaps;
+  }
+
+  /**
+   * Total maps of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getTotalMaps() {
+    return totalMaps;
+  }
+
+  public void setTotalMaps(long totalMaps) {
+    this.totalMaps = totalMaps;
+  }
+
+  /**
+   * Failed reduces of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getFailedReduces() {
+    return failedReduces;
+  }
+
+  public void setFailedReduces(long failedReduces) {
+    this.failedReduces = failedReduces;
+  }
+
+  /**
+   * Total reduces of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getTotalReduces() {
+    return totalReduces;
+  }
+
+  public void setTotalReduces(long totalReduces) {
+    this.totalReduces = totalReduces;
+  }
+
+  /**
+   * Map input bytes of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getMapInputBytes() {
+    return mapInputBytes;
+  }
+
+  public void setMapInputBytes(long mapInputBytes) {
+    this.mapInputBytes = mapInputBytes;
+  }
+
+  /**
+   * Map output bytes of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getMapOutputBytes() {
+    return mapOutputBytes;
+  }
+
+  public void setMapOutputBytes(long mapOutputBytes) {
+    this.mapOutputBytes = mapOutputBytes;
+  }
+
+  /**
+   * HDFS bytes read of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getHdfsBytesRead() {
+    return hdfsBytesRead;
+  }
+
+  public void setHdfsBytesRead(long hdfsBytesRead) {
+    this.hdfsBytesRead = hdfsBytesRead;
+  }
+
+  /**
+   * HDFS bytes written of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getHdfsBytesWritten() {
+    return hdfsBytesWritten;
+  }
+
+  public void setHdfsBytesWritten(long hdfsBytesWritten) {
+    this.hdfsBytesWritten = hdfsBytesWritten;
+  }
+
+  /**
+   * Local bytes read of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getLocalBytesRead() {
+    return localBytesRead;
+  }
+
+  public void setLocalBytesRead(long localBytesRead) {
+    this.localBytesRead = localBytesRead;
+  }
+
+  /**
+   * Local bytes written of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getLocalBytesWritten() {
+    return localBytesWritten;
+  }
+
+  public void setLocalBytesWritten(long localBytesWritten) {
+    this.localBytesWritten = localBytesWritten;
+  }
+
+  /**
+   * Data local maps of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getDataLocalMaps() {
+    return dataLocalMaps;
+  }
+
+  public void setDataLocalMaps(long dataLocalMaps) {
+    this.dataLocalMaps = dataLocalMaps;
+  }
+
+  /**
+   * Rack local maps of this user's MapReduce jobs.
+   * Available since v11.
+   */
+  @XmlElement
+  public Long getRackLocalMaps() {
+    return rackLocalMaps;
+  }
+
+  public void setRackLocalMaps(long rackLocalMaps) {
+    this.rackLocalMaps = rackLocalMaps;
   }
 }

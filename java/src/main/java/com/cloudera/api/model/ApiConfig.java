@@ -33,9 +33,16 @@ import javax.xml.bind.annotation.XmlType;
  * the default value (if any).
  */
 @XmlRootElement(name = "config")
-@XmlType(propOrder = { "name", "value", "required", "defaultValue",
-                        "displayName", "description", "relatedName", "validationState",
-                        "validationMessage" })
+@XmlType(propOrder = { "name",
+                       "value",
+                       "required",
+                       "defaultValue",
+                       "displayName",
+                       "description",
+                       "relatedName",
+                       "validationState",
+                       "validationMessage",
+                       "validationWarningsSuppressed" })
 public class ApiConfig {
 
   private String name;
@@ -47,6 +54,7 @@ public class ApiConfig {
   private Boolean required;
   private ValidationState validationState;
   private String validationMessage;
+  private Boolean validationWarningsSuppressed;
 
   public static enum ValidationState {
     OK,
@@ -65,9 +73,16 @@ public class ApiConfig {
    * @param validationState   State of the parameter's validation.
    * @param validationMessage Message describing any validation issues.
    */
-  public ApiConfig(String name, String value, Boolean required,
-      String defaultValue, String displayName, String description,
-      String relatedName, ValidationState validationState, String validationMessage) {
+  public ApiConfig(
+      String name,
+      String value,
+      Boolean required,
+      String defaultValue,
+      String displayName,
+      String description,
+      String relatedName,
+      ValidationState validationState,
+      String validationMessage) {
     this.name = name;
     this.value = value;
     this.required = required;
@@ -77,6 +92,7 @@ public class ApiConfig {
     this.relatedName = relatedName;
     this.validationState = validationState;
     this.validationMessage = validationMessage;
+    this.validationWarningsSuppressed = null;
   }
 
   public ApiConfig(String name, String value) {
@@ -93,6 +109,7 @@ public class ApiConfig {
     this.relatedName = null;
     this.validationState = null;
     this.validationMessage = null;
+    this.validationWarningsSuppressed = null;
   }
 
   public String toString() {
@@ -237,5 +254,22 @@ public class ApiConfig {
 
   public void setValidationMessage(String validationMessage) {
     this.validationMessage = validationMessage;
+  }
+
+  /**
+   * Readonly. Requires "full" view.
+   * Whether validation warnings associated with this parameter are suppressed.
+   * In general, suppressed validation warnings are hidden in the Cloudera
+   * Manager UI. Configurations that do not produce warnings will not contain
+   * this field.
+   **/
+  @XmlElement
+  public Boolean getValidationWarningsSuppressed() {
+    return validationWarningsSuppressed;
+  }
+
+  public void setValidationWarningsSuppressed(
+      Boolean validationWarningsSuppressed) {
+    this.validationWarningsSuppressed = validationWarningsSuppressed;
   }
 }

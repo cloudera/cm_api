@@ -192,9 +192,9 @@ public class ApiHostInstallArguments {
   /**
    * The Cloudera Manager repository URL to use (optional).
    * Example for SLES, Redhat or other RPM based distributions:
-   * http://archive.cloudera.com/cm5/redhat/5/x86_64/cm/5/
+   * https://archive.cloudera.com/cm5/redhat/5/x86_64/cm/5/
    * Example for Ubuntu or other Debian based distributions:
-   * "deb http://archive.cloudera.com/cm5/ubuntu/lucid/amd64/cm lucid-cm5 contrib"
+   * "deb https://archive.cloudera.com/cm5/ubuntu/lucid/amd64/cm lucid-cm5 contrib"
    */
   @XmlElement
   public String getCmRepoUrl() {
@@ -208,9 +208,9 @@ public class ApiHostInstallArguments {
   /**
    * The Cloudera Manager public GPG key (optional).
    * Example for SLES, Redhat or other RPM based distributions:
-   * http://archive.cloudera.com/cm5/redhat/5/x86_64/cm/RPM-GPG-KEY-cloudera
+   * https://archive.cloudera.com/cm5/redhat/5/x86_64/cm/RPM-GPG-KEY-cloudera
    * Example for Ubuntu or other Debian based distributions:
-   * http://archive.cloudera.com/cm5/ubuntu/lucid/amd64/cm/archive.key
+   * https://archive.cloudera.com/cm5/ubuntu/lucid/amd64/cm/archive.key
    */
   @XmlElement
   public String getGpgKeyCustomUrl() {
