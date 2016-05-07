@@ -8,5 +8,5 @@ safe:                   true
 lsi:                    false
 markdown:               kramdown
 
-latest_api_version:     11
+latest_api_version:     12
 latest_cm_version:      5.7.0
