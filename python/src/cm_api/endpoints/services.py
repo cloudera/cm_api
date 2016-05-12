@@ -1863,6 +1863,16 @@ class ApiService(BaseApiResource):
     return self._get("commandsByName", ApiCommandMetadata, True,
         api_version=6)
 
+  def create_yarn_cm_container_usage_input_dir(self):
+    """
+    Creates the HDFS directory where YARN container usage metrics are
+    stored by NodeManagers for CM to read and aggregate into app usage metrics.
+
+    @return: Reference to submitted command.
+    @since: API v13
+    """
+    return self._cmd('yarnCreateCmContainerUsageInputDirCommand', api_version=13)
+
 class ApiServiceSetupInfo(ApiService):
   _ATTRIBUTES = {
     'name'    : None,
@@ -1932,4 +1942,3 @@ class ApiServiceSetupInfo(ApiService):
     @since: API v7
     """
     return self._cmd('firstRun', None, api_version=7)
-
