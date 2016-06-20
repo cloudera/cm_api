@@ -42,7 +42,7 @@ src_dir = os.path.join(base_dir, 'src')
 
 setup(
   name = 'cm_api',
-  version = '13.0.0',    # Compatible with API v13 (CM 5.8)
+  version = '14.0.0',    # Compatible with API v14 (CM 5.9)
   packages = find_packages(src_dir, exclude=['cm_api_tests']),
   package_dir = {'': src_dir },
 
