@@ -17,6 +17,7 @@
 package com.cloudera.api;
 
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -38,7 +39,7 @@ public class ApiObjectMapper extends ObjectMapper {
 
     // Allow JAX-B annotations.
     setAnnotationIntrospector(
-        new AnnotationIntrospector.Pair(
+        new AnnotationIntrospectorPair(
             getSerializationConfig().getAnnotationIntrospector(),
             new JaxbAnnotationIntrospector()));
 

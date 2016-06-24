@@ -10,7 +10,7 @@
   <properties>
     <cxf.version>2.7.7</cxf.version>
     <guava.version>14.0</guava.version>
-    <jackson2.version>2.1.0</jackson2.version>
+    <jackson2.version>2.6.7</jackson2.version>
     <joda.version>2.1</joda.version>
     <junit.version>4.11</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
