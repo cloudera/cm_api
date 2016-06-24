@@ -36,9 +36,10 @@ if platform == 'darwin':
 
 # Optional PySocks support
 extras_require = dict(Socks=['PySocks >= 1.5.0'])
-
-base_dir = os.path.relpath(os.path.normpath(os.path.split(__file__)[0]),
-                           os.getcwd())
+setup_dir = os.path.split(__file__)[0]
+if setup_dir == '':
+  setup_dir = '.';
+base_dir = os.path.relpath(os.path.normpath(setup_dir), os.getcwd())
 src_dir = os.path.normpath(os.path.join(base_dir, 'src'))
 
 setup(

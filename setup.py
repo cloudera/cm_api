@@ -25,7 +25,7 @@
 import os.path
 import imp
 
-base_dir = os.path.abspath(os.path.split(__file__)[0])
+base_dir = os.path.split(os.path.abspath(__file__))[0]
 
 setup = os.path.join(base_dir, "python", "setup.py")
 fobj = open(setup)
