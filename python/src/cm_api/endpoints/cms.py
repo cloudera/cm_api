@@ -187,7 +187,9 @@ class ClouderaManager(BaseApiResource):
         'endTime': end_datetime.isoformat(),
         'includeInfoLog': includeInfoLog,
     }
-    return self._cmd('collectDiagnosticData', data=args)
+    # This method is deprecated as of CM API version 3 which was introduced
+    # in CM 4.5.
+    return self._cmd('collectDiagnosticData', data=args, api_version=2)
 
   def collect_diagnostic_data_45(self, end_datetime, bundle_size_bytes, cluster_name=None,
                                  roles=None, collect_metrics=False, start_datetime=None):
