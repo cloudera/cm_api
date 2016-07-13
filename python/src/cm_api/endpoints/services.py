@@ -164,6 +164,36 @@ class ApiService(BaseApiResource):
   def get_activity(self, job_id):
     return self._get("activities/" + job_id, ApiActivity)
 
+  def list_watched_directories(self):
+    """
+    Returns a list of directories being watched by the Reports Manager.
+
+    @return: A list of directories being watched
+    @since: API v14
+    """
+    return self._get("watcheddir", ApiWatchedDir, ret_is_list=True, api_version=14)
+
+  def add_watched_directory(self, dir_path):
+    """
+    Adds a directory to the watching list.
+
+    @param dir_path: The path of the directory to be added to the watching list
+    @return: The added directory, or null if failed
+    @since: API v14
+    """
+    req = ApiWatchedDir(self._get_resource_root(), path=dir_path)
+    return self._post("watcheddir", ApiWatchedDir, data=req, api_version=14)
+
+  def remove_watched_directory(self, dir_path):
+    """
+    Removes a directory from the watching list.
+
+    @param dir_path: The path of the directory to be removed from the watching list
+    @return: The removed directory, or null if failed
+    @since: API v14
+    """
+    return self._delete("watcheddir/%s" % dir_path, ApiWatchedDir, api_version=14)
+
   def get_impala_queries(self, start_time, end_time, filter_str="", limit=100,
      offset=0):
     """

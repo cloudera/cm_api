@@ -1050,6 +1050,25 @@ class ApiImpalaQuery(BaseApiObject):
   def __str__(self):
     return "<ApiImpalaQuery>: %s" % (self.queryId)
 
+#
+# WatchedDirectories data types
+#
+
+class ApiWatchedDir(BaseApiObject):
+
+  _ATTRIBUTES = {
+    'path'  : None
+  }
+
+  def __str__(self):
+    return "<ApiWatchedDir>: %s" % (self.path)
+
+class ApiWatchedDirList(ApiList):
+
+  _ATTRIBUTES = {
+    'watchedDirs'  : ROAttr(ApiWatchedDir)
+  }
+  _MEMBER_CLASS = ApiWatchedDir
 
 class ApiImpalaQueryResponse(BaseApiObject):
 
