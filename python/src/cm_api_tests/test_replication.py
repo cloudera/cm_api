@@ -174,6 +174,11 @@ class TestReplicationTypes(unittest.TestCase):
       "impalaUDFs" : [
         { "database" : "db1", "signature" : "func1(STRING)" }
       ],
+      "hiveUDFCount" : 2,
+      "hiveUDFs" : [
+        { "database" : "db1", "signature" : "func1(STRING)" },
+        { "database" : "db2", "signature" : "func2(STRING)" }
+      ],
       "errorCount" : 1,
       "errors" : [
         { "database" : "db1", "tableName" : "table2",
@@ -195,6 +200,12 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEquals(1, len(res.impalaUDFs))
     self.assertEquals('db1', res.impalaUDFs[0].database)
     self.assertEquals('func1(STRING)', res.impalaUDFs[0].signature)
+    self.assertEquals(2, res.hiveUDFCount)
+    self.assertEquals(2, len(res.hiveUDFs))
+    self.assertEquals('db1', res.hiveUDFs[0].database)
+    self.assertEquals('func1(STRING)', res.hiveUDFs[0].signature)
+    self.assertEquals('db2', res.hiveUDFs[1].database)
+    self.assertEquals('func2(STRING)', res.hiveUDFs[1].signature)
     self.assertEquals(1, res.errorCount)
     self.assertEquals('db1', res.errors[0]['database'])
     self.assertEquals('table2', res.errors[0]['tableName'])
