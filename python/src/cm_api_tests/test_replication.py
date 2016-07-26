@@ -168,6 +168,53 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertTrue(args.replicateImpalaMetadata)
     self.assertEquals(4, args.numThreads)
 
+  def test_hive_cloud_arguments(self):
+    RAW = '''{
+      "sourceService" : {
+        "clusterName" : "Cluster 1 - CDH4",
+        "serviceName" : "HIVE-1"
+      },
+      "force" : true,
+      "replicateData" : true,
+      "hdfsArguments" : {
+        "mapreduceServiceName" : "MAPREDUCE-1",
+        "dryRun" : false,
+        "abortOnError" : false,
+        "removeMissingFiles" : false,
+        "preserveReplicationCount" : false,
+        "preserveBlockSize" : false,
+        "preservePermissions" : false,
+        "skipTrash" : false,
+        "logPath" : "/tmp",
+        "bandwidthPerMap" : "20",
+        "preserveXAttrs" : false,
+        "exclusionFilters" : ["ac"]
+      },
+      "tableFilters" : [
+        { "database" : "db1", "tableName" : "table1" }
+      ],
+      "dryRun" : false,
+      "replicateImpalaMetadata" : true,
+      "destinationAccount" : "someTestAccount"
+      "cloudRootPath" : "s3a://my-bucket/path"
+    }'''
+    args = utils.deserialize(RAW, ApiHiveCloudReplicationArguments)
+    self.assertEquals(None, args.sourceService.peerName)
+    self.assertEquals('Cluster 1 - CDH4', args.sourceService.clusterName)
+    self.assertEquals('HIVE-1', args.sourceService.serviceName)
+    self.assertTrue(args.force)
+    self.assertTrue(args.replicateData)
+    self.assertIsInstance(args.hdfsArguments, ApiHdfsReplicationArguments)
+    self.assertIsInstance(args.tableFilters, list)
+    self.assertEquals(1, len(args.tableFilters))
+    self.assertIsInstance(args.tableFilters[0], ApiHiveTable)
+    self.assertEquals("db1", args.tableFilters[0].database)
+    self.assertEquals("table1", args.tableFilters[0].tableName)
+    self.assertTrue(args.replicateImpalaMetadata)
+    self.assertEquals('someTestAccount', args.destinationAccount)
+    self.assertEquals(None, args.sourceAccount)
+    self.assertEqual('s3a://my-bucket/path', args.cloudRootPath)
+
   def test_hive_results(self):
     RAW = '''{
       "phase" : "EXPORT",
@@ -473,6 +520,60 @@ class TestReplicationRequests(unittest.TestCase):
 
     self.resource.expect("DELETE",
         "/clusters/cluster1/services/hdfs1/replications/1",
+        retdata=return_sched.to_json_dict())
+    service.delete_replication_schedule(1)
+
+  def test_hive_cloud_replication_crud(self):
+    service = ApiService(self.resource, 'hive1', 'HIVE')
+    service.__dict__['clusterRef'] = ApiClusterRef(self.resource, clusterName='cluster1')
+
+    hdfs_args = ApiHdfsReplicationArguments(self.resource)
+    hdfs_args.mapreduceServiceName= "MAPREDUCE-1"
+
+    hive_cloud_args = ApiHiveCloudReplicationArguments(self.resource)
+    hive_cloud_args.sourceService = ApiServiceRef('cluster1', 'hive1')
+    hive_cloud_args.force = True
+    hive_cloud_args.replicateData = True
+    hive_cloud_args.hdfsArguments = hdfs_args
+    hive_cloud_args.tableFilters = None
+    hive_cloud_args.replicateImpalaMetadata = True
+    hive_cloud_args.cloudRootPath = 's3a://somebucket/dst'
+    hive_cloud_args.destinationAccount = 'someTestAccount'
+
+    return_sched = ApiReplicationSchedule(self.resource,
+        interval=2, intervalUnit='DAY')
+    return_sched.hiveCloudArguments = hive_cloud_args
+    return_sched.__dict__['id'] = 1
+    return_list = ApiList([ return_sched ]).to_json_dict()
+
+    self.resource.expect("POST",
+        "/clusters/cluster1/services/hive1/replications",
+        retdata=return_list)
+
+    sched = service.create_replication_schedule(
+        None, None, 'DAY', 2, True, hive_cloud_args, alert_on_fail=True)
+    self.assertEqual(return_sched.intervalUnit, sched.intervalUnit)
+    self.assertEqual(return_sched.interval, sched.interval)
+    self.assertIsInstance(sched.hiveCloudArguments, ApiHiveCloudReplicationArguments)
+
+    self.resource.expect("GET",
+        "/clusters/cluster1/services/hive1/replications",
+        retdata=return_list)
+    service.get_replication_schedules()
+
+    self.resource.expect("GET",
+        "/clusters/cluster1/services/hive1/replications/1",
+        retdata=return_sched.to_json_dict())
+    service.get_replication_schedule(1)
+
+    self.resource.expect("PUT",
+        "/clusters/cluster1/services/hive1/replications/1",
+        data=return_sched,
+        retdata=return_sched.to_json_dict())
+    service.update_replication_schedule(1, return_sched)
+
+    self.resource.expect("DELETE",
+        "/clusters/cluster1/services/hive1/replications/1",
         retdata=return_sched.to_json_dict())
     service.delete_replication_schedule(1)
 
