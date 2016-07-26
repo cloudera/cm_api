@@ -782,6 +782,19 @@ class ApiHiveReplicationArguments(BaseApiObject):
     'replicateImpalaMetadata' : None,
   }
 
+class ApiHiveCloudReplicationArguments(ApiHiveReplicationArguments):
+  @classmethod
+  def _get_attributes(cls):
+    if not cls.__dict__.has_key('_ATTRIBUTES'):
+      attrs = {
+        'sourceAccount' : None,
+        'destinationAccount' : None,
+        'cloudRootPath': None
+      }
+      attrs.update(ApiHiveReplicationArguments._get_attributes())
+      cls._ATTRIBUTES = attrs
+    return cls._ATTRIBUTES
+
 class ApiHiveReplicationResult(BaseApiObject):
   _ATTRIBUTES = {
     'tableCount'            : ROAttr(),
@@ -820,6 +833,7 @@ class ApiReplicationSchedule(BaseApiObject):
     'hdfsArguments'   : Attr(ApiHdfsReplicationArguments),
     'hiveArguments'   : Attr(ApiHiveReplicationArguments),
     'hdfsCloudArguments'   : Attr(ApiHdfsCloudReplicationArguments),
+    'hiveCloudArguments'   : Attr(ApiHiveCloudReplicationArguments),
     'alertOnStart'    : None,
     'alertOnSuccess'  : None,
     'alertOnFail'     : None,
