@@ -96,8 +96,7 @@ class TestReplicationTypes(unittest.TestCase):
       "bandwidthPerMap" : "20",
       "preserveXAttrs" : false,
       "exclusionFilters" : ["ac"],
-      "cloudAccount" : "someTestAccount",
-      "cloudService" : "TARGET"
+      "sourceAccount" : "someTestAccount"
     }'''
     args = utils.deserialize(RAW, ApiHdfsCloudReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
@@ -117,8 +116,8 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertFalse(args.skipTrash)
     self.assertEquals('DYNAMIC', args.replicationStrategy)
     self.assertFalse(args.preserveXAttrs)
-    self.assertEquals('someTestAccount', args.cloudAccount)
-    self.assertEquals('TARGET', args.cloudService)
+    self.assertEquals('someTestAccount', args.sourceAccount)
+    self.assertEquals(None, args.destinationAccount)
 
   def test_hive_arguments(self):
     RAW = '''{
@@ -388,8 +387,7 @@ class TestReplicationRequests(unittest.TestCase):
     hdfs_args.sourceService = ApiServiceRef('cluster2', 'hdfs2')
     hdfs_args.sourcePath = '/src'
     hdfs_args.destinationPath = 's3a://somebucket/dst'
-    hdfs_args.cloudAccount = 'someTestAccount'
-    hdfs_args.cloudService = 'TARGET'
+    hdfs_args.destinationAccount = 'someTestAccount'
 
     return_sched = ApiReplicationSchedule(self.resource,
         interval=2, intervalUnit='DAY')

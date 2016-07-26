@@ -713,8 +713,8 @@ class ApiHdfsCloudReplicationArguments(ApiHdfsReplicationArguments):
   def _get_attributes(cls):
     if not cls.__dict__.has_key('_ATTRIBUTES'):
       attrs = {
-        'cloudAccount'  : None,
-        'cloudService'    : None,
+        'sourceAccount' : None,
+        'destinationAccount' : None,
       }
       attrs.update(ApiHdfsReplicationArguments._get_attributes())
       cls._ATTRIBUTES = attrs
