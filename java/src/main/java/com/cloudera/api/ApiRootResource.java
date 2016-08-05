@@ -19,6 +19,7 @@ import com.cloudera.api.v1.RootResourceV1;
 import com.cloudera.api.v10.RootResourceV10;
 import com.cloudera.api.v11.RootResourceV11;
 import com.cloudera.api.v12.RootResourceV12;
+import com.cloudera.api.v13.RootResourceV13;
 import com.cloudera.api.v2.RootResourceV2;
 import com.cloudera.api.v3.RootResourceV3;
 import com.cloudera.api.v4.RootResourceV4;
@@ -27,7 +28,6 @@ import com.cloudera.api.v6.RootResourceV6;
 import com.cloudera.api.v7.RootResourceV7;
 import com.cloudera.api.v8.RootResourceV8;
 import com.cloudera.api.v9.RootResourceV9;
-import com.cloudera.api.v12.RootResourceV12;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -115,6 +115,12 @@ public interface ApiRootResource {
    */
   @Path("/v12")
   RootResourceV12 getRootV12();
+
+  /**
+   * @return The v13 root resource.
+   */
+  @Path("/v13")
+  RootResourceV13 getRootV13();
 
   /**
    * Fetch the current API version supported by the server.
