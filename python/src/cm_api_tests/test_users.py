@@ -33,7 +33,7 @@ class TestUsers(unittest.TestCase):
   def test_revoke_admin(self):
     res = utils.MockResource(self)
 
-    user = ApiUser(res, "alice")
+    user = ApiUser(res, "alice", roles=[ 'ROLE_ADMIN' ] )
     expected = { 'name' : 'alice', 'roles' : [ ] }
     res.expect("PUT", "/users/alice", data=expected, retdata=expected)
     updated = user.revoke_admin_role()
@@ -42,8 +42,11 @@ class TestUsers(unittest.TestCase):
   def test_update_user(self):
     res = utils.MockResource(self)
     user = ApiUser(res, "alice", roles=[ 'ROLE_LIMITED' ])
-    expected = { 'name' : 'alice', 'roles' : [ 'ROLE_LIMITED'] }
+
+    # Update user role
+    new_user = ApiUser(res, "alice", roles=[ 'ROLE_USER' ])
+    expected = { 'name' : 'alice', 'roles' : [ 'ROLE_USER'] }
     res.expect("PUT", "/users/alice", data=expected, retdata=expected)
-    updated = update_user(res, user)
-    self.assertTrue('ROLE_LIMITED' in updated.roles)
+    updated = update_user(res, new_user)
+    self.assertTrue('ROLE_USER' in updated.roles)
     self.assertEqual(1, len(updated.roles))
