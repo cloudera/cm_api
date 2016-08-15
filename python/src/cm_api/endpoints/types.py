@@ -1030,6 +1030,7 @@ class ApiConfig(BaseApiObject):
     'displayName'                  : ROAttr(),
     'description'                  : ROAttr(),
     'relatedName'                  : ROAttr(),
+    'sensitive'                    : ROAttr(),
     'validationState'              : ROAttr(),
     'validationMessage'            : ROAttr(),
     'validationWarningsSuppressed' : ROAttr()
