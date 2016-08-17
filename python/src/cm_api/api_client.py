@@ -21,7 +21,7 @@ except ImportError:
   import simplejson as json
 
 from cm_api.http_client import HttpClient, RestException
-from cm_api.endpoints import batch, cms, clusters, events, hosts, tools
+from cm_api.endpoints import batch, cms, clusters, events, hosts, external_accounts, tools
 from cm_api.endpoints import types, users, timeseries
 from cm_api.resource import Resource
 
@@ -308,6 +308,83 @@ class ApiResource(Resource):
     @return: 2-tuple (overall success, list of ApiBatchResponseElements).
     """
     return batch.do_batch(self, elements)
+
+  def get_supported_external_account_categories(self):
+    """
+    Lookup all supported categories.
+    @return: An ApiExternalAcccountCategory list
+    """
+    return external_accounts.get_supported_categories(self)
+
+  def get_supported_external_account_types(self, category_name):
+    """
+    Lookup all supported types in a category.
+    @param category_name: The category name
+    @return: An ApiExternalAcccountType list
+    """
+    return external_accounts.get_supported_types(self, category_name)
+
+  def create_external_account(self, name, display_name, type_name,
+                              account_configs=None):
+    """
+    Create an external account
+    @param name: Immutable external account name
+    @param display_name: Display name
+    @param type_name: Account type
+    @param account_configs: Optional account configuration
+    @return: An ApiExternalAccount object
+    """
+    return external_accounts.create_external_account(
+      self, name, display_name, type_name, account_configs)
+
+
+  def get_external_account(self, name, view=None):
+    """
+    Lookup an external account by name
+    @param name: Account name
+    @param view: View
+    @return: An ApiExternalAccount object
+    """
+    return external_accounts.get_external_account(
+      self, name, view)
+
+
+  def get_external_account_by_display_name(
+    self, display_name, view=None):
+    """
+    Lookup an external account by display name
+    @param display_name: Account display name
+    @param view: View
+    @return: An ApiExternalAccount object
+    """
+    return external_accounts.get_external_account_by_display_name(
+      self, display_name, view)
+
+  def get_all_external_accounts(self, type_name, view=None):
+    """
+    Lookup all external accounts of a particular type, by type name.
+    @param type_name: Type name
+    @param view: View
+    @return: A list of ApiExternalAccount objects.
+    """
+    return external_accounts.get_all_external_accounts(
+      self, type_name, view)
+
+  def update_external_account(self, account):
+    """
+    Update an external account
+    @param account: Account to update, account name must be specified.
+    @return: An ApiExternalAccount object
+    """
+    return external_accounts.update_external_account(self, account)
+
+  def delete_external_account(self, name):
+    """
+    Delete an external account by name
+    @param name: Account name
+    @return: An ApiExternalAccount object
+    """
+    return external_accounts.delete_external_account(self, name)
 
 def get_root_resource(server_host, server_port=None,
                       username="admin", password="admin",
