@@ -574,7 +574,6 @@ class ApiCommand(BaseApiObject):
   def retry(self):
     """
     Retry a failed or aborted command.
-    Note: The retry will only work for ClusterUpgrade command for now.
 
     @return: A new ApiCommand object with the updated information.
     """
