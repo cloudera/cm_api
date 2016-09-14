@@ -789,7 +789,8 @@ class ApiHiveCloudReplicationArguments(ApiHiveReplicationArguments):
       attrs = {
         'sourceAccount' : None,
         'destinationAccount' : None,
-        'cloudRootPath': None
+        'cloudRootPath': None,
+        'replicationOption': None
       }
       attrs.update(ApiHiveReplicationArguments._get_attributes())
       cls._ATTRIBUTES = attrs

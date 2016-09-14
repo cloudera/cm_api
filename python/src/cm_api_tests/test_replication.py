@@ -189,8 +189,9 @@ class TestReplicationTypes(unittest.TestCase):
       ],
       "dryRun" : false,
       "replicateImpalaMetadata" : true,
-      "destinationAccount" : "someTestAccount"
-      "cloudRootPath" : "s3a://my-bucket/path"
+      "destinationAccount" : "someTestAccount",
+      "cloudRootPath" : "s3a://my-bucket/path",
+      "replicationOption" : "METADATA_ONLY"
     }'''
     args = utils.deserialize(RAW, ApiHiveCloudReplicationArguments)
     self.assertEquals(None, args.sourceService.peerName)
@@ -208,6 +209,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEquals('someTestAccount', args.destinationAccount)
     self.assertEquals(None, args.sourceAccount)
     self.assertEqual('s3a://my-bucket/path', args.cloudRootPath)
+    self.assertEqual('METADATA_ONLY', args.replicationOption)
 
   def test_hive_results(self):
     RAW = '''{
