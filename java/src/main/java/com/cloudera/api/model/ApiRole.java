@@ -52,6 +52,7 @@ public class ApiRole {
   private ApiConfigList config;
   private ApiRoleConfigGroupRef roleConfigGroupRef;
   private ZooKeeperServerMode zooKeeperServerMode;
+  private ApiEntityStatus entityStatus;
 
   public enum HaStatus {
     ACTIVE,
@@ -93,6 +94,7 @@ public class ApiRole {
     // For JAX-B
   }
 
+  @Override
   public String toString() {
     return Objects.toStringHelper(this)
                   .add("name", name)
@@ -339,5 +341,18 @@ public class ApiRole {
 
   public void setZooKeeperServerMode(ZooKeeperServerMode zooKeeperServerMode) {
     this.zooKeeperServerMode = zooKeeperServerMode;
+  }
+
+  /**
+   * Readonly. The entity status for this role.
+   * Available since API v11.
+   */
+  @XmlElement
+  public ApiEntityStatus getEntityStatus() {
+    return entityStatus;
+  }
+
+  public void setEntityStatus(ApiEntityStatus entityStatus) {
+    this.entityStatus = entityStatus;
   }
 }

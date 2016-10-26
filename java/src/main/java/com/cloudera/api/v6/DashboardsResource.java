@@ -32,7 +32,9 @@ import com.cloudera.api.model.ApiDashboardList;
 public interface DashboardsResource {
 
   /**
-   * Returns the list of all dashboards.
+   * Returns the list of all user-customized dashboards. This includes both the
+   * new dashboards created by users as well as any user customizations to
+   * built-in dashboards.
    * <p>
    * Available since API v6.
    */

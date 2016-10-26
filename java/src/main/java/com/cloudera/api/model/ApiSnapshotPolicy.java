@@ -58,6 +58,7 @@ public class ApiSnapshotPolicy {
   private boolean alertOnSuccess;
   private boolean alertOnFail;
   private boolean alertOnAbort;
+  private Boolean paused;
 
   private ApiHBaseSnapshotPolicyArguments hbaseArguments;
   private ApiHdfsSnapshotPolicyArguments hdfsArguments;
@@ -340,6 +341,16 @@ public class ApiSnapshotPolicy {
     this.lastSuccessfulCommand = lastSuccessfulCommand;
   }
 
+  /** Whether to pause a snapshot policy, available since V11. */
+  @XmlElement
+  public Boolean getPaused() {
+    return paused;
+  }
+
+  public void setPaused(Boolean paused) {
+    this.paused = paused;
+  }
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
@@ -364,6 +375,7 @@ public class ApiSnapshotPolicy {
         .add("hdfsArguments", hdfsArguments)
         .add("lastCommand", lastCommand)
         .add("lastSuccessfulCommand", lastSuccessfulCommand)
+        .add("paused", paused)
         .toString();
   }
 
@@ -392,7 +404,8 @@ public class ApiSnapshotPolicy {
         Objects.equal(hbaseArguments, other.getHBaseArguments()) &&
         Objects.equal(hdfsArguments, other.getHdfsArguments()) &&
         Objects.equal(lastCommand, other.lastCommand) &&
-        Objects.equal(lastSuccessfulCommand, other.lastSuccessfulCommand);
+        Objects.equal(lastSuccessfulCommand, other.lastSuccessfulCommand) &&
+        Objects.equal(paused, other.paused);
   }
 
   @Override
@@ -401,6 +414,7 @@ public class ApiSnapshotPolicy {
         weeklySnapshots, monthlySnapshots, yearlySnapshots, minuteOfHour,
         hourOfDay, dayOfWeek, dayOfMonth, monthOfYear, hoursForHourlySnapshots,
         alertOnStart, alertOnSuccess, alertOnFail, alertOnAbort,
-        hbaseArguments, hdfsArguments, lastCommand, lastSuccessfulCommand);
+        hbaseArguments, hdfsArguments, lastCommand, lastSuccessfulCommand,
+        paused);
   }
 }

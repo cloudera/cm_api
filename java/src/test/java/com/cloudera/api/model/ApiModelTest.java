@@ -16,6 +16,8 @@
 
 package com.cloudera.api.model;
 
+import static org.junit.Assert.*;
+
 import com.cloudera.api.ApiErrorMessage;
 import com.cloudera.api.ApiObjectMapper;
 import com.cloudera.api.ApiUtils;
@@ -42,6 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -54,7 +57,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.joda.time.Duration;
 import org.joda.time.Instant;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class ApiModelTest {
   private final static String TEXT_ENCODING = "UTF-8";
@@ -223,6 +225,8 @@ public class ApiModelTest {
     ApiConfig cfg = new ApiConfig("name", "value", true, "default", "display",
         "description", "relatedName", ApiConfig.ValidationState.OK,
         "validationMessage");
+    cfg.setValidationWarningsSuppressed(true);
+    cfg.setSensitive(false);
     checkJsonXML(cfg);
 
     ApiServiceConfig svcCfg = new ApiServiceConfig();
@@ -243,7 +247,9 @@ public class ApiModelTest {
   @Test
   public void testApiHealthCheck() throws Exception {
     ApiHealthCheck healthCheck = new ApiHealthCheck("checkName",
-                                                    ApiHealthSummary.GOOD);
+                                                    ApiHealthSummary.GOOD,
+                                                    "Dummy Health explanation.",
+                                                    false);
     checkJsonXML(healthCheck);
   }
 
@@ -258,6 +264,7 @@ public class ApiModelTest {
     role.setHaStatus(ApiRole.HaStatus.ACTIVE);
     role.setHealthChecks(createHealthChecks());
     role.setHealthSummary(ApiHealthSummary.GOOD);
+    role.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     role.setHostRef(new ApiHostRef("myhost"));
     role.setMaintenanceMode(true);
     role.setMaintenanceOwners(createMaintenanceOwners());
@@ -282,11 +289,13 @@ public class ApiModelTest {
     service.setDisplayName("mydisplayname");
     service.setHealthChecks(createHealthChecks());
     service.setHealthSummary(ApiHealthSummary.GOOD);
+    service.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     service.setMaintenanceMode(true);
     service.setMaintenanceOwners(createMaintenanceOwners());
     service.setName("myname");
     service.setServiceState(ApiServiceState.STARTED);
     service.setServiceUrl("http://foo:7180");
+    service.setRoleInstancesUrl("http://foo:7180/instances");
     service.setType("mytype");
 
     ApiRoleConfigGroup rcg = new ApiRoleConfigGroup();
@@ -519,6 +528,8 @@ public class ApiModelTest {
                                      "relatedName",
                                      ApiConfig.ValidationState.OK,
                                      "validationMessage");
+    config.setValidationWarningsSuppressed(false);
+    config.setSensitive(true);
     checkJsonXML(config);
   }
 
@@ -586,6 +597,8 @@ public class ApiModelTest {
     peer.setUrl("url1");
     peer.setUsername("user1");
     peer.setPassword("password1");
+    peer.setType(ApiCmPeerType.REPLICATION);
+    peer.setClouderaManagerCreatedUser(true);
     checkJsonXML(peer);
   }
 
@@ -615,6 +628,7 @@ public class ApiModelTest {
           ApiScheduleInterval.MONTH, true);
     hdfsInfo.setHdfsArguments(hdfsArgs);
     hdfsInfo.setNextRun(new Date(12345));
+    hdfsInfo.setActive(true);
 
     ApiReplicationCommand cmd = new ApiReplicationCommand();
     fillInCommand(cmd);
@@ -664,6 +678,7 @@ public class ApiModelTest {
     ApiReplicationSchedule sch = new ApiReplicationSchedule(20L,
         new Date(1234), new Date(5678), 10, ApiScheduleInterval.MONTH, true);
     sch.setHiveArguments(args);
+    sch.setActive(true);
     checkJsonXML(sch);
 
     ApiHiveReplicationResult res = new ApiHiveReplicationResult();
@@ -671,11 +686,14 @@ public class ApiModelTest {
     res.setTableCount(1);
     res.setImpalaUDFs(Arrays.asList(new ApiImpalaUDF("db1", "func1")));
     res.setImpalaUDFCount(1);
+    res.setHiveUDFs(Arrays.asList(new ApiHiveUDF("db2", "func2")));
+    res.setHiveUDFCount(1);
     res.setErrors(Arrays.asList(new ApiHiveReplicationError("db1", "table1",
-        "func1(STRING)", "error1")));
+        "func1(STRING)", "func2(STRING)", "error1")));
     res.setErrorCount(1);
     res.setDryRun(true);
     res.setPhase("foo");
+    res.setRunAsUser("foo");
 
     ApiHdfsReplicationResult hdfsRes = newHdfsReplicationResult();
     res.setDataReplicationResult(hdfsRes);
@@ -833,6 +851,7 @@ public class ApiModelTest {
     policy.setDayOfMonth((byte) 31);
     policy.setMonthOfYear((byte) 6);
     policy.setHoursForHourlySnapshots(Arrays.asList((byte) 4, (byte) 8));
+    policy.setPaused(false);
 
     return policy;
   }
@@ -842,7 +861,9 @@ public class ApiModelTest {
     ApiMr2AppInformation mr2Information = new ApiMr2AppInformation("jobState");
     ApiYarnApplication application = new ApiYarnApplication(
         "appId", "appName", new Date(), new Date(), "user", "pool",
-        "FINISHED", 80.0, mr2Information, Maps.<String, String>newHashMap());
+        "FINISHED", 80.0, mr2Information, Maps.<String, String>newHashMap(),
+        ImmutableList.of("foo"), 1234L, 5678L,
+        123, 1, 3, 1d, 2d, 3d, 4d, 5d);
     checkJsonXML(application);
 
     ApiYarnApplicationResponse response = new ApiYarnApplicationResponse(
@@ -896,8 +917,10 @@ public class ApiModelTest {
 
     ApiTimeSeriesCrossEntityMetadata xEntityMetadata =
         new ApiTimeSeriesCrossEntityMetadata();
-    xEntityMetadata.setMaxEntityDisplayName("maxDisplayName");
+    xEntityMetadata.setMaxEntityDisplayName("maxEntityDisplayName");
     xEntityMetadata.setMinEntityDisplayName("minEntityDisplayName");
+    xEntityMetadata.setMaxEntityName("maxEntityName");
+    xEntityMetadata.setMinEntityName("minEntityName");
     xEntityMetadata.setNumEntities(3.14);
     aggStats.setCrossEntityMetadata(xEntityMetadata);
     checkJsonXML(data);
@@ -905,8 +928,14 @@ public class ApiModelTest {
 
   private List<ApiHealthCheck> createHealthChecks() {
     return ImmutableList.of(
-        new ApiHealthCheck("TEST1", ApiHealthSummary.GOOD),
-        new ApiHealthCheck("TEST2", ApiHealthSummary.CONCERNING));
+        new ApiHealthCheck("TEST1",
+                           ApiHealthSummary.GOOD,
+                           "Dummy Health explanation.",
+                           false),
+        new ApiHealthCheck("TEST2",
+                           ApiHealthSummary.CONCERNING,
+                           "Dummy Health explanation.",
+                           false));
   }
 
   private List<ApiEntityType> createMaintenanceOwners() {
@@ -928,6 +957,7 @@ public class ApiModelTest {
     hdfsArgs.setSkipTrash(true);
     hdfsArgs.setPreserveXAttrs(true);
     hdfsArgs.setReplicationStrategy(ReplicationStrategy.DYNAMIC);
+    hdfsArgs.setExclusionFilters(Lists.newArrayList("/a/.*", "/b/.*"));
     return hdfsArgs;
   }
 
@@ -946,6 +976,8 @@ public class ApiModelTest {
     result.setNumBytesCopyFailed(400);
     result.setSetupError("error");
     result.setSnapshottedDirs(Arrays.asList("/user/a"));
+    result.setFailedFiles(Arrays.asList("path1"));
+    result.setRunAsUser("systest");
     return result;
   }
 
@@ -958,6 +990,7 @@ public class ApiModelTest {
     cmd.setSuccess(false);
     cmd.setResultMessage("message");
     cmd.setResultDataUrl("url");
+    cmd.setCanRetry(false);
   }
 
   private ApiCluster newCluster() {
@@ -967,8 +1000,10 @@ public class ApiModelTest {
     cluster.setName("mycluster");
     cluster.setDisplayName("mycluster-displayName");
     cluster.setClusterUrl("http://some-url:7180/cmf/clusterRedirect/mycluster");
+    cluster.setHostsUrl("http://some-url:7180/cmf/clusterRedirect/mycluster/hosts");
     cluster.setVersion(ApiClusterVersion.CDH4);
     cluster.setFullVersion("4.1.2");
+    cluster.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     return cluster;
   }
 
@@ -980,6 +1015,7 @@ public class ApiModelTest {
     host.setCommissionState(ApiCommissionState.COMMISSIONED);
     host.setHealthChecks(createHealthChecks());
     host.setHealthSummary(ApiHealthSummary.GOOD);
+    host.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     host.setHostId("myHostId");
     host.setHostUrl("http://foo:7180");
     host.setHostname("myHostname");
@@ -992,6 +1028,7 @@ public class ApiModelTest {
     host.setRackId("/default");
     host.setRoleRefs(roleRefs);
     host.setTotalPhysMemBytes(1234L);
+    host.setClusterRef(new ApiClusterRef("clusterName"));
     return host;
   }
 

@@ -16,6 +16,11 @@
 
 package com.cloudera.api;
 
+import org.apache.cxf.jaxrs.client.ClientConfiguration;
+import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.message.Message;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
@@ -23,6 +28,8 @@ import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ClouderaManagerClientBuilderTest {
@@ -95,5 +102,65 @@ public class ClouderaManagerClientBuilderTest {
       .withPort(1)
       .enableLogging()
       .build();
+  }
+
+  @Test
+  public void testMaintainSessionConfig() {
+    ClouderaManagerClientBuilder builder = new ClouderaManagerClientBuilder();
+    ApiRootResource proxy = builder.withHost("localhost")
+        .withPort(1)
+        .enableLogging()
+        .build();
+    ClientConfiguration cfg = WebClient.getConfig(proxy);
+    assertNotNull(cfg);
+    Boolean maintainSession = (Boolean)cfg.getRequestContext().get(Message.MAINTAIN_SESSION);
+    assertNull(maintainSession);
+
+    proxy = builder.setMaintainSessionAcrossRequests(true).build();
+    cfg = WebClient.getConfig(proxy);
+    assertNotNull(cfg);
+    maintainSession = (Boolean)cfg.getRequestContext().get(Message.MAINTAIN_SESSION);
+    assertTrue(maintainSession);
+  }
+
+  @Test
+  public void testPassingLocale() {
+    ClouderaManagerClientBuilder builder = new ClouderaManagerClientBuilder();
+    ApiRootResource proxy = builder.withHost("localhost")
+        .withPort(1)
+        .enableLogging()
+        .build();
+    ClientConfiguration cfg = WebClient.getConfig(proxy);
+    HTTPConduit conduit = (HTTPConduit) cfg.getConduit();
+    HTTPClientPolicy clientPolicy = conduit.getClient();
+
+    assertNotNull(clientPolicy);
+    String acceptLanguage = clientPolicy.getAcceptLanguage();
+    assertNull(acceptLanguage);
+
+    proxy = builder.withAcceptLanguage("some-string").build();
+    cfg = WebClient.getConfig(proxy);
+    conduit = (HTTPConduit) cfg.getConduit();
+    clientPolicy = conduit.getClient();
+    assertEquals("some-string", clientPolicy.getAcceptLanguage());
+  }
+
+  @Test
+  public void testStreamAutoClosureConfig() {
+    ClouderaManagerClientBuilder builder = new ClouderaManagerClientBuilder();
+    ApiRootResource proxy = builder.withHost("localhost")
+        .withPort(1)
+        .enableLogging()
+        .build();
+    ClientConfiguration cfg = WebClient.getConfig(proxy);
+    assertNotNull(cfg);
+    Boolean autoClosure = (Boolean)cfg.getRequestContext().get("response.stream.auto.close");
+    assertNull(autoClosure);
+
+    proxy = builder.enableStreamAutoClosure().build();
+    cfg = WebClient.getConfig(proxy);
+    assertNotNull(cfg);
+    autoClosure = (Boolean)cfg.getRequestContext().get("response.stream.auto.close");
+    assertTrue(autoClosure);
   }
 }

@@ -17,6 +17,7 @@ package com.cloudera.api.model;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +42,9 @@ public class ApiReplicationSchedule extends ApiSchedule {
 
   private ApiHdfsReplicationArguments hdfsArguments;
   private ApiHiveReplicationArguments hiveArguments;
+  private ApiHdfsCloudReplicationArguments hdfsCloudArguments;
   private List<ApiReplicationCommand> history;
+  private Boolean active;
 
   public ApiReplicationSchedule() {
     // For JAX-B.
@@ -72,6 +75,15 @@ public class ApiReplicationSchedule extends ApiSchedule {
     this.hiveArguments = hiveArguments;
   }
 
+  @XmlElement
+  public ApiHdfsCloudReplicationArguments getHdfsCloudArguments() {
+    return hdfsCloudArguments;
+  }
+
+  public void setHdfsCloudArguments(ApiHdfsCloudReplicationArguments hdfsCloudArguments) {
+    this.hdfsCloudArguments = hdfsCloudArguments;
+  }
+
   /** List of active and/or finished commands for this schedule. */
   @XmlElementWrapper
   public List<ApiReplicationCommand> getHistory() {
@@ -82,6 +94,19 @@ public class ApiReplicationSchedule extends ApiSchedule {
     this.history = history;
   }
 
+  /**
+   *  Read-only field that is true if this schedule is currently active, false if not.
+   *  Available since API v11.
+   */
+  @XmlElement
+  public Boolean isActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (!super.equals(o)) {
@@ -90,20 +115,25 @@ public class ApiReplicationSchedule extends ApiSchedule {
 
     ApiReplicationSchedule that = (ApiReplicationSchedule) o;
     return Objects.equal(hdfsArguments, that.getHdfsArguments()) &&
-        Objects.equal(hiveArguments, that.getHiveArguments());
+        Objects.equal(hiveArguments, that.getHiveArguments()) &&
+        Objects.equal(hdfsCloudArguments, that.getHdfsCloudArguments());
   }
 
   @Override
   public int hashCode() {
-    return 31 * super.hashCode() + Objects.hashCode(hdfsArguments, hiveArguments);
+    return 31 * super.hashCode() + Objects.hashCode(hdfsArguments,
+        hiveArguments, hdfsCloudArguments);
+  }
+
+  protected Objects.ToStringHelper toStringHelper() {
+    return super.toStringHelper()
+        .add("hdfsArguments", hdfsArguments)
+        .add("hiveArguments", hiveArguments)
+        .add("hdfsCloudArguments", hdfsCloudArguments);
   }
 
   @Override
   public String toString() {
-    return super.toStringHelper()
-      .add("hdfsArguments", hdfsArguments)
-      .add("hiveArguments", hiveArguments)
-      .toString();
+    return toStringHelper().toString();
   }
-
 }

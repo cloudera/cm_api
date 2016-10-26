@@ -40,6 +40,9 @@ public interface CmPeersResource {
    * <p>
    * Available since API v3. Only available with Cloudera Manager Enterprise
    * Edition.
+   * <p>
+   * When accessed via API version before v11, only REPLICATION type peers will
+   * be returned.
    *
    * @return List of Cloudera Manager peers.
    */
@@ -62,6 +65,9 @@ public interface CmPeersResource {
    * <p>
    * Available since API v3. Only available with Cloudera Manager Enterprise
    * Edition.
+   * <p>
+   * Type field in ApiCmPeer is available since API v11. if not specified
+   * when making createPeer() call, 'REPLICATION' type peer will be created.
    *
    * @param peer Peer to create (see above).
    * @return Information about the created peer.
