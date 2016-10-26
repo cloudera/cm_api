@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>cm_api.endpoints.external_accounts</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="cm_api-module.html">Package&nbsp;cm_api</a> ::
+        <a href="cm_api.endpoints-module.html">Package&nbsp;endpoints</a> ::
+        Module&nbsp;external_accounts
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="cm_api.endpoints.external_accounts-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="cm_api.endpoints.external_accounts-module.html">Module cm_api.endpoints.external_accounts</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Licensed to Cloudera, Inc. under one</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># or more contributor license agreements.  See the NOTICE file</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># distributed with this work for additional information</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># regarding copyright ownership.  Cloudera, Inc. licenses this file</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"># to you under the Apache License, Version 2.0 (the</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># "License"); you may not use this file except in compliance</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># with the License.  You may obtain a copy of the License at</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#     http://www.apache.org/licenses/LICENSE-2.0</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># Unless required by applicable law or agreed to in writing, software</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># distributed under the License is distributed on an "AS IS" BASIS,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"># See the License for the specific language governing permissions and</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># limitations under the License.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">  <tt class="py-keyword">import</tt> <tt class="py-name">json</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">  <tt class="py-keyword">import</tt> <tt class="py-name">simplejson</tt> <tt class="py-keyword">as</tt> <tt class="py-name">json</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package cm_api=cm_api-module.html"><a title="cm_api" class="py-name" href="#" onclick="return doclink('link-0', 'cm_api', 'link-0');">cm_api</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package cm_api.endpoints=cm_api.endpoints-module.html"><a title="cm_api.endpoints" class="py-name" href="#" onclick="return doclink('link-1', 'endpoints', 'link-1');">endpoints</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module cm_api.endpoints.types=cm_api.endpoints.types-module.html"><a title="cm_api.endpoints.types" class="py-name" href="#" onclick="return doclink('link-2', 'types', 'link-2');">types</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"epytext"</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_PATH=cm_api.endpoints.external_accounts-module.html#EXTERNAL_ACCOUNT_PATH"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_PATH" class="py-name" href="#" onclick="return doclink('link-3', 'EXTERNAL_ACCOUNT_PATH', 'link-3');">EXTERNAL_ACCOUNT_PATH</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/externalAccounts/%s"</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_FETCH_PATH=cm_api.endpoints.external_accounts-module.html#EXTERNAL_ACCOUNT_FETCH_PATH"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_FETCH_PATH" class="py-name" href="#" onclick="return doclink('link-4', 'EXTERNAL_ACCOUNT_FETCH_PATH', 'link-4');">EXTERNAL_ACCOUNT_FETCH_PATH</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/externalAccounts/%s/%s"</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="get_supported_categories"></a><div id="get_supported_categories-def"><a name="L29"></a><tt class="py-lineno"> 29</tt> <a class="py-toggle" href="#" id="get_supported_categories-toggle" onclick="return toggle('get_supported_categories');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts-module.html#get_supported_categories">get_supported_categories</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_supported_categories-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_supported_categories-expanded"><a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">  Lookup all supported categories.</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiExternalAcccountCategory list</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-5" class="py-name" targets="Function cm_api.endpoints.types.call()=cm_api.endpoints.types-module.html#call"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-5', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method cm_api.resource.Resource.get()=cm_api.resource.Resource-class.html#get"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-6', 'get', 'link-6');">get</a></tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_PATH" class="py-name" href="#" onclick="return doclink('link-7', 'EXTERNAL_ACCOUNT_PATH', 'link-3');">EXTERNAL_ACCOUNT_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"supportedCategories"</tt><tt class="py-op">,</tt><tt class="py-op">)</tt> <tt class="py-op">,</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">      <tt id="link-8" class="py-name" targets="Class cm_api.endpoints.external_accounts.ApiExternalAccountCategory=cm_api.endpoints.external_accounts.ApiExternalAccountCategory-class.html"><a title="cm_api.endpoints.external_accounts.ApiExternalAccountCategory" class="py-name" href="#" onclick="return doclink('link-8', 'ApiExternalAccountCategory', 'link-8');">ApiExternalAccountCategory</a></tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="get_supported_types"></a><div id="get_supported_types-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="get_supported_types-toggle" onclick="return toggle('get_supported_types');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts-module.html#get_supported_types">get_supported_types</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">category_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_supported_types-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_supported_types-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">  Lookup all supported types in a category.</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">  @param category_name: The category name</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiExternalAcccountType list</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-9" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-9', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-10', 'get', 'link-6');">get</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">      <tt id="link-11" class="py-name"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_FETCH_PATH" class="py-name" href="#" onclick="return doclink('link-11', 'EXTERNAL_ACCOUNT_FETCH_PATH', 'link-4');">EXTERNAL_ACCOUNT_FETCH_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"supportedTypes"</tt><tt class="py-op">,</tt> <tt class="py-name">category_name</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">      <tt id="link-12" class="py-name" targets="Class cm_api.endpoints.external_accounts.ApiExternalAccountType=cm_api.endpoints.external_accounts.ApiExternalAccountType-class.html"><a title="cm_api.endpoints.external_accounts.ApiExternalAccountType" class="py-name" href="#" onclick="return doclink('link-12', 'ApiExternalAccountType', 'link-12');">ApiExternalAccountType</a></tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"> </tt>
+<a name="create_external_account"></a><div id="create_external_account-def"><a name="L49"></a><tt class="py-lineno"> 49</tt> <a class="py-toggle" href="#" id="create_external_account-toggle" onclick="return toggle('create_external_account');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts-module.html#create_external_account">create_external_account</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">display_name</tt><tt class="py-op">,</tt> <tt class="py-param">type_name</tt><tt class="py-op">,</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                            <tt class="py-param">account_configs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_external_account-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="create_external_account-expanded"><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">  Create an external account</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring">  @param name: Immutable external account name</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">  @param display_name: Display name</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">  @param type_name: Account type</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">  @param account_configs: Optional account configuration (ApiList of ApiConfig objects)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiExternalAccount object matching the newly created account</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">  <tt class="py-name">account</tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name" targets="Class cm_api.endpoints.external_accounts.ApiExternalAccount=cm_api.endpoints.external_accounts.ApiExternalAccount-class.html"><a title="cm_api.endpoints.external_accounts.ApiExternalAccount" class="py-name" href="#" onclick="return doclink('link-13', 'ApiExternalAccount', 'link-13');">ApiExternalAccount</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">,</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                               <tt class="py-name">name</tt><tt class="py-op">=</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                               <tt class="py-name">displayName</tt><tt class="py-op">=</tt><tt class="py-name">display_name</tt><tt class="py-op">,</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                               <tt class="py-name">typeName</tt><tt class="py-op">=</tt><tt class="py-name">type_name</tt><tt class="py-op">,</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                               <tt class="py-name">accountConfigs</tt><tt class="py-op">=</tt><tt class="py-name">account_configs</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-14" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-14', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method cm_api.resource.Resource.post()=cm_api.resource.Resource-class.html#post"><a title="cm_api.resource.Resource.post" class="py-name" href="#" onclick="return doclink('link-15', 'post', 'link-15');">post</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">      <tt id="link-16" class="py-name"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_PATH" class="py-name" href="#" onclick="return doclink('link-16', 'EXTERNAL_ACCOUNT_PATH', 'link-3');">EXTERNAL_ACCOUNT_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"create"</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">      <tt id="link-17" class="py-name"><a title="cm_api.endpoints.external_accounts.ApiExternalAccount" class="py-name" href="#" onclick="return doclink('link-17', 'ApiExternalAccount', 'link-13');">ApiExternalAccount</a></tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-name">data</tt><tt class="py-op">=</tt><tt class="py-name">account</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="get_external_account"></a><div id="get_external_account-def"><a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="get_external_account-toggle" onclick="return toggle('get_external_account');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts-module.html#get_external_account">get_external_account</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_external_account-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_external_account-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">  Lookup an external account by name</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">  @param name: Account name</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">  @param view: View</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiExternalAccount object</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-18" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-18', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-19', 'get', 'link-6');">get</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">      <tt id="link-20" class="py-name"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_FETCH_PATH" class="py-name" href="#" onclick="return doclink('link-20', 'EXTERNAL_ACCOUNT_FETCH_PATH', 'link-4');">EXTERNAL_ACCOUNT_FETCH_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"account"</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">      <tt id="link-21" class="py-name"><a title="cm_api.endpoints.external_accounts.ApiExternalAccount" class="py-name" href="#" onclick="return doclink('link-21', 'ApiExternalAccount', 'link-13');">ApiExternalAccount</a></tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">=</tt><tt class="py-name">view</tt> <tt class="py-keyword">and</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">view</tt><tt class="py-op">=</tt><tt class="py-name">view</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"> </tt>
+<a name="get_external_account_by_display_name"></a><div id="get_external_account_by_display_name-def"><a name="L81"></a><tt class="py-lineno"> 81</tt> <a class="py-toggle" href="#" id="get_external_account_by_display_name-toggle" onclick="return toggle('get_external_account_by_display_name');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts-module.html#get_external_account_by_display_name">get_external_account_by_display_name</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                                         <tt class="py-param">display_name</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_external_account_by_display_name-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_external_account_by_display_name-expanded"><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">  Lookup an external account by display name</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">  @param display_name: Account display name</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">  @param view: View</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiExternalAccount object</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-22" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-22', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-23', 'get', 'link-6');">get</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">      <tt id="link-24" class="py-name"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_FETCH_PATH" class="py-name" href="#" onclick="return doclink('link-24', 'EXTERNAL_ACCOUNT_FETCH_PATH', 'link-4');">EXTERNAL_ACCOUNT_FETCH_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"accountByDisplayName"</tt><tt class="py-op">,</tt> <tt class="py-name">display_name</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">      <tt id="link-25" class="py-name"><a title="cm_api.endpoints.external_accounts.ApiExternalAccount" class="py-name" href="#" onclick="return doclink('link-25', 'ApiExternalAccount', 'link-13');">ApiExternalAccount</a></tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">=</tt><tt class="py-name">view</tt> <tt class="py-keyword">and</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">view</tt><tt class="py-op">=</tt><tt class="py-name">view</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
+<a name="get_all_external_accounts"></a><div id="get_all_external_accounts-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="get_all_external_accounts-toggle" onclick="return toggle('get_all_external_accounts');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts-module.html#get_all_external_accounts">get_all_external_accounts</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">type_name</tt><tt class="py-op">,</tt> <tt class="py-param">view</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_all_external_accounts-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_all_external_accounts-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">  Lookup all external accounts of a particular type, by type name.</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">  @param type_name: Type name</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">  @param view: View</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiList of ApiExternalAccount objects matching the specified type</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-26" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-26', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="cm_api.resource.Resource.get" class="py-name" href="#" onclick="return doclink('link-27', 'get', 'link-6');">get</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">      <tt id="link-28" class="py-name"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_FETCH_PATH" class="py-name" href="#" onclick="return doclink('link-28', 'EXTERNAL_ACCOUNT_FETCH_PATH', 'link-4');">EXTERNAL_ACCOUNT_FETCH_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"type"</tt><tt class="py-op">,</tt> <tt class="py-name">type_name</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">      <tt id="link-29" class="py-name"><a title="cm_api.endpoints.external_accounts.ApiExternalAccount" class="py-name" href="#" onclick="return doclink('link-29', 'ApiExternalAccount', 'link-13');">ApiExternalAccount</a></tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">=</tt><tt class="py-name">view</tt> <tt class="py-keyword">and</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">view</tt><tt class="py-op">=</tt><tt class="py-name">view</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
+<a name="update_external_account"></a><div id="update_external_account-def"><a name="L106"></a><tt class="py-lineno">106</tt> <a class="py-toggle" href="#" id="update_external_account-toggle" onclick="return toggle('update_external_account');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts-module.html#update_external_account">update_external_account</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">account</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="update_external_account-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="update_external_account-expanded"><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">  Update an external account</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-docstring">  @param account: Account to update, account name must be specified.</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-docstring">  @return: An ApiExternalAccount object, representing the updated external account</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-30" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-30', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Method cm_api.resource.Resource.put()=cm_api.resource.Resource-class.html#put"><a title="cm_api.resource.Resource.put" class="py-name" href="#" onclick="return doclink('link-31', 'put', 'link-31');">put</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">      <tt id="link-32" class="py-name"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_PATH" class="py-name" href="#" onclick="return doclink('link-32', 'EXTERNAL_ACCOUNT_PATH', 'link-3');">EXTERNAL_ACCOUNT_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"update"</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">      <tt id="link-33" class="py-name"><a title="cm_api.endpoints.external_accounts.ApiExternalAccount" class="py-name" href="#" onclick="return doclink('link-33', 'ApiExternalAccount', 'link-13');">ApiExternalAccount</a></tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-name">data</tt><tt class="py-op">=</tt><tt class="py-name">account</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="delete_external_account"></a><div id="delete_external_account-def"><a name="L117"></a><tt class="py-lineno">117</tt> <a class="py-toggle" href="#" id="delete_external_account-toggle" onclick="return toggle('delete_external_account');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts-module.html#delete_external_account">delete_external_account</a><tt class="py-op">(</tt><tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="delete_external_account-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="delete_external_account-expanded"><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">  <tt class="py-docstring">"""</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-docstring">  Delete an external account by name</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">  @param resource_root: The root Resource object.</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring">  @param name: Account name</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">  @return: The deleted ApiExternalAccount object</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">  """</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">  <tt class="py-keyword">return</tt> <tt id="link-34" class="py-name"><a title="cm_api.endpoints.types.call" class="py-name" href="#" onclick="return doclink('link-34', 'call', 'link-5');">call</a></tt><tt class="py-op">(</tt><tt class="py-name">resource_root</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method cm_api.resource.Resource.delete()=cm_api.resource.Resource-class.html#delete"><a title="cm_api.resource.Resource.delete" class="py-name" href="#" onclick="return doclink('link-35', 'delete', 'link-35');">delete</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">      <tt id="link-36" class="py-name"><a title="cm_api.endpoints.external_accounts.EXTERNAL_ACCOUNT_FETCH_PATH" class="py-name" href="#" onclick="return doclink('link-36', 'EXTERNAL_ACCOUNT_FETCH_PATH', 'link-4');">EXTERNAL_ACCOUNT_FETCH_PATH</a></tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-string">"delete"</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">      <tt id="link-37" class="py-name"><a title="cm_api.endpoints.external_accounts.ApiExternalAccount" class="py-name" href="#" onclick="return doclink('link-37', 'ApiExternalAccount', 'link-13');">ApiExternalAccount</a></tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"> </tt>
+<a name="ApiExternalAccountCategory"></a><div id="ApiExternalAccountCategory-def"><a name="L129"></a><tt class="py-lineno">129</tt> <a class="py-toggle" href="#" id="ApiExternalAccountCategory-toggle" onclick="return toggle('ApiExternalAccountCategory');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts.ApiExternalAccountCategory-class.html">ApiExternalAccountCategory</a><tt class="py-op">(</tt><tt class="py-base-class">BaseApiObject</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiExternalAccountCategory-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ApiExternalAccountCategory-expanded"><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">  <tt id="link-38" class="py-name" targets="Variable cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES=cm_api.endpoints.clusters.ApiCluster-class.html#_ATTRIBUTES,Variable cm_api.endpoints.cms.ApiLicense._ATTRIBUTES=cm_api.endpoints.cms.ApiLicense-class.html#_ATTRIBUTES,Variable cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES=cm_api.endpoints.dashboards.ApiDashboard-class.html#_ATTRIBUTES,Variable cm_api.endpoints.events.ApiEvent._ATTRIBUTES=cm_api.endpoints.events.ApiEvent-class.html#_ATTRIBUTES,Variable cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES=cm_api.endpoints.events.ApiEventQueryResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.external_accounts.ApiExternalAccount._ATTRIBUTES=cm_api.endpoints.external_accounts.ApiExternalAccount-class.html#_ATTRIBUTES,Variable cm_api.endpoints.external_accounts.ApiExternalAccountCategory._ATTRIBUTES=cm_api.endpoints.external_accounts.ApiExternalAccountCategory-class.html#_ATTRIBUTES,Variable cm_api.endpoints.external_accounts.ApiExternalAccountType._ATTRIBUTES=cm_api.endpoints.external_accounts.ApiExternalAccountType-class.html#_ATTRIBUTES,Variable cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES=cm_api.endpoints.host_templates.ApiHostTemplate-class.html#_ATTRIBUTES,Variable cm_api.endpoints.hosts.ApiHost._ATTRIBUTES=cm_api.endpoints.hosts.ApiHost-class.html#_ATTRIBUTES,Variable cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES=cm_api.endpoints.parcels.ApiParcel-class.html#_ATTRIBUTES,Variable cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES=cm_api.endpoints.parcels.ApiParcelState-class.html#_ATTRIBUTES,Variable cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES=cm_api.endpoints.role_config_groups.ApiRoleConfigGroup-class.html#_ATTRIBUTES,Variable cm_api.endpoints.roles.ApiRole._ATTRIBUTES=cm_api.endpoints.roles.ApiRole-class.html#_ATTRIBUTES,Variable cm_api.endpoints.services.ApiService._ATTRIBUTES=cm_api.endpoints.services.ApiService-class.html#_ATTRIBUTES,Variable cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES=cm_api.endpoints.services.ApiServiceSetupInfo-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES=cm_api.endpoints.timeseries.ApiMetricSchema-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeries-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesData-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesEntityAttribute._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesEntityAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesEntityType._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesEntityType-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES=cm_api.endpoints.timeseries.ApiTimeSeriesResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiActivity._ATTRIBUTES=cm_api.endpoints.types.ApiActivity-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES=cm_api.endpoints.types.ApiBatchRequestElement-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES=cm_api.endpoints.types.ApiBatchResponseElement-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES=cm_api.endpoints.types.ApiBatchResponseList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES=cm_api.endpoints.types.ApiBulkCommandList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES=cm_api.endpoints.types.ApiClusterRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplate._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplate-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateConfig._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateConfig-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateHostInfo._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateHostInfo-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateHostTemplate._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateHostTemplate-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateInstantiator._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateInstantiator-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateRole._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateRole-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroup._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroup-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroupInfo._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroupInfo-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateService._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateService-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiClusterTemplateVariable._ATTRIBUTES=cm_api.endpoints.types.ApiClusterTemplateVariable-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES=cm_api.endpoints.types.ApiCmPeer-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES=cm_api.endpoints.types.ApiCommandMetadata-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiConfig._ATTRIBUTES=cm_api.endpoints.types.ApiConfig-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshot-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotError-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES=cm_api.endpoints.types.ApiHBaseSnapshotResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsReplicationArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsReplicationResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshot-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotError-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES=cm_api.endpoints.types.ApiHdfsSnapshotResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES=cm_api.endpoints.types.ApiHiveReplicationArguments-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES=cm_api.endpoints.types.ApiHiveReplicationResult-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES=cm_api.endpoints.types.ApiHiveTable-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHiveUDF._ATTRIBUTES=cm_api.endpoints.types.ApiHiveUDF-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiHostRef._ATTRIBUTES=cm_api.endpoints.types.ApiHostRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaCancelResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQuery-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryDetailsResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaQueryResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES=cm_api.endpoints.types.ApiImpalaUDF-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES=cm_api.endpoints.types.ApiLicensedFeatureUsage-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMetric._ATTRIBUTES=cm_api.endpoints.types.ApiMetric-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMetricData._ATTRIBUTES=cm_api.endpoints.types.ApiMetricData-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES=cm_api.endpoints.types.ApiMr2AppInformation-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiProductVersion._ATTRIBUTES=cm_api.endpoints.types.ApiProductVersion-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES=cm_api.endpoints.types.ApiReplicationSchedule-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES=cm_api.endpoints.types.ApiRoleConfigGroupRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES=cm_api.endpoints.types.ApiRoleRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES=cm_api.endpoints.types.ApiServiceRef-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES=cm_api.endpoints.types.ApiSnapshotPolicy-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiTimeSeriesRequest._ATTRIBUTES=cm_api.endpoints.types.ApiTimeSeriesRequest-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiWatchedDir._ATTRIBUTES=cm_api.endpoints.types.ApiWatchedDir-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiWatchedDirList._ATTRIBUTES=cm_api.endpoints.types.ApiWatchedDirList-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplication-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplicationAttribute-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES=cm_api.endpoints.types.ApiYarnApplicationResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES=cm_api.endpoints.types.ApiYarnKillResponse-class.html#_ATTRIBUTES,Variable cm_api.endpoints.types.BaseApiObject._ATTRIBUTES=cm_api.endpoints.types.BaseApiObject-class.html#_ATTRIBUTES,Variable cm_api.endpoints.users.ApiUser._ATTRIBUTES=cm_api.endpoints.users.ApiUser-class.html#_ATTRIBUTES"><a title="cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES
+cm_api.endpoints.cms.ApiLicense._ATTRIBUTES
+cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES
+cm_api.endpoints.events.ApiEvent._ATTRIBUTES
+cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccount._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccountCategory._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccountType._ATTRIBUTES
+cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES
+cm_api.endpoints.hosts.ApiHost._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.roles.ApiRole._ATTRIBUTES
+cm_api.endpoints.services.ApiService._ATTRIBUTES
+cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesEntityAttribute._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesEntityType._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiActivity._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES
+cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplate._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateHostInfo._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateHostTemplate._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateInstantiator._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRole._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroupInfo._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateService._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateVariable._ATTRIBUTES
+cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES
+cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES
+cm_api.endpoints.types.ApiConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiHostRef._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES
+cm_api.endpoints.types.ApiMetric._ATTRIBUTES
+cm_api.endpoints.types.ApiMetricData._ATTRIBUTES
+cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES
+cm_api.endpoints.types.ApiProductVersion._ATTRIBUTES
+cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES
+cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES
+cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES
+cm_api.endpoints.types.ApiTimeSeriesRequest._ATTRIBUTES
+cm_api.endpoints.types.ApiWatchedDir._ATTRIBUTES
+cm_api.endpoints.types.ApiWatchedDirList._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES
+cm_api.endpoints.types.BaseApiObject._ATTRIBUTES
+cm_api.endpoints.users.ApiUser._ATTRIBUTES" class="py-name" href="#" onclick="return doclink('link-38', '_ATTRIBUTES', 'link-38');">_ATTRIBUTES</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">    <tt class="py-string">'name'</tt>        <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-string">'displayName'</tt> <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt class="py-string">'description'</tt> <tt class="py-op">:</tt> <tt class="py-name">None</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">  <tt class="py-op">}</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"> </tt>
+<a name="ApiExternalAccountCategory.__str__"></a><div id="ApiExternalAccountCategory.__str__-def"><a name="L136"></a><tt class="py-lineno">136</tt> <a class="py-toggle" href="#" id="ApiExternalAccountCategory.__str__-toggle" onclick="return toggle('ApiExternalAccountCategory.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts.ApiExternalAccountCategory-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiExternalAccountCategory.__str__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiExternalAccountCategory.__str__-expanded"><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;ApiExternalAccountCategory&gt;: %s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt>
+<a name="ApiExternalAccountType"></a><div id="ApiExternalAccountType-def"><a name="L140"></a><tt class="py-lineno">140</tt> <a class="py-toggle" href="#" id="ApiExternalAccountType-toggle" onclick="return toggle('ApiExternalAccountType');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts.ApiExternalAccountType-class.html">ApiExternalAccountType</a><tt class="py-op">(</tt><tt class="py-base-class">BaseApiObject</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiExternalAccountType-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ApiExternalAccountType-expanded"><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">  <tt id="link-39" class="py-name"><a title="cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES
+cm_api.endpoints.cms.ApiLicense._ATTRIBUTES
+cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES
+cm_api.endpoints.events.ApiEvent._ATTRIBUTES
+cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccount._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccountCategory._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccountType._ATTRIBUTES
+cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES
+cm_api.endpoints.hosts.ApiHost._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.roles.ApiRole._ATTRIBUTES
+cm_api.endpoints.services.ApiService._ATTRIBUTES
+cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesEntityAttribute._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesEntityType._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiActivity._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES
+cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplate._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateHostInfo._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateHostTemplate._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateInstantiator._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRole._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroupInfo._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateService._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateVariable._ATTRIBUTES
+cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES
+cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES
+cm_api.endpoints.types.ApiConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiHostRef._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES
+cm_api.endpoints.types.ApiMetric._ATTRIBUTES
+cm_api.endpoints.types.ApiMetricData._ATTRIBUTES
+cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES
+cm_api.endpoints.types.ApiProductVersion._ATTRIBUTES
+cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES
+cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES
+cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES
+cm_api.endpoints.types.ApiTimeSeriesRequest._ATTRIBUTES
+cm_api.endpoints.types.ApiWatchedDir._ATTRIBUTES
+cm_api.endpoints.types.ApiWatchedDirList._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES
+cm_api.endpoints.types.BaseApiObject._ATTRIBUTES
+cm_api.endpoints.users.ApiUser._ATTRIBUTES" class="py-name" href="#" onclick="return doclink('link-39', '_ATTRIBUTES', 'link-38');">_ATTRIBUTES</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">    <tt class="py-string">'name'</tt>         <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">    <tt class="py-string">'displayName'</tt>  <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">    <tt class="py-string">'type'</tt>         <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">    <tt class="py-string">'categoryName'</tt> <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">    <tt class="py-string">'description'</tt>  <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">    <tt class="py-string">'allowedAccountConfigs'</tt> <tt class="py-op">:</tt> <tt id="link-40" class="py-name" targets="Class cm_api.endpoints.types.Attr=cm_api.endpoints.types.Attr-class.html"><a title="cm_api.endpoints.types.Attr" class="py-name" href="#" onclick="return doclink('link-40', 'Attr', 'link-40');">Attr</a></tt><tt class="py-op">(</tt><tt id="link-41" class="py-name" targets="Class cm_api.endpoints.types.ApiConfig=cm_api.endpoints.types.ApiConfig-class.html"><a title="cm_api.endpoints.types.ApiConfig" class="py-name" href="#" onclick="return doclink('link-41', 'ApiConfig', 'link-41');">ApiConfig</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">  <tt class="py-op">}</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"> </tt>
+<a name="ApiExternalAccountType.__str__"></a><div id="ApiExternalAccountType.__str__-def"><a name="L150"></a><tt class="py-lineno">150</tt> <a class="py-toggle" href="#" id="ApiExternalAccountType.__str__-toggle" onclick="return toggle('ApiExternalAccountType.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts.ApiExternalAccountType-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiExternalAccountType.__str__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiExternalAccountType.__str__-expanded"><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;ApiExternalAccountType&gt;: %s (categoryName: %s)"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">typeName</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"> </tt>
+<a name="ApiExternalAccount"></a><div id="ApiExternalAccount-def"><a name="L154"></a><tt class="py-lineno">154</tt> <a class="py-toggle" href="#" id="ApiExternalAccount-toggle" onclick="return toggle('ApiExternalAccount');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts.ApiExternalAccount-class.html">ApiExternalAccount</a><tt class="py-op">(</tt><tt class="py-base-class">BaseApiObject</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiExternalAccount-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ApiExternalAccount-expanded"><a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">  <tt id="link-42" class="py-name"><a title="cm_api.endpoints.clusters.ApiCluster._ATTRIBUTES
+cm_api.endpoints.cms.ApiLicense._ATTRIBUTES
+cm_api.endpoints.dashboards.ApiDashboard._ATTRIBUTES
+cm_api.endpoints.events.ApiEvent._ATTRIBUTES
+cm_api.endpoints.events.ApiEventQueryResult._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccount._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccountCategory._ATTRIBUTES
+cm_api.endpoints.external_accounts.ApiExternalAccountType._ATTRIBUTES
+cm_api.endpoints.host_templates.ApiHostTemplate._ATTRIBUTES
+cm_api.endpoints.hosts.ApiHost._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcel._ATTRIBUTES
+cm_api.endpoints.parcels.ApiParcelState._ATTRIBUTES
+cm_api.endpoints.role_config_groups.ApiRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.roles.ApiRole._ATTRIBUTES
+cm_api.endpoints.services.ApiService._ATTRIBUTES
+cm_api.endpoints.services.ApiServiceSetupInfo._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiMetricSchema._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeries._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesAggregateStatistics._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesCrossEntityMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesData._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesEntityAttribute._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesEntityType._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesMetadata._ATTRIBUTES
+cm_api.endpoints.timeseries.ApiTimeSeriesResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiActivity._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchRequestElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseElement._ATTRIBUTES
+cm_api.endpoints.types.ApiBatchResponseList._ATTRIBUTES
+cm_api.endpoints.types.ApiBulkCommandList._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterRef._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplate._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateHostInfo._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateHostTemplate._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateInstantiator._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRole._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroup._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateRoleConfigGroupInfo._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateService._ATTRIBUTES
+cm_api.endpoints.types.ApiClusterTemplateVariable._ATTRIBUTES
+cm_api.endpoints.types.ApiCmPeer._ATTRIBUTES
+cm_api.endpoints.types.ApiCommandMetadata._ATTRIBUTES
+cm_api.endpoints.types.ApiConfig._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHBaseSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshot._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotError._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotPolicyArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHdfsSnapshotResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationArguments._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveReplicationResult._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveTable._ATTRIBUTES
+cm_api.endpoints.types.ApiHiveUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiHostRef._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaCancelResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQuery._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryDetailsResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaQueryResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiImpalaUDF._ATTRIBUTES
+cm_api.endpoints.types.ApiLicensedFeatureUsage._ATTRIBUTES
+cm_api.endpoints.types.ApiMetric._ATTRIBUTES
+cm_api.endpoints.types.ApiMetricData._ATTRIBUTES
+cm_api.endpoints.types.ApiMr2AppInformation._ATTRIBUTES
+cm_api.endpoints.types.ApiProductVersion._ATTRIBUTES
+cm_api.endpoints.types.ApiReplicationSchedule._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleConfigGroupRef._ATTRIBUTES
+cm_api.endpoints.types.ApiRoleRef._ATTRIBUTES
+cm_api.endpoints.types.ApiServiceRef._ATTRIBUTES
+cm_api.endpoints.types.ApiSnapshotPolicy._ATTRIBUTES
+cm_api.endpoints.types.ApiTimeSeriesRequest._ATTRIBUTES
+cm_api.endpoints.types.ApiWatchedDir._ATTRIBUTES
+cm_api.endpoints.types.ApiWatchedDirList._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplication._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationAttribute._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnApplicationResponse._ATTRIBUTES
+cm_api.endpoints.types.ApiYarnKillResponse._ATTRIBUTES
+cm_api.endpoints.types.BaseApiObject._ATTRIBUTES
+cm_api.endpoints.users.ApiUser._ATTRIBUTES" class="py-name" href="#" onclick="return doclink('link-42', '_ATTRIBUTES', 'link-38');">_ATTRIBUTES</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-string">'name'</tt>             <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">    <tt class="py-string">'displayName'</tt>      <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">    <tt class="py-string">'typeName'</tt>         <tt class="py-op">:</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">    <tt class="py-string">'createdTime'</tt>      <tt class="py-op">:</tt> <tt id="link-43" class="py-name" targets="Class cm_api.endpoints.types.ROAttr=cm_api.endpoints.types.ROAttr-class.html"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-43', 'ROAttr', 'link-43');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">    <tt class="py-string">'lastModifiedTime'</tt> <tt class="py-op">:</tt> <tt id="link-44" class="py-name"><a title="cm_api.endpoints.types.ROAttr" class="py-name" href="#" onclick="return doclink('link-44', 'ROAttr', 'link-43');">ROAttr</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">    <tt class="py-string">'accountConfigs'</tt>   <tt class="py-op">:</tt> <tt id="link-45" class="py-name"><a title="cm_api.endpoints.types.Attr" class="py-name" href="#" onclick="return doclink('link-45', 'Attr', 'link-40');">Attr</a></tt><tt class="py-op">(</tt><tt id="link-46" class="py-name"><a title="cm_api.endpoints.types.ApiConfig" class="py-name" href="#" onclick="return doclink('link-46', 'ApiConfig', 'link-41');">ApiConfig</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">  <tt class="py-op">}</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt>
+<a name="ApiExternalAccount.__init__"></a><div id="ApiExternalAccount.__init__-def"><a name="L164"></a><tt class="py-lineno">164</tt> <a class="py-toggle" href="#" id="ApiExternalAccount.__init__-toggle" onclick="return toggle('ApiExternalAccount.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts.ApiExternalAccount-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">resource_root</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">displayName</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">               <tt class="py-param">typeName</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">accountConfigs</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiExternalAccount.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiExternalAccount.__init__-expanded"><a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">    <tt id="link-47" class="py-name" targets="Class cm_api.endpoints.types.BaseApiObject=cm_api.endpoints.types.BaseApiObject-class.html"><a title="cm_api.endpoints.types.BaseApiObject" class="py-name" href="#" onclick="return doclink('link-47', 'BaseApiObject', 'link-47');">BaseApiObject</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Static Method cm_api.endpoints.types.BaseApiObject.init()=cm_api.endpoints.types.BaseApiObject-class.html#init"><a title="cm_api.endpoints.types.BaseApiObject.init" class="py-name" href="#" onclick="return doclink('link-48', 'init', 'link-48');">init</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">resource_root</tt><tt class="py-op">,</tt> <tt class="py-name">locals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"> </tt>
+<a name="ApiExternalAccount.__str__"></a><div id="ApiExternalAccount.__str__-def"><a name="L168"></a><tt class="py-lineno">168</tt> <a class="py-toggle" href="#" id="ApiExternalAccount.__str__-toggle" onclick="return toggle('ApiExternalAccount.__str__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="cm_api.endpoints.external_accounts.ApiExternalAccount-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ApiExternalAccount.__str__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="ApiExternalAccount.__str__-expanded"><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;ApiExternalAccount&gt;: %s (typeName: %s)"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">typeName</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="cm_api-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Oct 26 13:20:24 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
