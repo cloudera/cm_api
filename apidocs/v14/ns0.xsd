@@ -65,6 +65,7 @@
   <xs:element name="hdfsUsageReport" type="apiHdfsUsageReport"/>
   <xs:element name="hdfsUsageReportRow" type="apiHdfsUsageReportRow"/>
   <xs:element name="healthCheck" type="apiHealthCheck"/>
+  <xs:element name="hiveCloudReplicationArguments" type="apiHiveCloudReplicationArguments"/>
   <xs:element name="hiveReplicationArguments" type="apiHiveReplicationArguments"/>
   <xs:element name="hiveReplicationError" type="apiHiveReplicationError"/>
   <xs:element name="hiveReplicationResult" type="apiHiveReplicationResult"/>
@@ -3856,6 +3857,30 @@ Available since v11.]]>
       <xs:enumeration value="BAD"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:complexType name="apiHiveCloudReplicationArguments">
+    <xs:complexContent>
+      <xs:extension base="apiHiveReplicationArguments">
+        <xs:sequence>
+          <xs:element name="sourceAccount" type="xs:string" minOccurs="0"/>
+          <xs:element name="destinationAccount" type="xs:string" minOccurs="0"/>
+          <xs:element name="cloudRootPath" type="xs:string" minOccurs="0"/>
+          <xs:element name="replicationOption" type="replicationOption" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="replicationOption">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[This will decide how cloud replication will take place]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="METADATA_ONLY"/>
+      <xs:enumeration value="METADATA_AND_DATA"/>
+      <xs:enumeration value="KEEP_DATA_IN_CLOUD"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="apiHiveReplicationArguments">
     <xs:annotation>
       <xs:documentation>
@@ -6039,7 +6064,13 @@ which services.]]>
               </xs:documentation>
             </xs:annotation>
           </xs:element>
-          <xs:element name="hdfsCloudArguments" type="apiHdfsCloudReplicationArguments" minOccurs="0"/>
+          <xs:element name="hdfsCloudArguments" type="apiHdfsCloudReplicationArguments" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[Arguments for HDFS cloud replication commands.]]>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
           <xs:element name="history" minOccurs="0">
             <xs:annotation>
               <xs:documentation>
@@ -6057,6 +6088,13 @@ which services.]]>
                 </xs:element>
               </xs:sequence>
             </xs:complexType>
+          </xs:element>
+          <xs:element name="hiveCloudArguments" type="apiHiveCloudReplicationArguments" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[Arguments for Hive cloud replication commands.]]>
+              </xs:documentation>
+            </xs:annotation>
           </xs:element>
         </xs:sequence>
       </xs:extension>
