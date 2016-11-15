@@ -43,6 +43,7 @@ public class ApiReplicationSchedule extends ApiSchedule {
   private ApiHdfsReplicationArguments hdfsArguments;
   private ApiHiveReplicationArguments hiveArguments;
   private ApiHdfsCloudReplicationArguments hdfsCloudArguments;
+  private ApiHiveCloudReplicationArguments hiveCloudArguments;
   private List<ApiReplicationCommand> history;
   private Boolean active;
 
@@ -75,6 +76,7 @@ public class ApiReplicationSchedule extends ApiSchedule {
     this.hiveArguments = hiveArguments;
   }
 
+  /** Arguments for HDFS cloud replication commands. */
   @XmlElement
   public ApiHdfsCloudReplicationArguments getHdfsCloudArguments() {
     return hdfsCloudArguments;
@@ -107,6 +109,16 @@ public class ApiReplicationSchedule extends ApiSchedule {
     this.active = active;
   }
 
+  /** Arguments for Hive cloud replication commands. */
+  @XmlElement
+  public ApiHiveCloudReplicationArguments getHiveCloudArguments() {
+    return hiveCloudArguments;
+  }
+
+  public void setHiveCloudArguments(ApiHiveCloudReplicationArguments hiveCloudArguments) {
+    this.hiveCloudArguments = hiveCloudArguments;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (!super.equals(o)) {
@@ -116,20 +128,22 @@ public class ApiReplicationSchedule extends ApiSchedule {
     ApiReplicationSchedule that = (ApiReplicationSchedule) o;
     return Objects.equal(hdfsArguments, that.getHdfsArguments()) &&
         Objects.equal(hiveArguments, that.getHiveArguments()) &&
-        Objects.equal(hdfsCloudArguments, that.getHdfsCloudArguments());
+        Objects.equal(hdfsCloudArguments, that.getHdfsCloudArguments()) &&
+        Objects.equal(hiveCloudArguments, that.getHiveCloudArguments());
   }
 
   @Override
   public int hashCode() {
     return 31 * super.hashCode() + Objects.hashCode(hdfsArguments,
-        hiveArguments, hdfsCloudArguments);
+        hiveArguments, hdfsCloudArguments, hiveCloudArguments);
   }
 
   protected Objects.ToStringHelper toStringHelper() {
     return super.toStringHelper()
         .add("hdfsArguments", hdfsArguments)
         .add("hiveArguments", hiveArguments)
-        .add("hdfsCloudArguments", hdfsCloudArguments);
+        .add("hdfsCloudArguments", hdfsCloudArguments)
+        .add("hiveCloudArguments", hiveCloudArguments);
   }
 
   @Override
