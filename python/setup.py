@@ -44,7 +44,7 @@ src_dir = os.path.normpath(os.path.join(base_dir, 'src'))
 
 setup(
   name = 'cm_api',
-  version = '14.0.0',    # Compatible with API v14 (CM 5.9)
+  version = '15.0.0',    # Compatible with API v15 (CM 5.10)
   packages = find_packages(src_dir, exclude=['cm_api_tests']),
   package_dir = {'': src_dir },
   zip_safe = True,
