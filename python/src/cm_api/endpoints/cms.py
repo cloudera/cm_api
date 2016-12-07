@@ -245,6 +245,23 @@ class ClouderaManager(BaseApiResource):
     """
     return self._cmd('hostsRecommission', data=host_names)
 
+  def hosts_recommission_with_start(self, host_names):
+    """
+    Recommission the specified hosts by recommissioning the slave roles.
+    This command will start the roles before recommissioning.
+
+    Warning: Evolving. This method may change in the future and does not
+    offer standard compatibility guarantees.
+    Do not use without guidance from Cloudera.
+
+    Currently, only HDFS DataNodes will be started by this command.
+
+    @param host_names: List of names of hosts to be recommissioned.
+    @return: Information about the submitted command.
+    @since: API v15
+    """
+    return self._cmd('hostsRecommissionWithStart', data=host_names, api_version=15)
+
   def hosts_start_roles(self, host_names):
     """
     Start all the roles on the specified hosts.

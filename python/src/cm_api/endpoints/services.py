@@ -849,6 +849,21 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('recommission', data=role_names)
 
+  def recommission_with_start(self, *role_names):
+    """
+    Recommission roles in a service. Roles are started before recommissioning.
+
+    Warning: Evolving. This method may change in the future and does not offer
+    standard compatibility guarantees.
+    Only support by HDFS.
+    Do not use without guidance from Cloudera.
+
+    @param role_names: Names of the roles to recommission.
+    @return: Reference to the submitted command.
+    @since: API v15
+    """
+    return self._cmd('recommissionWithStart', data=role_names, api_version=15)
+
   def deploy_client_config(self, *role_names):
     """
     Deploys client configuration to the hosts where roles are running.

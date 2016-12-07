@@ -128,6 +128,20 @@ class TestCMS(unittest.TestCase):
         retdata={})
     cms.hosts_recommission([ "host1", "host2" ])
 
+  def test_host_commission_with_start(self):
+    resource = utils.MockResource(self)
+    cms = ClouderaManager(resource)
+
+    resource.expect("POST", "/cm/commands/hostsDecommission",
+        data=[ "host1", "host2" ],
+        retdata={})
+    cms.hosts_decommission([ "host1", "host2" ])
+
+    resource.expect("POST", "/cm/commands/hostsRecommissionWithStart",
+        data=[ "host1", "host2" ],
+        retdata={})
+    cms.hosts_recommission_with_start([ "host1", "host2" ])
+
   def test_get_licensed_feature_usage(self):
     resource = utils.MockResource(self)
     cms = ClouderaManager(resource)
