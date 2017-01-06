@@ -26,7 +26,7 @@ from cm_api.api_client import ApiResource, ApiException
 from urllib2 import URLError
 
 # Config
-CONFIG = {'cluster': None, 'output_type': 'table', 'seperator': None}
+CONFIG = {'cluster': None, 'output_type': 'table', 'separator': None}
 
 # Initial Prompt
 INIT_PROMPT = "cloudera> "
@@ -91,7 +91,7 @@ class ClouderaShell(cmd.Cmd):
                 print(','.join(r))
 
         if CONFIG['output_type'] == "custom":
-            SEP = CONFIG['seperator']
+            SEP = CONFIG['separator']
             print(SEP.join(headers))
             for r in rows:
                 print(SEP.join(r))
@@ -592,7 +592,7 @@ def main():
     parser.add_argument('-c', '--cluster', action='store', dest='cluster')
     parser.add_argument('--password', action='store', dest='password')
     parser.add_argument('-e', '--execute', action='store', dest='execute')
-    parser.add_argument('-s', '--seperator', action='store', dest='seperator')
+    parser.add_argument('-s', '--separator', action='store', dest='separator')
     parser.add_argument('-t', '--tls', action='store_const', dest='use_tls', const=True, default=False)
     args = parser.parse_args()
 
@@ -622,10 +622,10 @@ def main():
 
     CONFIG['cluster'] = args.cluster
 
-    # Check if a custom seperator was supplied for the output
-    if args.seperator:
+    # Check if a custom separator was supplied for the output
+    if args.separator:
         CONFIG['output_type'] = 'custom'
-        CONFIG['seperator'] = args.seperator
+        CONFIG['separator'] = args.separator
 
     # Check if user is attempting non-interactive shell
     if args.execute:
