@@ -173,10 +173,13 @@ class ClouderaShell(cmd.Cmd):
 
     def do_status(self, service):
         """
-        List all services on the cluster
+        List service status on the cluster
         Usage:
-            > status
+            > status <service name>    show status of specified service
+            > status                   show status of all services on
+                                       this cluster
         """
+        # TODO: `status' and `show services' commands have duplicated feature
         if service:
             self.do_show("services", single=service)
         else:
@@ -253,7 +256,12 @@ class ClouderaShell(cmd.Cmd):
                         config = "UP TO DATE"
                     rows.append([s.name, s.type, s.serviceState, s.healthSummary, config])
             else:
-                s = api.get_cluster(self.cluster).get_service(single)
+                try:
+                    s = api.get_cluster(self.cluster).get_service(single)
+                except ApiException as e:
+                    print(e.message)
+                    return None
+
                 if s.configStale:
                     config = "STALE"
                 else:
