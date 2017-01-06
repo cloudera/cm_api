@@ -67,8 +67,12 @@ class ClouderaShell(cmd.Cmd):
     CACHED_SERVICES = None
     CACHED_CLUSTERS = None
 
+    def __init__(self, completekey='tab', stdin=None, stdout=None):
+        cmd.Cmd.__init__(self, completekey, stdin, stdout)
+        self.cluster_object = None
+
     def preloop(self):
-        "Checks if the cluster was pre-defined"
+        """Checks if the cluster was pre-defined"""
         if CONFIG['cluster']:
             self.set_cluster(CONFIG['cluster'])
         else:
@@ -275,7 +279,7 @@ class ClouderaShell(cmd.Cmd):
             return show_commands
 
     def service_action(self, service, action):
-        "Perform given action on service for the selected cluster"
+        """Perform given action on service for the selected cluster"""
         try:
             service = api.get_cluster(self.cluster).get_service(service)
         except ApiException:
@@ -368,7 +372,7 @@ class ClouderaShell(cmd.Cmd):
             print("Error setting cluster")
 
     def cluster_autocomplete(self, text, line, start_index, end_index):
-        "autocomplete for the use command, obtain list of clusters first"
+        """autocomplete for the use command, obtain list of clusters first"""
         if not self.CACHED_CLUSTERS:
             clusters = [cluster.name for cluster in api.get_all_clusters()]
             self.CACHED_CLUSTERS = clusters
@@ -422,7 +426,7 @@ class ClouderaShell(cmd.Cmd):
         return self.services_autocomplete(text, line, start_index, end_index, append=["all"])
 
     def roles_autocomplete(self, text, line, start_index, end_index):
-        "Return full list of roles"
+        """Return full list of roles"""
         if '-' not in line:
             # Append a dash to each service, makes for faster autocompletion of
             # roles
