@@ -21,6 +21,7 @@ import argparse
 import readline
 import os
 import cmd
+import re
 from prettytable import PrettyTable
 from cm_api.api_client import ApiResource, ApiException
 from urllib2 import URLError
@@ -175,9 +176,8 @@ class ClouderaShell(cmd.Cmd):
         """
         List service status on the cluster
         Usage:
-            > status <service name>    show status of specified service
-            > status                   show status of all services on
-                                       this cluster
+            > status name    show status of specified service
+            > status         show status of all services
         """
         # TODO: `status' and `show services' commands have duplicated feature
         if service:
@@ -213,10 +213,16 @@ class ClouderaShell(cmd.Cmd):
         """
         General System Information
         Usage:
-            > show clusters     list of clusters this CM manages
-            > show hosts        list of all hosts CM manages
-            > show services     list of all services on this cluster
-                                including their health.
+            > show clusters        list of clusters this CM manages
+            > show hosts           list of all hosts CM manages
+            > show services        list of all services on the target cluster
+                                   including their health.
+            > show configs name    list of configs of specified service
+            > show configs         list of configs of all services on the
+                                   target cluster.
+            > show full_configs name    list of full configs of specified service
+            > show full_configs         list of full configs of all services
+                                        on the target cluster.
         """
         headers = []
         rows = []
@@ -267,6 +273,49 @@ class ClouderaShell(cmd.Cmd):
                 else:
                     config = "UP TO DATE"
                 rows.append([s.name, s.type, s.serviceState, s.healthSummary, config])
+
+        # show configs
+        pattern = re.compile("^(full_)?configs(\s+.*)?$")
+        if pattern.match(option):
+            "Show list of configs on the cluster"
+            args = option.split(None, 1)
+            full = option[0] == 'f'
+            headers = ["SERVICE", "NAME", "VALUE"]
+            align = ["SERVICE", "NAME", "VALUE"]
+            if full:
+                headers.append("DEFAULT")
+                align.append("DEFAULT")
+
+            # check if the user has selected a cluster
+            if not self.has_cluster():
+                print("Error: Please select a cluster first")
+                return None
+
+            if len(args) == 1:
+                for s in api.get_cluster(self.cluster).get_all_services():
+                    if not full:
+                        svc, rtc = s.get_config()
+                        for name, value in svc.iteritems():
+                            rows.append([s.name, name, value])
+                    else:
+                        svc, rtc = s.get_config('full')
+                        for c in svc.values():
+                            rows.append([s.name, c.name, c.value, c.default])
+            else:
+                try:
+                    s = api.get_cluster(self.cluster).get_service(args[1])
+                except ApiException as e:
+                    print(e.message)
+                    return None
+
+                if not full:
+                    svc, rtc = s.get_config()
+                    for name, value in svc.iteritems():
+                        rows.append([s.name, name, value])
+                else:
+                    svc, rtc = s.get_config('full')
+                    for c in svc.values():
+                        rows.append([s.name, c.name, c.value, c.default])
 
         self.generate_output(headers, rows, align=align)
 
