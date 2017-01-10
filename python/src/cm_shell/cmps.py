@@ -21,12 +21,13 @@ import argparse
 import readline
 import os
 import cmd
+import re
 from prettytable import PrettyTable
 from cm_api.api_client import ApiResource, ApiException
 from urllib2 import URLError
 
 # Config
-CONFIG = {'cluster': None, 'output_type': 'table', 'seperator': None}
+CONFIG = {'cluster': None, 'output_type': 'table', 'separator': None}
 
 # Initial Prompt
 INIT_PROMPT = "cloudera> "
@@ -67,8 +68,12 @@ class ClouderaShell(cmd.Cmd):
     CACHED_SERVICES = None
     CACHED_CLUSTERS = None
 
+    def __init__(self, completekey='tab', stdin=None, stdout=None):
+        cmd.Cmd.__init__(self, completekey, stdin, stdout)
+        self.cluster_object = None
+
     def preloop(self):
-        "Checks if the cluster was pre-defined"
+        """Checks if the cluster was pre-defined"""
         if CONFIG['cluster']:
             self.set_cluster(CONFIG['cluster'])
         else:
@@ -91,7 +96,7 @@ class ClouderaShell(cmd.Cmd):
                 print(','.join(r))
 
         if CONFIG['output_type'] == "custom":
-            SEP = CONFIG['seperator']
+            SEP = CONFIG['separator']
             print(SEP.join(headers))
             for r in rows:
                 print(SEP.join(r))
@@ -169,10 +174,12 @@ class ClouderaShell(cmd.Cmd):
 
     def do_status(self, service):
         """
-        List all services on the cluster
+        List service status on the cluster
         Usage:
-            > status
+            > status name    show status of specified service
+            > status         show status of all services
         """
+        # TODO: `status' and `show services' commands have duplicated feature
         if service:
             self.do_show("services", single=service)
         else:
@@ -206,10 +213,16 @@ class ClouderaShell(cmd.Cmd):
         """
         General System Information
         Usage:
-            > show clusters     list of clusters this CM manages
-            > show hosts        list of all hosts CM manages
-            > show services     list of all services on this cluster
-                                including their health.
+            > show clusters        list of clusters this CM manages
+            > show hosts           list of all hosts CM manages
+            > show services        list of all services on the target cluster
+                                   including their health.
+            > show configs name    list of configs of specified service
+            > show configs         list of configs of all services on the
+                                   target cluster.
+            > show full_configs name    list of full configs of specified service
+            > show full_configs         list of full configs of all services
+                                        on the target cluster.
         """
         headers = []
         rows = []
@@ -249,12 +262,63 @@ class ClouderaShell(cmd.Cmd):
                         config = "UP TO DATE"
                     rows.append([s.name, s.type, s.serviceState, s.healthSummary, config])
             else:
-                s = api.get_cluster(self.cluster).get_service(single)
+                try:
+                    s = api.get_cluster(self.cluster).get_service(single)
+                except ApiException as e:
+                    print(e.message)
+                    return None
+
                 if s.configStale:
                     config = "STALE"
                 else:
                     config = "UP TO DATE"
                 rows.append([s.name, s.type, s.serviceState, s.healthSummary, config])
+
+        # show configs
+        pattern = re.compile("^(full_)?configs(\s+.*)?$")
+        if pattern.match(option):
+            "Show list of configs on the cluster"
+            args = option.split(None, 1)
+            full = option[0] == 'f'
+            headers = ["SERVICE", "ROLETYPE", "NAME", "VALUE"]
+            align = ["SERVICE", "ROLETYPE", "NAME", "VALUE"]
+            if full:
+                headers.append("DEFAULT")
+                align.append("DEFAULT")
+
+            # check if the user has selected a cluster
+            if not self.has_cluster():
+                print("Error: Please select a cluster first")
+                return None
+
+            def service_config_rows(service, full=False):
+                rows = []
+                if not full:
+                    svc_config, rt_configs = service.get_config()
+                    for name, value in svc_config.iteritems():
+                        rows.append([service.name, "", name, value])
+                    for roletype, configs in rt_configs.iteritems():
+                        for name, value in configs.iteritems():
+                            rows.append([service.name, roletype, name, value])
+                else:
+                    svc_config, rt_configs = service.get_config('full')
+                    for c in svc_config.values():
+                        rows.append([service.name, "", c.name, c.value, c.default])
+                    for roletype, configs in rt_configs.iteritems():
+                        for c in configs.values():
+                            rows.append([service.name, roletype, c.name, c.value, c.default])
+                return rows
+
+            if len(args) == 1:
+                for s in api.get_cluster(self.cluster).get_all_services():
+                    rows += service_config_rows(s, full)
+            else:
+                try:
+                    s = api.get_cluster(self.cluster).get_service(args[1])
+                except ApiException as e:
+                    print(e.message)
+                    return None
+                rows = service_config_rows(s, full)
 
         self.generate_output(headers, rows, align=align)
 
@@ -275,7 +339,7 @@ class ClouderaShell(cmd.Cmd):
             return show_commands
 
     def service_action(self, service, action):
-        "Perform given action on service for the selected cluster"
+        """Perform given action on service for the selected cluster"""
         try:
             service = api.get_cluster(self.cluster).get_service(service)
         except ApiException:
@@ -368,7 +432,7 @@ class ClouderaShell(cmd.Cmd):
             print("Error setting cluster")
 
     def cluster_autocomplete(self, text, line, start_index, end_index):
-        "autocomplete for the use command, obtain list of clusters first"
+        """autocomplete for the use command, obtain list of clusters first"""
         if not self.CACHED_CLUSTERS:
             clusters = [cluster.name for cluster in api.get_all_clusters()]
             self.CACHED_CLUSTERS = clusters
@@ -422,7 +486,7 @@ class ClouderaShell(cmd.Cmd):
         return self.services_autocomplete(text, line, start_index, end_index, append=["all"])
 
     def roles_autocomplete(self, text, line, start_index, end_index):
-        "Return full list of roles"
+        """Return full list of roles"""
         if '-' not in line:
             # Append a dash to each service, makes for faster autocompletion of
             # roles
@@ -592,7 +656,7 @@ def main():
     parser.add_argument('-c', '--cluster', action='store', dest='cluster')
     parser.add_argument('--password', action='store', dest='password')
     parser.add_argument('-e', '--execute', action='store', dest='execute')
-    parser.add_argument('-s', '--seperator', action='store', dest='seperator')
+    parser.add_argument('-s', '--separator', action='store', dest='separator')
     parser.add_argument('-t', '--tls', action='store_const', dest='use_tls', const=True, default=False)
     args = parser.parse_args()
 
@@ -622,10 +686,10 @@ def main():
 
     CONFIG['cluster'] = args.cluster
 
-    # Check if a custom seperator was supplied for the output
-    if args.seperator:
+    # Check if a custom separator was supplied for the output
+    if args.separator:
         CONFIG['output_type'] = 'custom'
-        CONFIG['seperator'] = args.seperator
+        CONFIG['separator'] = args.separator
 
     # Check if user is attempting non-interactive shell
     if args.execute:

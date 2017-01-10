@@ -65,7 +65,7 @@ def _get_size(text):
             max_width = len(line)
 
     return (max_width, max_height)
-        
+
 def _unicode(value, encoding="UTF-8"):
     if not isinstance(value, basestring):
         value = str(value)
@@ -89,8 +89,8 @@ class PrettyTable(object):
         header - print a header showing field names (True or False)
         border - print a border around the table (True or False)
         hrules - controls printing of horizontal rules after rows.  Allowed values: FRAME, ALL, NONE
-	int_format - controls formatting of integer data
-	float_format - controls formatting of floating point data
+        int_format - controls formatting of integer data
+        float_format - controls formatting of floating point data
         padding_width - number of spaces on either side of column data (only used if left and right paddings are None)
         left_padding_width - number of spaces on left hand side of column data
         right_padding_width - number of spaces on right hand side of column data
@@ -144,10 +144,10 @@ class PrettyTable(object):
         self._vertical_char = kwargs["vertical_char"] or "|"
         self._horizontal_char = kwargs["horizontal_char"] or "-"
         self._junction_char = kwargs["junction_char"] or "+"
-        
+
         self._format = kwargs["format"] or False
         self._attributes = kwargs["attributes"] or {}
-   
+
     def __getattr__(self, name):
 
         if name == "rowcount":
@@ -161,7 +161,7 @@ class PrettyTable(object):
                 return 0
         else:
             raise AttributeError(name)
- 
+
     def __getitem__(self, index):
 
         newtable = copy.deepcopy(self)
@@ -334,7 +334,7 @@ class PrettyTable(object):
         for field in self._field_names:
             self._max_width[field] = val
     max_width = property(_get_max_width, _set_max_width)
-    
+
     def _get_start(self):
         """Start index of the range of rows to print
 
@@ -395,7 +395,7 @@ class PrettyTable(object):
         self._validate_option("sort_key", val)
         self._sort_key = val
     sort_key = property(_get_sort_key, _set_sort_key)
- 
+
     def _get_header(self):
         """Controls printing of table header with field names
 
@@ -704,9 +704,9 @@ class PrettyTable(object):
 
     def _format_value(self, field, value):
         if isinstance(value, int) and field in self._int_format:
-            value = ("%%%sd" % self._int_format[field]) % value 
+            value = ("%%%sd" % self._int_format[field]) % value
         elif isinstance(value, float) and field in self._float_format:
-            value = ("%%%sf" % self._float_format[field]) % value 
+            value = ("%%%sf" % self._float_format[field]) % value
         return value
 
     def _compute_widths(self, rows, options):
@@ -738,8 +738,8 @@ class PrettyTable(object):
         Arguments:
 
         options - dictionary of option settings."""
-       
-	# Make a copy of only those rows in the slice range 
+
+        # Make a copy of only those rows in the slice range
         rows = copy.deepcopy(self._rows[options["start"]:options["end"]])
         # Sort if necessary
         if options["sortby"]:
@@ -751,7 +751,7 @@ class PrettyTable(object):
             # Undecorate
             rows = [row[1:] for row in rows]
         return rows
-         
+
     ##############################
     # PLAIN TEXT STRING METHODS  #
     ##############################
@@ -768,8 +768,8 @@ class PrettyTable(object):
         header - print a header showing field names (True or False)
         border - print a border around the table (True or False)
         hrules - controls printing of horizontal rules after rows.  Allowed values: FRAME, ALL, NONE
-	int_format - controls formatting of integer data
-	float_format - controls formatting of floating point data
+        int_format - controls formatting of integer data
+        float_format - controls formatting of floating point data
         padding_width - number of spaces on either side of column data (only used if left and right paddings are None)
         left_padding_width - number of spaces on left hand side of column data
         right_padding_width - number of spaces on right hand side of column data
@@ -812,7 +812,7 @@ class PrettyTable(object):
         # Add bottom of border
         if options["border"] and not options["hrules"]:
             bits.append(self._hrule)
-        
+
         string = "\n".join(bits)
         self._nonunicode = string
         return _unicode(string)
@@ -856,7 +856,7 @@ class PrettyTable(object):
         return "".join(bits)
 
     def _stringify_row(self, row, options):
-        
+
         for index, value in enumerate(row):
             row[index] = self._format_value(self.field_names[index], value)
 
@@ -865,7 +865,7 @@ class PrettyTable(object):
             max_width = self._max_width.get(field, 0)
             lines = _unicode(value).split("\n")
             new_lines = []
-            for line in lines: 
+            for line in lines:
                 if max_width and len(line) > max_width:
                     line = textwrap.fill(line, max_width)
                 new_lines.append(line)
@@ -882,7 +882,7 @@ class PrettyTable(object):
                self._widths[index] = max(namewidth, datawidth)
             else:
                self._widths[index] = datawidth
-        
+
         row_height = 0
         for c in row:
             h = _get_size(c)[1]
@@ -919,7 +919,7 @@ class PrettyTable(object):
                 y += 1
 
         self._hrule = self._stringify_hrule(options)
-        
+
         if options["border"] and options["hrules"]== ALL:
             bits[row_height-1].append("\n")
             bits[row_height-1].append(self._hrule)
@@ -947,8 +947,8 @@ class PrettyTable(object):
         header - print a header showing field names (True or False)
         border - print a border around the table (True or False)
         hrules - controls printing of horizontal rules after rows.  Allowed values: FRAME, ALL, NONE
-	int_format - controls formatting of integer data
-	float_format - controls formatting of floating point data
+        int_format - controls formatting of integer data
+        float_format - controls formatting of floating point data
         padding_width - number of spaces on either side of column data (only used if left and right paddings are None)
         left_padding_width - number of spaces on left hand side of column data
         right_padding_width - number of spaces on right hand side of column data
@@ -1063,6 +1063,6 @@ def main():
     x.add_row(["Melbourne", 1566, 3806092, 646.9])
     x.add_row(["Perth", 5386, 1554769, 869.4])
     print(x)
-    
+
 if __name__ == "__main__":
     main()
