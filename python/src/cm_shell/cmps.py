@@ -280,8 +280,8 @@ class ClouderaShell(cmd.Cmd):
             "Show list of configs on the cluster"
             args = option.split(None, 1)
             full = option[0] == 'f'
-            headers = ["SERVICE", "NAME", "VALUE"]
-            align = ["SERVICE", "NAME", "VALUE"]
+            headers = ["SERVICE", "ROLETYPE", "NAME", "VALUE"]
+            align = ["SERVICE", "ROLETYPE", "NAME", "VALUE"]
             if full:
                 headers.append("DEFAULT")
                 align.append("DEFAULT")
@@ -291,31 +291,34 @@ class ClouderaShell(cmd.Cmd):
                 print("Error: Please select a cluster first")
                 return None
 
+            def service_config_rows(service, full=False):
+                rows = []
+                if not full:
+                    svc_config, rt_configs = service.get_config()
+                    for name, value in svc_config.iteritems():
+                        rows.append([service.name, "", name, value])
+                    for roletype, configs in rt_configs.iteritems():
+                        for name, value in configs.iteritems():
+                            rows.append([service.name, roletype, name, value])
+                else:
+                    svc_config, rt_configs = service.get_config('full')
+                    for c in svc_config.values():
+                        rows.append([service.name, "", c.name, c.value, c.default])
+                    for roletype, configs in rt_configs.iteritems():
+                        for c in configs.values():
+                            rows.append([service.name, roletype, c.name, c.value, c.default])
+                return rows
+
             if len(args) == 1:
                 for s in api.get_cluster(self.cluster).get_all_services():
-                    if not full:
-                        svc, rtc = s.get_config()
-                        for name, value in svc.iteritems():
-                            rows.append([s.name, name, value])
-                    else:
-                        svc, rtc = s.get_config('full')
-                        for c in svc.values():
-                            rows.append([s.name, c.name, c.value, c.default])
+                    rows += service_config_rows(s, full)
             else:
                 try:
                     s = api.get_cluster(self.cluster).get_service(args[1])
                 except ApiException as e:
                     print(e.message)
                     return None
-
-                if not full:
-                    svc, rtc = s.get_config()
-                    for name, value in svc.iteritems():
-                        rows.append([s.name, name, value])
-                else:
-                    svc, rtc = s.get_config('full')
-                    for c in svc.values():
-                        rows.append([s.name, c.name, c.value, c.default])
+                rows = service_config_rows(s, full)
 
         self.generate_output(headers, rows, align=align)
 
