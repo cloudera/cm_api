@@ -78,10 +78,11 @@ class HttpClient(object):
   """
   Basic HTTP client tailored for rest APIs.
   """
-  def __init__(self, base_url, exc_class=None, logger=None):
+  def __init__(self, base_url, exc_class=None, logger=None, ssl_context=None):
     """
     @param base_url: The base url to the API.
     @param exc_class: An exception class to handle non-200 results.
+    @param ssl_context: A custom SSL context to use for HTTPS (Python 2.7.9+)
 
     Creates an HTTP(S) client to connect to the Cloudera Manager API.
     """
@@ -97,11 +98,19 @@ class HttpClient(object):
     # Make a cookie processor
     cookiejar = cookielib.CookieJar()
 
-    self._opener = urllib2.build_opener(
-        HTTPErrorProcessor(),
-        urllib2.HTTPCookieProcessor(cookiejar),
-        authhandler)
-
+    # Python 2.6's HTTPSHandler does not support the context argument, so only
+    # instantiate it if non-None context is given
+    if (ssl_context is not None):
+      self._opener = urllib2.build_opener(
+          urllib2.HTTPSHandler(context=ssl_context),
+          HTTPErrorProcessor(),
+          urllib2.HTTPCookieProcessor(cookiejar),
+          authhandler)
+    else:
+      self._opener = urllib2.build_opener(
+          HTTPErrorProcessor(),
+          urllib2.HTTPCookieProcessor(cookiejar),
+          authhandler)
 
   def set_basic_auth(self, username, password, realm):
     """

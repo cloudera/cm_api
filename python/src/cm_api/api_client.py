@@ -55,7 +55,8 @@ class ApiResource(Resource):
 
   def __init__(self, server_host, server_port=None,
                username="admin", password="admin",
-               use_tls=False, version=API_CURRENT_VERSION):
+               use_tls=False, version=API_CURRENT_VERSION,
+               ssl_context=None):
     """
     Creates a Resource object that provides API endpoints.
 
@@ -66,6 +67,7 @@ class ApiResource(Resource):
     @param password: Login password.
     @param use_tls: Whether to use tls (https).
     @param version: API version.
+    @param ssl_context: A custom SSL context to use for HTTPS (Python 2.7.9+)
     @return: Resource object referring to the root.
     """
     self._version = version
@@ -75,7 +77,8 @@ class ApiResource(Resource):
     base_url = "%s://%s:%s/api/v%s" % \
         (protocol, server_host, server_port, version)
 
-    client = HttpClient(base_url, exc_class=ApiException)
+    client = HttpClient(base_url, exc_class=ApiException,
+                        ssl_context=ssl_context)
     client.set_basic_auth(username, password, API_AUTH_REALM)
     client.set_headers( { "Content-Type" : "application/json" } )
     Resource.__init__(self, client)
