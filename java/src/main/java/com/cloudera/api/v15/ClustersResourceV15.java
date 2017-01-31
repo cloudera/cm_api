@@ -15,22 +15,25 @@
 // limitations under the License.
 package com.cloudera.api.v15;
 
-import com.cloudera.api.v14.RootResourceV14;
+import static com.cloudera.api.Parameters.*;
 
+import com.cloudera.api.v14.ClustersResourceV14;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-@Path("")
-public interface RootResourceV15 extends RootResourceV14 {
-
-  @Override
-  @Path("/cm")
-  public ClouderaManagerResourceV15 getClouderaManagerResource();
-
+@Consumes({ MediaType.APPLICATION_JSON })
+@Produces({ MediaType.APPLICATION_JSON })
+public interface ClustersResourceV15 extends ClustersResourceV14 {
   /**
-   * @return The clusters resource handler.
+   * @return The services resource handler.
    */
   @Override
-  @Path("/clusters")
-  public ClustersResourceV15 getClustersResource();
+  @Path("/{clusterName}/services")
+  public ServicesResourceV15 getServicesResource(
+      @PathParam(CLUSTER_NAME) String clusterName);
 
 }

@@ -17,12 +17,15 @@
 package com.cloudera.api.v15;
 
 import com.cloudera.api.Parameters;
+import com.cloudera.api.model.ApiCommand;
 import com.cloudera.api.model.ApiConfigList;
 import com.cloudera.api.model.ApiShutdownReadiness;
+import com.cloudera.api.model.ApiHostNameList;
 import com.cloudera.api.v14.ClouderaManagerResourceV14;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -68,4 +71,25 @@ public interface ClouderaManagerResourceV15 extends ClouderaManagerResourceV14 {
       @QueryParam("lastActivityTime")
       String lastActivityTime);
 
+
+  /**
+   * Recommission the given hosts. If slave roles support start when decommissioned,
+   * start those roles before recommission.
+   * All slave roles on the hosts will be recommissioned.
+   *
+   * Warning: Evolving. This method may change in the future and does not offer standard compatibility guarantees.
+   * Recommission the given hosts. If possible, start those roles before recommission. All slave roles on the hosts
+   * will be recommissioned.
+   * Do not use without guidance from Cloudera.
+   *
+   * Currently, only HDFS DataNodes will be started by this command.
+   * 
+   *
+   * @return Information about the submitted command.
+   */
+  @POST
+  @Consumes
+  @Path("/commands/hostsRecommissionWithStart")
+  public ApiCommand hostsRecommissionWithStartCommand(
+      ApiHostNameList hostNameList);
 }
