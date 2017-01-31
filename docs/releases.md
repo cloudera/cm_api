@@ -20,6 +20,15 @@ Releases
 
       <tr>
             <td>v14</td>
+            <td>Cloudera Manager 5.10</td>
+            <td><a href="{{ site.url }}/apidocs/v15/index.html">API docs</a>,
+                <a href="{{ site.url }}/javadoc/5.10.0/index.html">Javadoc</a>,
+                <a href="{{ site.url }}/epydoc/5.10.0/index.html">Epydoc</a>
+            </td>
+      </tr>
+ 
+      <tr>
+            <td>v14</td>
             <td>Cloudera Manager 5.9</td>
             <td><a href="{{ site.url }}/apidocs/v14/index.html">API docs</a>,
                 <a href="{{ site.url }}/javadoc/5.9.0/index.html">Javadoc</a>,
