@@ -1967,6 +1967,32 @@ for that.]]>
         </wadl:response>
       </wadl:method>
     </wadl:resource>
+    <wadl:resource path="/api/v15/cm/commands/hostsRecommissionWithStart">
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Recommission the given hosts. If slave roles support start when decommissioned,
+start those roles before recommission.
+All slave roles on the hosts will be recommissioned.
+
+Warning: Evolving. This method may change in the future and does not offer standard compatibility guarantees.
+Recommission the given hosts. If possible, start those roles before recommission. All slave roles on the hosts
+will be recommissioned.
+Do not use without guidance from Cloudera.
+
+Currently, only HDFS DataNodes will be started by this command.]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:representation mediaType="*/*" element="hostNames"/>
+          <wadl:representation mediaType="application/xml" element="hostNames"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
     <wadl:resource path="/api/v15/cm/commands/hostsStartRoles">
       <wadl:method name="POST">
         <wadl:doc>
@@ -6131,6 +6157,44 @@ The list should contain names of slave roles to recommission.
 
 <p>
 Available since API v2.
+</p>]]>
+        </wadl:doc>
+        <wadl:request>
+          <wadl:doc>
+            <![CDATA[List of role names to recommision.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:request>
+        <wadl:response>
+          <wadl:doc>
+            <![CDATA[Information about the submitted command.]]>
+          </wadl:doc>
+          <wadl:representation mediaType="application/json"/>
+        </wadl:response>
+      </wadl:method>
+    </wadl:resource>
+    <wadl:resource path="/api/v15/clusters/{clusterName}/services/{serviceName}/commands/recommissionWithStart">
+      <wadl:param name="serviceName" style="template">
+        <wadl:doc>
+          <![CDATA[Name of the service on which to run the command.]]>
+        </wadl:doc>
+      </wadl:param>
+      <wadl:param name="clusterName" style="template"/>
+      <wadl:method name="POST">
+        <wadl:doc>
+          <![CDATA[Start and recommission roles of a service.
+<p>
+The list should contain names of slave roles to start and recommission.
+</p>
+
+<p>
+Warning: Evolving. This method may change in the future and does not offer standard compatibility guarantees.
+Only support by HDFS.
+Do not use without guidance from Cloudera.
+</p>
+
+<p>
+Available since API v15.
 </p>]]>
         </wadl:doc>
         <wadl:request>

@@ -52,7 +52,7 @@
               </ul>
             </li>
             <li class="current">
-              <a href="path__clusters_-clusterName-_services_-serviceName-_metrics.html">/clusters/{clusterName}/services/{serviceName}/metrics</a>
+              <a href="path__clusters_-clusterName-_services_-serviceName-_commands_recommissionWithStart.html">/clusters/{clusterName}/services/{serviceName}/commands/recommissionWithStart</a>
               <ul>
                 <li><a href="path__audits.html">/audits</a></li>
                 <li><a href="path__audits_stream.html">/audits/stream</a></li>
@@ -336,46 +336,25 @@
       </div>
     </header>
     <div id="main" class="column first last span-20">
-      <h1>/clusters/{clusterName}/services/{serviceName}/metrics</h1>
-      <p class="note">Mount Point: <a href="../../api/v15/clusters/{clusterName}/services/{serviceName}/metrics">/api/v15/clusters/{clusterName}/services/{serviceName}/metrics</a></p>
-      <a name="GET"></a>
-      <h2>GET</h2>
-      <p class="alert">This operation has been deprecated.  This endpoint is not supported as of v6. Use the timeseries API
-instead. To get all metrics for a service with the timeseries API use
-the query:
-<br>
-<br>
-'select * where serviceName = $SERVICE_NAME'.
-<br>
-<br>
-To get specific metrics for a service use a comma-separated list of
-the metric names as follows:
-<br>
-<br>
-'select $METRIC_NAME1, $METRIC_NAME2 where serviceName = $SERVICE_NAME'.
-<br>
-<br>
-For more information see the <a href="http://tiny.cloudera.com/tsquery_doc">
-tsquery language documentation</a>.<p/> </p>
+      <h1>/clusters/{clusterName}/services/{serviceName}/commands/recommissionWithStart</h1>
+      <p class="note">Mount Point: <a href="../../api/v15/clusters/{clusterName}/services/{serviceName}/commands/recommissionWithStart">/api/v15/clusters/{clusterName}/services/{serviceName}/commands/recommissionWithStart</a></p>
+      <a name="POST"></a>
+      <h2>POST</h2>
       <p>
-            Fetch metric readings for a particular service.
+            Start and recommission roles of a service.
 <p>
-By default, this call will look up all metrics available for the service.
-If only specific metrics are desired, use the <i>metrics</i> parameter.
+The list should contain names of slave roles to start and recommission.
+</p>
+
 <p>
-By default, the returned results correspond to a 5 minute window based on
-the provided end time (which defaults to the current server time). The
-<i>from</i> and <i>to</i> parameters can be used to control the window
-being queried. A maximum window of 3 hours is enforced.
+Warning: Evolving. This method may change in the future and does not offer standard compatibility guarantees.
+Only support by HDFS.
+Do not use without guidance from Cloudera.
+</p>
+
 <p>
-When requesting a "full" view, aside from the extended properties of the
-returned metric data, the collection will also contain information about
-all metrics available for the service, even if no readings are available
-in the requested window.
-<p>
-HDFS services that have more than one nameservice will not expose
-any metrics. Instead, the nameservices should be queried separately.
-<p/>
+Available since API v15.
+</p>
           </p>
       <h3>Parameters</h3>
       <table>
@@ -388,43 +367,10 @@ any metrics. Instead, the nameservices should be queried separately.
         <tr>
           <td>serviceName</td>
           <td>
-            The name of the service.
+            Name of the service on which to run the command.
           </td>
           <td>path</td>
           <td></td>
-        </tr>
-        <tr>
-          <td>from</td>
-          <td>
-            Start of the period to query.
-          </td>
-          <td>query</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>to</td>
-          <td>
-            End of the period to query.
-          </td>
-          <td>query</td>
-          <td>now</td>
-        </tr>
-        <tr>
-          <td>metrics</td>
-          <td>
-            Filter for which metrics to query.
-          </td>
-          <td>query</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>view</td>
-          <td>
-            The view of the data to materialize,
-either "summary" or "full".
-          </td>
-          <td>query</td>
-          <td>summary</td>
         </tr>
         <tr>
           <td>clusterName</td>
@@ -435,14 +381,22 @@ either "summary" or "full".
           <td></td>
         </tr>
       </table>
+      <h3>Request Body</h3>
+      <table>
+        <tr>
+          <td align="right">element:</td>
+          <td><a href="el_ns0_roleNames.html">roleNames</a></td>
+        </tr>
+      </table>
+      <p>List of role names to recommision.</p>
       <h3>Response Body</h3>
       <table>
         <tr>
           <td align="right">element:</td>
-          <td><a href="el_ns0_metricList.html">metricList</a></td>
+          <td><a href="el_ns0_command.html">command</a></td>
         </tr>
       </table>
-      <p>List of readings from the monitors.</p>
+      <p>Information about the submitted command.</p>
 
       <div class="clear"></div>
     </div>
