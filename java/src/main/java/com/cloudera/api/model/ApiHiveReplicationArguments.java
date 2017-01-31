@@ -155,8 +155,7 @@ public class ApiHiveReplicationArguments {
     this.dryRun = dryRun;
   }
 
-  @Override
-  public String toString() {
+  protected Objects.ToStringHelper toStringHelper() {
     return Objects.toStringHelper(this)
         .add("sourceService", sourceService)
         .add("tableFilters", tableFilters)
@@ -165,8 +164,12 @@ public class ApiHiveReplicationArguments {
         .add("replicateHdfs", replicateData)
         .add("hdfsArguments", hdfsArguments)
         .add("replicateImpalaMetadata", replicateImpalaMetadata)
-        .add("dryRun", dryRun)
-        .toString();
+        .add("dryRun", dryRun);
+  }
+
+  @Override
+  public String toString() {
+    return toStringHelper().toString();
   }
 
   @Override

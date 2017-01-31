@@ -34,6 +34,7 @@ public class ApiCollectDiagnosticDataArguments {
   private String ticketNumber;
   private String comments;
   private String clusterName;
+  private Boolean enableMonitorMetricsCollection;
   private List<String> roles;
 
   /**
@@ -48,17 +49,21 @@ public class ApiCollectDiagnosticDataArguments {
   }
   
   /**
-   * This parameter is ignored as of CM 4.5. 
-   * Use endTime and bundleSize instead.
+   * This parameter is ignored between CM 4.5 and CM 5.7 versions.
+   * For versions from CM 4.5 to CM 5.7, use endTime and
+   * bundleSizeBytes instead.
+   *
+   * For CM 5.7+ versions, startTime is an optional parameter that
+   * is with endTime and bundleSizeBytes. This was introduced
+   * to perform diagnostic data estimation and collection of global
+   * diagnostics data for a certain time range.
    * The start time (in ISO 8601 format)
    * of the period to collection statistics for.
    */
-  @Deprecated
   public String getStartTime() {
     return startTime;
   }
 
-  @Deprecated
   public void setStartTime(String startTime) {
     this.startTime = startTime;
   }
@@ -118,6 +123,18 @@ public class ApiCollectDiagnosticDataArguments {
   
   public void setClusterName(String clusterName) {
     this.clusterName = clusterName;
+  }
+
+  /**
+   * Flag to enable collection of metrics for chart display.
+   */
+  @XmlElement
+  public Boolean getEnableMonitorMetricsCollection() {
+    return enableMonitorMetricsCollection;
+  }
+
+  public void setEnableMonitorMetricsCollection(Boolean enable) {
+    this.enableMonitorMetricsCollection = enable;
   }
 
   /**
