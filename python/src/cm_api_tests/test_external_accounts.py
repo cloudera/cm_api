@@ -158,3 +158,33 @@ class TestExternalAccount(unittest.TestCase):
         self.assertEqual(
           fetchedConfigs[expectedConfigs[k].name].value,
           expectedConfigs[k].value)
+
+  def test_get_acct_config(self):
+    test_config = self.account.accountConfigs.to_json_dict();
+    self.resource.expect("GET",
+      "/externalAccounts/account/%s/config" % self.account.name,
+      retdata=test_config)
+    ret = config_to_api_list(self.account.get_config())
+    for entry in ret['items']:
+      k = entry['name']
+      if k == 'aws_secret_key':
+        self.assertTrue(entry["value"] == 'bar')
+      elif k == "aws_access_key":
+        self.assertTrue(entry["value"] == 'foo')
+      else:
+        self.assertFailure()
+
+  def test_update_acct_config(self):
+    test_config = config_to_api_list({"aws_secret_key": "bar2", "aws_access_key": "foo"})
+    update_config = {"aws_secret_key": "bar2"}
+    self.resource.expect("PUT",
+      "/externalAccounts/account/%s/config" % self.account.name,
+      data=config_to_api_list(update_config), retdata=test_config)
+    ret = self.account.update_config(update_config)
+    for entry in ret.iteritems():
+      if entry[0] == 'aws_secret_key':
+        self.assertTrue(entry[1] == 'bar2')
+      elif entry[0] == "aws_access_key":
+        self.assertTrue(entry[1] == 'foo')
+      else:
+        self.assertFailure()
