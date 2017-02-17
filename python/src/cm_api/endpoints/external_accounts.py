@@ -25,6 +25,7 @@ __docformat__ = "epytext"
 
 EXTERNAL_ACCOUNT_PATH = "/externalAccounts/%s"
 EXTERNAL_ACCOUNT_FETCH_PATH = "/externalAccounts/%s/%s"
+EXTERNAL_ACCOUNT_CONFIG_FETCH_PATH = "/externalAccounts/account/%s"
 
 def get_supported_categories(resource_root):
   """
@@ -125,7 +126,6 @@ def delete_external_account(resource_root, name):
       EXTERNAL_ACCOUNT_FETCH_PATH % ("delete", name,),
       ApiExternalAccount, False)
 
-
 class ApiExternalAccountCategory(BaseApiObject):
   _ATTRIBUTES = {
     'name'        : None,
@@ -151,7 +151,7 @@ class ApiExternalAccountType(BaseApiObject):
     return "<ApiExternalAccountType>: %s (categoryName: %s)" % (
         self.name, self.typeName)
 
-class ApiExternalAccount(BaseApiObject):
+class ApiExternalAccount(BaseApiResource):
   _ATTRIBUTES = {
     'name'             : None,
     'displayName'      : None,
@@ -163,9 +163,32 @@ class ApiExternalAccount(BaseApiObject):
 
   def __init__(self, resource_root, name=None, displayName=None,
                typeName=None, accountConfigs=None):
-    BaseApiObject.init(self, resource_root, locals())
+    BaseApiResource.init(self, resource_root, locals())
 
   def __str__(self):
     return "<ApiExternalAccount>: %s (typeName: %s)" % (
         self.name, self.typeName)
 
+  def _path(self):
+    return EXTERNAL_ACCOUNT_CONFIG_FETCH_PATH % self.name
+
+  def get_config(self, view=None):
+    """
+    Retrieve the external account's configuration.
+
+    The 'summary' view contains strings as the dictionary values. The full
+    view contains ApiConfig instances as the values.
+
+    @param view: View to materialize ('full' or 'summary')
+    @return: Dictionary with configuration data.
+    """
+    return self._get_config("config", view)
+
+  def update_config(self, config):
+    """
+    Update the external account's configuration.
+
+    @param config: Dictionary with configuration to update.
+    @return: Dictionary with updated configuration.
+    """
+    return self._update_config("config", config)
