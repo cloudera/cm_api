@@ -234,6 +234,21 @@ class ClouderaManager(BaseApiResource):
     """
     return self._cmd('hostsDecommission', data=host_names)
 
+  def hosts_offline_or_decommission(self, host_names, timeout=None):
+    """
+    Decommission the specified hosts by offlining or decommissioning the slave
+    roles and stopping the remaining ones. Offline has precedence if supported
+    by the service.
+
+    @param host_names: List of names of hosts to be decommissioned.
+    @param timeout: Offline timeout in seconds. Omit to get the default timeout (4 hours).
+    @return: Information about the submitted command.
+    @since: API v17
+    """
+    return self._cmd('hostsOfflineOrDecommission', data=host_names,
+        params=timeout and dict(timeout=timeout) or dict(),
+        api_version=17)
+
   def hosts_recommission(self, host_names):
     """
     Recommission the specified hosts by recommissioning the slave roles.

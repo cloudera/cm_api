@@ -142,6 +142,21 @@ class TestCMS(unittest.TestCase):
         retdata={})
     cms.hosts_recommission_with_start([ "host1", "host2" ])
 
+  def test_host_offline(self):
+    resource = utils.MockResource(self)
+    cms = ClouderaManager(resource)
+
+    resource.expect("POST", "/cm/commands/hostsOfflineOrDecommission",
+        data=[ "host1", "host2" ],
+        retdata={})
+    cms.hosts_offline_or_decommission([ "host1", "host2" ])
+
+    resource.expect("POST", "/cm/commands/hostsOfflineOrDecommission",
+        data=[ "host1", "host2" ],
+        params={ 'timeout' : 123456 },
+        retdata={})
+    cms.hosts_offline_or_decommission([ "host1", "host2" ], timeout=123456)
+
   def test_get_licensed_feature_usage(self):
     resource = utils.MockResource(self)
     cms = ClouderaManager(resource)

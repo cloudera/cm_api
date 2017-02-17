@@ -45,3 +45,22 @@ class TestService(unittest.TestCase):
     ret = self.service.start_roles(*args)
     self.assertEqual(1, len(ret))
     self.assertEqual(expected.errors, ret.errors)
+
+  def test_recommission_with_start(self):
+    args = ['role1', 'role2']
+    self.resource.expect("POST", "/clusters/cluster1/services/hdfs1/commands/recommissionWithStart",
+        data=ApiList(args),
+        retdata={})
+    self.service.recommission_with_start(*args)
+
+  def test_offline_role(self):
+    args = ['role1', 'role2']
+    self.resource.expect("POST", "/clusters/cluster1/services/hdfs1/commands/offline",
+        data=ApiList(args),
+        retdata={})
+    self.service.offline(*args)
+    self.resource.expect("POST", "/clusters/cluster1/services/hdfs1/commands/offline",
+        data=ApiList(args),
+        params={ 'timeout' : 1234567 },
+        retdata={})
+    self.service.offline(*args, timeout=1234567)
