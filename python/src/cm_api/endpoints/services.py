@@ -839,6 +839,22 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('decommission', data=role_names)
 
+  def offline(self, *role_names, **options):
+    """
+    Offline roles in a service.
+
+    @param role_names: List of names of the roles to offline.
+    @param options: Dictionary of options. The following are recognized:
+        timeout - Offline timeout in seconds.
+                  Specify to override the default offline timeout of 4 hours.
+    @return: Reference to the submitted command.
+    @since: API v17
+    """
+    timeout = options.pop("timeout", None)
+    return self._cmd('offline', data=role_names,
+        params=timeout and dict(timeout=timeout) or dict(),
+        api_version=17)
+
   def recommission(self, *role_names):
     """
     Recommission roles in a service.
