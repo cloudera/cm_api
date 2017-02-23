@@ -188,3 +188,12 @@ class TestExternalAccount(unittest.TestCase):
         self.assertTrue(entry[1] == 'foo')
       else:
         self.assertFailure()
+
+  def test_s3_guard_prune_cmd(self):
+    command_name = 'S3GuardPrune'
+    data = '"test1"'
+    self.resource.expect("POST",
+                         "/externalAccounts/account/%s/commands/%s" % ('test1', command_name),
+                         data=data, retdata={'name' : 'S3GuardPrune'})
+    resp = self.account.external_account_cmd_by_name(command_name)
+    self.assertEquals('S3GuardPrune', resp.name)
