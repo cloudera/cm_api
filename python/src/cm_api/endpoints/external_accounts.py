@@ -192,3 +192,14 @@ class ApiExternalAccount(BaseApiResource):
     @return: Dictionary with updated configuration.
     """
     return self._update_config("config", config)
+
+  def external_account_cmd_by_name(self, command_name):
+    """
+    Executes a command on the external account specified
+    by name.
+
+    @param command_name: The name of the command.
+    @return: Reference to the submitted command.
+    @since: API v16
+    """
+    return self._cmd(command_name, data=self.name, api_version=16)
