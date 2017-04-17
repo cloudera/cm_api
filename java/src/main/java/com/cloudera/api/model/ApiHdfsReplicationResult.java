@@ -48,6 +48,8 @@ public class ApiHdfsReplicationResult {
   private String jobDetailsUri;
   private boolean dryRun;
   private List<String> snapshottedDirs;
+  private List<String> failedFiles;
+  private String runAsUser;
 
   /** The file copy progress percentage. */
   @XmlElement
@@ -257,6 +259,32 @@ public class ApiHdfsReplicationResult {
     this.snapshottedDirs = snapshottedDirs;
   }
 
+  /**
+   * Returns run-as user name.
+   * Available since API v11.
+   */
+  @XmlElement
+  public String getRunAsUser() {
+    return runAsUser;
+  }
+
+  public void setRunAsUser(String runAsUser) {
+    this.runAsUser = runAsUser;
+  }
+
+  /**
+   * The list of files that failed during replication.
+   * Available since API v11.
+   */
+  @XmlElement
+  public List<String> getFailedFiles() {
+    return failedFiles;
+  }
+
+  public void setFailedFiles(List<String> failedFiles) {
+    this.failedFiles = failedFiles;
+  }
+
   @Override
   public boolean equals(Object o) {
     ApiHdfsReplicationResult that = ApiUtils.baseEquals(this, o);
@@ -265,13 +293,15 @@ public class ApiHdfsReplicationResult {
         Objects.equal(counters, that.getCounters()) &&
         Objects.equal(setupError, that.getSetupError()) &&
         dryRun == that.isDryRun() &&
-        Objects.equal(snapshottedDirs, that.getSnapshottedDirs()));
+        Objects.equal(snapshottedDirs, that.getSnapshottedDirs())) &&
+        Objects.equal(failedFiles, that.getFailedFiles()) &&
+        Objects.equal(runAsUser, that.getRunAsUser());
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(progress, counters, setupError, dryRun,
-        snapshottedDirs);
+        snapshottedDirs, failedFiles, runAsUser);
   }
 
   @Override
@@ -282,6 +312,8 @@ public class ApiHdfsReplicationResult {
         .add("setupError", setupError)
         .add("dryRun", dryRun)
         .add("snapshottedDirs", snapshottedDirs)
+        .add("failedFiles", failedFiles)
+        .add("runAsUser", runAsUser)
         .toString();
   }
 

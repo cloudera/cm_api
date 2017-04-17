@@ -22,6 +22,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
+import java.lang.reflect.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -35,13 +36,16 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.feature.AbstractFeature;
 import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.jaxrs.client.Client;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.message.Message;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 public class ClouderaManagerClientBuilder {
+
   public static final int DEFAULT_TCP_PORT = 7180;
   public static final long DEFAULT_CONNECTION_TIMEOUT = 0;
   public static final TimeUnit DEFAULT_CONNECTION_TIMEOUT_UNITS =
@@ -53,8 +57,8 @@ public class ClouderaManagerClientBuilder {
   private URL baseUrl;
   private String hostname;
   private int port = DEFAULT_TCP_PORT;
-  private boolean enableTLS = false;
-  private boolean enableLogging = false;
+  private boolean enableTLS;
+  private boolean enableLogging;
   private String username;
   private String password;
   private long connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
@@ -63,7 +67,11 @@ public class ClouderaManagerClientBuilder {
   private TimeUnit receiveTimeoutUnits = DEFAULT_RECEIVE_TIMEOUT_UNITS;
   private boolean validateCerts = true;
   private boolean validateCn = true;
-  private TrustManager[] trustManagers = null;
+  private boolean threadSafe;
+  private boolean maintainSessionAcrossRequests;
+  private boolean streamAutoClosure;
+  private TrustManager[] trustManagers;
+  private String acceptLanguage;
 
   /**
    * Cache JAXRSClientFactoryBean per proxyType.
@@ -97,6 +105,12 @@ public class ClouderaManagerClientBuilder {
           }
         });
 
+  public ClouderaManagerClientBuilder withAcceptLanguage(
+      String acceptLaunguage) {
+    this.acceptLanguage = acceptLaunguage;
+    return this;
+  }
+
   public ClouderaManagerClientBuilder withBaseURL(URL baseUrl) {
     this.baseUrl = baseUrl;
     return this;
@@ -119,6 +133,28 @@ public class ClouderaManagerClientBuilder {
 
   public ClouderaManagerClientBuilder enableLogging() {
     this.enableLogging = true;
+    return this;
+  }
+
+  /**
+   * @param threadSafe Set if to create a thread safe client.
+   * @return
+   */
+  public ClouderaManagerClientBuilder setThreadSafe(boolean threadSafe) {
+    this.threadSafe = threadSafe;
+    return this;
+  }
+
+  /**
+   * @param maintainSessionAcrossRequests If set to true, created client will
+   * maintain HTTP session across multiple requests. Setting this to true also
+   * means that login attempt will be made for the 1st request for a new client
+   * or when the previous session has time out.
+   * @return
+   */
+  public ClouderaManagerClientBuilder setMaintainSessionAcrossRequests(
+      boolean maintainSessionAcrossRequests) {
+    this.maintainSessionAcrossRequests = maintainSessionAcrossRequests;
     return this;
   }
 
@@ -152,6 +188,18 @@ public class ClouderaManagerClientBuilder {
 
   public ClouderaManagerClientBuilder disableTlsCnValidation() {
     this.validateCn = false;
+    return this;
+  }
+
+  /**
+   * By default, ClouderaManagerClientBuilder disables auto-closure of response
+   * streams when generated client are making requests. This method enables
+   * this. If this is not enabled, caller of the client is responsible for
+   * closing the response streams.
+   * @return ClouderaManagerClientBuilder
+   */
+  public ClouderaManagerClientBuilder enableStreamAutoClosure() {
+    this.streamAutoClosure = true;
     return this;
   }
 
@@ -195,7 +243,15 @@ public class ClouderaManagerClientBuilder {
    * @return an ApiRootResource proxy object
    */
   public ApiRootResource build() {
-    return build(ApiRootResource.class);
+    // Generating stubs on ApiRootResource consumes more memory.
+    // Hence we generate stubs using ApiRootResourceExternal and then use dynamic proxy mechanism
+    // to delegate call on ApiRootResource to ApiRootResourceExternal generated stub.
+    ApiRootResourceExternal apiRootResourceExternal = build(ApiRootResourceExternal.class);
+
+    return (ApiRootResource) Proxy.newProxyInstance(
+      ClouderaManagerClientBuilder.class.getClassLoader(),
+      new Class[]{ApiRootResource.class},
+      new ApiRootResourceInvocationHandler(apiRootResourceExternal));
   }
 
   /**
@@ -220,11 +276,21 @@ public class ClouderaManagerClientBuilder {
       if (enableLogging) {
         bean.setFeatures(Arrays.<AbstractFeature>asList(new LoggingFeature()));
       }
+      bean.setThreadSafe(threadSafe);
       rootResource = bean.create(proxyType);
     }
 
     boolean isTlsEnabled = address.startsWith("https://");
     ClientConfiguration config = WebClient.getConfig(rootResource);
+    if (maintainSessionAcrossRequests) {
+      config.getRequestContext().put(Message.MAINTAIN_SESSION,
+                                     Boolean.TRUE);
+    }
+    if (streamAutoClosure) {
+      config.getRequestContext().put("response.stream.auto.close",
+                                     Boolean.TRUE);
+    }
+
     HTTPConduit conduit = (HTTPConduit) config.getConduit();
     if (isTlsEnabled) {
       TLSClientParameters tlsParams = new TLSClientParameters();
@@ -239,6 +305,9 @@ public class ClouderaManagerClientBuilder {
     }
 
     HTTPClientPolicy policy = conduit.getClient();
+    if (acceptLanguage != null) {
+      policy.setAcceptLanguage(acceptLanguage);
+    }
     policy.setConnectionTimeout(
         connectionTimeoutUnits.toMillis(connectionTimeout));
     policy.setReceiveTimeout(
@@ -249,26 +318,24 @@ public class ClouderaManagerClientBuilder {
   private static JAXRSClientFactoryBean cleanFactory(JAXRSClientFactoryBean bean) {
     bean.setUsername(null);
     bean.setPassword(null);
+    bean.setInitialState(null);
     bean.setFeatures(Arrays.<AbstractFeature>asList());
     return bean;
   }
 
   /**
-   * Closes the transport level conduit in the client. Reopening a new
-   * connection, requires creating a new client object using the build()
-   * method in this builder.
+   * Releases the internal state and configuration associated with this client.
+   * Reopening a new connection requires creating a new client object using the
+   * build() method in this builder.
    *
    * @param root The resource returned by the build() method of this
    *             builder class
    */
-  public static void closeClient(ApiRootResource root) {
-    ClientConfiguration config = WebClient.getConfig(root);
-    HTTPConduit conduit = config.getHttpConduit();
-    if (conduit == null) {
-      throw new IllegalArgumentException(
-          "Client is not using the HTTP transport");
+  public static void closeClient(Object root) {
+    Client client = WebClient.client(root);
+    if (client != null) {
+      client.close();
     }
-    conduit.close();
   }
 
   /**
@@ -289,14 +356,17 @@ public class ClouderaManagerClientBuilder {
   /** A trust manager that will accept all certificates. */
   private static class AcceptAllTrustManager implements X509TrustManager {
 
+    @Override
     public void checkClientTrusted(X509Certificate[] chain, String authType) {
       // no op.
     }
 
+    @Override
     public void checkServerTrusted(X509Certificate[] chain, String authType) {
       // no op.
     }
 
+    @Override
     public X509Certificate[] getAcceptedIssuers() {
       return null;
     }
