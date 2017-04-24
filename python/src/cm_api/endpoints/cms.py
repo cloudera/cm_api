@@ -526,3 +526,13 @@ class ClouderaManager(BaseApiResource):
     @since: API v12
     """
     return self._post("importClusterTemplate", ApiCommand, False, api_cluster_template, params=dict(addRepositories=add_repositories), api_version=12)
+
+  def delete_credentials(self):
+    """
+    Delete credentials for services configured with Kerberos.
+
+    @return: Information about the submitted command.
+    @since: API v17
+    """
+    return self._cmd('deleteCredentials', api_version=17)
+
