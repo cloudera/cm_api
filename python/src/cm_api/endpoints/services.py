@@ -1937,6 +1937,15 @@ class ApiService(BaseApiResource):
     """
     return self._cmd('yarnCreateCmContainerUsageInputDirCommand', api_version=13)
 
+  def validate_hive_metastore_schema(self):
+    """
+    Validates the Hive metastore database schema.
+
+    @return: Reference to the submitted command.
+    @since: API v7
+    """
+    return self._cmd('hiveValidateMetastoreSchema', api_version=17)
+
 class ApiServiceSetupInfo(ApiService):
   _ATTRIBUTES = {
     'name'    : None,
