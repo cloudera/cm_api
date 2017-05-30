@@ -389,6 +389,16 @@ class ApiResource(Resource):
     """
     return external_accounts.delete_external_account(self, name)
 
+  def list_external_account_commands_by_name(self, type_name):
+    """
+    Lists all the commands that can be executed by name
+    on the provided external account type.
+    @param type_name: Account type
+    @return: A list of ApiCommandMetadata objects
+    @since: API v16
+    """
+    return external_accounts.list_commands_by_name(self, type_name)
+
 def get_root_resource(server_host, server_port=None,
                       username="admin", password="admin",
                       use_tls=False, version=API_CURRENT_VERSION):
