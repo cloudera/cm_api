@@ -26,6 +26,7 @@ __docformat__ = "epytext"
 EXTERNAL_ACCOUNT_PATH = "/externalAccounts/%s"
 EXTERNAL_ACCOUNT_FETCH_PATH = "/externalAccounts/%s/%s"
 EXTERNAL_ACCOUNT_CONFIG_FETCH_PATH = "/externalAccounts/account/%s"
+EXTERNAL_ACCOUNT_TYPE_INFO_FETCH_PATH = "/externalAccounts/typeInfo/%s/%s"
 
 def get_supported_categories(resource_root):
   """
@@ -46,6 +47,19 @@ def get_supported_types(resource_root, category_name):
   return call(resource_root.get,
       EXTERNAL_ACCOUNT_FETCH_PATH % ("supportedTypes", category_name,),
       ApiExternalAccountType, True)
+
+def list_commands_by_name(resource_root, type_name):
+  """
+  Lists all the commands that can be executed by name
+  on the provided external account type.
+
+  @param type_name: Account type
+  @return: A list of command metadata objects
+  @since: API v16
+  """
+  return call(resource_root.get,
+              EXTERNAL_ACCOUNT_TYPE_INFO_FETCH_PATH % (type_name, "commandsByName"),
+              ApiCommandMetadata, True, api_version=16)
 
 def create_external_account(resource_root, name, display_name, type_name,
                             account_configs=None):
