@@ -29,4 +29,6 @@ base_dir = os.path.split(os.path.abspath(__file__))[0]
 
 setup = os.path.join(base_dir, "python", "setup.py")
 fobj = open(setup)
-imp.load_module("__setup2__", fobj, setup, imp.get_suffixes()[3])
+suffixes = [x for x in imp.get_suffixes() if x[0] == ".py"]
+
+imp.load_module("__setup2__", fobj, setup, suffixes[0])
