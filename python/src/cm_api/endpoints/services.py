@@ -1203,6 +1203,41 @@ class ApiService(BaseApiResource):
     )
     return self._cmd('oozieDisableHa', data=args, api_version=6)
 
+  def enable_sentry_ha(self, new_sentry_host_id, new_sentry_role_name=None,
+                       zk_service_name=None):
+    """
+    Enable high availability for Sentry.
+
+    @param new_sentry_server_host_id: ID of the host on which new Sentry Server will be added
+    @param new_sentry_server_rolename: Name of the new Sentry Server. This is an optional argument.
+                                       A default name will be generated if not specified.
+    @param zk_service_name: Name of the ZooKeeper service that will be used for Oozie HA.
+                            This is an optional parameter if the Oozie to ZooKeeper
+                            dependency is already set.
+    @return: Reference to the submitted command.
+    @since: API v18
+    """
+    args = dict(
+      newSentryHostId = new_sentry_host_id,
+      newSentryRoleName = new_sentry_role_name,
+      zkServiceName = zk_service_name
+    )
+    return self._cmd('enableSentryHa', data=args, api_version=18)
+
+  def disable_sentry_ha(self, active_name):
+    """
+    Disable high availability for Sentry
+
+    @param active_name: Name of the Sentry Server that will be active after
+                        high availability is disabled.
+    @return: Reference to the submitted command.
+    @since: API v18
+    """
+    args = dict(
+      activeName = active_name
+    )
+    return self._cmd('disableSentryHa', data=args, api_version=18)
+
   def failover_hdfs(self, active_name, standby_name, force=False):
     """
     Initiate a failover of an HDFS NameNode HA pair.
