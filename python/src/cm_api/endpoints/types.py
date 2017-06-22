@@ -220,7 +220,10 @@ class BaseApiObject(object):
     JSON deserialization of values.
     """
     for k, v in attrs.iteritems():
-      attr = self._check_attr(k, allow_ro)
+      try:
+        attr = self._check_attr(k, allow_ro)
+      except AttributeError:
+        continue
       if attr and from_json:
         v = attr.from_json(self._get_resource_root(), v)
       object.__setattr__(self, k, v)
