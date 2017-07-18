@@ -37,8 +37,8 @@ public class ApiRollingRestartClusterArgs {
   private Boolean redeployClientConfiguration;
   private ApiRolesToInclude rolesToInclude;
   private List<String> restartServiceNames;
-  
-  /** 
+
+  /**
    * Number of hosts with slave roles to restart at a time.
    * Must be greater than zero. Default is 1.
    */
@@ -46,30 +46,30 @@ public class ApiRollingRestartClusterArgs {
   public Integer getSlaveBatchSize() {
     return slaveBatchSize;
   }
-  
+
   public void setSlaveBatchSize(Integer slaveBatchSize) {
     this.slaveBatchSize = slaveBatchSize;
   }
-  
-  /** 
+
+  /**
    * Number of seconds to sleep between restarts of slave host batches.
-   * 
+   * <p>
    * Must be greater than or equal to 0. Default is 0.
    */
   @XmlElement
   public Integer getSleepSeconds() {
     return sleepSeconds;
   }
-  
+
   public void setSleepSeconds(Integer sleepSeconds) {
     this.sleepSeconds = sleepSeconds;
   }
-  
-  /** 
-   * The threshold for number of slave host batches that are allowed to fail 
+
+  /**
+   * The threshold for number of slave host batches that are allowed to fail
    * to restart before the entire command is considered failed.
-   * 
-   * Must be greather than or equal to 0. Default is 0.
+   * <p>
+   * Must be greater than or equal to 0. Default is 0.
    * <p>
    * This argument is for ADVANCED users only.
    * </p>
@@ -78,32 +78,38 @@ public class ApiRollingRestartClusterArgs {
   public Integer getSlaveFailCountThreshold() {
     return slaveFailCountThreshold;
   }
-  
+
   public void setSlaveFailCountThreshold(Integer slaveFailCountThreshold) {
     this.slaveFailCountThreshold = slaveFailCountThreshold;
   }
-  
-  /** Restart roles with stale configs only. */
+
+  /**
+   * Restart roles with stale configs only.
+   */
   @XmlElement
   public Boolean getStaleConfigsOnly() {
     return staleConfigsOnly;
   }
-  
+
   public void setStaleConfigsOnly(Boolean staleConfigsOnly) {
     this.staleConfigsOnly = staleConfigsOnly;
   }
-  
-  /** Restart roles that haven't been upgraded yet. */
+
+  /**
+   * Restart roles that haven't been upgraded yet.
+   */
   @XmlElement
   public Boolean getUnUpgradedOnly() {
     return unUpgradedOnly;
   }
-  
+
   public void setUnUpgradedOnly(Boolean unUpgradedOnly) {
     this.unUpgradedOnly = unUpgradedOnly;
   }
 
-  /** Re-deploy client configuration. Available since API v6. */
+  /**
+   * Re-deploy client configuration. Available since API v6.
+   */
   @XmlElement
   public Boolean getRedeployClientConfiguration() {
     return redeployClientConfiguration;
@@ -113,18 +119,18 @@ public class ApiRollingRestartClusterArgs {
     this.redeployClientConfiguration = redeployClientConfiguration;
   }
 
-  /** 
+  /**
    * Role types to restart. Default is slave roles only.
    */
   @XmlElement
   public ApiRolesToInclude getRolesToInclude() {
     return rolesToInclude;
   }
-  
+
   public void setRolesToInclude(ApiRolesToInclude rolesToInclude) {
     this.rolesToInclude = rolesToInclude;
   }
-  
+
   /**
    * List of services to restart.
    */
@@ -132,22 +138,22 @@ public class ApiRollingRestartClusterArgs {
   public List<String> getRestartServiceNames() {
     return restartServiceNames;
   }
-  
+
   public void setRestartServiceNames(List<String> restartServiceNames) {
     this.restartServiceNames = restartServiceNames;
   }
-  
+
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
-                  .add("slaveBatchSize", slaveBatchSize)
-                  .add("slaveFailCountThreshold", slaveFailCountThreshold)
-                  .add("sleepSeconds", sleepSeconds)
-                  .add("staleConfigsOnly", staleConfigsOnly)
-                  .add("unUpgradedOnly", unUpgradedOnly)
-                  .add("rolesToInclude", rolesToInclude)
-                  .add("restartServiceNames", restartServiceNames)
-                  .toString();
+        .add("slaveBatchSize", slaveBatchSize)
+        .add("slaveFailCountThreshold", slaveFailCountThreshold)
+        .add("sleepSeconds", sleepSeconds)
+        .add("staleConfigsOnly", staleConfigsOnly)
+        .add("unUpgradedOnly", unUpgradedOnly)
+        .add("rolesToInclude", rolesToInclude)
+        .add("restartServiceNames", restartServiceNames)
+        .toString();
   }
 
   @Override

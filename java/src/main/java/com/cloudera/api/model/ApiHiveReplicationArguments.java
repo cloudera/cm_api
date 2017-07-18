@@ -41,6 +41,8 @@ public class ApiHiveReplicationArguments {
 
   private boolean dryRun;
 
+  private Boolean runInvalidateMetadata;
+
   public ApiHiveReplicationArguments() {
     // For JAX-B
   }
@@ -145,6 +147,18 @@ public class ApiHiveReplicationArguments {
     this.replicateImpalaMetadata = replicateImpalaMetadata;
   }
 
+  /**
+   * Whether to run invalidate metadata query or not
+   */
+  @XmlElement
+  public Boolean getRunInvalidateMetadata() {
+    return runInvalidateMetadata;
+  }
+
+  public void setRunInvalidateMetadata(Boolean runInvalidateMetadata) {
+    this.runInvalidateMetadata = runInvalidateMetadata;
+  }
+
   /** Whether to perform a dry run. Defaults to false. */
   @XmlElement
   public boolean isDryRun() {
@@ -155,8 +169,7 @@ public class ApiHiveReplicationArguments {
     this.dryRun = dryRun;
   }
 
-  @Override
-  public String toString() {
+  protected Objects.ToStringHelper toStringHelper() {
     return Objects.toStringHelper(this)
         .add("sourceService", sourceService)
         .add("tableFilters", tableFilters)
@@ -166,7 +179,12 @@ public class ApiHiveReplicationArguments {
         .add("hdfsArguments", hdfsArguments)
         .add("replicateImpalaMetadata", replicateImpalaMetadata)
         .add("dryRun", dryRun)
-        .toString();
+        .add("runInvalidateMetadata", runInvalidateMetadata);
+  }
+
+  @Override
+  public String toString() {
+    return toStringHelper().toString();
   }
 
   @Override
@@ -181,13 +199,15 @@ public class ApiHiveReplicationArguments {
         Objects.equal(hdfsArguments, that.getHdfsArguments()) &&
         Objects.equal(replicateImpalaMetadata,
             that.getReplicateImpalaMetadata()) &&
-        dryRun == that.isDryRun());
+        dryRun == that.isDryRun() &&
+        Objects.equal(runInvalidateMetadata,
+            that.runInvalidateMetadata));
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(sourceService, tableFilters, exportDir, force,
-        replicateData, hdfsArguments, replicateImpalaMetadata, dryRun);
+        replicateData, hdfsArguments, replicateImpalaMetadata, dryRun, runInvalidateMetadata);
   }
 
 }

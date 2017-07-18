@@ -23,6 +23,8 @@ import com.google.common.collect.Lists;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +48,7 @@ public class ApiService {
   private String type;
   private ApiClusterRef clusterRef;
   private String serviceUrl;
+  private String roleInstancesUrl;
   private ApiServiceState serviceState;
   private ApiHealthSummary healthSummary;
   private List<ApiHealthCheck> healthChecks;
@@ -60,11 +63,13 @@ public class ApiService {
   private List<ApiRoleConfigGroup> roleConfigGroups;
   private List<ApiReplicationSchedule> replicationSchedules;
   private List<ApiSnapshotPolicy> snapshotPolicies;
+  private ApiEntityStatus entityStatus;
 
   public ApiService() {
     // For JAX-B
   }
 
+  @Override
   public String toString() {
     return Objects.toStringHelper(this)
                   .add("name", name)
@@ -211,8 +216,7 @@ public class ApiService {
   }
 
   /**
-   * Readonly.
-   * Link into the Cloudera Manager web UI for this specific service.
+   * Readonly. Link into the Cloudera Manager web UI for this specific service.
    */
   @XmlElement
   public String getServiceUrl() {
@@ -221,6 +225,20 @@ public class ApiService {
 
   public void setServiceUrl(String serviceUrl) {
     this.serviceUrl = serviceUrl;
+  }
+
+  /**
+   * Readonly. Link into the Cloudera Manager web UI for role instances table for
+   * this specific service.
+   * Available since API v11.
+   */
+  @XmlElement
+  public String getRoleInstancesUrl() {
+    return roleInstancesUrl;
+  }
+
+  public void setRoleInstancesUrl(String roleInstancesUrl) {
+    this.roleInstancesUrl = roleInstancesUrl;
   }
 
   /**
@@ -247,7 +265,9 @@ public class ApiService {
   }
 
   public void setMaintenanceOwners(List<ApiEntityType> maintenanceOwners) {
-    this.maintenanceOwners = Lists.newArrayList(maintenanceOwners);
+    this.maintenanceOwners = (null == maintenanceOwners)
+                               ? new ArrayList<ApiEntityType>()
+                               : Lists.newArrayList(maintenanceOwners);
   }
 
   /** Configuration of the service being created. Optional. */
@@ -320,5 +340,18 @@ public class ApiService {
 
   public void setSnapshotPolicies(List<ApiSnapshotPolicy> snapshotPolicies) {
     this.snapshotPolicies = snapshotPolicies;
+  }
+
+  /**
+   * Readonly. The entity status for this service.
+   * Available since API v11.
+   */
+  @XmlElement
+  public ApiEntityStatus getEntityStatus() {
+    return entityStatus;
+  }
+
+  public void setEntityStatus(ApiEntityStatus entityStatus) {
+    this.entityStatus = entityStatus;
   }
 }

@@ -104,6 +104,10 @@ public interface RolesResource {
    *       <td>HUE_SERVER, KT_RENEWER</td>
    *     </tr>
    *     <tr>
+   *       <td>HUE (CDH5 5.5+)</td>
+   *       <td>HUE_SERVER, KT_RENEWER, HUE_LOAD_BALANCER</td>
+   *     </tr>
+   *     <tr>
    *       <td>FLUME</td>
    *       <td>AGENT</td>
    *     </tr>
