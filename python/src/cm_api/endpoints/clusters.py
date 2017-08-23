@@ -642,3 +642,12 @@ class ApiCluster(BaseApiResource):
       return self._get_resource_root().get("%s/%s?view=%s" % (self._path(), 'dfsServices', view))
     else:
       return self._get_resource_root().get("%s/%s" % (self._path(), 'dfsServices'))
+
+  def delete_credentials(self):
+    """
+    Delete kerberos credentials for services belonging to this cluster.
+
+    @return: Reference to the submitted command.
+    @since: API v18
+    """
+    return self._cmd('deleteCredentials', api_version=18)

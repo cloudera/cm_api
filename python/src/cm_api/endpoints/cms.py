@@ -551,3 +551,12 @@ class ClouderaManager(BaseApiResource):
     """
     return self._cmd('deleteCredentials', api_version=17)
 
+  def delete_credentials(self, mode):
+    """
+    Delete credentials for services configured with Kerberos.
+
+    @return: Information about the submitted command.
+    @param mode: "all" if all credentials need to be deleted, or "unused" if unused credentials are to be deleted.
+    @since: API v18
+    """
+    return self._cmd('deleteCredentials', mode, api_version=18)
