@@ -1163,6 +1163,7 @@ class ApiYarnApplication(BaseApiObject):
     'containerUsedVcoreSeconds'        : ROAttr(),
     'containerAllocatedMemorySeconds'  : ROAttr(),
     'containerAllocatedVcoreSeconds'   : ROAttr(),
+    'containerUsedMemoryMax'           : ROAttr(),
   }
 
   def __str__(self):
