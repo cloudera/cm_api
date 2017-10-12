@@ -52,10 +52,9 @@ public interface YarnApplicationsResource {
    * expression using standard and / or boolean logic and parenthesis.
    * An example of a complex filter is: 'application_duration > 5s and (user = root or
    * user = myUserName').
-   * @param from Returns applications that were active between the from and to times.
-   *             Defaults to 5 minutes before the 'to' time.
-   * @param to Returns applications that were active between the from and to times.
-   *           Defaults to now.
+   * @param from Start of the period to query in ISO 8601 format (defaults to 5
+   * minutes before the 'to' time).
+   * @param to End of the period to query in ISO 8601 format (defaults to now).
    * @param limit The maximum number of applications to return. Applications will be
    * returned in the following order:
    * <ul>

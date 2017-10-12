@@ -16,6 +16,8 @@
 
 package com.cloudera.api.model;
 
+import static org.junit.Assert.*;
+
 import com.cloudera.api.ApiErrorMessage;
 import com.cloudera.api.ApiObjectMapper;
 import com.cloudera.api.ApiUtils;
@@ -42,6 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -54,7 +57,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.joda.time.Duration;
 import org.joda.time.Instant;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class ApiModelTest {
   private final static String TEXT_ENCODING = "UTF-8";
@@ -223,6 +225,8 @@ public class ApiModelTest {
     ApiConfig cfg = new ApiConfig("name", "value", true, "default", "display",
         "description", "relatedName", ApiConfig.ValidationState.OK,
         "validationMessage");
+    cfg.setValidationWarningsSuppressed(true);
+    cfg.setSensitive(false);
     checkJsonXML(cfg);
 
     ApiServiceConfig svcCfg = new ApiServiceConfig();
@@ -243,7 +247,9 @@ public class ApiModelTest {
   @Test
   public void testApiHealthCheck() throws Exception {
     ApiHealthCheck healthCheck = new ApiHealthCheck("checkName",
-                                                    ApiHealthSummary.GOOD);
+                                                    ApiHealthSummary.GOOD,
+                                                    "Dummy Health explanation.",
+                                                    false);
     checkJsonXML(healthCheck);
   }
 
@@ -258,6 +264,7 @@ public class ApiModelTest {
     role.setHaStatus(ApiRole.HaStatus.ACTIVE);
     role.setHealthChecks(createHealthChecks());
     role.setHealthSummary(ApiHealthSummary.GOOD);
+    role.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     role.setHostRef(new ApiHostRef("myhost"));
     role.setMaintenanceMode(true);
     role.setMaintenanceOwners(createMaintenanceOwners());
@@ -282,11 +289,13 @@ public class ApiModelTest {
     service.setDisplayName("mydisplayname");
     service.setHealthChecks(createHealthChecks());
     service.setHealthSummary(ApiHealthSummary.GOOD);
+    service.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     service.setMaintenanceMode(true);
     service.setMaintenanceOwners(createMaintenanceOwners());
     service.setName("myname");
     service.setServiceState(ApiServiceState.STARTED);
     service.setServiceUrl("http://foo:7180");
+    service.setRoleInstancesUrl("http://foo:7180/instances");
     service.setType("mytype");
 
     ApiRoleConfigGroup rcg = new ApiRoleConfigGroup();
@@ -519,6 +528,8 @@ public class ApiModelTest {
                                      "relatedName",
                                      ApiConfig.ValidationState.OK,
                                      "validationMessage");
+    config.setValidationWarningsSuppressed(false);
+    config.setSensitive(true);
     checkJsonXML(config);
   }
 
@@ -586,6 +597,8 @@ public class ApiModelTest {
     peer.setUrl("url1");
     peer.setUsername("user1");
     peer.setPassword("password1");
+    peer.setType(ApiCmPeerType.REPLICATION);
+    peer.setClouderaManagerCreatedUser(true);
     checkJsonXML(peer);
   }
 
@@ -611,10 +624,13 @@ public class ApiModelTest {
   public void testHdfsReplication() throws Exception {
     ApiHdfsReplicationArguments hdfsArgs = newHdfsReplicationArguments();
     ApiReplicationSchedule hdfsInfo =
-      new ApiReplicationSchedule(20L, new Date(1234), new Date(5678), 10,
-          ApiScheduleInterval.MONTH, true);
+        new ApiReplicationSchedule(20L, new Date(1234), new Date(5678), 10,
+            ApiScheduleInterval.MONTH, true);
+    hdfsInfo.setDisplayName("hdfs replication schedule");
+    hdfsInfo.setDescription("hdfs replication description");
     hdfsInfo.setHdfsArguments(hdfsArgs);
     hdfsInfo.setNextRun(new Date(12345));
+    hdfsInfo.setActive(true);
 
     ApiReplicationCommand cmd = new ApiReplicationCommand();
     fillInCommand(cmd);
@@ -655,15 +671,19 @@ public class ApiModelTest {
     args.setForce(true);
     args.setReplicateData(true);
     args.setReplicateImpalaMetadata(true);
+    args.setRunInvalidateMetadata(true);
 
     ApiHdfsReplicationArguments hdfsArgs = newHdfsReplicationArguments();
     args.setHdfsArguments(hdfsArgs);
 
     checkJsonXML(args);
 
-    ApiReplicationSchedule sch = new ApiReplicationSchedule(20L,
-        new Date(1234), new Date(5678), 10, ApiScheduleInterval.MONTH, true);
+    ApiReplicationSchedule sch = new ApiReplicationSchedule(20L, new Date(1234),
+        new Date(5678), 10, ApiScheduleInterval.MONTH, true);
+    sch.setDisplayName("hive replication schedule");
+    sch.setDescription("hive replication description");
     sch.setHiveArguments(args);
+    sch.setActive(true);
     checkJsonXML(sch);
 
     ApiHiveReplicationResult res = new ApiHiveReplicationResult();
@@ -671,11 +691,15 @@ public class ApiModelTest {
     res.setTableCount(1);
     res.setImpalaUDFs(Arrays.asList(new ApiImpalaUDF("db1", "func1")));
     res.setImpalaUDFCount(1);
+    res.setHiveUDFs(Arrays.asList(new ApiHiveUDF("db2", "func2")));
+    res.setHiveUDFCount(1);
     res.setErrors(Arrays.asList(new ApiHiveReplicationError("db1", "table1",
-        "func1(STRING)", "error1")));
+        "func1(STRING)", "func2(STRING)", "error1")));
     res.setErrorCount(1);
     res.setDryRun(true);
     res.setPhase("foo");
+    res.setRunAsUser("foo");
+    res.setRunOnSourceAsUser("hdfs");
 
     ApiHdfsReplicationResult hdfsRes = newHdfsReplicationResult();
     res.setDataReplicationResult(hdfsRes);
@@ -833,6 +857,7 @@ public class ApiModelTest {
     policy.setDayOfMonth((byte) 31);
     policy.setMonthOfYear((byte) 6);
     policy.setHoursForHourlySnapshots(Arrays.asList((byte) 4, (byte) 8));
+    policy.setPaused(false);
 
     return policy;
   }
@@ -842,7 +867,9 @@ public class ApiModelTest {
     ApiMr2AppInformation mr2Information = new ApiMr2AppInformation("jobState");
     ApiYarnApplication application = new ApiYarnApplication(
         "appId", "appName", new Date(), new Date(), "user", "pool",
-        "FINISHED", 80.0, mr2Information, Maps.<String, String>newHashMap());
+        "FINISHED", 80.0, mr2Information, Maps.<String, String>newHashMap(),
+        ImmutableList.of("foo"), 1234L, 5678L,
+        123, 1, 3, 1d, 1.5d, 2d, 3d, 4d, 5d);
     checkJsonXML(application);
 
     ApiYarnApplicationResponse response = new ApiYarnApplicationResponse(
@@ -896,8 +923,10 @@ public class ApiModelTest {
 
     ApiTimeSeriesCrossEntityMetadata xEntityMetadata =
         new ApiTimeSeriesCrossEntityMetadata();
-    xEntityMetadata.setMaxEntityDisplayName("maxDisplayName");
+    xEntityMetadata.setMaxEntityDisplayName("maxEntityDisplayName");
     xEntityMetadata.setMinEntityDisplayName("minEntityDisplayName");
+    xEntityMetadata.setMaxEntityName("maxEntityName");
+    xEntityMetadata.setMinEntityName("minEntityName");
     xEntityMetadata.setNumEntities(3.14);
     aggStats.setCrossEntityMetadata(xEntityMetadata);
     checkJsonXML(data);
@@ -905,8 +934,14 @@ public class ApiModelTest {
 
   private List<ApiHealthCheck> createHealthChecks() {
     return ImmutableList.of(
-        new ApiHealthCheck("TEST1", ApiHealthSummary.GOOD),
-        new ApiHealthCheck("TEST2", ApiHealthSummary.CONCERNING));
+        new ApiHealthCheck("TEST1",
+                           ApiHealthSummary.GOOD,
+                           "Dummy Health explanation.",
+                           false),
+        new ApiHealthCheck("TEST2",
+                           ApiHealthSummary.CONCERNING,
+                           "Dummy Health explanation.",
+                           false));
   }
 
   private List<ApiEntityType> createMaintenanceOwners() {
@@ -928,6 +963,8 @@ public class ApiModelTest {
     hdfsArgs.setSkipTrash(true);
     hdfsArgs.setPreserveXAttrs(true);
     hdfsArgs.setReplicationStrategy(ReplicationStrategy.DYNAMIC);
+    hdfsArgs.setExclusionFilters(Lists.newArrayList("/a/.*", "/b/.*"));
+    hdfsArgs.setSourceUser("hdfs");
     return hdfsArgs;
   }
 
@@ -946,6 +983,9 @@ public class ApiModelTest {
     result.setNumBytesCopyFailed(400);
     result.setSetupError("error");
     result.setSnapshottedDirs(Arrays.asList("/user/a"));
+    result.setFailedFiles(Arrays.asList("path1"));
+    result.setRunAsUser("systest");
+    result.setRunOnSourceAsUser("hdfs");
     return result;
   }
 
@@ -958,6 +998,7 @@ public class ApiModelTest {
     cmd.setSuccess(false);
     cmd.setResultMessage("message");
     cmd.setResultDataUrl("url");
+    cmd.setCanRetry(false);
   }
 
   private ApiCluster newCluster() {
@@ -966,9 +1007,12 @@ public class ApiModelTest {
     cluster.setMaintenanceMode(true);
     cluster.setName("mycluster");
     cluster.setDisplayName("mycluster-displayName");
+    cluster.setUuid("abcd-efg-hijk-lmnop");
     cluster.setClusterUrl("http://some-url:7180/cmf/clusterRedirect/mycluster");
+    cluster.setHostsUrl("http://some-url:7180/cmf/clusterRedirect/mycluster/hosts");
     cluster.setVersion(ApiClusterVersion.CDH4);
     cluster.setFullVersion("4.1.2");
+    cluster.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     return cluster;
   }
 
@@ -980,6 +1024,7 @@ public class ApiModelTest {
     host.setCommissionState(ApiCommissionState.COMMISSIONED);
     host.setHealthChecks(createHealthChecks());
     host.setHealthSummary(ApiHealthSummary.GOOD);
+    host.setEntityStatus(ApiEntityStatus.GOOD_HEALTH);
     host.setHostId("myHostId");
     host.setHostUrl("http://foo:7180");
     host.setHostname("myHostname");
@@ -992,6 +1037,7 @@ public class ApiModelTest {
     host.setRackId("/default");
     host.setRoleRefs(roleRefs);
     host.setTotalPhysMemBytes(1234L);
+    host.setClusterRef(new ApiClusterRef("clusterName"));
     return host;
   }
 
@@ -1006,4 +1052,167 @@ public class ApiModelTest {
     return user;
   }
 
+  @Test
+  public void testApiClusterUtilization() throws IllegalAccessException, InstantiationException, IOException, JAXBException {
+    ApiClusterUtilization util = new ApiClusterUtilization();
+    util.setTotalCpuCores(1d);
+    util.setAvgCpuUtilization(2d);
+    util.setMaxCpuUtilization(3d);
+    util.setMaxCpuUtilizationTimestampMs(4l);
+    util.setAvgCpuDailyPeak(5d);
+    util.setAvgWorkloadCpu(6d);
+    util.setMaxWorkloadCpu(7d);
+    util.setMaxWorkloadCpuTimestampMs(8l);
+    util.setAvgWorkloadCpuDailyPeak(9d);
+
+    util.setTotalMemory(1d);
+    util.setAvgMemoryUtilization(2d);
+    util.setMaxMemoryUtilization(3d);
+    util.setMaxMemoryUtilizationTimestampMs(4l);
+    util.setAvgMemoryDailyPeak(5d);
+    util.setAvgWorkloadMemory(6d);
+    util.setMaxWorkloadMemory(7d);
+    util.setMaxWorkloadMemoryTimestampMs(8l);
+    util.setAvgWorkloadMemoryDailyPeak(9d);
+
+    util.setErrorMessage("foo");
+
+    ApiTenantUtilization t1 = new ApiTenantUtilization();
+    t1.setTenantName("t1");
+    t1.setCpuUtilizationPercentage(10d);
+    t1.setMemoryUtilizationPercentage(20d);
+
+    ApiTenantUtilizationList tList = new ApiTenantUtilizationList();
+    tList.add(t1);
+    util.setTenantUtilizations(tList);
+
+    checkJsonXML(util);
+  }
+
+  @Test
+  public void testApiYarnUtilization() throws IllegalAccessException, InstantiationException, IOException, JAXBException {
+    ApiYarnUtilization util = new ApiYarnUtilization();
+
+    util.setAvgCpuUtilization(2d);
+    util.setMaxCpuUtilization(3d);
+    util.setMaxCpuUtilizationTimestampMs(4l);
+    util.setAvgCpuDailyPeak(5d);
+    util.setAvgCpuUtilizationPercentage(6d);
+    util.setMaxCpuUtilizationPercentage(7d);
+    util.setAvgCpuDailyPeakPercentage(8d);
+
+    util.setAvgMemoryUtilization(2d);
+    util.setMaxMemoryUtilization(3d);
+    util.setMaxMemoryUtilizationTimestampMs(4l);
+    util.setAvgMemoryDailyPeak(5d);
+    util.setAvgMemoryUtilizationPercentage(6d);
+    util.setMaxMemoryUtilizationPercentage(7d);
+    util.setAvgMemoryDailyPeakPercentage(8d);
+
+    util.setErrorMessage("foo");
+
+    ApiYarnTenantUtilization t1 = new ApiYarnTenantUtilization();
+    t1.setTenantName("t1");
+
+    t1.setAvgYarnCpuAllocation(1d);
+    t1.setAvgYarnCpuUtilization(2d);
+    t1.setAvgYarnCpuUnusedCapacity(3d);
+    t1.setAvgYarnCpuSteadyFairShare(4d);
+    t1.setAvgYarnPoolAllocatedCpuDuringContention(5d);
+    t1.setAvgYarnPoolFairShareCpuDuringContention(6d);
+    t1.setAvgYarnPoolSteadyFairShareCpuDuringContention(7d);
+
+    t1.setAvgYarnMemoryAllocation(1d);
+    t1.setAvgYarnMemoryUtilization(2d);
+    t1.setAvgYarnMemoryUnusedCapacity(3d);
+    t1.setAvgYarnMemorySteadyFairShare(4d);
+    t1.setAvgYarnPoolAllocatedMemoryDuringContention(5d);
+    t1.setAvgYarnPoolFairShareMemoryDuringContention(6d);
+    t1.setAvgYarnPoolSteadyFairShareMemoryDuringContention(7d);
+
+    t1.setAvgYarnContainerWaitRatio(8d);
+
+    ApiYarnTenantUtilizationList tList = new ApiYarnTenantUtilizationList();
+    tList.add(t1);
+    util.setTenantUtilizations(tList);
+
+    checkJsonXML(util);
+  }
+
+  @Test
+  public void testApiImpalaUtilization() throws IllegalAccessException, InstantiationException, IOException, JAXBException {
+    ApiImpalaUtilization util = new ApiImpalaUtilization();
+
+    util.setTotalQueries(1d);
+    util.setSuccessfulQueries(2d);
+    util.setOomQueries(3d);
+    util.setTimeOutQueries(4d);
+    util.setRejectedQueries(5d);
+
+    util.setSuccessfulQueriesPercentage(2d);
+    util.setOomQueriesPercentage(3d);
+    util.setTimeOutQueriesPercentage(4d);
+    util.setRejectedQueriesPercentage(5d);
+
+    util.setAvgWaitTimeInQueue(6d);
+    util.setPeakAllocationTimestampMS(7l);
+    util.setMaxAllocatedMemory(8d);
+    util.setMaxAllocatedMemoryPercentage(9d);
+    util.setUtilizedAtMaxAllocated(10d);
+    util.setUtilizedAtMaxAllocatedPercentage(11d);
+    util.setPeakUsageTimestampMS(12l);
+    util.setMaxUtilizedMemory(13d);
+    util.setMaxUtilizedMemoryPercentage(14d);
+    util.setAllocatedAtMaxUtilized(15d);
+    util.setAllocatedAtMaxUtilizedPercentage(16d);
+
+    util.setErrorMessage("foo");
+
+    ApiImpalaUtilizationHistogramBin bin = new ApiImpalaUtilizationHistogramBin();
+    bin.setStartPointInclusive(1d);
+    bin.setEndPointExclusive(2d);
+    bin.setNumberOfImpalaDaemons(3l);
+
+    ApiImpalaUtilizationHistogramBinList bins = new ApiImpalaUtilizationHistogramBinList();
+    bins.add(bin);
+
+    ApiImpalaUtilizationHistogram hist = new ApiImpalaUtilizationHistogram();
+    hist.setBins(bins);
+
+    util.setDistributionAllocatedByImpalaDaemon(hist);
+    util.setDistributionUtilizedByImpalaDaemon(hist);
+
+    ApiImpalaTenantUtilization tenantUtil = new ApiImpalaTenantUtilization();
+
+    tenantUtil.setTenantName("t1");
+    tenantUtil.setTotalQueries(1d);
+    tenantUtil.setSuccessfulQueries(2d);
+    tenantUtil.setOomQueries(3d);
+    tenantUtil.setTimeOutQueries(4d);
+    tenantUtil.setRejectedQueries(5d);
+    tenantUtil.setAvgWaitTimeInQueue(6d);
+
+    tenantUtil.setPeakAllocationTimestampMS(7l);
+    tenantUtil.setMaxAllocatedMemory(8d);
+    tenantUtil.setMaxAllocatedMemoryPercentage(9d);
+    tenantUtil.setUtilizedAtMaxAllocated(10d);
+    tenantUtil.setUtilizedAtMaxAllocatedPercentage(11d);
+    tenantUtil.setPeakUsageTimestampMS(12l);
+    tenantUtil.setMaxUtilizedMemory(13d);
+    tenantUtil.setMaxUtilizedMemoryPercentage(14d);
+    tenantUtil.setAllocatedAtMaxUtilized(15d);
+    tenantUtil.setAllocatedAtMaxUtilizedPercentage(16d);
+
+    tenantUtil.setDistributionAllocatedByImpalaDaemon(hist);
+    tenantUtil.setDistributionUtilizedByImpalaDaemon(hist);
+
+    tenantUtil.setAvgSpilledMemory(10d);
+    tenantUtil.setMaxSpilledMemory(11d);
+
+    ApiImpalaTenantUtilizationList tList = new ApiImpalaTenantUtilizationList();
+    tList.add(tenantUtil);
+    util.setTenantUtilizations(tList);
+
+    checkJsonXML(util);
+  }
 }

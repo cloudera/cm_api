@@ -209,7 +209,7 @@ public interface HostsResource {
    * 'select $METRIC_NAME1, $METRIC_NAME2 where hostId = $HOST_ID'.
    * <br>
    * <br>
-   * For more information see the <a href="http://tiny.cloudera.com/tsquery_doc">
+   * For more information see the <a href="http://tiny.cloudera.com/cm_tsquery">
    * tsquery language documentation</a>.<p/>
    */
   @Deprecated

@@ -21,6 +21,7 @@ import static com.cloudera.api.Parameters.QUERY;
 import static com.cloudera.api.Parameters.CONTENT_TYPE;
 import static com.cloudera.api.Parameters.DESIRED_ROLLUP;
 import static com.cloudera.api.Parameters.MUST_USE_DESIRED_ROLLUP;
+import static com.cloudera.api.Parameters.ROLLUP_DEFAULT;
 import static com.cloudera.api.Parameters.TO;
 
 import javax.ws.rs.DefaultValue;
@@ -33,20 +34,21 @@ import javax.ws.rs.core.Response;
 import com.cloudera.api.v4.TimeSeriesResource;
 
 public interface TimeSeriesResourceV6 extends TimeSeriesResource {
-
   /**
    * Retrieve time-series data from the Cloudera Manager (CM) time-series
    * data store using a tsquery.
    *
    * Please see the
-   * <a href="http://tiny.cloudera.com/tsquery_doc">
-   * tsquery language documentation</a>.<p/>
+   * <a href="http://tiny.cloudera.com/cm_tsquery">
+   * tsquery language documentation</a>.
+   * <p/>
    * Available since API v6.
    *
    * @param query Tsquery to run against the CM time-series data store.
-   * @param from Start of the period to query (defaults to 5 minutes before the
-   * end of the period).
-   * @param to End of the period to query (defaults to current time).
+   * @param from Start of the period to query in ISO 8601 format (defaults to 5
+   * minutes before the end of the period).
+   * @param to End of the period to query in ISO 8601 format (defaults to
+   * current time).
    * @param contentType to return the response in. The content types
    * "application/json" and "text/csv" are supported. This defaults to
    * "application/json". If "text/csv" is specified then we return one row
@@ -71,7 +73,7 @@ public interface TimeSeriesResourceV6 extends TimeSeriesResource {
         @DefaultValue(MediaType.APPLICATION_JSON)
         String contentType,
       @QueryParam(DESIRED_ROLLUP)
-        @DefaultValue("RAW")
+        @DefaultValue(ROLLUP_DEFAULT)
         String desiredRollup,
       @QueryParam(MUST_USE_DESIRED_ROLLUP)
         @DefaultValue("false")

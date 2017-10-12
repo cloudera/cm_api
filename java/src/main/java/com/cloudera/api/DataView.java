@@ -21,6 +21,12 @@ import com.google.common.base.Joiner;
 public enum DataView {
   SUMMARY,
   FULL,
+  /**
+   * Entities with health test results and health test explanation.
+   * Generating and transferring health check explanation for entities can be
+   * very expensive.
+   **/
+  FULL_WITH_HEALTH_CHECK_EXPLANATION,
   EXPORT,
   /** All passwords and other sensitive fields are marked as REDACTED. */
   EXPORT_REDACTED;

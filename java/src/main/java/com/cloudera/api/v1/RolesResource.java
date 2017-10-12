@@ -104,6 +104,10 @@ public interface RolesResource {
    *       <td>HUE_SERVER, KT_RENEWER</td>
    *     </tr>
    *     <tr>
+   *       <td>HUE (CDH5 5.5+)</td>
+   *       <td>HUE_SERVER, KT_RENEWER, HUE_LOAD_BALANCER</td>
+   *     </tr>
+   *     <tr>
    *       <td>FLUME</td>
    *       <td>AGENT</td>
    *     </tr>
@@ -282,7 +286,7 @@ public interface RolesResource {
    * 'select $METRIC_NAME1, $METRIC_NAME2 where roleName = $ROLE_NAME'.
    * <br>
    * <br>
-   * For more information see the <a href="http://tiny.cloudera.com/tsquery_doc">
+   * For more information see the <a href="http://tiny.cloudera.com/cm_tsquery">
    * tsquery language documentation</a>.<p/>
    */
   @Deprecated

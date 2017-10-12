@@ -34,10 +34,14 @@ public class ApiHiveReplicationResult {
   private List<ApiHiveTable> tables;
   private Integer impalaUDFCount;
   private List<ApiImpalaUDF> impalaUDFs;
+  private Integer hiveUDFCount;
+  private List<ApiHiveUDF> hiveUDFs;
   private Integer errorCount;
   private List<ApiHiveReplicationError> errors;
   private ApiHdfsReplicationResult dataReplicationResult;
   private boolean dryRun;
+  private String runAsUser;
+  private String runOnSourceAsUser;
 
   public ApiHiveReplicationResult() {
     // For JAX-B
@@ -105,6 +109,19 @@ public class ApiHiveReplicationResult {
   }
 
   /**
+   * Number of hive UDFs that were successfully replicated. Available since
+   * API v14.
+   */
+  @XmlElement
+  public Integer getHiveUDFCount() {
+    return hiveUDFCount;
+  }
+
+  public void setHiveUDFCount(Integer hiveUDFCount) {
+    this.hiveUDFCount = hiveUDFCount;
+  }
+
+  /**
    * The list of Impala UDFs successfully replicated. Available since API v6
    * in the full view.
    */
@@ -115,6 +132,20 @@ public class ApiHiveReplicationResult {
 
   public void setImpalaUDFs(List<ApiImpalaUDF> impalaUDFs) {
     this.impalaUDFs = impalaUDFs;
+  }
+
+
+  /**
+   * The list of Impala UDFs successfully replicated. Available since API v6
+   * in the full view.
+   */
+  @XmlElementWrapper
+  public List<ApiHiveUDF> getHiveUDFs() {
+    return hiveUDFs;
+  }
+
+  public void setHiveUDFs(List<ApiHiveUDF> hiveUDFs) {
+    this.hiveUDFs = hiveUDFs;
   }
 
   /**
@@ -164,6 +195,32 @@ public class ApiHiveReplicationResult {
     this.dryRun = dryRun;
   }
 
+  /**
+   * Name of the of proxy user, if any.
+   * Available since API v11.
+   */
+  @XmlElement
+  public String getRunAsUser() {
+    return runAsUser;
+  }
+
+  public void setRunAsUser(String runAsUser) {
+    this.runAsUser = runAsUser;
+  }
+
+  /**
+   * Name of the source proxy user, if any.
+   * Available since API v18.
+   */
+  @XmlElement
+  public String getRunOnSourceAsUser() {
+    return runOnSourceAsUser;
+  }
+
+  public void setRunOnSourceAsUser(String runOnSourceAsUser) {
+    this.runOnSourceAsUser = runOnSourceAsUser;
+  }
+
   @Override
   public boolean equals(Object o) {
     ApiHiveReplicationResult that = ApiUtils.baseEquals(this, o);
@@ -171,13 +228,17 @@ public class ApiHiveReplicationResult {
         Objects.equal(phase, that.getPhase()) &&
         Objects.equal(tables, that.getTables()) &&
         Objects.equal(impalaUDFs, that.getImpalaUDFs()) &&
+        Objects.equal(hiveUDFs, that.getHiveUDFs()) &&
         Objects.equal(errors, that.getErrors()) &&
-        dryRun == that.isDryRun());
+        dryRun == that.isDryRun() &&
+        Objects.equal(runAsUser, that.getRunAsUser()) &&
+        Objects.equal(runOnSourceAsUser, that.getRunOnSourceAsUser()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(phase, tables, impalaUDFs, errors, dryRun);
+    return Objects.hashCode(phase, tables, impalaUDFs, hiveUDFs, errors, dryRun,
+        runAsUser, runOnSourceAsUser);
   }
 
   @Override
@@ -186,8 +247,11 @@ public class ApiHiveReplicationResult {
         .add("phase", phase)
         .add("tables", tables)
         .add("impalaUDFs", impalaUDFs)
+        .add("hiveUDFs", hiveUDFs)
         .add("errors", errors)
         .add("dryRun", dryRun)
+        .add("runAsUser", runAsUser)
+        .add("runOnSourceAsUser", runOnSourceAsUser)
         .toString();
   }
 

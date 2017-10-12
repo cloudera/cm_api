@@ -32,6 +32,8 @@ public enum ApiClusterVersion {
   CDH4,
   /** CDH5 version */
   CDH5,
+  /** CDH6 version */
+  CDH6,
   /** Unknown version. */
   UNKNOWN;
 
