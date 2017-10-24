@@ -542,21 +542,16 @@ class ClouderaManager(BaseApiResource):
     """
     return self._post("importClusterTemplate", ApiCommand, False, api_cluster_template, params=dict(addRepositories=add_repositories), api_version=12)
 
-  def delete_credentials(self):
+  def delete_credentials(self, mode=None):
     """
     Delete credentials for services configured with Kerberos.
 
+    @param mode: None for v17. For v18, "all" if all credentials need to be
+                 deleted, or "unused" if unused credentials are to be deleted.
     @return: Information about the submitted command.
     @since: API v17
     """
-    return self._cmd('deleteCredentials', api_version=17)
-
-  def delete_credentials(self, mode):
-    """
-    Delete credentials for services configured with Kerberos.
-
-    @return: Information about the submitted command.
-    @param mode: "all" if all credentials need to be deleted, or "unused" if unused credentials are to be deleted.
-    @since: API v18
-    """
-    return self._cmd('deleteCredentials', mode, api_version=18)
+    if mode is None:
+      return self._cmd('deleteCredentials', api_version=17)
+    else:
+      return self._cmd('deleteCredentials', mode, api_version=18)
