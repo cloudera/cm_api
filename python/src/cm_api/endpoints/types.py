@@ -710,6 +710,7 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'preserveReplicationCount'  : None,
     'removeMissingFiles'        : None,
     'skipChecksumChecks'        : None,
+    'skipListingChecksumChecks' : None,
     'skipTrash'                 : None,
     'replicationStrategy'       : None,
     'preserveXAttrs'            : None,
