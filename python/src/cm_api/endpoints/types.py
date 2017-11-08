@@ -683,6 +683,14 @@ class ApiLicensedFeatureUsage(BaseApiObject):
     'clusters'  : ROAttr(),
   }
 
+class ApiReplicationDiagnosticsCollectionArgs(BaseApiObject):
+  _ATTRIBUTES = {
+    'commands'        : ROAttr(),
+    'ticketNumber'    : ROAttr(),
+    'comments'        : ROAttr(),
+    'phoneHome'       : ROAttr(),
+  }
+
 class ApiHdfsReplicationArguments(BaseApiObject):
   _ATTRIBUTES = {
     'sourceService'             : Attr(ApiServiceRef),

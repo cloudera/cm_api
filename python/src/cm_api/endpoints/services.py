@@ -1665,6 +1665,19 @@ class ApiService(BaseApiResource):
         params=dict(dryRun=dry_run),
         api_version=3)
 
+  def collect_replication_diagnostic_data(self, schedule_id, diagnostic_args, view=None):
+    """
+    Collect replication diagnostic data for the specified schedule id
+
+    @param schedule_id: The id of the schedule to collect diagnostic data.
+    @param diagnostic_args: Arguments for collecting diagnostic data.
+    @return: The command corresponding to the collect diagnostic data.
+    @since: API v11
+    """
+    return self._post("replications/%s/collectDiagnosticData" % schedule_id, ApiCommand,
+        data=diagnostic_args, params=view and dict(view=view) or None,
+        api_version=11)
+
   def create_snapshot_policy(self, policy):
     """
     Create a new snapshot policy for this service.
