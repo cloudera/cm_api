@@ -690,6 +690,7 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'destinationPath'           : None,
     'mapreduceServiceName'      : None,
     'userName'                  : None,
+    'sourceUser'                : None,
     'numMaps'                   : None,
     'dryRun'                    : None,
     'bandwidthPerMap'           : None,
@@ -741,6 +742,7 @@ class ApiHdfsReplicationResult(BaseApiObject):
     'snapshottedDirs'     : ROAttr(),
     'failedFiles'         : ROAttr(),
     'runAsUser'           : ROAttr(),
+    'runOnSourceAsUser'   : ROAttr(),
   }
 
 class ApiHiveTable(BaseApiObject):
@@ -795,6 +797,7 @@ class ApiHiveReplicationResult(BaseApiObject):
     'dataReplicationResult' : ROAttr(ApiHdfsReplicationResult),
     'dryRun'                : ROAttr(),
     'runAsUser'             : ROAttr(),
+    'runOnSourceAsUser'     : ROAttr(),
     'phase'                 : ROAttr(),
   }
 

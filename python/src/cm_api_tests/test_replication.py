@@ -40,6 +40,7 @@ class TestReplicationTypes(unittest.TestCase):
       "mapreduceServiceName" : "MAPREDUCE-1",
       "schedulerPoolName" : "medium",
       "userName" : "systest",
+      "sourceUser" : "hdfs",
       "dryRun" : false,
       "abortOnError" : true,
       "removeMissingFiles" : false,
@@ -62,6 +63,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEquals('MAPREDUCE-1', args.mapreduceServiceName)
     self.assertEquals('medium', args.schedulerPoolName)
     self.assertEquals('systest', args.userName)
+    self.assertEquals('hdfs', args.sourceUser)
     self.assertFalse(args.dryRun)
     self.assertTrue(args.abortOnError)
     self.assertFalse(args.removeMissingFiles)
@@ -187,7 +189,8 @@ class TestReplicationTypes(unittest.TestCase):
         "progress" : 50
       },
       "dryRun" : false,
-      "runAsUser" : "systest"
+      "runAsUser" : "systest",
+      "runOnSourceAsUser" : "hdfs"
     }'''
     res = utils.deserialize(RAW, ApiHiveReplicationResult)
     self.assertEquals('EXPORT', res.phase)
@@ -213,6 +216,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEquals(50, res.dataReplicationResult.progress)
     self.assertFalse(res.dryRun)
     self.assertEquals(res.runAsUser, 'systest')
+    self.assertEquals(res.runOnSourceAsUser, 'hdfs')
 
   def test_schedule(self):
     RAW = '''{
