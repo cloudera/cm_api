@@ -1189,6 +1189,39 @@ class ApiService(BaseApiResource):
     )
     return self._cmd('oozieEnableHa', data=args, api_version=6)
 
+  def enable_oozie_ha2(self, new_oozie_server_host_ids, new_oozie_server_role_names=None,
+    zk_service_name=None, load_balancer_hostname=None, load_balancer_port=None,
+    load_balancer_ssl_port=None):
+    """
+    Enable high availability for Oozie.
+
+    @param new_oozie_server_host_ids: List of IDs of the hosts on which new Oozie Servers
+                                      will be added.
+    @param new_oozie_server_role_names: List of names of the new Oozie Servers. This is an
+                                        optional argument, but if provided, it should
+                                        match the length of host IDs provided.
+    @param zk_service_name: Name of the ZooKeeper service that will be used for Oozie HA.
+                            This is an optional parameter if the Oozie to ZooKeeper
+                            dependency is already set.
+    @param load_balancer_hostname: Address and port of the load balancer used for Oozie HA.
+                                   This is an optional parameter if this config is already set.
+    @param load_balancer_port: HTTP port of the load balancer used for Oozie HA.
+                               This is an optional parameter if this config is already set.
+    @param load_balancer_ssl_port: HTTPS port of the load balancer used for Oozie HA.
+                                   This is an optional parameter if this config is already set.
+    @return: Reference to the submitted command.
+    @since: API v19
+    """
+    args = dict(
+      newOozieServerHostIds = new_oozie_server_host_ids,
+      newOozieServerRoleNames = new_oozie_server_role_names,
+      zkServiceName = zk_service_name,
+      loadBalancerHostname = load_balancer_hostname,
+      loadBalancerPort = load_balancer_port,
+      loadBalancerSslPort = load_balancer_ssl_port
+    )
+    return self._cmd('oozieEnableHa', data=args, api_version=19)
+
   def disable_oozie_ha(self, active_name):
     """
     Disable high availability for Oozie
