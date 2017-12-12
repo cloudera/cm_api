@@ -839,7 +839,9 @@ class ApiReplicationSchedule(BaseApiObject):
     'id'              : ROAttr(),
     'nextRun'         : ROAttr(datetime.datetime),
     'history'         : ROAttr(ApiReplicationCommand),
-    'active'          : None
+    'active'          : None,
+    'displayName'     : None,
+    'description'     : None
   }
 
 class ApiHBaseSnapshotPolicyArguments(BaseApiObject):
