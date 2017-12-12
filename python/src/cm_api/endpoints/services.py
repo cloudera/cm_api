@@ -1535,7 +1535,7 @@ class ApiService(BaseApiResource):
   def create_replication_schedule(self,
       start_time, end_time, interval_unit, interval, paused, arguments,
       alert_on_start=False, alert_on_success=False, alert_on_fail=False,
-      alert_on_abort=False):
+      alert_on_abort=False, name=None, description=None):
     """
     Create a new replication schedule for this service.
 
@@ -1560,13 +1560,15 @@ class ApiService(BaseApiResource):
     @param alert_on_success: whether to generate alerts when the job succeeds.
     @param alert_on_fail: whether to generate alerts when the job fails.
     @param alert_on_abort: whether to generate alerts when the job is aborted.
+    @param name: Name of the replication schedule
+    @param description: Description of the replication schedule
     @return: The newly created schedule.
     @since: API v3
     """
     schedule = ApiReplicationSchedule(self._get_resource_root(),
       startTime=start_time, endTime=end_time, intervalUnit=interval_unit, interval=interval,
       paused=paused, alertOnStart=alert_on_start, alertOnSuccess=alert_on_success,
-      alertOnFail=alert_on_fail, alertOnAbort=alert_on_abort)
+      alertOnFail=alert_on_fail, alertOnAbort=alert_on_abort, displayName=name, description=description)
 
     if self.type == 'HDFS':
       if isinstance(arguments, ApiHdfsCloudReplicationArguments):
