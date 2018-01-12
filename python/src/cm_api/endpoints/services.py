@@ -1220,7 +1220,7 @@ class ApiService(BaseApiResource):
       loadBalancerPort = load_balancer_port,
       loadBalancerSslPort = load_balancer_ssl_port
     )
-    return self._cmd('oozieEnableHa', data=args, api_version=19)
+    return self._cmd('oozieEnableHa2', data=args, api_version=19)
 
   def disable_oozie_ha(self, active_name):
     """
