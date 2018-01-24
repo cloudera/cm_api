@@ -31,6 +31,7 @@ public final class Parameters {
   static public final String USER_NAME = "userName";
   static public final String ACTIVITY_ID = "activityId";
   static public final String PEER_NAME = "peerName";
+  static public final String PEER_TYPE = "type";
   static public final String SCHEDULE_ID = "scheduleId";
   static public final String PRODUCT = "product";
   static public final String VERSION = "version";
@@ -45,6 +46,13 @@ public final class Parameters {
   static public final String MUST_USE_DESIRED_ROLLUP = "mustUseDesiredRollup";
   static public final String FILTER = "filter";
   static public final String COMMAND_NAME = "commandName";
+  static public final String DIR_PATH = "directoryPath";
+  static public final String EXTERNAL_ACCOUNT_NAME = "name";
+  static public final String EXTERNAL_ACCOUNT_TYPE_NAME = "typeName";
+  static public final String EXTERNAL_ACCOUNT_CATEGORY_NAME = "categoryName";
+  static public final String DISPLAY_NAME = "displayName";
+  static public final String TENANT_TYPE = "tenantType";
+  static public final String DELETE_CREDENTIALS_MODE = "deleteCredentialsMode";
 
   /* Common query params. */
   static public final String FROM = "from";
@@ -53,13 +61,22 @@ public final class Parameters {
   static public final String LIMIT = "limit";
   static public final String METRICS = "metrics";
   static public final String QUERY = "query";
+  static public final String DAYS_OF_WEEK = "daysOfWeek";
+  static public final String IS_ALL_DAY = "isAllDay";
+  static public final String START_HOUR_OF_DAY = "startHourOfDay";
+  static public final String END_HOUR_OF_DAY = "endHourOfDay";
 
   /* Default values. */
   static public final String DATA_VIEW_DEFAULT = "summary";
   static public final String DATA_VIEW_EXPORT = "export";
+  static public final String DATA_VIEW_FULL = "full";
   static public final String DATE_TIME_NOW = "now";
   static public final String DAILY_AGGREGATION = "daily";
   static public final String FILTER_DEFAULT = "";
+  static public final String ROLLUP_DEFAULT = "RAW";
+  static public final String POOL = "POOL";
+  static public final String USER = "USER";
+  static public final String DELETE_CREDENTIALS_MODE_DEFAULT = "all";
 
   /* Common filtering properties. */
   static public final String HOSTNAME = "hostname";
