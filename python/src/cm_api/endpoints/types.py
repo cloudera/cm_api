@@ -826,6 +826,19 @@ class ApiHiveReplicationResult(BaseApiObject):
     'runAsUser'             : ROAttr(),
     'runOnSourceAsUser'     : ROAttr(),
     'phase'                 : ROAttr(),
+    'statsAvailable'        : ROAttr(),
+    'dbProcessed'           : ROAttr(),
+    'tableProcessed'        : ROAttr(),
+    'partitionProcessed'    : ROAttr(),
+    'functionProcessed'     : ROAttr(),
+    'indexProcessed'        : ROAttr(),
+    'statsProcessed'        : ROAttr(),
+    'dbExpected'            : ROAttr(),
+    'tableExpected'         : ROAttr(),
+    'partitionExpected'     : ROAttr(),
+    'functionExpected'      : ROAttr(),
+    'indexExpected'         : ROAttr(),
+    'statsExpected'         : ROAttr(),
   }
 
 class ApiReplicationCommand(ApiCommand):

@@ -148,7 +148,8 @@ class TestReplicationTypes(unittest.TestCase):
         { "database" : "db1", "tableName" : "table1" }
       ],
       "dryRun" : false,
-      "replicateImpalaMetadata" : true
+      "replicateImpalaMetadata" : true,
+      "numThreads" : 4
     }'''
     args = utils.deserialize(RAW, ApiHiveReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
@@ -163,6 +164,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEquals("db1", args.tableFilters[0].database)
     self.assertEquals("table1", args.tableFilters[0].tableName)
     self.assertTrue(args.replicateImpalaMetadata)
+    self.assertEquals(4, args.numThreads)
 
   def test_hive_cloud_arguments(self):
     RAW = '''{
@@ -239,7 +241,20 @@ class TestReplicationTypes(unittest.TestCase):
       },
       "dryRun" : false,
       "runAsUser" : "systest",
-      "runOnSourceAsUser" : "hdfs"
+      "runOnSourceAsUser" : "hdfs",
+      "statsAvailable" : true,
+      "dbProcessed" : 1,
+      "tableProcessed" : 10,
+      "partitionProcessed" : 100,
+      "functionProcessed" : 1,
+      "indexProcessed" : 1,
+      "statsProcessed" : 100,
+      "dbExpected" : 10,
+      "tableExpected" : 100,
+      "partitionExpected" : 1000,
+      "functionExpected" : 10,
+      "indexExpected" : 10,
+      "statsExpected" : 1000
     }'''
     res = utils.deserialize(RAW, ApiHiveReplicationResult)
     self.assertEquals('EXPORT', res.phase)
@@ -266,6 +281,19 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertFalse(res.dryRun)
     self.assertEquals(res.runAsUser, 'systest')
     self.assertEquals(res.runOnSourceAsUser, 'hdfs')
+    self.assertTrue(res.statsAvailable)
+    self.assertEquals(1, res.dbProcessed)
+    self.assertEquals(10, res.tableProcessed)
+    self.assertEquals(100, res.partitionProcessed)
+    self.assertEquals(1, res.functionProcessed)
+    self.assertEquals(1, res.indexProcessed)
+    self.assertEquals(100, res.statsProcessed)
+    self.assertEquals(10, res.dbExpected)
+    self.assertEquals(100, res.tableExpected)
+    self.assertEquals(1000, res.partitionExpected)
+    self.assertEquals(10, res.functionExpected)
+    self.assertEquals(10, res.indexExpected)
+    self.assertEquals(1000, res.statsExpected)
 
   def test_schedule(self):
     RAW = '''{
