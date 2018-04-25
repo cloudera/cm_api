@@ -1584,11 +1584,17 @@ class ApiService(BaseApiResource):
     @return: The newly created schedule.
     @since: API v3
     """
-    schedule = ApiReplicationSchedule(self._get_resource_root(),
-      startTime=start_time, endTime=end_time, intervalUnit=interval_unit, interval=interval,
-      paused=paused, alertOnStart=alert_on_start, alertOnSuccess=alert_on_success,
-      alertOnFail=alert_on_fail, alertOnAbort=alert_on_abort, displayName=name, description=description)
-
+    version = self._get_resource_root().version
+    if version >= 17:  # New fields added in 5.12
+      schedule = ApiReplicationSchedule(self._get_resource_root(),
+        startTime=start_time, endTime=end_time, intervalUnit=interval_unit, interval=interval,
+        paused=paused, alertOnStart=alert_on_start, alertOnSuccess=alert_on_success,
+        alertOnFail=alert_on_fail, alertOnAbort=alert_on_abort, displayName=name, description=description)
+    else:
+      schedule = ApiReplicationSchedule2(self._get_resource_root(),
+        startTime=start_time, endTime=end_time, intervalUnit=interval_unit, interval=interval,
+        paused=paused, alertOnStart=alert_on_start, alertOnSuccess=alert_on_success,
+        alertOnFail=alert_on_fail, alertOnAbort=alert_on_abort)
     if self.type == 'HDFS':
       if isinstance(arguments, ApiHdfsCloudReplicationArguments):
         schedule.hdfsCloudArguments = arguments

@@ -858,6 +858,27 @@ class ApiReplicationCommand(ApiCommand):
       cls._ATTRIBUTES = attrs
     return cls._ATTRIBUTES
 
+class ApiReplicationSchedule2(BaseApiObject):
+  _ATTRIBUTES = {
+    'startTime'       : Attr(datetime.datetime),
+    'endTime'         : Attr(datetime.datetime),
+    'interval'        : None,
+    'intervalUnit'    : None,
+    'paused'          : None,
+    'hdfsArguments'   : Attr(ApiHdfsReplicationArguments),
+    'hiveArguments'   : Attr(ApiHiveReplicationArguments),
+    'hdfsCloudArguments'   : Attr(ApiHdfsCloudReplicationArguments),
+    'hiveCloudArguments'   : Attr(ApiHiveCloudReplicationArguments),
+    'alertOnStart'    : None,
+    'alertOnSuccess'  : None,
+    'alertOnFail'     : None,
+    'alertOnAbort'    : None,
+    'id'              : ROAttr(),
+    'nextRun'         : ROAttr(datetime.datetime),
+    'history'         : ROAttr(ApiReplicationCommand),
+    'active'          : None
+  }
+
 class ApiReplicationSchedule(BaseApiObject):
   _ATTRIBUTES = {
     'startTime'       : Attr(datetime.datetime),
@@ -879,8 +900,8 @@ class ApiReplicationSchedule(BaseApiObject):
     'nextRun'         : ROAttr(datetime.datetime),
     'history'         : ROAttr(ApiReplicationCommand),
     'active'          : None,
-    'displayName'     : None,
-    'description'     : None
+    'displayName'     : None,  # Added in 5.12
+    'description'     : None   # Added in 5.12
   }
 
 class ApiHBaseSnapshotPolicyArguments(BaseApiObject):
