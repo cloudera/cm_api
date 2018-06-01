@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Java Client
+title: Java Client (Deprecated)
 id: java-client
 permalink: /docs/java-client/
 ---
@@ -9,6 +9,15 @@ permalink: /docs/java-client/
 
 * toc
 {:toc}
+
+
+Version
+=======
+From Cloudera Manager version 6.0 i.e. API version 30 onwards, this Java API client
+has been deprecated.
+
+Use new [Swagger based Java API client]({{ site.url }}/docs/java-client-swagger/)
+for Cloudera Manager version 6.0 i.e. API version 30 onwards.
 
 
 Setting Up
@@ -40,8 +49,8 @@ You can also directly download the jar (and sources) from the [Cloudera reposito
 
 Javadoc
 =======
-Here is the latest [javadoc]({{ site.url }}/javadoc/{{ site.latest_cm_version }}/index.html),
-for API version {{ site.latest_api_version }} (CM {{site.latest_cm_version}}).
+Here is the last [javadoc]({{ site.url }}/javadoc/5.14.0/index.html),
+for API version 19 (CM 5.14.0)
 
 
 Basic Usage

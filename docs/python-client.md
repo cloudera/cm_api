@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Python Client
+title: Python Client (Deprecated)
 id: python-client
 permalink: /docs/python-client/
 ---
@@ -9,6 +9,15 @@ permalink: /docs/python-client/
 
 * toc
 {:toc}
+
+
+Version
+=======
+From Cloudera Manager version 6.0 i.e. API version 30 onwards, this Python API client
+has been deprecated.
+
+Use new [Swagger based python API client]({{ site.url }}/docs/python-client-swagger/)
+for Cloudera Manager version 6.0 i.e. API version 30 onwards.
 
 Installation
 ============
@@ -19,7 +28,7 @@ Installation
 If your system does not have `pip`, you can get it from your distro:
 
     $ sudo apt-get install python-pip
-    ## ... or use `yum install' if you are on CentOS
+    ## ... or use `yum install` if you are on CentOS
 
 **Alternatively, you can also install from source:**
 
@@ -33,8 +42,8 @@ if the install succeeded by running** `pip show cm-api`.
 
 Epydoc
 ======
-Here is the latest [epydoc]({{ site.url }}/epydoc/{{ site.latest_cm_version }}/index.html),
-for API version {{ site.latest_api_version }} (CM {{site.latest_cm_version}}).
+Here is the last [epydoc]({{ site.url }}/epydoc/5.14.0/index.html) with older
+python API client, for API version 19 (CM 5.14.0)
 
 
 Basic Usage

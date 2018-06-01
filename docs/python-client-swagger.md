@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Python Client (Swagger)
+title: Python Client
 id: python-client-swagger
 permalink: /docs/python-client-swagger/
 ---
@@ -10,9 +10,45 @@ permalink: /docs/python-client-swagger/
 * toc
 {:toc}
 
+
+Version
+=======
+Cloudera Manager 6.0 introduces new Python API client cm_client based
+on [Swagger](https://swagger.io/). This new API client supports all CM API versions.
+
+[Older Python client]({{ site.url }}/docs/python-client/) will still be supported for
+API version less than 30. So for instance older python API client can still be used
+against Cloudera Manager version 6.0 as long as API version less than 30 is used.
+
+Older Python client and new Swagger based Python client can co-exist in an application
+to allow for incremental transition to new Swagger based python client.
+
 Installation
 ============
-TODO: Python pip installation steps.
+TODO: May need update based on RELENG-3377.
+
+**To install the Python API client, simply:**
+
+    $ sudo pip install cm-api-client
+
+If your system does not have `pip`, you can get it from your distro:
+
+    $ sudo apt-get install python-pip
+    ## ... or use `yum install` if you are on CentOS
+
+
+**Alternatively, you can also install from source:**
+
+    $ wget http://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{ site.latest_cm_version }}/generic/jar/cm_api/cloudera-manager-api-swagger-{{ site.latest_cm_version }}.tar
+
+    $ tar xvf cloudera-manager-api-swagger-6.x.0.tar
+    $ cd swagger/python/
+    $ sudo python setup.py install
+
+SDK Doc
+=======
+Here is the latest [SDK doc](https://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{ site.latest_cm_version }}/generic/jar/cm_api/swagger-html-sdk-docs/python/README.html),
+for API version {{ site.latest_api_version }} (CM {{site.latest_cm_version}}).
 
 Basic Usage
 ===========

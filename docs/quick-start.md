@@ -55,7 +55,7 @@ To look at a POST example, this defines a new (empty) cluster in CM:
   The call takes a list of cluster objects. But in this case, it is a list of one
   because we are only defining one cluster. The cluster has 2 mandatory fields: `name` and
   `version`. All the API calls and their arguments are listed in the
-  [API Docs]({{ site.url }}/apidocs/v{{ site:latest_api_version }}/index.html).
+  [API Docs](https://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{ site.latest_cm_version }}/generic/jar/cm_api/apidocs/index.html).
 
 - You may notice that the API returns a JSON describing the "test" cluster that you just created.
   This is typical of the API.

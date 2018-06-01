@@ -1,4 +1,4 @@
-pygments:               true
+highlighter:            pygments
 relative_permalinks:    false
 repository:             https://github.com/cloudera/cm_api
 url:                    /cm_api
@@ -8,5 +8,6 @@ safe:                   true
 lsi:                    false
 markdown:               kramdown
 
-latest_api_version:     19
-latest_cm_version:      5.14.0
+latest_api_version:      30
+latest_cm_version:       6.0.0
+latest_cm_major_version: 6

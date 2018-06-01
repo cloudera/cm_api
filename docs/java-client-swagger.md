@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Java Client (Swagger)
+title: Java Client
 id: java-client-swagger
 permalink: /docs/java-client-swagger/
 ---
@@ -11,8 +11,24 @@ permalink: /docs/java-client-swagger/
 {:toc}
 
 
+Version
+=======
+Cloudera Manager 6.0 introduces new Java API client based
+on [Swagger](https://swagger.io/). This new API client supports all CM API versions.
+
+[Older Java client]({{ site.url }}/docs/java-client/) will still be supported for
+API version less than 30. So for instance older java API client can still be used
+against Cloudera Manager version 6.0 as long as API version less than 30 is used.
+
+Older Java client and new Swagger based Java client can co-exist in an application
+to allow for incremental transition to new Swagger based java client.
+
+
 Setting Up
 ==========
+
+TODO: May need update based on RELENG-3378.
+
 Merge the following to your Maven project's `pom.xml`:
 
     <project>
@@ -39,7 +55,7 @@ You can also directly download the jar(and sources) from [Cloudera repository](h
 
 SDK doc
 =======
-Here is the latest [SDK doc](https://archive.cloudera.com/cm6/{{site.latest_cm_version}}/generic/jar/cm_api/swagger-html-sdk-docs/java/README.html),
+Here is the latest [SDK doc](https://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{ site.latest_cm_version }}/generic/jar/cm_api/swagger-html-sdk-docs/java/README.html),
 for API version {{ site.latest_api_version }} (CM {{site.latest_cm_version}}).
 
 Basic Usage
