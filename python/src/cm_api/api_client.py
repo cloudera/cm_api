@@ -56,7 +56,7 @@ class ApiResource(Resource):
   def __init__(self, server_host, server_port=None,
                username="admin", password="admin",
                use_tls=False, version=API_CURRENT_VERSION,
-               ssl_context=None):
+               ssl_context=None, timeout=None):
     """
     Creates a Resource object that provides API endpoints.
 
@@ -68,6 +68,8 @@ class ApiResource(Resource):
     @param use_tls: Whether to use tls (https).
     @param version: API version.
     @param ssl_context: A custom SSL context to use for HTTPS (Python 2.7.9+)
+    @param timeout: The connection timeout in seconds to use for requests. If not specified,
+                    the global default timeout setting will be used.
     @return: Resource object referring to the root.
     """
     self._version = version
@@ -78,7 +80,7 @@ class ApiResource(Resource):
         (protocol, server_host, server_port, version)
 
     client = HttpClient(base_url, exc_class=ApiException,
-                        ssl_context=ssl_context)
+                        ssl_context=ssl_context, timeout=timeout)
     client.set_basic_auth(username, password, API_AUTH_REALM)
     client.set_headers( { "Content-Type" : "application/json" } )
     Resource.__init__(self, client)
@@ -401,9 +403,10 @@ class ApiResource(Resource):
 
 def get_root_resource(server_host, server_port=None,
                       username="admin", password="admin",
-                      use_tls=False, version=API_CURRENT_VERSION):
+                      use_tls=False, version=API_CURRENT_VERSION,
+                      timeout=None):
   """
   See ApiResource.
   """
   return ApiResource(server_host, server_port, username, password, use_tls,
-      version)
+      version, timeout)

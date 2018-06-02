@@ -78,11 +78,12 @@ class HttpClient(object):
   """
   Basic HTTP client tailored for rest APIs.
   """
-  def __init__(self, base_url, exc_class=None, logger=None, ssl_context=None):
+  def __init__(self, base_url, exc_class=None, logger=None, ssl_context=None, timeout=None):
     """
     @param base_url: The base url to the API.
     @param exc_class: An exception class to handle non-200 results.
     @param ssl_context: A custom SSL context to use for HTTPS (Python 2.7.9+)
+    @param timeout: The connection timeout in seconds to use for requests
 
     Creates an HTTP(S) client to connect to the Cloudera Manager API.
     """
@@ -90,6 +91,7 @@ class HttpClient(object):
     self._exc_class = exc_class or RestException
     self._logger = logger or LOG
     self._headers = { }
+    self._timeout = timeout
 
     # Make a basic auth handler that does nothing. Set credentials later.
     self._passmgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
@@ -178,7 +180,15 @@ class HttpClient(object):
     # Call it
     self.logger.debug("%s %s" % (http_method, url))
     try:
-      return self._opener.open(request)
+      if self._timeout is not None:
+        try:
+          return self._opener.open(request, timeout=self._timeout)
+        except TypeError, tex:
+          # 'timeout' param available since python 2.6.
+          # So dropping timeout param for python < 2.6
+          return self._opener.open(request)
+      else:
+        return self._opener.open(request)
     except urllib2.HTTPError, ex:
       raise self._exc_class(ex)
 
