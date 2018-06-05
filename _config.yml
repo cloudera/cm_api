@@ -1,4 +1,4 @@
-highlighter:            pygments
+pygments:               true
 relative_permalinks:    false
 repository:             https://github.com/cloudera/cm_api
 url:                    /cm_api
