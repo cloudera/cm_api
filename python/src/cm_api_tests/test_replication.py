@@ -52,7 +52,8 @@ class TestReplicationTypes(unittest.TestCase):
       "logPath" : "/tmp",
       "bandwidthPerMap" : "20",
       "preserveXAttrs" : false,
-      "exclusionFilters" : ["ac"]
+      "exclusionFilters" : ["ac"],
+      "raiseSnapshotDiffFailures" : false
     }'''
     args = utils.deserialize(RAW, ApiHdfsReplicationArguments)
     self.assertEquals('vst2', args.sourceService.peerName)
@@ -73,6 +74,7 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertFalse(args.skipTrash)
     self.assertEquals('DYNAMIC', args.replicationStrategy)
     self.assertFalse(args.preserveXAttrs)
+    self.assertFalse(args.raiseSnapshotDiffFailures)
 
   def test_hdfs_cloud_arguments(self):
     RAW = '''{
@@ -298,6 +300,8 @@ class TestReplicationTypes(unittest.TestCase):
   def test_schedule(self):
     RAW = '''{
       "id" : 39,
+      "displayName" : "testrun",
+      "description" : "a sample description",
       "startTime" : "2012-12-10T23:11:31.041Z",
       "interval" : 1,
       "intervalUnit" : "DAY",
@@ -342,6 +346,9 @@ class TestReplicationTypes(unittest.TestCase):
             "numFilesCopyFailed" : 0,
             "numBytesCopyFailed" : 0,
             "dryRun" : false,
+            "remainingTime" : 10000,
+            "throughput" : 5.10,
+            "estimatedCompletionTime" : "2018-06-11T18:22:25.123Z",
             "failedFiles": [ ]
           },
           "dryRun" : false,
@@ -371,11 +378,15 @@ class TestReplicationTypes(unittest.TestCase):
           "skipTrash" : false,
           "preserveXAttrs" : false
         },
+        "runInvalidateMetadata" : true,
+        "numThreads" : 4,
         "dryRun" : false
       }
     }'''
     sched = utils.deserialize(RAW, ApiReplicationSchedule)
     self.assertEqual(39, sched.id)
+    self.assertEqual("testrun", sched.displayName)
+    self.assertEqual("a sample description", sched.description)
     self.assertEqual(self._parse_time("2012-12-10T23:11:31.041Z"), sched.startTime)
     self.assertEqual('DAY', sched.intervalUnit)
     self.assertEqual(1, sched.interval)
@@ -383,11 +394,18 @@ class TestReplicationTypes(unittest.TestCase):
     self.assertEqual(self._parse_time("2013-01-15T23:11:31.041Z"), sched.nextRun)
     self.assertFalse(sched.alertOnStart)
     self.assertIsNotNone(sched.hiveArguments)
+    self.assertTrue(sched.hiveArguments.runInvalidateMetadata)
+    self.assertEqual(4, sched.hiveArguments.numThreads)
 
     self.assertEqual(1, len(sched.history))
     self.assertIsInstance(sched.history[0], ApiReplicationCommand)
     self.assertEqual('default', sched.history[0].hiveResult.tables[0].database)
     self.assertEqual(92158, sched.history[0].hiveResult.dataReplicationResult.numBytesSkipped)
+    self.assertEqual(10000, sched.history[0].hiveResult.dataReplicationResult.remainingTime)
+    self.assertEqual(5.10, sched.history[0].hiveResult.dataReplicationResult.throughput)
+    self.assertEqual("2018-06-11T18:22:25.123Z",
+        sched.history[0].hiveResult.dataReplicationResult.estimatedCompletionTime
+    )
     self.assertEqual(3, sched.history[0].hiveResult.tableCount)
     self.assertEqual(0, sched.history[0].hiveResult.errorCount)
 
