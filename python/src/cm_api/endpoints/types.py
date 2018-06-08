@@ -715,6 +715,7 @@ class ApiHdfsReplicationArguments(BaseApiObject):
     'replicationStrategy'       : None,
     'preserveXAttrs'            : None,
     'exclusionFilters'          : None,
+    'raiseSnapshotDiffFailures' : None,
   }
 
 class ApiHdfsCloudReplicationArguments(ApiHdfsReplicationArguments):
@@ -752,6 +753,9 @@ class ApiHdfsReplicationResult(BaseApiObject):
     'failedFiles'         : ROAttr(),
     'runAsUser'           : ROAttr(),
     'runOnSourceAsUser'   : ROAttr(),
+    'remainingTime'       : ROAttr(),
+    'throughput'          : ROAttr(),
+    'estimatedCompletionTime' : ROAttr(),
   }
 
 class ApiHiveTable(BaseApiObject):
@@ -791,7 +795,8 @@ class ApiHiveReplicationArguments(BaseApiObject):
     'hdfsArguments' : Attr(ApiHdfsReplicationArguments),
     'dryRun'        : None,
     'replicateImpalaMetadata' : None,
-    'numThreads': None,
+    'runInvalidateMetadata'   : None,
+    'numThreads'   : None,
   }
 
 class ApiHiveReplicationResult(BaseApiObject):
@@ -851,6 +856,8 @@ class ApiReplicationSchedule(BaseApiObject):
     'alertOnFail'     : None,
     'alertOnAbort'    : None,
     'id'              : ROAttr(),
+    'displayName'     : ROAttr(),
+    'description'     : ROAttr(),
     'nextRun'         : ROAttr(datetime.datetime),
     'history'         : ROAttr(ApiReplicationCommand),
     'active'          : None,
