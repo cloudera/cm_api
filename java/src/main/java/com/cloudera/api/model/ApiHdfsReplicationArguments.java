@@ -15,11 +15,14 @@
 // limitations under the License.
 package com.cloudera.api.model;
 
+import com.cloudera.api.ApiUtils;
+import com.google.common.base.Objects;
+
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.cloudera.api.ApiUtils;
-import com.google.common.base.Objects;
 
 /**
  * Replication arguments for HDFS.
@@ -32,6 +35,7 @@ public class ApiHdfsReplicationArguments {
   private String mapreduceServiceName;
   private String schedulerPoolName;
   private String userName;
+  private String sourceUser;
   private Integer numMaps;
   private boolean dryRun;
   private Integer bandwidthPerMap;
@@ -42,9 +46,12 @@ public class ApiHdfsReplicationArguments {
   private boolean preservePermissions;
   private String logPath;
   private boolean skipChecksumChecks;
+  private Boolean skipListingChecksumChecks;
   private Boolean skipTrash;
   private ReplicationStrategy replicationStrategy;
   private Boolean preserveXAttrs;
+  private List<String> exclusionFilters;
+  private Boolean raiseSnapshotDiffFailures;
 
   /**
    * The strategy for distributing the file replication tasks among the mappers
@@ -144,6 +151,19 @@ public class ApiHdfsReplicationArguments {
 
   public void setUserName(String userName) {
     this.userName = userName;
+  }
+
+  /**
+   * The user which will perform operations on source cluster. Required if
+   * running with Kerberos enabled.
+   */
+  @XmlElement
+  public String getSourceUser() {
+    return sourceUser;
+  }
+
+  public void setSourceUser(String sourceUser) {
+    this.sourceUser = sourceUser;
   }
 
   /** The number of mappers to use for the mapreduce replication job. */
@@ -249,7 +269,7 @@ public class ApiHdfsReplicationArguments {
   }
 
   /**
-   * Whether to skip checksum based file validation/comparison during
+   * Whether to skip checksum based file validation during
    * replication. Defaults to false.
    */
   @XmlElement
@@ -259,6 +279,19 @@ public class ApiHdfsReplicationArguments {
 
   public void setSkipChecksumChecks(boolean skipChecksumChecks) {
     this.skipChecksumChecks = skipChecksumChecks;
+  }
+
+  /**
+   * Whether to skip checksum based file comparison during
+   * replication. Defaults to false.
+   */
+  @XmlElement
+  public Boolean getSkipListingChecksumChecks() {
+    return skipListingChecksumChecks;
+  }
+
+  public void setSkipListingChecksumChecks(Boolean skipListingChecksumChecks) {
+    this.skipListingChecksumChecks = skipListingChecksumChecks;
   }
 
   /**
@@ -277,7 +310,7 @@ public class ApiHdfsReplicationArguments {
   /**
    * The strategy for distributing the file replication tasks among the mappers
    * of the MR job associated with a replication. Default is
-   * {@link ReplicationStrategy.STATIC}.
+   * {@link ReplicationStrategy#STATIC}.
    */
   @XmlElement
   public ReplicationStrategy getReplicationStrategy() {
@@ -303,28 +336,59 @@ public class ApiHdfsReplicationArguments {
     this.preserveXAttrs = preserveXAttrs;
   }
 
+  /**
+   * Specify regular expression strings to match full paths of files and directories
+   * matching source paths and exclude them from the replication. Optional.
+   * Available since V11.
+   * @return exclusion paths, if set; null if no exclusion paths are specified.
+   */
+  @XmlElement
+  public List<String> getExclusionFilters() {
+    return exclusionFilters;
+  }
+
+  public void setExclusionFilters(List<String> exclusionFilters) {
+    this.exclusionFilters = exclusionFilters;
+  }
+
+  @XmlElement
+  public Boolean getRaiseSnapshotDiffFailures() {
+    return raiseSnapshotDiffFailures;
+  }
+
+  public void setRaiseSnapshotDiffFailures(Boolean raiseSnapshotDiffFailures) {
+    this.raiseSnapshotDiffFailures = raiseSnapshotDiffFailures;
+  }
+
+  protected Objects.ToStringHelper toStringHelper() {
+    return Objects.toStringHelper(this)
+        .add("sourceService", sourceService)
+        .add("sourcePath", sourcePath)
+        .add("destinationPath", destinationPath)
+        .add("mapreduceServiceName", mapreduceServiceName)
+        .add("schedulerPoolName", schedulerPoolName)
+        .add("numMaps", numMaps)
+        .add("dryRun", dryRun)
+        .add("bandwidthPerMap", bandwidthPerMap)
+        .add("abortOnError", abortOnError)
+        .add ("removeMissingFiles", removeMissingFiles)
+        .add("preserveReplicationCount", preserveReplicationCount)
+        .add("preserveBlockSize", preserveBlockSize)
+        .add("preservePermissions", preservePermissions)
+        .add("logPath", logPath)
+        .add("skipChecksumChecks", skipChecksumChecks)
+        .add("skipListingChecksumChecks", skipListingChecksumChecks)
+        .add("skipTrash", skipTrash)
+        .add("replicationStrategy", replicationStrategy)
+        .add("preserveXAttrs", preserveXAttrs)
+        .add("exclusionFilters", exclusionFilters)
+        .add("sourceUser", sourceUser)
+        .add("raiseSnapshotDiffFailures", raiseSnapshotDiffFailures);
+  }
+
   @Override
   public String toString() {
-    return Objects.toStringHelper(this)
-                  .add("sourceService", sourceService)
-                  .add("sourcePath", sourcePath)
-                  .add("destinationPath", destinationPath)
-                  .add("mapreduceServiceName", mapreduceServiceName)
-                  .add("schedulerPoolName", schedulerPoolName)
-                  .add("numMaps", numMaps)
-                  .add("dryRun", dryRun)
-                  .add("bandwidthPerMap", bandwidthPerMap)
-                  .add("abortOnError", abortOnError)
-                  .add ("removeMissingFiles", removeMissingFiles)
-                  .add("preserveReplicationCount", preserveReplicationCount)
-                  .add("preserveBlockSize", preserveBlockSize)
-                  .add("preservePermissions", preservePermissions)
-                  .add("logPath", logPath)
-                  .add("skipChecksumChecks", skipChecksumChecks)
-                  .add("skipTrash", skipTrash)
-                  .add("replicationStrategy", replicationStrategy)
-                  .add("preserveXAttrs", preserveXAttrs)
-                  .toString();
+    return toStringHelper().toString();
   }
 
   @Override
@@ -346,9 +410,13 @@ public class ApiHdfsReplicationArguments {
         preservePermissions == other.getPreservePermissions() &&
         Objects.equal(logPath, other.getLogPath()) &&
         skipChecksumChecks == other.getSkipChecksumChecks() &&
+        Objects.equal(skipListingChecksumChecks, other.getSkipListingChecksumChecks()) &&
         Objects.equal(skipTrash, other.getSkipTrash()) &&
         Objects.equal(replicationStrategy, other.getReplicationStrategy()) &&
-        Objects.equal(preserveXAttrs, other.getPreserveXAttrs()));
+        Objects.equal(preserveXAttrs, other.getPreserveXAttrs())) &&
+        Objects.equal(exclusionFilters, other.getExclusionFilters()) &&
+        Objects.equal(sourceUser, other.getSourceUser()) &&
+        Objects.equal(raiseSnapshotDiffFailures, other.getRaiseSnapshotDiffFailures());
   }
 
   @Override
@@ -358,6 +426,7 @@ public class ApiHdfsReplicationArguments {
         bandwidthPerMap, abortOnError, removeMissingFiles,
         preserveReplicationCount, preserveBlockSize, preservePermissions,
         logPath, skipChecksumChecks, skipTrash, replicationStrategy,
-        preserveXAttrs);
+        preserveXAttrs, exclusionFilters, sourceUser, raiseSnapshotDiffFailures,
+        skipListingChecksumChecks);
   }
 }

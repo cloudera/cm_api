@@ -103,7 +103,7 @@ public interface NameservicesResource {
    * 'select $METRIC_NAME1, $METRIC_NAME2 where nameserviceName = $NAMESERVICE_NAME'.
    * <br>
    * <br>
-   * For more information see the <a href="http://tiny.cloudera.com/tsquery_doc">
+   * For more information see the <a href="http://tiny.cloudera.com/cm_tsquery">
    * tsquery language documentation</a>.<p/>
    */
   @Deprecated

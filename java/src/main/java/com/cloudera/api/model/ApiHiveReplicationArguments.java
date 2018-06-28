@@ -41,6 +41,10 @@ public class ApiHiveReplicationArguments {
 
   private boolean dryRun;
 
+  private Boolean runInvalidateMetadata;
+
+  private Integer numThreads;
+
   public ApiHiveReplicationArguments() {
     // For JAX-B
   }
@@ -145,6 +149,18 @@ public class ApiHiveReplicationArguments {
     this.replicateImpalaMetadata = replicateImpalaMetadata;
   }
 
+  /**
+   * Whether to run invalidate metadata query or not
+   */
+  @XmlElement
+  public Boolean getRunInvalidateMetadata() {
+    return runInvalidateMetadata;
+  }
+
+  public void setRunInvalidateMetadata(Boolean runInvalidateMetadata) {
+    this.runInvalidateMetadata = runInvalidateMetadata;
+  }
+
   /** Whether to perform a dry run. Defaults to false. */
   @XmlElement
   public boolean isDryRun() {
@@ -155,8 +171,17 @@ public class ApiHiveReplicationArguments {
     this.dryRun = dryRun;
   }
 
-  @Override
-  public String toString() {
+  /** Number of threads to use in multi-threaded export/import phase */
+  @XmlElement
+  public Integer getNumThreads() {
+    return numThreads;
+  }
+
+  public void setNumThreads(Integer numThreads) {
+    this.numThreads = numThreads;
+  }
+
+  protected Objects.ToStringHelper toStringHelper() {
     return Objects.toStringHelper(this)
         .add("sourceService", sourceService)
         .add("tableFilters", tableFilters)
@@ -166,28 +191,36 @@ public class ApiHiveReplicationArguments {
         .add("hdfsArguments", hdfsArguments)
         .add("replicateImpalaMetadata", replicateImpalaMetadata)
         .add("dryRun", dryRun)
-        .toString();
+        .add("numThreads", numThreads)
+        .add("runInvalidateMetadata", runInvalidateMetadata);
+  }
+
+  @Override
+  public String toString() {
+    return toStringHelper().toString();
   }
 
   @Override
   public boolean equals(Object o) {
     ApiHiveReplicationArguments that = ApiUtils.baseEquals(this, o);
     return this == that || (that != null &&
-        Objects.equal(sourceService, that.getSourceService()) &&
-        Objects.equal(tableFilters, that.getTableFilters()) &&
-        Objects.equal(exportDir, that.getExportDir()) &&
-        force == that.getForce() &&
-        replicateData == that.getReplicateData() &&
-        Objects.equal(hdfsArguments, that.getHdfsArguments()) &&
-        Objects.equal(replicateImpalaMetadata,
-            that.getReplicateImpalaMetadata()) &&
-        dryRun == that.isDryRun());
+        Objects.equal(sourceService, that.getSourceService())
+        && Objects.equal(tableFilters, that.getTableFilters())
+        && Objects.equal(exportDir, that.getExportDir())
+        && force == that.getForce() && replicateData == that.getReplicateData()
+        && Objects.equal(hdfsArguments, that.getHdfsArguments())
+        && Objects.equal(replicateImpalaMetadata,
+            that.getReplicateImpalaMetadata())
+        && dryRun == that.isDryRun()
+        && Objects.equal(numThreads, that.numThreads)
+        && Objects.equal(runInvalidateMetadata, that.runInvalidateMetadata));
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(sourceService, tableFilters, exportDir, force,
-        replicateData, hdfsArguments, replicateImpalaMetadata, dryRun);
+        replicateData, hdfsArguments, replicateImpalaMetadata, dryRun,
+        numThreads, runInvalidateMetadata);
   }
 
 }

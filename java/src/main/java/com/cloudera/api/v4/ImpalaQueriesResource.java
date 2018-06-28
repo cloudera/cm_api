@@ -51,9 +51,12 @@ public interface ImpalaQueriesResource {
    * 'user = root'. Multiple basic filters can be combined into a complex
    * expression using standard and / or boolean logic and parenthesis.
    * An example of a complex filter is: 'query_duration > 5s and (user = root or
-   * user = myUserName)'.
-   * @param from Returns queries that were active between the from and to times
-   * @param to Returns queries that were active between the from and to times
+   * user = myUserName)'. An example of expected full query string in requested
+   * URL is: '?filter=(query_duration > 5s and (user = root or user = myUserName))'.
+   * @param from Start of the period to query in ISO 8601 format (defaults to 5
+   * minutes before the 'to' time).
+   * @param to End of the period to query in ISO 8601 format (defaults to
+   * current time).
    * @param limit The maximum number of queries to return. Queries will be
    * returned in the following order:
    * <ul>

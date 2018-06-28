@@ -16,8 +16,10 @@
 package com.cloudera.api.model;
 
 import com.cloudera.api.ApiUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 
+import java.util.Arrays;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,7 +42,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {
     "id", "name", "startTime", "endTime",
     "active", "success", "resultMessage", "resultDataUrl",
-    "clusterRef", "serviceRef", "roleRef", "hostRef", "parent", "children"
+    "clusterRef", "serviceRef", "roleRef", "hostRef", "parent", "children",
+    "canRetry"
 })
 public class ApiCommand {
 
@@ -59,11 +62,12 @@ public class ApiCommand {
   private ApiHostRef hostRef;
   private ApiCommandList children;
   private ApiCommand parent;
+  private Boolean canRetry;
 
   public ApiCommand() {
     // For JAX-B
     this(null, null, null, null, false, null, null, null, null, null, null, null,
-         null, null);
+         null, null, null);
   }
 
   public ApiCommand(Long id, String name, Date startTime, Date endTime,
@@ -71,7 +75,8 @@ public class ApiCommand {
                     String resultDataUrl, ApiClusterRef clusterRef,
                     ApiServiceRef serviceRef,
                     ApiRoleRef roleRef, ApiHostRef hostRef,
-                    ApiCommandList children, ApiCommand parent) {
+                    ApiCommandList children, ApiCommand parent,
+                    Boolean canRetry) {
     this.id = id;
     this.name = name;
     this.startTime = startTime;
@@ -86,6 +91,7 @@ public class ApiCommand {
     this.hostRef = hostRef;
     this.children = children;
     this.parent = parent;
+    this.canRetry = canRetry;
   }
 
   @Override
@@ -254,6 +260,29 @@ public class ApiCommand {
     this.children = children;
   }
 
+  /**
+   * Available since V11
+   *
+   * @deprecated Use {@link ApiCommand#getCanRetry()} instead
+   */
+  @Deprecated
+  @JsonIgnore
+  public Boolean isCanRetry() {
+    return this.canRetry;
+  }
+
+  /**
+   * If the command can be retried. Available since V11
+   */
+  @XmlElement
+  public Boolean getCanRetry() {
+    return this.canRetry;
+  }
+
+  public void setCanRetry(Boolean canRetry) {
+    this.canRetry = canRetry;
+  }
+
   @Override
   public boolean equals(Object o) {
     ApiCommand that = ApiUtils.baseEquals(this, o);
@@ -270,14 +299,15 @@ public class ApiCommand {
         Objects.equal(roleRef, that.getRoleRef()) &&
         Objects.equal(hostRef, that.getHostRef()) &&
         Objects.equal(clusterRef, that.getClusterRef()) &&
-        Objects.equal(parent, that.getParent()));
+        Objects.equal(parent, that.getParent()) &&
+        Objects.equal(canRetry, that.getCanRetry()));
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(id, name, startTime, endTime, active, success,
         resultMessage, resultDataUrl, serviceRef, roleRef, hostRef, clusterRef,
-        parent);
+        parent, canRetry);
   }
 
 }

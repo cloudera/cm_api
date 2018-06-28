@@ -16,6 +16,16 @@
 package com.cloudera.api;
 
 import com.cloudera.api.v1.RootResourceV1;
+import com.cloudera.api.v10.RootResourceV10;
+import com.cloudera.api.v11.RootResourceV11;
+import com.cloudera.api.v12.RootResourceV12;
+import com.cloudera.api.v13.RootResourceV13;
+import com.cloudera.api.v14.RootResourceV14;
+import com.cloudera.api.v15.RootResourceV15;
+import com.cloudera.api.v16.RootResourceV16;
+import com.cloudera.api.v17.RootResourceV17;
+import com.cloudera.api.v18.RootResourceV18;
+import com.cloudera.api.v19.RootResourceV19;
 import com.cloudera.api.v2.RootResourceV2;
 import com.cloudera.api.v3.RootResourceV3;
 import com.cloudera.api.v4.RootResourceV4;
@@ -24,7 +34,6 @@ import com.cloudera.api.v6.RootResourceV6;
 import com.cloudera.api.v7.RootResourceV7;
 import com.cloudera.api.v8.RootResourceV8;
 import com.cloudera.api.v9.RootResourceV9;
-import com.cloudera.api.v10.RootResourceV10;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -100,6 +109,65 @@ public interface ApiRootResource {
    */
   @Path("/v10")
   RootResourceV10 getRootV10();
+
+  /**
+   * @return The v11 root resource.
+   */
+  @Path("/v11")
+  RootResourceV11 getRootV11();
+
+  /**
+   * @return The v12 root resource.
+   */
+  @Path("/v12")
+  RootResourceV12 getRootV12();
+
+  /**
+   * @return The v13 root resource.
+   */
+  @Path("/v13")
+  RootResourceV13 getRootV13();
+
+  /**
+   * @return The v14 root resource.
+   */
+  @Path("/v14")
+  RootResourceV14 getRootV14();
+
+  /**
+   * @return The v15 root resource.
+   */
+  @Path("/v15")
+  RootResourceV15 getRootV15();
+
+  /**
+   * @return The v16 root resource.
+   */
+  @Path("/v16")
+  RootResourceV16 getRootV16();
+
+  /**
+   * @return The v17 root resource.
+   */
+  @Path("/v17")
+  RootResourceV17 getRootV17();
+
+  /**
+   * @return The v18 root resource.
+   */
+  @Path("/v18")
+  RootResourceV18 getRootV18();
+
+  /**
+   * @return The v19 root resource.
+   */
+  @Path("/v19")
+  RootResourceV19 getRootV19();
+
+  /**
+   * Important: Update {@link ApiRootResourceExternal} interface as well
+   * on adding new CM API version.
+   */
 
   /**
    * Fetch the current API version supported by the server.

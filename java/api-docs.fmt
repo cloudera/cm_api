@@ -165,8 +165,8 @@
   <!-- JavaScript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
-  <script>window.jQuery || document.write("<script src='js/libs/jquery-1.5.1.min.js'>\x3C/script>")</script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+  <script>window.jQuery || document.write("<script src='/static/ext/jquery/js/jquery-2.1.1.min.js'>\x3C/script>")</script>
 
   <!--manage the navigation menu-->
   <script src="js/libs/xbreadcrumbs.js"></script>
@@ -1064,10 +1064,10 @@
         A service is an abstract entity providing a capability in a cluster.
         Examples of services are HDFS, MapReduce, YARN, and HBase. A service
         is usually distributed, and contains a set of roles that physically
-        run on the cluster. A service has its own configuration, status,
-        metrics, and roles.  You may issue commands against a service, or
-        against a set of roles in bulk. Additionally, an HDFS service has
-        nameservices, and a MapReduce service has activities.
+        run on the cluster. A service has its own configuration, status and
+        roles.  You may issue commands against a service, or against a set
+        of roles in bulk. Additionally, an HDFS service has nameservices,
+        and a MapReduce service has activities.
         <p>
         All services belong to a cluster (except for the Cloudera Management
         Service), and is uniquely identified by its name within a Cloudera
@@ -1083,8 +1083,8 @@
         processes.) Once created, a role cannot be reassigned to a different
         host. You need to delete and re-create it.
         <p>
-        A role has its own configuration, status and metrics. API commands on
-        roles are always issued in bulk at the service level.
+        A role has its own configuration and status. API commands on roles
+        are always issued in bulk at the service level.
       </dd>
       <dt>Role Type</dt>
       <dd>
@@ -1118,6 +1118,18 @@
         monitoring, diagnostic and reporting features for your Hadoop clusters.
         The operation of this service is similar to other Hadoop services, except
         that the Management Service does not belong to a cluster.
+      </dd>
+      <dt>Metrics</dt>
+      <dd>
+        <p>
+        A metric is a property that can be measured to quantify the state of an
+        entity or activity, such as the number of open file descriptors or CPU
+        utilization percentage. Full list of metric schema is available through
+        Cloudera Manager API /timeseries/schema endpoint.
+        <p>
+        Cloudera Manager enables retrieving of metric data using a launguage
+        called tsquery. Please see tsquery documentation for more details on
+        how to write a tsquery.
       </dd>
     </dl>
 
@@ -1504,56 +1516,157 @@
     }
   }</code>
 
-    <h3>Metrics</h3>
+    <h3>Querying metric data</h3>
 
-    <p>In the Enterprise Edition, you can get metrics related to hosts,
-    services, roles and activities. The call by default fetches data points from
-    the last 5 minutes.
+    <p>
+    Getting dfs capacity metric data for service HDFS-1.
     <code>
   $ curl -u admin:admin \
-  'http://localhost:7180/api/v1/clusters/Cluster%201%20-%20CDH4/services/hdfs1/metrics?metrics=dfs_capacity_used_non_hdfs&amp;metrics=dfs_capacity'
+  'http://localhost:7180/api/v11/timeseries?query=select%20dfs_capacity,%20dfs_capacity_used,%20dfs_capacity_used_non_hdfs%20where%20entityName=HDFS-1'
 
   {
     "items" : [ {
-      "name" : "dfs_capacity_used_non_hdfs",
-      "context" : "hdfs1:nameservice1",
-      "data" : [ {
-        "value" : 0.0,
-        "timestamp" : "2012-05-06T10:25:46.000Z"
+      "timeSeries": [ {
+        "metadata": {
+          "metricName": "dfs_capacity",
+          "entityName": "HDFS-1",
+          "startTime": "2015-09-17T23:42:22.533Z",
+          "endTime": "2015-09-17T23:47:22.533Z",
+          "attributes": {
+            "clusterName": "Cluster 1",
+            "category": "SERVICE",
+            "clusterDisplayName": "Cluster 1",
+            "active": "true",
+            "serviceType": "HDFS",
+            "serviceDisplayName": "HDFS-1",
+            "version": "CDH 5.7.0",
+            "serviceName": "HDFS-1",
+            "entityName": "HDFS-1"
+          },
+          "unitNumerators": [
+            "bytes"
+          ],
+          "unitDenominators": [],
+          "expression": "SELECT dfs_capacity WHERE entityName = \"HDFS-1\" AND category = SERVICE",
+          "metricCollectionFrequencyMs": 60000,
+          "rollupUsed": "RAW"
+        },
+        "data": [ {
+          "timestamp": "2015-09-17T23:43:10.599Z",
+          "value": 86909397813,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:44:10.605Z",
+          "value": 86909397813,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:45:10.608Z",
+          "value": 86909397813,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:46:10.615Z",
+          "value": 86909397813,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:47:15.613Z",
+          "value": 86909397813,
+          "type": "SAMPLE"
+        } ]
       }, {
-        "value" : 0.0,
-        "timestamp" : "2012-05-06T10:26:46.000Z"
+        "metadata": {
+          "metricName": "dfs_capacity_used",
+          "entityName": "HDFS-1",
+          "startTime": "2015-09-17T23:42:22.533Z",
+          "endTime": "2015-09-17T23:47:22.533Z",
+          "attributes": {
+            "clusterName": "Cluster 1",
+            "category": "SERVICE",
+            "clusterDisplayName": "Cluster 1",
+            "active": "true",
+            "serviceType": "HDFS",
+            "serviceDisplayName": "HDFS-1",
+            "version": "CDH 5.7.0",
+            "serviceName": "HDFS-1",
+            "entityName": "HDFS-1"
+          },
+          "unitNumerators": [
+            "bytes"
+          ],
+          "unitDenominators": [],
+          "expression": "SELECT dfs_capacity_used WHERE entityName = \"HDFS-1\" AND category = SERVICE",
+          "metricCollectionFrequencyMs": 60000,
+          "rollupUsed": "RAW"
+        },
+        "data": [ {
+          "timestamp": "2015-09-17T23:43:10.599Z",
+          "value": 1728884736,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:44:10.605Z",
+          "value": 1728884736,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:45:10.608Z",
+          "value": 1728884736,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:46:10.615Z",
+          "value": 1728884736,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:47:15.613Z",
+          "value": 1728884736,
+          "type": "SAMPLE"
+        } ]
       }, {
-        "value" : 0.0,
-        "timestamp" : "2012-05-06T10:27:46.000Z"
-      }, {
-        "value" : 0.0,
-        "timestamp" : "2012-05-06T10:28:46.000Z"
-      }, {
-        "value" : 0.0,
-        "timestamp" : "2012-05-06T10:29:46.000Z"
+        "metadata": {
+          "metricName": "dfs_capacity_used_non_hdfs",
+          "entityName": "HDFS-1",
+          "startTime": "2015-09-17T23:42:22.533Z",
+          "endTime": "2015-09-17T23:47:22.533Z",
+          "attributes": {
+            "clusterName": "Cluster 1",
+            "category": "SERVICE",
+            "clusterDisplayName": "Cluster 1",
+            "active": "true",
+            "serviceType": "HDFS",
+            "serviceDisplayName": "HDFS-1",
+            "version": "CDH 5.7.0",
+            "serviceName": "HDFS-1",
+            "entityName": "HDFS-1"
+          },
+          "unitNumerators": [
+            "bytes"
+          ],
+          "unitDenominators": [],
+          "expression": "SELECT dfs_capacity_used_non_hdfs WHERE entityName = \"HDFS-1\" AND category = SERVICE",
+          "metricCollectionFrequencyMs": 60000,
+          "rollupUsed": "RAW"
+        },
+        "data": [ {
+          "timestamp": "2015-09-17T23:43:10.599Z",
+          "value": 1610609973,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:44:10.605Z",
+          "value": 1610609973,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:45:10.608Z",
+          "value": 1610609973,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:46:10.615Z",
+          "value": 1610609973,
+          "type": "SAMPLE"
+        }, {
+          "timestamp": "2015-09-17T23:47:15.613Z",
+          "value": 1610609973,
+          "type": "SAMPLE"
+        } ]
       } ],
-      "unit" : "bytes"
-    }, {
-      "name" : "dfs_capacity",
-      "context" : "hdfs1:nameservice1",
-      "data" : [ {
-        "value" : 3.2103841792E10,
-        "timestamp" : "2012-05-06T10:25:46.000Z"
-      }, {
-        "value" : 3.2103841792E10,
-        "timestamp" : "2012-05-06T10:26:46.000Z"
-      }, {
-        "value" : 3.2103841792E10,
-        "timestamp" : "2012-05-06T10:27:46.000Z"
-      }, {
-        "value" : 3.2103841792E10,
-        "timestamp" : "2012-05-06T10:28:46.000Z"
-      }, {
-        "value" : 3.2103841792E10,
-        "timestamp" : "2012-05-06T10:29:46.000Z"
-      } ],
-      "unit" : "bytes"
+      "warnings": [],
+      "timeSeriesQuery": "select dfs_capacity, dfs_capacity_used, dfs_capacity_used_non_hdfs where entityName=HDFS-1"
     } ]</code>
 
   [/@boilerplate]
