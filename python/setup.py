@@ -20,14 +20,6 @@ from setuptools import setup, find_packages
 
 from sys import version_info, platform
 
-# Append a timestamp to the version for local PyPI publication
-# USE_TIMESTAMP=1 python ./setup.py sdist upload -r local
-if "USE_TIMESTAMP" in os.environ:
-  stamp = "." + datetime.datetime.now().strftime("%Y%m%d%H%M")
-else:
-  stamp = ""
-
-
 if version_info[:2] > (2, 5):
     install_requires = []
 else:
@@ -52,7 +44,7 @@ src_dir = os.path.normpath(os.path.join(base_dir, 'src'))
 
 setup(
   name = 'cm_api',
-  version = '30.0.0' + stamp,    # Compatible with API v30 (CM 6.0)
+  version = '19.1.0',    # Compatible with API v10 (CM 5.15.0)
   packages = find_packages(src_dir, exclude=['cm_api_tests']),
   package_dir = {'': src_dir },
   zip_safe = True,
