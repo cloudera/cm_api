@@ -16,16 +16,39 @@
 
 package com.cloudera.api;
 
+import org.apache.cxf.jaxrs.client.ClientConfiguration;
+import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.message.Message;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ClouderaManagerClientBuilderTest {
+
+  /**
+   * Replacement for WebClient.getConfig() on delegated proxy.
+   *
+   * Because we use dynamic proxy mechanism to delegate call from {@link ApiRootResource}
+   * to {@link ApiRootResourceExternal}, instanceof operator doesn't work since they don't
+   * share any common interface. Hence need for this method.
+   */
+  private ClientConfiguration getClientConfigFromProxy(ApiRootResource proxy) {
+    InvocationHandler invocationHandler = Proxy.getInvocationHandler(proxy);
+    assertTrue(invocationHandler instanceof ApiRootResourceInvocationHandler);
+    return WebClient.getConfig(
+      ((ApiRootResourceInvocationHandler)invocationHandler).getDelegateRootResource());
+  }
 
   @Test
   public void testURLGeneration() throws MalformedURLException {
@@ -95,5 +118,65 @@ public class ClouderaManagerClientBuilderTest {
       .withPort(1)
       .enableLogging()
       .build();
+  }
+
+  @Test
+  public void testMaintainSessionConfig() {
+    ClouderaManagerClientBuilder builder = new ClouderaManagerClientBuilder();
+    ApiRootResource proxy = builder.withHost("localhost")
+        .withPort(1)
+        .enableLogging()
+        .build();
+    ClientConfiguration cfg = getClientConfigFromProxy(proxy);
+    assertNotNull(cfg);
+    Boolean maintainSession = (Boolean)cfg.getRequestContext().get(Message.MAINTAIN_SESSION);
+    assertNull(maintainSession);
+
+    proxy = builder.setMaintainSessionAcrossRequests(true).build();
+    cfg = getClientConfigFromProxy(proxy);
+    assertNotNull(cfg);
+    maintainSession = (Boolean)cfg.getRequestContext().get(Message.MAINTAIN_SESSION);
+    assertTrue(maintainSession);
+  }
+
+  @Test
+  public void testPassingLocale() {
+    ClouderaManagerClientBuilder builder = new ClouderaManagerClientBuilder();
+    ApiRootResource proxy = builder.withHost("localhost")
+        .withPort(1)
+        .enableLogging()
+        .build();
+    ClientConfiguration cfg = getClientConfigFromProxy(proxy);
+    HTTPConduit conduit = (HTTPConduit) cfg.getConduit();
+    HTTPClientPolicy clientPolicy = conduit.getClient();
+
+    assertNotNull(clientPolicy);
+    String acceptLanguage = clientPolicy.getAcceptLanguage();
+    assertNull(acceptLanguage);
+
+    proxy = builder.withAcceptLanguage("some-string").build();
+    cfg = getClientConfigFromProxy(proxy);
+    conduit = (HTTPConduit) cfg.getConduit();
+    clientPolicy = conduit.getClient();
+    assertEquals("some-string", clientPolicy.getAcceptLanguage());
+  }
+
+  @Test
+  public void testStreamAutoClosureConfig() {
+    ClouderaManagerClientBuilder builder = new ClouderaManagerClientBuilder();
+    ApiRootResource proxy = builder.withHost("localhost")
+        .withPort(1)
+        .enableLogging()
+        .build();
+    ClientConfiguration cfg = getClientConfigFromProxy(proxy);
+    assertNotNull(cfg);
+    Boolean autoClosure = (Boolean)cfg.getRequestContext().get("response.stream.auto.close");
+    assertNull(autoClosure);
+
+    proxy = builder.enableStreamAutoClosure().build();
+    cfg = getClientConfigFromProxy(proxy);
+    assertNotNull(cfg);
+    autoClosure = (Boolean)cfg.getRequestContext().get("response.stream.auto.close");
+    assertTrue(autoClosure);
   }
 }

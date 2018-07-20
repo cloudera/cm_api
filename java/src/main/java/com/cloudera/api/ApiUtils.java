@@ -135,6 +135,17 @@ public final class ApiUtils {
         "Limit should be greater than 0.");
   }
 
+
+  /**
+   * Check that the given limit is positive.
+   *
+   * @param limit Value to use as limit of a list's size.
+   */
+  public static void checkLimit(int limit) {
+    Preconditions.checkArgument(limit > 0,
+        "Limit should be greater than 0.");
+  }
+
   private ApiUtils() { }
 
 }

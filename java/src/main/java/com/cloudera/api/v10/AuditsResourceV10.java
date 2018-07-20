@@ -31,9 +31,10 @@ import static com.cloudera.api.Parameters.QUERY;
  *
  * @param maxResults Maximum number of audits to return
  * @param resultOffset Offset of audits to return
- * @param startTime Start of the period to query (defaults to 1 day ago
- * relative to endTime)
- * @param endTime End of the period to query (defaults to current time)
+ * @param startTime Start of the period to query in ISO 8601 format (defaults
+ * to 1 day ago relative to endTime).
+ * @param endTime End of the period to query in ISO 8601 format. (defaults to
+ * current time).
  * @param query
  *    The query to filter out audits in the system. It accepts
  *    querying the intersection of a list of constraints,

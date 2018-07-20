@@ -40,14 +40,15 @@ public interface TimeSeriesResource {
    * data store using a tsquery.
    * <p>
    * Please see the
-   * <a href="http://tiny.cloudera.com/tsquery_doc">
-   * tsquery language documentation</a>.<p/>
+   * <a href="http://tiny.cloudera.com/cm_tsquery">
+   * tsquery language documentation</a>.
+   * </p>
    * Available since API v4.
    *
    * @param query Tsquery to run against the CM time-series data store.
-   * @param from Start of the period to query (defaults to 5 minutes before the
+   * @param from Start of the period to query in ISO 8601 format (defaults to 5 minutes before the
    * end of the period).
-   * @param to End of the period to query (defaults to current time).
+   * @param to End of the period to query in ISO 8601 format (defaults to current time).
    *
    * @return List of time series that match the tsquery.
    */
