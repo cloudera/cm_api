@@ -13,12 +13,17 @@ permalink: /docs/java-client-swagger/
 
 Version
 =======
-Cloudera Manager 6.0 introduces new Java API client based
+Cloudera Manager(CM) 6.0 introduces new Java API client based
 on [Swagger](https://swagger.io/). This new API client supports all CM API versions.
 
 [Older Java client]({{ site.url }}/docs/java-client/) will still be supported for
-API version less than 30. So for instance older java API client can still be used
-against Cloudera Manager version 6.0 as long as API version less than 30 is used.
+API version less than 30. So older Java API client can still be used
+against Cloudera Manager version 6.0 and later as long as API version 19 or earlier is used.
+
+For e.g. customer can use old CM API client version 5.14 against CM version 6.0
+which by default will invoke API version 19. If customer wants to use new features that were
+introduced in Cloudera Manager 6.0 i.e. API version 30 like "Fine Grained Access Control" then
+customer must use this new API client.
 
 Older Java client and new Swagger based Java client can co-exist in an application
 to allow for incremental transition to new Swagger based java client.
