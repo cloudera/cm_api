@@ -30,7 +30,6 @@ to allow for incremental transition to new Swagger based python client.
 
 Installation
 ============
-TODO: May need update based on RELENG-3377.
 
 **To install the Python API client, simply:**
 

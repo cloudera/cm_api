@@ -32,8 +32,6 @@ to allow for incremental transition to new Swagger based java client.
 Setting Up
 ==========
 
-TODO: May need update based on RELENG-3378.
-
 Merge the following to your Maven project's `pom.xml`:
 
     <project>
