@@ -13,7 +13,7 @@ title: Cloudera Manager API Client
   Hadoop clusters.
   The API is available in both Cloudera Express and Cloudera Enterprise, and comes with open-source
   client libraries.<br/>
-  <a href="https://ccp.cloudera.com/display/SUPPORT/Cloudera+Manager+Downloads">Download Cloudera Manager <span class="glyphicon glyphicon-cloud-download"></span></a>
+  <a href="https://www.cloudera.com/downloads/manager.html">Download Cloudera Manager <span class="glyphicon glyphicon-cloud-download"></span></a>
 </div>
 
 Here are some of the cool things you can do with Cloudera Manager via the API:
