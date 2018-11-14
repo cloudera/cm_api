@@ -29,6 +29,8 @@ import javax.xml.bind.annotation.XmlElement;
  */
 public abstract class ApiSchedule {
   private Long id;
+  private String displayName;
+  private String description;
   private Date startTime;
   private Date endTime;
   private long interval;
@@ -62,6 +64,26 @@ public abstract class ApiSchedule {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  /** The schedule display name. */
+  @XmlElement
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
+  }
+
+  /** The schedule description. */
+  @XmlElement
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   /**
@@ -179,6 +201,8 @@ public abstract class ApiSchedule {
   protected Objects.ToStringHelper toStringHelper() {
     return Objects.toStringHelper(this)
         .add("id", id)
+        .add("displayName", displayName)
+        .add("description", description)
         .add("startTime", startTime)
         .add("endTime", endTime)
         .add("interval", interval)
@@ -195,6 +219,8 @@ public abstract class ApiSchedule {
     ApiSchedule other = ApiUtils.baseEquals(this, o);
     return other != null &&
         Objects.equal(id, other.getId()) &&
+        Objects.equal(displayName, other.getDisplayName()) &&
+        Objects.equal(description, other.getDescription()) &&
         Objects.equal(startTime, other.getStartTime()) &&
         Objects.equal(endTime, other.getEndTime()) &&
         Objects.equal(interval, other.getInterval()) &&
@@ -208,8 +234,8 @@ public abstract class ApiSchedule {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, startTime, endTime, interval,
-        intervalUnit, paused, alertOnStart, alertOnSuccess, alertOnFail,
-        alertOnAbort);
+    return Objects.hashCode(id, displayName, description, startTime, endTime,
+        interval, intervalUnit, paused, alertOnStart, alertOnSuccess,
+        alertOnFail, alertOnAbort);
   }
 }

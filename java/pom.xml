@@ -8,9 +8,10 @@
   <version>5.16.1</version>
 
   <properties>
-    <cxf.version>2.7.5</cxf.version>
+    <cxf.version>2.7.7</cxf.version>
     <guava.version>14.0</guava.version>
     <jackson2.version>2.1.0</jackson2.version>
+    <jackson2-databind.version>2.1.0-cloudera.1</jackson2-databind.version>
     <joda.version>2.1</joda.version>
     <junit.version>4.11</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,7 +22,7 @@
   <distributionManagement>
     <repository>
       <id>cdh.releases.repo</id>
-      <url>http://maven.jenkins.cloudera.com:8081/artifactory/libs-release-local</url>
+      <url>http://maven.jenkins.cloudera.com:8081/artifactory/cdh-staging-local</url>
       <name>CDH Releases Repository</name>
     </repository>
     <snapshotRepository>
@@ -114,6 +115,36 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <!-- profile to use with Atlassian Clover for code coverage -->
+      <id>clover</id>
+      <properties>
+        <clover.version>4.0.3</clover.version>
+        <clover.generateHtml>true</clover.generateHtml>
+        <clover.generateXml>true</clover.generateXml>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>com.atlassian.clover</groupId>
+          <artifactId>clover</artifactId>
+          <version>${clover.version}</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <!-- Clover plugin to enable maven to create instantiated jars that will record code coverage -->
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <artifactId>maven-clover2-plugin</artifactId>
+            <version>${clover.version}</version>
+            <configuration>
+              <generateHtml>${clover.generateHtml}</generateHtml>
+              <generateXml>${clover.generateXml}</generateXml>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <build>
@@ -153,7 +184,7 @@
                   <pattern>com.</pattern>
                   <shadedPattern>${privateClassPath}.com.</shadedPattern>
                   <includes>
-                    <include>com.google.guava.**</include>
+                    <include>com.google.common.**</include>
                     <include>com.fasterxml.jackson.**</include>
                   </includes>
                 </relocation>
@@ -209,7 +240,6 @@
           <additionalparam>${javadocOptions}</additionalparam>
           <docfilessubdirs>true</docfilessubdirs>
           <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
-          <stylesheetfile>${basedir}/src/javadoc/javadoc.css</stylesheetfile>
           <overview>${basedir}/src/javadoc/overview.html</overview>
           <doctitle>Cloudera Manager API (${project.version})</doctitle>
           <windowtitle>Cloudera Manager API (${project.version})</windowtitle>
@@ -237,6 +267,11 @@
           <excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>1.4.3</version>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -253,7 +288,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson2.version}</version>
+      <version>${jackson2-databind.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>

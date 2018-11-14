@@ -48,7 +48,7 @@ public interface ClouderaManagerResourceV2 extends ClouderaManagerResource {
    * <li>Cluster Administrators (but Navigator config will be redacted)</li>
    * </ul>
    * <p/>
-   * Note: starting with v3, the deployment information contais data about
+   * Note: starting with v3, the deployment information contains data about
    * Cloudera Manager peers configured for the instance. This data contains
    * plain text authentication information used to connect to the remote peer.
    *

@@ -19,10 +19,16 @@ package com.cloudera.api.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Represents a result from a health test performed by Cloudera Manager for an
+ * entity.
+ */
 @XmlRootElement(name = "healthCheck")
 public class ApiHealthCheck {
   private String name;
   private ApiHealthSummary summary;
+  private String explanation;
+  private Boolean suppressed;
 
   public ApiHealthCheck() {
     // For JAX-B
@@ -31,6 +37,15 @@ public class ApiHealthCheck {
   public ApiHealthCheck(String name, ApiHealthSummary summary) {
     this.name = name;
     this.summary = summary;
+  }
+
+  public ApiHealthCheck(String name,
+                        ApiHealthSummary summary,
+                        String explanation,
+                        boolean suppressed) {
+    this(name, summary);
+    this.explanation = explanation;
+    this.suppressed = suppressed;
   }
 
   /** Unique name of this health check. */
@@ -51,5 +66,32 @@ public class ApiHealthCheck {
 
   public void setSummary(ApiHealthSummary summary) {
     this.summary = summary;
+  }
+
+  /**
+   * The explanation of this health check.
+   * Available since v11.
+   **/
+  @XmlElement
+  public String getExplanation() {
+    return explanation;
+  }
+
+  public void setExplanation(String explanation) {
+    this.explanation = explanation;
+  }
+
+  /**
+   * Whether this health test is suppressed. A suppressed health test is not
+   * considered when computing an entity's overall health. 
+   * Available since v11.
+   **/
+  @XmlElement
+  public Boolean getSuppressed() {
+    return suppressed;
+  }
+
+  public void setSuppressed(Boolean suppressed) {
+    this.suppressed = suppressed;
   }
 }

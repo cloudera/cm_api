@@ -37,7 +37,8 @@ public interface RoleCommandsResourceV10 extends RoleCommandsResourceV8 {
    * <p>
    * For HDFS services, this command should be executed on NameNode or
    * DataNode roles. For NameNodes, it refreshes the role's node list.
-   * For DataNodes, it refreshes the role's data directory list.
+   * For DataNodes, it refreshes the role's data directory list and other
+   * configuration.
    * <p>
    * For YARN services, this command should be executed on ResourceManager
    * roles. It refreshes the role's queue and node information.
