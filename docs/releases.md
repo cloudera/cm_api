@@ -19,6 +19,15 @@ Releases
     <tbody>
 
      <tr>
+            <td>v31</td>
+            <td>Cloudera Manager 6.1</td>
+            <td><a href="https://archive.cloudera.com/cm{{site.latest_cm_major_version}}/{{ site.latest_cm_version }}/generic/jar/cm_api/apidocs/index.html">API docs</a>,
+                <a href="https://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{ site.latest_cm_version }}/generic/jar/cm_api/swagger-html-sdk-docs/java/README.html">Java SDK Docs</a>,
+                <a href="https://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{ site.latest_cm_version }}/generic/jar/cm_api/swagger-html-sdk-docs/python/README.html">Python SDK Docs</a>
+            </td>
+      </tr>
+
+     <tr>
             <td>v30</td>
             <td>Cloudera Manager 6.0</td>
             <td><a href="https://archive.cloudera.com/cm{{site.latest_cm_major_version}}/{{ site.latest_cm_version }}/generic/jar/cm_api/apidocs/index.html">API docs</a>,

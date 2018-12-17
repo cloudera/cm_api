@@ -45,7 +45,7 @@ If your system does not have `pip`, you can get it from your distro:
 
     $ wget http://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{ site.latest_cm_version }}/generic/jar/cm_api/cloudera-manager-api-swagger-{{ site.latest_cm_version }}.tar
 
-    $ tar xvf cloudera-manager-api-swagger-6.x.0.tar
+    $ tar xvf cloudera-manager-api-swagger-{{ site.latest_cm_version }}.tar
     $ cd swagger/python/
     $ sudo python setup.py install
 
