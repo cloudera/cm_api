@@ -532,13 +532,14 @@ Cluster Template
 
 These examples cover how to export and import cluster template.
 
-These examples requires v12 of the CM API or higher.
+These examples requires v30 of the CM API or higher.
 
 Import following modules:
 
 {% highlight python %}
 import cm_client
 from cm_client.rest import ApiException
+from collections import namedtuple
 from pprint import pprint
 import json
 {% endhighlight %}
@@ -550,15 +551,18 @@ Export the cluster template as a json file:
 cm_client.configuration.username = '<username>'
 cm_client.configuration.password = '<password>'
 
-api_url = "http://source-host:7180/api/v19"
+api_url = "http://source-host:7180/api/v30"
 api_client = cm_client.ApiClient(api_url)
 
 # create an instance of the API class
 cluster_name = 'Cluster 1' # str |
 clusters_api_instance = cm_client.ClustersResourceApi(api_client)
 template = clusters_api_instance.export(cluster_name)
+# Following step allows python fields with under_score to map
+# to matching camelCase name in the API model before writing to json file.
+json_dict = api_client.sanitize_for_serialization(template)
 with open('/tmp/cluster_template.json', 'w') as out_file:
-    json.dump(template.to_dict(), out_file, indent=4, sort_keys=True)
+    json.dump(json_dict, out_file, indent=4, sort_keys=True)
 
 {% endhighlight %}
 
@@ -593,16 +597,19 @@ Invoking import cluster template on the target cluster:
 
 {% highlight python %}
 # Configure HTTP basic authorization for destination CM
-cm_client.configuration.username = 'username'
-cm_client.configuration.password = 'password'
+cm_client.configuration.username = '<username>'
+cm_client.configuration.password = '<password>'
 
-api_url = "http://dst-host:7180/api/v19"
+api_url = "http://dst-host:7180/api/v30"
 api_client = cm_client.ApiClient(api_url)
 
 # Load the updated cluster template
 with open('/tmp/cluster_template.json') as in_file:
-    data = json.load(in_file)
-dst_cluster_template = cm_client.ApiClusterTemplate(**data)
+    json_str = in_file.read()
+# Following step is used to deserialize from json to python API model object
+Response = namedtuple("Response", "data")
+dst_cluster_template=api_client.deserialize(response=Response(json_str),
+        response_type=cm_client.ApiClusterTemplate)
 
 cm_api_instance = cm_client.ClouderaManagerResourceApi(api_client)
 command = cm_api_instance.import_cluster_template(body=dst_cluster_template)
