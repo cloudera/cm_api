@@ -1,13 +1,10 @@
 New Release
 ===========
 
-- Update `_config.yml` with the new version numbers.
-  - Suppose `latest_api_version` is `x`. Then there should be a full set of API docs
-    under `apidocs/v{x}`.
-  - Suppose `latest_cm_version` is `y`. Then there should be a full set of
-    javadocs under `javadocs/{y}`.
-
-- Update `docs/releases.md` to add a new row.
+- Run `update_gh_pages.sh <api_version> <cm_version>` to auto update that includes following:
+  - Updated `_config.yml` with the new version numbers for `latest_api_version` and
+ `latest_cm_version`
+  - Updated `docs/releases.md` with new row for doc links
 
 
 Adding New Content
