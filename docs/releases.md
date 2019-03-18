@@ -17,6 +17,14 @@ Releases
         </tr>
     </thead>
     <tbody>
+      <tr>
+          <td>v32</td>
+          <td>Cloudera Manager 6.2.0</td>
+          <td><a href="https://archive.cloudera.com/cm6/6.2.0/generic/jar/cm_api/apidocs/index.html">API docs</a>,
+              <a href="https://archive.cloudera.com/cm6/6.2.0/generic/jar/cm_api/swagger-html-sdk-docs/java/README.html">Java SDK Docs</a>,
+              <a href="https://archive.cloudera.com/cm6/6.2.0/generic/jar/cm_api/swagger-html-sdk-docs/python/README.html">Python SDK Docs</a>
+          </td>
+      </tr>
 
      <tr>
             <td>v31</td>
