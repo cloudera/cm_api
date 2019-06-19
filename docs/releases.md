@@ -46,6 +46,15 @@ Releases
 
      <tr>
           <td>v19</td>
+          <td>Cloudera Manager 5.16.2</td>
+          <td><a href="{{ site.url }}/apidocs/v5.16.2/index.html">API docs</a>,
+              <a href="{{ site.url }}/javadoc/5.16.2/index.html">Javadoc</a>,
+              <a href="{{ site.url }}/epydoc/5.16.2/index.html">Epydoc</a>
+          </td>
+      </tr>
+
+     <tr>
+          <td>v19</td>
           <td>Cloudera Manager 5.16</td>
           <td><a href="{{ site.url }}/apidocs/v5.16.0/index.html">API docs</a>,
               <a href="{{ site.url }}/javadoc/5.16.0/index.html">Javadoc</a>,
