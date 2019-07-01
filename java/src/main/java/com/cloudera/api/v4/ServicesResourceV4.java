@@ -234,8 +234,10 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
    *
    * @param hdfsServiceName The HDFS service name.
    * @param nameService The (optional) HDFS nameservice. Required for HA setup.
-   * @param from The (optional) start time of the report. Default to 24 hours before "to" time.
-   * @param to The (optional) end time of the report. Default to now.
+   * @param from The (optional) start time of the report in ISO 8601 format (
+   * defaults to 24 hours before "to" time).
+   * @param to The (optional) end time of the report in ISO 8601 format (
+   * defaults to now).
    * @param aggregation The (optional) aggregation period for the data.
    *                    Supports "hourly", "daily" (default) and "weekly".
    * @return Report data.
@@ -263,8 +265,10 @@ public interface ServicesResourceV4 extends ServicesResourceV3 {
    * Edition.
    *
    * @param mrServiceName The MR service name.
-   * @param from The (optional) start time of the report. Default to 24 hours before "to" time.
-   * @param to The (optional) end time of the report. Default to now.
+   * @param from The (optional) start time of the report in ISO 8601 format
+   * (defaults to 24 hours before "to" time).
+   * @param to The (optional) end time of the report in ISO 8601 format (defaults
+   * to now).
    * @param aggregation The (optional) aggregation period for the data.
    *                    Supports "hourly", "daily" (default) and "weekly".
    * @return Report data.

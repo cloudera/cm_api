@@ -42,6 +42,7 @@ public interface MgmtServiceResource {
   /**
    * Retrieve information about the Cloudera Management Services.
    *
+   * @throws javax.ws.rs.NotFoundException if no service exists.
    * @return Details about the management service.
    */
   @GET
@@ -51,6 +52,7 @@ public interface MgmtServiceResource {
   /**
    * Retrieve the configuration of the Cloudera Management Services.
    *
+   * @throws javax.ws.rs.NotFoundException if no service exists.
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
    * @return List with configured and available configuration options.
@@ -72,6 +74,7 @@ public interface MgmtServiceResource {
    * Attributes that are not listed in the input will maintain their
    * current values in the configuration.
    *
+   * @throws javax.ws.rs.ClientErrorException if no service exists.
    * @param message Optional message describing the changes.
    * @param config Configuration changes.
    * @return The new service configuration.
@@ -85,6 +88,7 @@ public interface MgmtServiceResource {
   /**
    * List the supported role types for the Cloudera Management Services.
    *
+   * @throws javax.ws.rs.NotFoundException if no service exists.
    * @return List of role types the service supports.
    */
   @GET
@@ -94,6 +98,7 @@ public interface MgmtServiceResource {
   /**
    * List active Cloudera Management Services commands.
    *
+   * @throws javax.ws.rs.NotFoundException if no service exists.
    * @param dataView The view of the data to materialize,
    *                 either "summary" or "full".
    * @return A list of active role commands.
@@ -107,6 +112,7 @@ public interface MgmtServiceResource {
   /**
    * Start the Cloudera Management Services.
    *
+   * @throws javax.ws.rs.NotFoundException if no service exists.
    * @return A reference to the submitted command.
    */
   @POST
@@ -117,6 +123,7 @@ public interface MgmtServiceResource {
   /**
    * Stop the Cloudera Management Services.
    *
+   * @throws javax.ws.rs.NotFoundException if no service exists.
    * @return A reference to the submitted command.
    */
   @POST
@@ -127,6 +134,7 @@ public interface MgmtServiceResource {
   /**
    * Restart the Cloudera Management Services.
    *
+   * @throws javax.ws.rs.NotFoundException if no service exists.
    * @return A reference to the submitted command.
    */
   @POST

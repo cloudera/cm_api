@@ -18,6 +18,7 @@ package com.cloudera.api.model;
 import com.cloudera.api.ApiUtils;
 import com.google.common.base.Objects;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -31,6 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ApiHdfsReplicationResult {
 
   private int progress;
+  private double throughput;
+  private int remainingTime;
+  private Date estimatedCompletionTime;
   private List<ApiHdfsReplicationCounter> counters;
   private long numBytesDryRun;
   private long numFilesDryRun;
@@ -48,6 +52,9 @@ public class ApiHdfsReplicationResult {
   private String jobDetailsUri;
   private boolean dryRun;
   private List<String> snapshottedDirs;
+  private List<String> failedFiles;
+  private String runAsUser;
+  private String runOnSourceAsUser;
 
   /** The file copy progress percentage. */
   @XmlElement
@@ -57,6 +64,36 @@ public class ApiHdfsReplicationResult {
 
   public void setProgress(int progress) {
     this.progress = progress;
+  }
+
+  /** The data throughput in KB/s. */
+  @XmlElement
+  public double getThroughput() {
+    return throughput;
+  }
+
+  public void setThroughput(double througput) {
+    this.throughput = througput;
+  }
+
+  /** The time remaining for mapper phase (seconds). */
+  @XmlElement
+  public int getRemainingTime() {
+    return remainingTime;
+  }
+
+  public void setRemainingTime(int remainingTime) {
+    this.remainingTime = remainingTime;
+  }
+
+  /** The estimated completion time for the mapper phase. */
+  @XmlElement
+  public Date getEstimatedCompletionTime() {
+    return estimatedCompletionTime;
+  }
+
+  public void setEstimatedCompletionTime(Date estimatedCompletionTime) {
+    this.estimatedCompletionTime = estimatedCompletionTime;
   }
 
   /**
@@ -257,31 +294,83 @@ public class ApiHdfsReplicationResult {
     this.snapshottedDirs = snapshottedDirs;
   }
 
+  /**
+   * Returns run-as user name.
+   * Available since API v11.
+   */
+  @XmlElement
+  public String getRunAsUser() {
+    return runAsUser;
+  }
+
+  public void setRunAsUser(String runAsUser) {
+    this.runAsUser = runAsUser;
+  }
+
+  /**
+   * Returns run-as user name for source cluster.
+   * Available since API v18.
+   */
+  @XmlElement
+  public String getRunOnSourceAsUser() {
+    return runOnSourceAsUser;
+  }
+
+  public void setRunOnSourceAsUser(String runOnSourceAsUser) {
+    this.runOnSourceAsUser = runOnSourceAsUser;
+  }
+
+  /**
+   * The list of files that failed during replication.
+   * Available since API v11.
+   */
+  @XmlElement
+  public List<String> getFailedFiles() {
+    return failedFiles;
+  }
+
+  public void setFailedFiles(List<String> failedFiles) {
+    this.failedFiles = failedFiles;
+  }
+
   @Override
   public boolean equals(Object o) {
     ApiHdfsReplicationResult that = ApiUtils.baseEquals(this, o);
     return this == that || (that != null &&
         Objects.equal(progress, that.getProgress()) &&
+        Objects.equal(throughput, that.getThroughput()) &&
+        Objects.equal(remainingTime, that.getRemainingTime()) &&
+        Objects.equal(estimatedCompletionTime, that.getEstimatedCompletionTime()) &&
         Objects.equal(counters, that.getCounters()) &&
         Objects.equal(setupError, that.getSetupError()) &&
         dryRun == that.isDryRun() &&
-        Objects.equal(snapshottedDirs, that.getSnapshottedDirs()));
+        Objects.equal(snapshottedDirs, that.getSnapshottedDirs())) &&
+        Objects.equal(failedFiles, that.getFailedFiles()) &&
+        Objects.equal(runAsUser, that.getRunAsUser()) &&
+        Objects.equal(runOnSourceAsUser, that.getRunOnSourceAsUser());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(progress, counters, setupError, dryRun,
-        snapshottedDirs);
+    return Objects.hashCode(progress, throughput, remainingTime,
+        estimatedCompletionTime, counters, setupError, dryRun, snapshottedDirs,
+        failedFiles, runAsUser, runOnSourceAsUser);
   }
 
   @Override
   public String toString() {
     return Objects.toStringHelper(this)
         .add("progress", progress)
+        .add("throughput", throughput)
+        .add("remainingTime", remainingTime)
+        .add("estimatedCompletionTime", estimatedCompletionTime)
         .add("counters", counters)
         .add("setupError", setupError)
         .add("dryRun", dryRun)
         .add("snapshottedDirs", snapshottedDirs)
+        .add("failedFiles", failedFiles)
+        .add("runAsUser", runAsUser)
+        .add("runOnSourceAsUser", runOnSourceAsUser)
         .toString();
   }
 

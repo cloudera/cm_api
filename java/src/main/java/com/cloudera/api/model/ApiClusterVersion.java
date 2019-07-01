@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 /**
  * The CDH version of the cluster.
  */
+@Deprecated
 public enum ApiClusterVersion {
   /** CDH3 version. CDH3 is not supported as of CM 5.0. */
   @Deprecated
@@ -32,6 +33,8 @@ public enum ApiClusterVersion {
   CDH4,
   /** CDH5 version */
   CDH5,
+  /** CDH6 version */
+  CDH6,
   /** Unknown version. */
   UNKNOWN;
 
