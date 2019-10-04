@@ -56,7 +56,7 @@ for API version {{ site.latest_api_version }} (CM {{site.latest_cm_version}}).
 
 Basic Usage
 ===========
-Each subsection continues from the previous one.
+Each subsection continues from the previous one. Provided examples are valid for Python 2.7.
 
 {% highlight python %}
 
@@ -81,7 +81,7 @@ cluster_api_instance = cm_client.ClustersResourceApi(api_client)
 # Lists all known clusters.
 api_response = cluster_api_instance.read_clusters(view='SUMMARY')
 for cluster in api_response.items:
-    print cluster.name, -, cluster.full_version
+    print cluster.name, "-", cluster.full_version
 
 ## -- Output --
 # Cluster 1 - 6.0.0
