@@ -618,3 +618,80 @@ command = cm_api_instance.import_cluster_template(body=dst_cluster_template)
 User can use this command to track the progress. The progress can be tracked by command details page in UI
 or wait using the method mentioned above.
 
+Constructing Complex Objects
+------------------------------
+
+The following gives two possible methods of constructing a complex API object, using an External Account as an example.
+
+First, set up the API instance
+
+{% highlight python %}
+
+import cm_client
+from pprint import pprint
+
+# Configure HTTP basic authorization: basic
+cm_client.configuration.username = 'username'
+cm_client.configuration.password = 'password'
+
+api_host = 'http://cmhost'
+port = '7180'
+api_version = 'v30'
+# Construct base URL for API
+# http://cmhost:7180/api/v30
+api_url = api_host + ':' + port + '/api/' + api_version
+api_client = cm_client.ApiClient(api_url)
+
+# Create an instance of the API class
+external_account_api_instance = cm_client.ExternalAccountsResourceApi(api_client)
+{% endhighlight %}
+
+Method 1: Python Dictionary
+
+{% highlight python %}
+
+# Define the body of the API call
+# Note: Use camelCase attribute names. Refer to the REST API documentation for
+# the attribute names for the data model, such as ApiExternalAccount in this case
+body = {
+	'name': 'account_name',
+	'displayName': 'Account Name',
+	'typeName': 'AWS_ACCESS_KEY_AUTH',
+    'accountConfigs': {
+    'items': [{
+            'name': 'aws_access_key',
+            'value': 'key_value'
+        }, {
+            'name': 'aws_secret_key',
+            'value': 'key_value'
+        }]
+    }
+}
+
+# Create the External Account
+api_response = external_account_api_instance.create_account(body=body)
+pprint(api_response)
+{% endhighlight %}
+
+Method 2: Use data types provided by Swagger
+
+{% highlight python %}
+
+# Set properties for the body of the API call
+name = 'account_name'
+display_name = 'Account Name'
+type_name = 'AWS_ACCESS_KEY_AUTH'
+
+# Construct an ApiConfigList with the account configs
+account_config_1 = cm_client.ApiConfig(name='aws_access_key', value='key_value')
+account_config_2 = cm_client.ApiConfig(name='aws_secret_key', value='key_value')
+account_configs = cm_client.ApiConfigList(items=[account_config_1, account_config_2])
+
+# Construct the body of the API call
+body = cm_client.ApiExternalAccount(name=name, display_name=display_name, \
+    type_name=type_name, account_configs=account_configs)
+
+# Create the External Account
+api_response = external_account_api_instance.create_account(body=body)
+pprint(api_response)
+{% endhighlight %}
