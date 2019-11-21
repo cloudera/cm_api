@@ -54,7 +54,7 @@ Merge the following to your Maven project's `pom.xml`:
       ...
     </project>
 
-You can also directly download the jar(and sources) from [Cloudera repository](https://archive.cloudera.com/cm6/{{site.latest_cm_version}}/generic/jar/cm_api/).
+You can also directly download the jar(and sources) from [Cloudera repository](https://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{site.latest_cm_version}}/generic/jar/cm_api/).
 
 SDK doc
 =======
