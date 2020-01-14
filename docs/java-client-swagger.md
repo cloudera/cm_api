@@ -13,7 +13,7 @@ permalink: /docs/java-client-swagger/
 
 Version
 =======
-Cloudera Manager(CM) 6.0 introduces new Java API client based
+Cloudera Manager(CM) 6.0 introduced new Java API client based
 on [Swagger](https://swagger.io/). This new API client supports all CM API versions.
 
 [Older Java client]({{ site.url }}/docs/java-client/) will still be supported for
@@ -84,7 +84,7 @@ public class ListClusters {
     ApiClient cmClient = Configuration.getDefaultApiClient();
 
     // Configure HTTP basic authorization: basic
-    cmClient.setBasePath("https://cm-host:7183/api/v30");
+    cmClient.setBasePath("https://cm-host:7183/api/v40");
     cmClient.setUsername("username");
     cmClient.setPassword("password");
 
@@ -97,7 +97,7 @@ public class ListClusters {
 
     ClustersResourceApi apiInstance = new ClustersResourceApi(cmClient);
     try {
-      ApiClusterList clusterList = apiInstance.readClusters("SUMMARY");
+      ApiClusterList clusterList = apiInstance.readClusters("ANY", "SUMMARY");
       for (ApiCluster cluster : clusterList.getItems()) {
         System.out.printf("Name: %s, Version: %s", cluster.getDisplayName(),
           cluster.getFullVersion());
