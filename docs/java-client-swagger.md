@@ -20,10 +20,10 @@ on [Swagger](https://swagger.io/). This new API client supports all CM API versi
 API version less than 30. So older Java API client can still be used
 against Cloudera Manager version 6.0 and later as long as API version 19 or earlier is used.
 
-For e.g. customer can use old CM API client version 5.14 against CM version 6.0
-which by default will invoke API version 19. If customer wants to use new features that were
-introduced in Cloudera Manager 6.0 i.e. API version 30 like "Fine Grained Access Control" then
-customer must use this new API client.
+For example, you can use the old CM API client version 5.14 against CM version 6.0
+which by default will invoke API version 19. If you want to use new features that were
+introduced in Cloudera Manager 6.0 (i.e. API version 30) like "Fine Grained Access Control" then
+you must use this new API client.
 
 Older Java client and new Swagger based Java client can co-exist in an application
 to allow for incremental transition to new Swagger based java client.
@@ -54,7 +54,8 @@ Merge the following to your Maven project's `pom.xml`:
       ...
     </project>
 
-You can also directly download the jar(and sources) from [Cloudera repository](https://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{site.latest_cm_version}}/generic/jar/cm_api/).
+You can also directly download the jar(and sources) from the [Cloudera
+repository](https://archive.cloudera.com/cm{{site.latest_cm_major_version}}/{{site.latest_cm_version}}/generic/jar/cm_api/).
 
 SDK doc
 =======
@@ -114,4 +115,3 @@ public class ListClusters {
 The above example invokes API over secure HTTPS channel. If TLS is not enabled on
 Cloudera Manager Admin Console then update the base path (setBasePath()) to point to right URL
 and TLS configuration (setVerifyingSSL(), setSslCaCert()) for API client can be dropped.
-
