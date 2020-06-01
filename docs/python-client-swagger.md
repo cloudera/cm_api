@@ -20,10 +20,11 @@ on [Swagger](https://swagger.io/). This new API client supports all CM API versi
 API version less than 30. So older Python API client can still be used
 against Cloudera Manager version 6.0 and later as long as API version 19 or earlier is used.
 
-For e.g. customer can use old CM API client version 5.14 against CM version 6.0
-which by default will invoke API version 19. If customer wants to use new features that were
-introduced in Cloudera Manager 6.0 i.e. API version 30 like "Fine Grained Access Control" then
-customer must use this new API client.
+For example, you can use the old CM API client version 5.14 against CM
+version 6.0 which by default will invoke API version 19. If you want
+to use new features that were introduced in Cloudera Manager 6.0
+(i.e. API version 30) like "Fine Grained Access Control" then you
+must use this new API client.
 
 Older Python client and new Swagger based Python client can co-exist in an application
 to allow for incremental transition to new Swagger based python client.
@@ -51,8 +52,10 @@ If your system does not have `pip`, you can get it from your distro:
 
 SDK Doc
 =======
-Here is the latest [SDK doc](https://archive.cloudera.com/cm{{ site.latest_cm_major_version }}/{{ site.latest_cm_version }}/generic/jar/cm_api/swagger-html-sdk-docs/python/README.html),
-for API version {{ site.latest_api_version }} (CM {{site.latest_cm_version}}).
+
+Here is the latest
+[SDK doc](https://archive.cloudera.com/cm{{site.latest_cm_major_version }}/{{ site.latest_cm_version}}/generic/jar/cm_api/swagger-html-sdk-docs/python/README.html),
+forAPI version {{ site.latest_api_version }} (CM{{site.latest_cm_version}}).
 
 Basic Usage
 ===========

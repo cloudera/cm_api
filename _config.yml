@@ -8,6 +8,6 @@ safe:                   true
 lsi:                    false
 markdown:               kramdown
 
-latest_api_version:      40
-latest_cm_version:       7.0.3
+latest_api_version:      41
+latest_cm_version:       7.1.1
 latest_cm_major_version: 7
