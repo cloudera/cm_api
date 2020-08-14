@@ -28,6 +28,10 @@ you must use this new API client.
 Older Java client and new Swagger based Java client can co-exist in an application
 to allow for incremental transition to new Swagger based java client.
 
+NOTE: Beginning in API version 42, the types of some fields of Java API model objects have
+changed as compared with previous versions. Several fields that were previously
+represented as type **BigDecimal** have been migrated to type **Integer**. This applies to the
+new Swagger based Java client only.
 
 Setting Up
 ==========
