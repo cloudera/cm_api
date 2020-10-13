@@ -12,7 +12,7 @@
     <guava.version>14.0</guava.version>
     <jackson2.version>2.1.0</jackson2.version>
     <joda.version>2.1</joda.version>
-    <junit.version>4.11</junit.version>
+    <junit.version>4.13.1</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <test.redirectToFile>true</test.redirectToFile>
     <privateClassPath>com.cloudera.api.shaded</privateClassPath>
