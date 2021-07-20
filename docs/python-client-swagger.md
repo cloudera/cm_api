@@ -84,6 +84,16 @@ api_version = 'v30'
 # http://cmhost:7180/api/v30
 api_url = api_host + ':' + port + '/api/' + api_version
 api_client = cm_client.ApiClient(api_url)
+try:
+    # Set session cookie
+    # Any valid api call shall return a Set-Cookie HTTP response header
+    api_instance = cm_client.ClouderaManagerResourceApi(api_client)
+    api_instance.get_version()
+    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+except ApiException as e:
+    print("Failed to set session cookies. Exception occurred when calling "
+        "ClouderaManagerResourceApi->get_version: %s\n" % e)
+
 cluster_api_instance = cm_client.ClustersResourceApi(api_client)
 
 # Lists all known clusters.
@@ -113,7 +123,15 @@ api_version = 'v30'
 # https://cmhost:7183/api/v30
 api_url = api_host + ':' + port + '/api/' + api_version
 api_client = cm_client.ApiClient(api_url)
-
+try:
+    # Set session cookie
+    # Any valid api call shall return a Set-Cookie HTTP response header
+    api_instance = cm_client.ClouderaManagerResourceApi(api_client)
+    api_instance.get_version()
+    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+except ApiException as e:
+    print("Failed to set session cookies. Exception occurred when calling "
+        "ClouderaManagerResourceApi->get_version: %s\n" % e)
 # Rest same as above
 {% endhighlight %}
 
@@ -212,8 +230,18 @@ First we look at what metrics are available:
 # NOTE: this does not work starting in v6 of the api (CM5.0.0). Use the
 # timeseries endpoint dicussed below or set your api version to v5.
 
-api_url_v5 = api_host + '/api/' + 'v5'
+api_url_v5 = api_host + ':' + port + '/api/' + 'v5'
 api_client_v5 = cm_client.ApiClient(api_url_v5)
+try:
+    # Set session cookie
+    # Any valid api call shall return a Set-Cookie HTTP response header
+    api_instance = cm_client.ClouderaManagerResourceApi(api_client_v5)
+    api_instance.get_version()
+    api_client_v5.cookie = api_client_v5.last_response.getheaders()['Set-Cookie']
+except ApiException as e:
+    print("Failed to set session cookies. Exception occurred when calling "
+        "ClouderaManagerResourceApi->get_version: %s\n" % e)
+
 services_api_instance_v5 = cm_client.ServicesResourceApi(api_client_v5)
 metrics = services_api_instance_v5.get_metrics(cluster.name, hdfs.name)
 for m in metrics.items:
@@ -561,6 +589,15 @@ cm_client.configuration.password = '<password>'
 
 api_url = "http://source-host:7180/api/v30"
 api_client = cm_client.ApiClient(api_url)
+try:
+    # Set session cookie
+    # Any valid api call shall return a Set-Cookie HTTP response header
+    api_instance = cm_client.ClouderaManagerResourceApi(api_client)
+    api_instance.get_version()
+    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+except ApiException as e:
+    print("Failed to set session cookies. Exception occurred when calling "
+        "ClouderaManagerResourceApi->get_version: %s\n" % e)
 
 # create an instance of the API class
 cluster_name = 'Cluster 1' # str |
@@ -610,6 +647,15 @@ cm_client.configuration.password = '<password>'
 
 api_url = "http://dst-host:7180/api/v30"
 api_client = cm_client.ApiClient(api_url)
+try:
+    # Set session cookie
+    # Any valid api call shall return a Set-Cookie HTTP response header
+    api_instance = cm_client.ClouderaManagerResourceApi(api_client)
+    api_instance.get_version()
+    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+except ApiException as e:
+    print("Failed to set session cookies. Exception occurred when calling "
+        "ClouderaManagerResourceApi->get_version: %s\n" % e)
 
 # Load the updated cluster template
 with open('/tmp/cluster_template.json') as in_file:
@@ -649,6 +695,15 @@ api_version = 'v30'
 # http://cmhost:7180/api/v30
 api_url = api_host + ':' + port + '/api/' + api_version
 api_client = cm_client.ApiClient(api_url)
+try:
+    # Set session cookie
+    # Any valid api call shall return a Set-Cookie HTTP response header
+    api_instance = cm_client.ClouderaManagerResourceApi(api_client)
+    api_instance.get_version()
+    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+except ApiException as e:
+    print("Failed to set session cookies. Exception occurred when calling "
+        "ClouderaManagerResourceApi->get_version: %s\n" % e)
 
 # Create an instance of the API class
 external_account_api_instance = cm_client.ExternalAccountsResourceApi(api_client)
