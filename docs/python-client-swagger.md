@@ -89,7 +89,7 @@ try:
     # Any valid api call shall return a Set-Cookie HTTP response header
     api_instance = cm_client.ClouderaManagerResourceApi(api_client)
     api_instance.get_version()
-    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+    api_client.cookie = api_client.last_response.getheader('Set-Cookie')
 except ApiException as e:
     print("Failed to set session cookies. Exception occurred when calling "
         "ClouderaManagerResourceApi->get_version: %s\n" % e)
@@ -128,7 +128,7 @@ try:
     # Any valid api call shall return a Set-Cookie HTTP response header
     api_instance = cm_client.ClouderaManagerResourceApi(api_client)
     api_instance.get_version()
-    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+    api_client.cookie = api_client.last_response.getheader('Set-Cookie')
 except ApiException as e:
     print("Failed to set session cookies. Exception occurred when calling "
         "ClouderaManagerResourceApi->get_version: %s\n" % e)
@@ -237,7 +237,7 @@ try:
     # Any valid api call shall return a Set-Cookie HTTP response header
     api_instance = cm_client.ClouderaManagerResourceApi(api_client_v5)
     api_instance.get_version()
-    api_client_v5.cookie = api_client_v5.last_response.getheaders()['Set-Cookie']
+    api_client_v5.cookie = api_client_v5.last_response.getheader('Set-Cookie')
 except ApiException as e:
     print("Failed to set session cookies. Exception occurred when calling "
         "ClouderaManagerResourceApi->get_version: %s\n" % e)
@@ -594,7 +594,7 @@ try:
     # Any valid api call shall return a Set-Cookie HTTP response header
     api_instance = cm_client.ClouderaManagerResourceApi(api_client)
     api_instance.get_version()
-    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+    api_client.cookie = api_client.last_response.getheader('Set-Cookie')
 except ApiException as e:
     print("Failed to set session cookies. Exception occurred when calling "
         "ClouderaManagerResourceApi->get_version: %s\n" % e)
@@ -652,7 +652,7 @@ try:
     # Any valid api call shall return a Set-Cookie HTTP response header
     api_instance = cm_client.ClouderaManagerResourceApi(api_client)
     api_instance.get_version()
-    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+    api_client.cookie = api_client.last_response.getheader('Set-Cookie')
 except ApiException as e:
     print("Failed to set session cookies. Exception occurred when calling "
         "ClouderaManagerResourceApi->get_version: %s\n" % e)
@@ -700,7 +700,7 @@ try:
     # Any valid api call shall return a Set-Cookie HTTP response header
     api_instance = cm_client.ClouderaManagerResourceApi(api_client)
     api_instance.get_version()
-    api_client.cookie = api_client.last_response.getheaders()['Set-Cookie']
+    api_client.cookie = api_client.last_response.getheader('Set-Cookie')
 except ApiException as e:
     print("Failed to set session cookies. Exception occurred when calling "
         "ClouderaManagerResourceApi->get_version: %s\n" % e)
